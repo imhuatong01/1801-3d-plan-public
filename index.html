@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>1801-3D 图 · 当前方案</title>
+    <script type="importmap">
+      { "imports": { "three": "./3d-assets/three.module.js" } }
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #edf2f4;
+        color: #234354;
+        font:
+          14px/1.6 "Microsoft YaHei",
+          system-ui;
+      }
+      header {
+        padding: 18px 24px;
+        background: white;
+        border-bottom: 1px solid #d6e2e8;
+      }
+      nav {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      nav a,
+      button {
+        border: 1px solid #c5d5de;
+        background: white;
+        color: #31566c;
+        padding: 7px 13px;
+        border-radius: 7px;
+        text-decoration: none;
+        font: inherit;
+        cursor: pointer;
+      }
+      nav .active,
+      button.active {
+        background: #285c72;
+        color: white;
+        border-color: #285c72;
+      }
+      h1 {
+        font-size: 25px;
+        margin: 0;
+      }
+      header p {
+        margin: 4px 0;
+        color: #708693;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 310px;
+        gap: 15px;
+        padding: 15px;
+      }
+      .viewer {
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #d2dfe7;
+        overflow: hidden;
+      }
+      .tools {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+        padding: 12px;
+        border-bottom: 1px solid #e1e9ee;
+      }
+      .tools label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px;
+      }
+      .viewport {
+        position: relative;
+        height: 650px;
+        min-height: 420px;
+        touch-action: none;
+      }
+      .viewport canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .hint {
+        position: absolute;
+        bottom: 14px;
+        left: 14px;
+        right: 14px;
+        pointer-events: none;
+        color: #526c7d;
+        font-size: 12px;
+        text-align: center;
+        background: #ffffffd9;
+        border-radius: 7px;
+        padding: 7px;
+      }
+      #loading {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-content: center;
+        background: #f0f5f7;
+        z-index: 2;
+      }
+      .side {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+      }
+      .card {
+        background: white;
+        border: 1px solid #d6e2e8;
+        padding: 17px;
+        border-radius: 11px;
+      }
+      .card h2 {
+        font-size: 17px;
+        margin: 0 0 10px;
+      }
+      .metric {
+        font-size: 25px;
+        font-weight: 700;
+        color: #2f687a;
+      }
+      .muted {
+        font-size: 12px;
+        color: #6f8795;
+      }
+      .key {
+        border-left: 3px solid #c99b5c;
+        padding-left: 10px;
+        margin: 12px 0;
+      }
+      .legend {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border-radius: 2px;
+        margin-right: 5px;
+      }
+      .notice {
+        background: #fff4df;
+        color: #80613b;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 12px;
+        font-size: 12px;
+      }
+      .bottom {
+        padding: 0 15px 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .rows {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 7px 18px;
+      }
+      .rows b {
+        color: #315d72;
+      }
+      .status {
+        color: #2a6e7f;
+        font-weight: 600;
+      }
+      #selected {
+        min-height: 70px;
+      }
+      .viewer:fullscreen {
+        background: white;
+        width: 100vw;
+        height: 100vh;
+      }
+      .viewer:fullscreen .viewport {
+        height: calc(100vh - 130px);
+      }
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .viewport {
+          height: 65vh;
+        }
+        .bottom {
+          grid-template-columns: 1fr;
+        }
+        header {
+          padding: 15px;
+        }
+        .side .card:last-child {
+          grid-column: 1/-1;
+        }
+      }
+      @media (max-width: 540px) {
+        .side {
+          display: block;
+        }
+        .card {
+          margin-bottom: 10px;
+        }
+        .tools {
+          gap: 4px;
+        }
+        button {
+          padding: 6px 10px;
+        }
+      }
+      .viewer.expanded {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        border-radius: 0;
+        background: white;
+      }
+      .viewer.expanded .viewport {
+        height: calc(100dvh - 130px);
+      }
+      .viewer {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100dvh - 195px);
+      }
+      .tools {
+        flex-shrink: 0;
+      }
+      .viewport {
+        flex: 1 1 0;
+        height: auto;
+        min-height: 660px;
+      }
+      .viewport canvas {
+        position: absolute;
+        inset: 0;
+        display: block;
+      }
+      .viewer.expanded {
+        height: 100dvh;
+        min-height: 0;
+      }
+      .viewer.expanded .viewport {
+        height: auto;
+        min-height: 0;
+        flex: 1 1 0;
+      }
+      @media (max-width: 900px) {
+        .viewer {
+          min-height: 80dvh;
+        }
+        .viewport {
+          min-height: 60dvh;
+        }
+        .viewer.expanded .viewport {
+          min-height: 0;
+        }
+      }
+      .measure-tools {
+        align-items: center;
+        font-size: 12px;
+      }
+      .measure-tools select {
+        font: inherit;
+        padding: 6px;
+        border: 1px solid #b8cdd7;
+        border-radius: 5px;
+      }
+      .measure-tools button {
+        font-size: 12px;
+      }
+      #measureStatus {
+        color: #9c542d;
+        flex: 1;
+        min-width: 220px;
+      }
+      .measure-readout {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        max-width: calc(100% - 24px);
+        background: #fffdf3eb;
+        border: 1px solid #d9c7a5;
+        padding: 8px 12px;
+        border-radius: 7px;
+        font-size: 13px;
+        pointer-events: none;
+        z-index: 2;
+      }
+      .measure-readout:empty {
+        display: none;
+      }
+      nav {
+        flex-wrap: wrap;
+      }
+      .layout {
+        align-items: start;
+      }
+      .viewer {
+        height: calc(100dvh - 185px);
+        min-height: 680px;
+      }
+      .viewport {
+        min-height: 420px;
+      }
+      .viewer.expanded {
+        height: 100dvh;
+        min-height: 0;
+      }
+      .viewer.expanded .viewport {
+        min-height: 0;
+      }
+      @media (max-width: 900px) {
+        .viewer {
+          height: 85dvh;
+          min-height: 620px;
+        }
+      } /* Full-width model view: hide the explanatory sidebar, keep its status hooks. */
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .layout > .side {
+        display: none;
+      }
+      /* Page navigation and the two preserved 3D versions have separate selection states. */
+      header .page-nav {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 7px;
+        margin: 0 0 10px;
+      }
+      header .page-nav a {
+        background: #fff;
+        color: #31566c;
+        border: 1px solid #c5d5de;
+        padding: 6px 12px;
+        border-radius: 7px;
+        text-decoration: none;
+      }
+      header .page-nav a.active {
+        background: #285c72;
+        color: #fff;
+        border-color: #285c72;
+      }
+      header .version-nav {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 7px;
+        margin: 0 0 10px;
+        padding: 9px 0;
+        border-top: 1px solid #e2e9ed;
+        border-bottom: 1px solid #e2e9ed;
+      }
+      header .version-nav .nav-caption {
+        font-size: 13px;
+        color: #6a818d;
+        margin-right: 5px;
+      }
+      header .version-nav a {
+        background: #f5f8fa;
+        color: #385c70;
+        border: 1px solid #d3dfe5;
+        padding: 5px 12px;
+        border-radius: 7px;
+        text-decoration: none;
+      }
+      header .version-nav a.active {
+        background: #dceef1;
+        color: #194e61;
+        border: 2px solid #36778a;
+        padding: 4px 11px;
+        font-weight: 700;
+      }
+      header a:focus-visible {
+        outline: 3px solid #d49b45;
+        outline-offset: 2px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      #spacePlan {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        background: #fafcfd;
+        display: flex;
+        flex-direction: column;
+      }
+      #spacePlan .plan-bar {
+        padding: 8px 14px;
+        border-bottom: 1px solid #d9e3e8;
+        display: flex;
+        gap: 18px;
+        align-items: center;
+      }
+      #spacePlan img {
+        width: 100%;
+        min-height: 0;
+        flex: 1;
+        object-fit: contain;
+      }
+      #spacePlan a {
+        color: #226c8b;
+      }
+      .space-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .space-table td,
+      .space-table th {
+        padding: 9px;
+        border-bottom: 1px solid #dce4e8;
+        text-align: left;
+      }
+      .space-summary {
+        margin: 0 15px 20px;
+        background: white;
+        border: 1px solid #d5e0e6;
+        border-radius: 10px;
+        padding: 18px;
+        overflow: auto;
+      }
+
+      /* Full-page 3D workspace. Controls float above the canvas. */
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      body > header {
+        display: none;
+      }
+      .layout {
+        margin: 0;
+        padding: 0;
+        display: block;
+        height: 100dvh;
+      }
+      .viewer,
+      .viewer.expanded {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100dvh;
+        min-height: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: #edf3f6;
+      }
+      .viewer .viewport,
+      .viewer.expanded .viewport {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+      }
+      .viewer > .tools {
+        position: absolute;
+        z-index: 20;
+        background: #fffffff0;
+        backdrop-filter: blur(10px);
+        border: 1px solid #d3e0e6;
+        border-radius: 9px;
+        padding: 6px;
+        box-shadow: 0 3px 16px #28465712;
+      }
+      #modes {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        gap: 5px;
+        align-items: center;
+        flex-wrap: nowrap;
+        overflow: auto;
+      }
+      #modes button {
+        flex-shrink: 0;
+        font-size: 13px;
+        padding: 5px 10px;
+      }
+      #modes #spaceGround,
+      #modes #spaceUpper,
+      #modes #space3D,
+      #modes #supportView,
+      #modes #restFocus,
+      #modes #connectionView,
+      #modes #wetFocus,
+      #modes #stairView,
+      #modes #bossFocus,
+      #modes #entryView,
+      #modes #heightView,
+      #modes #full {
+        display: none;
+      }
+      .viewer > .tools:not(#modes) {
+        display: none;
+      }
+      .viewer.tools-open > .tools:not(#modes) {
+        display: flex;
+      }
+      .viewer.tools-open > .tools:nth-child(2) {
+        display: flex;
+        top: 62px;
+        left: 10px;
+        right: 10px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        gap: 5px;
+      }
+      .viewer.tools-open > .measure-tools {
+        display: flex;
+        top: 160px;
+        left: 10px;
+        right: 10px;
+        max-height: 150px;
+        overflow: auto;
+        flex-wrap: wrap;
+      }
+      .viewer.tools-open #modes #spaceGround,
+      .viewer.tools-open #modes #spaceUpper,
+      .viewer.tools-open #modes #space3D,
+      .viewer.tools-open #modes #stairView,
+      .viewer.tools-open #modes #wetFocus {
+        display: inline-block;
+      }
+      .hint {
+        bottom: 8px;
+        left: 12px;
+        right: 12px;
+        padding: 4px;
+        font-size: 11px;
+        background: #ffffffb8;
+      }
+      .measure-readout {
+        top: 64px;
+      }
+      #spacePlan {
+        padding-top: 58px;
+      }
+      @media (max-width: 700px) {
+        .viewer.tools-open > .tools:nth-child(2) {
+          max-height: 130px;
+          overflow: auto;
+        }
+        .viewer.tools-open > .measure-tools {
+          top: 202px;
+        }
+        .hint {
+          font-size: 10px;
+        }
+      }
+
+      #spacePlan .plan-bar {
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        padding: 8px 12px;
+        flex: none;
+        font-size: 13px;
+      }
+      #spacePlan .plan-bar button {
+        margin-left: auto;
+        padding: 4px 10px;
+      }
+      .plan-turn-tools {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-bottom: 1px solid #dce5e9;
+        flex: none;
+        background: #fff;
+        font-size: 12px;
+      }
+      .plan-turn-tools button {
+        padding: 4px 10px;
+        font-size: 13px;
+      }
+      .plan-turn-tools label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .plan-turn-tools input {
+        width: 135px;
+        accent-color: #36778a;
+      }
+      .plan-turn-tools span {
+        color: #71868e;
+      }
+      #planStage {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        touch-action: none;
+        cursor: grab;
+        background: #f4f8f8;
+        user-select: none;
+      }
+      #planStage:active {
+        cursor: grabbing;
+      }
+      #spacePlan #spacePlanImage {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        flex: none;
+        min-height: 0;
+        max-width: none;
+        max-height: none;
+        object-fit: fill;
+        transform-origin: center;
+        pointer-events: none;
+      }
+      .viewport.plan-open #barGymInfo,
+      .viewport.plan-open > .hint,
+      .viewport.plan-open .measure-readout {
+        display: none !important;
+      }
+      #softPlanView {
+        border-color: #91b7ad;
+        background: #eef6f2;
+      }
+      #workspace20View {
+        border-color: #9cafc7;
+        background: #f1f5fa;
+      }
+    </style>
+    <style>
+      #access-gate {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #173745, #315e70);
+      }
+      #access-gate[hidden] { display: none; }
+      .gate-card {
+        width: min(360px, calc(100vw - 40px));
+        padding: 30px;
+        border-radius: 16px;
+        color: #234354;
+        background: #fff;
+        box-shadow: 0 24px 70px #0005;
+      }
+      .gate-card h2 { margin: 0 0 6px; font-size: 22px; }
+      .gate-card p { margin: 0 0 18px; color: #708693; }
+      .gate-card input { width: 100%; padding: 11px 12px; border: 1px solid #c5d5de; border-radius: 7px; font: inherit; }
+      .gate-card button { width: 100%; margin-top: 10px; background: #285c72; color: #fff; border-color: #285c72; }
+      #gate-message { min-height: 20px; margin-top: 8px; color: #b84a3d; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <div id="access-gate" aria-label="访问验证">
+      <form class="gate-card" id="gate-form">
+        <h2>1801 三维空间方案</h2>
+        <p>请输入访问密码后查看。</p>
+        <input id="gate-password" type="password" inputmode="numeric" autocomplete="current-password" placeholder="访问密码" autofocus />
+        <button type="submit">进入三维图</button>
+        <div id="gate-message" role="alert"></div>
+      </form>
+    </div>
+    <script>
+      (() => {
+        const password = '123';
+        const gate = document.querySelector('#access-gate');
+        if (sessionStorage.getItem('1801-access') === 'ok') gate.hidden = true;
+        document.querySelector('#gate-form').addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (document.querySelector('#gate-password').value === password) {
+            sessionStorage.setItem('1801-access', 'ok');
+            gate.hidden = true;
+          } else document.querySelector('#gate-message').textContent = '密码不正确，请重新输入。';
+        });
+      })();
+    </script>
+    <main class="layout">
+      <section class="viewer" id="viewer">
+        <div class="tools" id="modes">
+          <span
+            style="
+              white-space: nowrap;
+              padding: 0 8px;
+              color: #426273;
+              font-size: 13px;
+            "
+            >1801 · 当前方案</span
+          ><label style="white-space: nowrap; font-size: 12px"
+            ><input type="checkbox" id="allDimensions" />全部尺寸</label
+          ><button id="toolsToggle" aria-expanded="false">更多设置</button
+          ><button id="softPlanView">一楼软包平面</button
+          ><button id="barGymView">吧台＋健身面积</button
+          ><button id="workspace20View">20工位布局效果</button
+          ><button id="overallDimensions">整体尺寸</button
+          ><button id="spaceGround">一楼尺寸图</button
+          ><button id="spaceUpper">二楼尺寸图</button
+          ><button id="space3D">返回3D</button
+          ><button data-mode="all" class="active">整体</button
+          ><button data-mode="ground">只看一楼</button
+          ><button data-mode="upper">只看二楼</button
+          ><button data-mode="split">拆层查看</button
+          ><button id="supportView">柱位与隔断</button
+          ><button id="restFocus">二楼整块空间</button
+          ><button id="connectionView">二楼侧边出口</button
+          ><button id="wetFocus">平台下卫生间＋淋浴</button
+          ><button id="stairView">楼梯走向</button
+          ><button id="bossFocus">左侧新方案</button
+          ><button id="entryView">进门方向</button
+          ><button id="heightView">侧看层高</button
+          ><button id="top">原图俯视</button><button id="reset">复位</button
+          ><button id="zoomIn">放大＋</button><button id="zoomOut">缩小−</button
+          ><button id="full">全屏</button>
+        </div>
+        <div class="tools">
+          <label
+            ><input
+              type="checkbox"
+              id="furniture"
+            />显示家具与设备（可恢复）</label
+          ><label><input type="checkbox" id="labels" checked />用途标签</label
+          ><label
+            ><input type="checkbox" id="dimensions" checked />悬停尺寸</label
+          ><label
+            ><input
+              type="checkbox"
+              id="cornerDimensions"
+              checked
+            />转角细节</label
+          ><label
+            ><input
+              type="checkbox"
+              id="frameDimensions"
+              checked
+            />钢架轴距</label
+          ><label><input type="checkbox" id="wetWalls" checked />卫浴围合</label
+          ><label><input type="checkbox" id="frame" checked />钢架示意</label
+          ><label
+            ><input
+              type="checkbox"
+              id="supportReserve"
+              checked
+            />候选柱位＋低柜</label
+          ><label
+            ><input type="checkbox" id="daylight" checked />外窗采光面</label
+          ><label><input type="checkbox" id="spin" />自动旋转</label
+          ><span class="muted">鼠标拖动旋转 · 右键拖动平移 · 滚轮缩放</span>
+        </div>
+        <div class="tools measure-tools">
+          <button id="measureToggle" aria-pressed="false">开始测量</button
+          ><label
+            >方式
+            <select id="measureType">
+              <option value="floor">平面两点</option>
+              <option value="surface">物体表面两点（可量高差）</option>
+            </select></label
+          ><label
+            ><input id="measureSnap" type="checkbox" checked />吸附端点</label
+          ><button id="measureUndo">撤销上一条</button
+          ><button id="measureClear">清空测量</button
+          ><span id="measureStatus" role="status" aria-live="polite"
+            >选择方式后开始测量；单位：米。</span
+          >
+        </div>
+        <div class="viewport" id="viewport">
+          <div id="spacePlan" hidden>
+            <div class="plan-bar">
+              <b id="spacePlanTitle"></b
+              ><a id="spacePlanOpen" target="_blank" rel="noopener"
+                >打开大图 / 放大查看</a
+              ><button id="planClose">返回3D</button>
+            </div>
+            <div class="plan-turn-tools">
+              <button id="planLeft">↶ 左转90°</button
+              ><button id="planRight">右转90° ↷</button
+              ><button id="planReset">方向复位</button
+              ><label
+                >平面角度
+                <input
+                  id="planAngle"
+                  type="range"
+                  min="-180"
+                  max="180"
+                  step="1"
+                  value="0"
+                  aria-label="平面旋转角度" /></label
+              ><output id="planAngleReadout">0°</output
+              ><span>整张图平面转向 · 可拖动图面旋转</span>
+            </div>
+            <div id="planStage">
+              <img
+                id="spacePlanImage"
+                alt="当前楼层空间尺寸图"
+                draggable="false"
+              />
+            </div>
+          </div>
+          <div
+            id="barGymInfo"
+            hidden
+            style="
+              position: absolute;
+              z-index: 6;
+              top: 86px;
+              left: 14px;
+              right: 14px;
+              max-width: 450px;
+              background: #fffffff0;
+              border: 1px solid #b8d4d1;
+              border-radius: 8px;
+              padding: 10px 14px;
+              pointer-events: none;
+            "
+          >
+            <b style="font-weight: 500; font-size: 18px"
+              >吧台兼健身预留 · 约52.70㎡</b
+            ><br />8.725 × 6.040m · 绿色范围内含柱和备用柱位<br /><small
+              >不含楼梯、卫浴、中央通道及旁侧上楼通路；未扣吧台与器械。</small
+            >
+          </div>
+          <output class="measure-readout" id="measureReadout"></output>
+          <div id="loading">正在载入1801三维模型…</div>
+          <div class="hint">
+            鼠标指向区域显示范围、长宽和面积，移开隐藏；勾选“全部尺寸”可固定显示。单位：米。钢架数字为柱轴距，非净空；面积含柱与通行空间，子区域不可相加。模型尺寸供布局比较，结构未验算。
+          </div>
+        </div>
+      </section>
+      <aside class="side">
+        <div id="modeLabel"></div>
+        <div id="selected"></div>
+      </aside>
+    </main>
+    <script
+      type="module"
+      src="./3d-assets/office-height-only.js?v=22-open-office-20"
+    ></script>
+  </body>
+</html>
