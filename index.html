@@ -649,55 +649,8 @@
         background: #f1f5fa;
       }
     </style>
-    <style>
-      #access-gate {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(135deg, #173745, #315e70);
-      }
-      #access-gate[hidden] { display: none; }
-      .gate-card {
-        width: min(360px, calc(100vw - 40px));
-        padding: 30px;
-        border-radius: 16px;
-        color: #234354;
-        background: #fff;
-        box-shadow: 0 24px 70px #0005;
-      }
-      .gate-card h2 { margin: 0 0 6px; font-size: 22px; }
-      .gate-card p { margin: 0 0 18px; color: #708693; }
-      .gate-card input { width: 100%; padding: 11px 12px; border: 1px solid #c5d5de; border-radius: 7px; font: inherit; }
-      .gate-card button { width: 100%; margin-top: 10px; background: #285c72; color: #fff; border-color: #285c72; }
-      #gate-message { min-height: 20px; margin-top: 8px; color: #b84a3d; font-size: 12px; }
-    </style>
   </head>
   <body>
-    <div id="access-gate" aria-label="访问验证">
-      <form class="gate-card" id="gate-form">
-        <h2>1801 三维空间方案</h2>
-        <p>请输入访问密码后查看。</p>
-        <input id="gate-password" type="password" inputmode="numeric" autocomplete="current-password" placeholder="访问密码" autofocus />
-        <button type="submit">进入三维图</button>
-        <div id="gate-message" role="alert"></div>
-      </form>
-    </div>
-    <script>
-      (() => {
-        const password = '123';
-        const gate = document.querySelector('#access-gate');
-        if (sessionStorage.getItem('1801-access') === 'ok') gate.hidden = true;
-        document.querySelector('#gate-form').addEventListener('submit', (event) => {
-          event.preventDefault();
-          if (document.querySelector('#gate-password').value === password) {
-            sessionStorage.setItem('1801-access', 'ok');
-            gate.hidden = true;
-          } else document.querySelector('#gate-message').textContent = '密码不正确，请重新输入。';
-        });
-      })();
-    </script>
     <main class="layout">
       <section class="viewer" id="viewer">
         <div class="tools" id="modes">
