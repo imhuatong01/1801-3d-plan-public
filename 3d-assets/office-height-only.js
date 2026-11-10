@@ -34,7 +34,7 @@ for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>
 const upperBoundary=[[18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 7.44], [17.53, 7.44], [17.53, 9.24], [10.7, 9.24], [10.7, 9.4], [10.8, 9.4], [18.425, 9.4]];
 const upperShape=new THREE.Shape();upperBoundary.forEach((p,i)=>i?upperShape.lineTo(p[0],-p[1]):upperShape.moveTo(p[0],-p[1]));upperShape.closePath();
 const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:.28,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-.28;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
-zone(ground,.1,.1,8.95,7.45,'#c4d5db','进门右侧 · 员工办公','独立矩形办公侧：6＋4人工位、6人会议桌；与老板侧分别从中央通道进入。');
+zone(ground,.1,.1,8.95,7.45,'#c4d5db','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
 const corridor=zone(ground,9.15,0,1.55,10.7,'#9caaa9','中间 · 下沉通道','拟建完成面比左右两侧低100毫米，位置和1.55米宽度保留。不是原CAD已确认下沉，不能据此凿原楼板。');corridor.position.y-=.1;
 // Continuous edge contrast makes the 100mm step visible; no change to the entrance location.
 box(ground,9.11,-.01,0,.04,.014,7.675,'#b99c65');box(ground,10.7,-.01,0,.04,.014,9.4,'#b99c65');
@@ -45,21 +45,9 @@ const furnitureObjects=[];
 function furnitureStart(){return new Set([...ground.children,...upper.children])}
 function furnitureEnd(previous){for(const o of [...ground.children,...upper.children])if(!previous.has(o)){o.userData.furniture=true;furnitureObjects.push(o)}}
 const furnitureGroundStart=furnitureStart();
-// Quotation concept: two open-plan double-sided desk islands.
-// Each island has 5 seats on each side (10), so 20 workstations fit without fixed partitions.
-function officeBench(x,z){
- const seatW=1.20,deskD=.62,n=5;
- for(let i=0;i<n;i++){
-  const a=new THREE.Group();a.position.set(x+i*seatW,0,z);ground.add(a);desk(a,0,0,seatW,deskD);chair(ground,x+i*seatW+seatW/2,z-.52,Math.PI);
-  const b=new THREE.Group();b.position.set(x+(i+1)*seatW,0,z+1.36);b.rotation.y=Math.PI;ground.add(b);desk(b,0,0,seatW,deskD);chair(ground,x+i*seatW+seatW/2,z+1.88);
- }
- box(ground,x,.78,z+.66,n*seatW,.28,.04,'#7d9399');
-}
-officeBench(.85,.90);officeBench(.85,4.05);
-// No enclosed meeting room in this concept.  The 2.25m strip beside the desk islands remains open for access and loose collaboration.
-const meetingZone=zone(ground,6.95,.55,2.05,6.55,'#c6b9cd','右侧开放协作带','不设实体隔间；作为20人工位之间的活动、打印和临时沟通带，现场可按消防及物业要求微调。');meetingZone.position.y=.05;
-box(ground,7.15,0,6.20,1.35,.78,.36,'#666f72');plant(ground,8.30,5.85);
-// Ground private furnishings: left-side changes only; employee block above is preserved.
+// The former 20-workstation concept is intentionally removed.  Keep this side open
+// so its final workstations and meeting layout can be decided after circulation review.
+// Ground private furnishings: left-side changes only; the right-side office zone stays open.
 // Small open gym bar on the left owner side; it is furniture only, never a room partition.
 box(ground,11.05,.3,.5,.8,.42,2.8,charcoal);box(ground,10.98,.6,.5,.15,.65,2.8,charcoal);box(ground,12.1,.38,1.15,.72,.08,1.75,wood);
 for(const z of [1.38,1.98,2.58]){const stool=new THREE.Group();stool.position.set(13.02,0,z);ground.add(stool);box(stool,-.18,.44,-.18,.36,.07,.36,charcoal);box(stool,-.03,.08,-.03,.06,.36,.06,steel);box(stool,-.22,.05,-.02,.44,.03,.04,steel);box(stool,-.02,.05,-.22,.04,.03,.44,steel)}
@@ -178,7 +166,7 @@ for(const x of [9.15,10.70])box(ground,x-.035,-.1,10.68,.07,2.5,.07,'#2d87b0');b
 
 
 const furniturePlantsStart=furnitureStart();plant(ground,.5,.5);plant(upper,16.3,5.1);furnitureEnd(furniturePlantsStart);
-label(ground,'右侧 · 10人工位',4.5,1.4,2.5);label(ground,'右侧 · 6人会议桌',6.8,1.6,6.2);
+label(ground,'右侧 · 开放办公预留区',4.5,1.4,2.5);
 label(ground,'左侧老板区 · 平地运动',18,1.4,5,'#8b6343');label(ground,'第一跑下 · 储物',14.975,1,6.7,'#566368');label(ground,'私用休闲',11.9,1.4,1.8,'#677243');
 label(ground,'原入口',9.925,2.9,10.7,'#176a9c');label(ground,'通道 −0.10m',9.925,.5,5,'#8e6340',3.1);
 label(upper,'主电脑位 · 朝向外侧',18,1.6,2.8);label(upper,'临挑空 · 茶桌',11.9,1.5,2.2,'#677243');label(upper,'直播 / 日常办公',15,2.2,4.0,'#77558b');
@@ -239,7 +227,7 @@ function updateFurniture(){
  // Legacy furniture plans are semantic records, not permanent coloured floor patches.
  for(const p of pickables)p.visible=p===corridor;
  renderer.domElement.dataset.legacyZonePatchesVisible=String(pickables.filter(p=>p!==corridor&&p.visible).length);
- for(const q of labels)if(/10人工位|6人会议桌|平地运动|第一跑下|私用休闲|主电脑位|临挑空 · 茶桌|直播 \/|低柜 ·/.test(q.userData.labelText||''))q.visible=show&&$('#labels').checked;
+ for(const q of labels)if(/开放办公预留区|平地运动|第一跑下|私用休闲|主电脑位|临挑空 · 茶桌|直播 \/|低柜 ·/.test(q.userData.labelText||''))q.visible=show&&$('#labels').checked;
  supportStudy.update();
  renderer.domElement.dataset.furnitureVisible=String(show);
  renderer.domElement.dataset.furnitureObjectCount=String(furnitureObjects.length);
@@ -267,16 +255,7 @@ $('#barGymView').onclick=()=>{
  camera.position.set(15.0625,18,-13.5);controls.target.set(15.0625,0,-4.7);viewportFit=1;fitViewport();
  measurement.focusArea('bar-gym');
 };
-$('#workspace20View').onclick=()=>{
- closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
- $('#furniture').checked=true;$('#labels').checked=false;labels.forEach(q=>q.visible=false);
- $('#dimensions').checked=false;$('#allDimensions').checked=false;$('#supportReserve').checked=true;supportStudy.update('all');
- $('#daylight').checked=true;facade.visible=true;
- camera.position.set(23.5,19.5,-22.5);controls.target.set(10.2,1.9,-4.8);viewportFit=1;fitViewport();controls.update();
- renderer.domElement.dataset.layoutConcept='20-workstations-open-plan';
-};
 document.querySelectorAll('[data-mode],#overallDimensions,#reset').forEach(b=>b.addEventListener('click',()=>measurement.focusArea('')));
 if(location.hash==='#bar-gym')$('#barGymView').click();
-if(location.hash==='#20-workstations')$('#workspace20View').click();
 
 if(location.hash==='#soft-plan')$('#softPlanView').click();
