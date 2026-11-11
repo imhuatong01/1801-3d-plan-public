@@ -564,6 +564,16 @@
       .viewer > .tools:not(#modes) {
         display: none;
       }
+      .viewer > #socketTools:not([hidden]) {
+        display: flex;
+        top: 58px;
+        left: 10px;
+        right: 10px;
+        flex-wrap: wrap;
+      }
+      .viewer > #socketTools[hidden] {
+        display: none;
+      }
       .viewer.tools-open > .tools:not(#modes) {
         display: flex;
       }
@@ -704,91 +714,36 @@
               color: #426273;
               font-size: 13px;
             "
-            >1801 · 当前方案</span
+            >1801 · 完整双层三维图</span
           ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="allDimensions" />全部尺寸</label
-          ><button id="toolsToggle" aria-expanded="false">更多设置</button
-          ><button id="softPlanView">一楼软包平面</button
-          ><button id="electricalGround">一楼电路图</button
-          ><button id="electricalUpper">二楼电路图</button
-          ><button id="circuitView">电路图</button
-          ><button id="barGymView">吧台＋健身面积</button
-          ><button id="overallDimensions">整体尺寸</button
-          ><button id="spaceGround">一楼尺寸图</button
-          ><button id="spaceUpper">二楼尺寸图</button
-          ><button id="space3D">返回3D</button
-          ><button data-mode="all" class="active">整体</button
-          ><button data-mode="ground">只看一楼</button
-          ><button data-mode="upper">只看二楼</button
-          ><button data-mode="split">拆层查看</button
-          ><button id="supportView">柱位与隔断</button
-          ><button id="restFocus">二楼整块空间</button
-          ><button id="connectionView">二楼侧边出口</button
-          ><button id="wetFocus">平台下卫生间＋淋浴</button
-          ><button id="stairView">楼梯走向</button
-          ><button id="bossFocus">左侧新方案</button
-          ><button id="entryView">进门方向</button
-          ><button id="heightView">侧看层高</button
-          ><button id="top">原图俯视</button><button id="reset">复位</button
-          ><button id="zoomIn">放大＋</button><button id="zoomOut">缩小−</button
-          ><button id="full">全屏</button>
+            ><input type="checkbox" id="allDimensions" />显示尺寸</label
+          ><label style="white-space: nowrap; font-size: 12px"
+            ><input type="checkbox" id="circuitLayer" />显示电路</label
+          ><label style="white-space: nowrap; font-size: 12px"
+            ><input type="checkbox" id="furniture" />显示家具</label
+          ><label style="white-space: nowrap; font-size: 12px"
+            ><input type="checkbox" id="labels" />显示用途</label
+          ><label style="white-space: nowrap; font-size: 12px"
+            ><input type="checkbox" id="frame" checked />显示钢架</label
+          ><label style="white-space: nowrap; font-size: 12px"
+            ><input type="checkbox" id="wetWalls" checked />显示卫浴</label
+          ><label style="white-space: nowrap; font-size: 12px"
+            ><input type="checkbox" id="daylight" checked />显示采光</label>
         </div>
-        <div class="tools">
-          <label
-            ><input
-              type="checkbox"
-              id="furniture"
-            />显示家具与设备（可恢复）</label
-          ><label><input type="checkbox" id="labels" checked />用途标签</label
-          ><label
-            ><input type="checkbox" id="dimensions" checked />悬停尺寸</label
-          ><label
-            ><input
-              type="checkbox"
-              id="cornerDimensions"
-              checked
-            />转角细节</label
-          ><label
-            ><input
-              type="checkbox"
-              id="frameDimensions"
-              checked
-            />钢架轴距</label
-          ><label><input type="checkbox" id="wetWalls" checked />卫浴围合</label
-          ><label><input type="checkbox" id="frame" checked />钢架示意</label
-          ><label
-            ><input
-              type="checkbox"
-              id="supportReserve"
-              checked
-            />候选柱位＋低柜</label
-          ><label
-            ><input type="checkbox" id="daylight" checked />外窗采光面</label
-          ><label><input type="checkbox" id="circuitLayer" />三维插座与回路</label
-          ><label><input type="checkbox" id="spin" />自动旋转</label
-          ><span class="muted">鼠标拖动旋转 · 右键拖动平移 · 滚轮缩放</span>
+        <div id="legacyControls" hidden aria-hidden="true">
+          <input type="checkbox" id="dimensions" checked />
+          <input type="checkbox" id="cornerDimensions" checked />
+          <input type="checkbox" id="frameDimensions" checked />
+          <input type="checkbox" id="supportReserve" checked />
+          <input type="checkbox" id="spin" />
+          <button id="toolsToggle"></button><button id="softPlanView"></button><button id="electricalGround"></button><button id="electricalUpper"></button><button id="circuitView"></button><button id="barGymView"></button><button id="overallDimensions"></button><button id="spaceGround"></button><button id="spaceUpper"></button><button id="space3D"></button><button data-mode="all" class="active"></button><button data-mode="ground"></button><button data-mode="upper"></button><button data-mode="split"></button><button id="supportView"></button><button id="restFocus"></button><button id="connectionView"></button><button id="wetFocus"></button><button id="stairView"></button><button id="bossFocus"></button><button id="entryView"></button><button id="heightView"></button><button id="top"></button><button id="reset"></button><button id="zoomIn"></button><button id="zoomOut"></button><button id="full"></button>
+          <button id="measureToggle"></button><select id="measureType"><option value="floor">平面两点</option><option value="surface">物体表面两点</option></select><input id="measureSnap" type="checkbox" checked /><button id="measureUndo"></button><button id="measureClear"></button><span id="measureStatus"></span>
         </div>
         <div class="tools" id="socketTools" hidden>
           <span class="muted">电路图：点击五孔插座面板进行选择</span
           ><strong id="socketPicked">未选择插座</strong
           ><button id="removeSocket" disabled>删除选中插座</button
           ><button id="restoreSockets">恢复全部插座</button
-        </div>
-        <div class="tools measure-tools">
-          <button id="measureToggle" aria-pressed="false">开始测量</button
-          ><label
-            >方式
-            <select id="measureType">
-              <option value="floor">平面两点</option>
-              <option value="surface">物体表面两点（可量高差）</option>
-            </select></label
-          ><label
-            ><input id="measureSnap" type="checkbox" checked />吸附端点</label
-          ><button id="measureUndo">撤销上一条</button
-          ><button id="measureClear">清空测量</button
-          ><span id="measureStatus" role="status" aria-live="polite"
-            >选择方式后开始测量；单位：米。</span
-          >
         </div>
         <div class="viewport" id="viewport">
           <div id="spacePlan" hidden>
