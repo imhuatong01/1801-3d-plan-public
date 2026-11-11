@@ -1,27 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920">
-  <style>
-    .title{font:600 30px 'Microsoft YaHei',sans-serif;fill:#173247}.sub{font:16px 'Microsoft YaHei',sans-serif;fill:#557080}.txt{font:16px 'Microsoft YaHei',sans-serif;fill:#243b4a}.small{font:14px 'Microsoft YaHei',sans-serif;fill:#557080}.wall{fill:#f7f5ef;stroke:#3c4c55;stroke-width:8}.zone{fill:#edf3f4;stroke:#8195a0;stroke-width:2}.route{fill:none;stroke:#237aab;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.route2{fill:none;stroke:#765aa6;stroke-width:5;stroke-dasharray:10 8;stroke-linecap:round}.socket{fill:#fff;stroke:#db563d;stroke-width:4}.note{fill:#fffdf8;stroke:#d2dfe4;stroke-width:2}.db{fill:#254b62;stroke:#fff;stroke-width:3}.void{fill:#dce5e8;stroke:#627683;stroke-width:2;stroke-dasharray:8 7}
-  </style>
-  <rect width="1400" height="920" fill="#f5f8f9"/>
-  <text class="title" x="70" y="62">1801 · 一楼插座回路示意图</text><text class="sub" x="70" y="92">所有红色点位为预留插座；蓝线仅表示建议敷设走向。踏步已隐藏，不作为本图表达内容。</text>
-  <rect class="wall" x="70" y="160" width="1110" height="600" rx="4"/>
-  <rect class="zone" x="85" y="180" width="500" height="560"/><text class="txt" x="245" y="450">右侧开放办公预留区</text><text class="small" x="245" y="476">D1 普通插座回路</text>
-  <rect class="zone" x="615" y="180" width="170" height="560" fill="#e7edef"/><text class="small" x="640" y="420">下沉通道</text>
-  <rect class="zone" x="815" y="180" width="345" height="230"/><text class="txt" x="905" y="285">吧台 / 健身区</text><text class="small" x="925" y="312">D2 专用插座回路</text>
-  <rect class="zone" x="815" y="435" width="345" height="305"/><text class="txt" x="900" y="570">开放预留区</text><text class="small" x="925" y="596">D3 普通插座回路</text>
-  <rect class="void" x="615" y="550" width="255" height="190"/><text class="txt" x="650" y="635">楼梯 / 平台下</text><text class="small" x="653" y="660">踏步隐藏</text>
-  <rect class="zone" x="620" y="565" width="125" height="160" fill="#d9e5e7"/><text class="small" x="632" y="650">卫浴</text><text class="small" x="628" y="672">D4 防溅回路</text>
-  <rect class="db" x="770" y="746" width="62" height="42" rx="4"/><text x="782" y="773" fill="#fff" font-family="Microsoft YaHei" font-size="15">DB-1</text><text class="small" x="750" y="814">建议配电箱 / 进门侧</text>
-  <path class="route" d="M801 746V705H670V620M801 705V700H180V310M801 705H1080V270M801 705H1080V590"/>
-  <path class="route2" d="M670 620H735"/>
-  <!-- D1 sockets: office perimeter -->
-  <g class="socket"><rect x="107" y="207" width="22" height="16"/><rect x="230" y="207" width="22" height="16"/><rect x="355" y="207" width="22" height="16"/><rect x="480" y="207" width="22" height="16"/><rect x="555" y="315" width="16" height="22"/><rect x="555" y="455" width="16" height="22"/><rect x="555" y="595" width="16" height="22"/><rect x="450" y="716" width="22" height="16"/><rect x="300" y="716" width="22" height="16"/><rect x="150" y="716" width="22" height="16"/></g>
-  <!-- D2 sockets: bar/gym -->
-  <g class="socket"><rect x="845" y="207" width="22" height="16"/><rect x="965" y="207" width="22" height="16"/><rect x="1085" y="207" width="22" height="16"/><rect x="1132" y="318" width="16" height="22"/><rect x="1132" y="455" width="16" height="22"/></g>
-  <!-- D3 sockets: lower open area -->
-  <g class="socket"><rect x="1132" y="560" width="16" height="22"/><rect x="1132" y="685" width="16" height="22"/><rect x="975" y="716" width="22" height="16"/><rect x="845" y="716" width="22" height="16"/></g>
-  <!-- D4 wet zone -->
-  <g class="socket"><rect x="715" y="584" width="16" height="22"/><rect x="715" y="684" width="16" height="22"/></g>
-  <g transform="translate(1210 165)"><rect class="note" width="160" height="310" rx="10"/><text class="txt" x="18" y="38">图例</text><rect class="socket" x="18" y="60" width="22" height="16"/><text class="small" x="52" y="75">预留插座点</text><path class="route" d="M18 108H45"/><text class="small" x="52" y="113">普通插座回路</text><path class="route2" d="M18 148H45"/><text class="small" x="52" y="153">卫浴防溅回路</text><rect class="db" x="18" y="177" width="38" height="25"/><text class="small" x="65" y="196">配电箱</text><text class="small" x="18" y="232">D1：办公预留</text><text class="small" x="18" y="257">D2：吧台/健身</text><text class="small" x="18" y="282">D3：开放预留</text><text class="small" x="18" y="307">D4：卫浴防溅</text></g>
-  <rect class="note" x="70" y="842" width="1110" height="45" rx="8"/><text class="small" x="90" y="870">施工前由持证电工根据实际设备功率、物业要求和现场配电容量确定断路器、线径、漏保及最终走线；卫生间插座应采用带漏保的防溅方案。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+<style>
+ .t{font:600 30px 'Microsoft YaHei',sans-serif;fill:#142d40}.st{font:15px 'Microsoft YaHei',sans-serif;fill:#587181}.tx{font:16px 'Microsoft YaHei',sans-serif;fill:#1e3d51}.sm{font:13px 'Microsoft YaHei',sans-serif;fill:#4e6677}.wall{fill:#fbfaf6;stroke:#26363e;stroke-width:7;stroke-linejoin:round}.part{fill:#f2f6f5;stroke:#80939d;stroke-width:1.5}.wet{fill:#e4f0ef;stroke:#416b73;stroke-width:2}.void{fill:#e5ecef;stroke:#6c7f8a;stroke-width:2;stroke-dasharray:9 7}.wire{fill:none;stroke:#116eaa;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}.wire2{fill:none;stroke:#734f9e;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9 7}.wire3{fill:none;stroke:#b46821;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2 7}.out{fill:#fff;stroke:#c9312b;stroke-width:2.5}.db{fill:#224b67;stroke:#fff;stroke-width:2}.dim{stroke:#9fb0b8;stroke-width:1.3;fill:none}.dimt{font:13px 'Microsoft YaHei',sans-serif;fill:#778d99}.box{fill:#fffefa;stroke:#cbd8dd;stroke-width:1.5}.drawing{transform:rotate(180deg);transform-origin:362px 540px}.drawing text{transform:rotate(180deg);transform-box:fill-box;transform-origin:center}.entry{font:600 15px 'Microsoft YaHei',sans-serif;fill:#19719e}
+</style>
+<rect width="1600" height="980" fill="#f2f6f7"/>
+<text class="t" x="70" y="54">1801 · 一楼插座及回路平面图</text>
+<text class="st" x="70" y="82">依据当前 1801 CAD 外轮廓（含门前短入口、上部延伸及墙端折角）绘制；楼梯踏步隐藏，仅保留洞口和平台下卫浴位置。</text>
+<!-- CAD outer contour, 1:30 schematic scale. Rotated to keep the original entrance at screen bottom. -->
+<g class="drawing">
+<path class="wall" d="M91 470L187 470L224 470L344 470L344 437L344 379L391 379L391 415L391 418L394 418L623 418L623 421L638 421L638 418L641 418L653 418L653 700L74 700L74 697L70 697L70 685L70 670L70 470L72 470L78 470Z"/>
+<!-- Functional drawing zones located from the current model coordinates -->
+<rect class="part" x="82" y="478" width="258" height="214"/><text class="tx" x="164" y="570">开放办公预留区</text><text class="sm" x="178" y="593">C1 普通插座</text>
+<rect class="part" x="345" y="379" width="47" height="321" fill="#edf1f1"/><text class="sm" transform="translate(371 610) rotate(-90)">下沉通道</text>
+<rect class="part" x="398" y="497" width="93" height="195"/><text class="sm" x="410" y="567">吧台 / 休闲</text><text class="sm" x="419" y="586">C2</text>
+<rect class="part" x="571" y="427" width="75" height="257"/><text class="sm" transform="translate(617 590) rotate(-90)">健身 / 开放预留 C3</text>
+<path class="void" d="M390 424H596V518H530V624H390Z"/><text class="tx" x="422" y="516">U 型楼梯洞口</text><text class="sm" x="428" y="538">踏步隐藏</text>
+<rect class="wet" x="393" y="424" width="65" height="93"/><text class="sm" x="403" y="464">卫浴</text><text class="sm" x="402" y="484">C4-RCD</text>
+<!-- dimension strings derived from CAD data -->
+<path class="dim" d="M70 725H653M70 716V735M653 716V735"/><text class="dimt" x="319" y="744">CAD 主体最大宽 19.425m</text>
+<path class="dim" d="M670 700V379M662 700H678M662 379H678"/><text class="dimt" transform="translate(690 598) rotate(-90)">含入口最大进深 10.700m</text>
+<path class="dim" d="M70 455H344M70 448V462M344 448V462"/><text class="dimt" x="149" y="447">主体进深 7.675m</text>
+<!-- distribution board and radial circuits -->
+<rect class="db" x="318" y="715" width="55" height="32" rx="3"/><text x="329" y="737" fill="#fff" font-family="Microsoft YaHei" font-size="14">AP-1</text><text class="sm" x="279" y="767">建议进门侧配电箱</text>
+<path class="wire" d="M345 715V675H205V520M345 675H445V546M345 675H610V548"/><path class="wire2" d="M445 546V470H425"/><path class="wire3" d="M610 548V448H628"/>
+<!-- Standard socket symbols: red circle with two blades -->
+<g class="out"><g transform="translate(108 482)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(171 482)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(234 482)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(297 482)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(330 548)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(330 620)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(287 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(215 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(143 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
+<g class="out"><g transform="translate(412 510)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(475 510)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(478 605)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(580 442)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(628 486)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(628 558)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(628 630)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(565 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(493 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
+<g class="out"><g transform="translate(447 440)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(447 500)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
+<path d="M391 398V374M381 387L391 374L401 387" fill="none" stroke="#19719e" stroke-width="2.5"/><text class="entry" x="402" y="390">原正门入口</text>
+</g>
+<!-- Circuit schedule -->
+<rect class="box" x="760" y="150" width="760" height="490" rx="10"/><text class="tx" x="790" y="190">插座回路表（平面表达）</text>
+<path d="M780 210H1500M900 210V600M1090 210V600M1270 210V600" stroke="#cbd8dd" stroke-width="1.2"/>
+<text class="sm" x="800" y="238">回路</text><text class="sm" x="930" y="238">服务区域</text><text class="sm" x="1120" y="238">图中线路</text><text class="sm" x="1300" y="238">插座形式 / 安装建议</text>
+<g class="sm"><text x="800" y="280">C1</text><text x="930" y="280">开放办公预留区</text><text x="1120" y="280">蓝色实线</text><text x="1300" y="280">普通五孔；沿墙均布</text><text x="800" y="330">C2</text><text x="930" y="330">吧台 / 休闲区</text><text x="1120" y="330">蓝色实线</text><text x="1300" y="330">专用回路预留；吧台台面处提高</text><text x="800" y="380">C3</text><text x="930" y="380">健身 / 开放预留</text><text x="1120" y="380">橙色点划线</text><text x="1300" y="380">专用回路预留；设备到位后核功率</text><text x="800" y="430">C4</text><text x="930" y="430">平台下卫浴</text><text x="1120" y="430">紫色虚线</text><text x="1300" y="430">带漏保防溅插座；避开淋浴直接水区</text><text x="800" y="480">AP-1</text><text x="930" y="480">一楼分配电箱</text><text x="1120" y="480">放射式引出</text><text x="1300" y="480">具体断路器、线径由电工深化</text></g>
+<rect class="box" x="760" y="670" width="760" height="140" rx="10"/><text class="tx" x="790" y="708">图例与施工边界</text><g class="sm"><text x="790" y="740">○=普通插座点　AP=配电箱　蓝实线=普通回路　紫虚线=卫浴漏保回路　橙点划线=独立负荷预留</text><text x="790" y="770">本图按当前 CAD 外轮廓及网页已确认平面绘制，不替代强电施工图。线径、回路容量、接地、漏保、空调/健身设备专线须结合设备清单和物业条件确认。</text></g>
+<text class="sm" x="70" y="920">统一阅读方向：屏幕下方 = 原正门入口　｜　版本：插座位置及回路表达优化版 · 一楼</text>
 </svg>

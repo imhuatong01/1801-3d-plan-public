@@ -1,22 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920">
-  <style>
-    .title{font:600 30px 'Microsoft YaHei',sans-serif;fill:#173247}.sub{font:16px 'Microsoft YaHei',sans-serif;fill:#557080}.txt{font:16px 'Microsoft YaHei',sans-serif;fill:#243b4a}.small{font:14px 'Microsoft YaHei',sans-serif;fill:#557080}.wall{fill:#f7f5ef;stroke:#3c4c55;stroke-width:8}.zone{fill:#eef3f1;stroke:#8195a0;stroke-width:2}.route{fill:none;stroke:#237aab;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.socket{fill:#fff;stroke:#db563d;stroke-width:4}.note{fill:#fffdf8;stroke:#d2dfe4;stroke-width:2}.db{fill:#254b62;stroke:#fff;stroke-width:3}.void{fill:#dce5e8;stroke:#627683;stroke-width:2;stroke-dasharray:8 7}
-  </style>
-  <rect width="1400" height="920" fill="#f5f8f9"/>
-  <text class="title" x="70" y="62">1801 · 二楼插座回路示意图</text><text class="sub" x="70" y="92">二楼为开放办公区；红色点位均为插座预留，楼梯洞口和踏步不在本图中表达。</text>
-  <path class="wall" d="M190 160H1050V740H190V520H420V160Z"/>
-  <rect class="zone" x="210" y="180" width="280" height="310"/><text class="txt" x="275" y="315">茶台 / 休闲区</text><text class="small" x="285" y="343">D5 茶台回路</text>
-  <rect class="zone" x="510" y="180" width="520" height="310"/><text class="txt" x="695" y="315">主办公 / 日常办公区</text><text class="small" x="725" y="343">D6 办公插座回路</text>
-  <rect class="void" x="210" y="515" width="325" height="205"/><text class="txt" x="292" y="610">楼梯洞口</text><text class="small" x="303" y="637">踏步隐藏</text>
-  <rect class="zone" x="560" y="515" width="470" height="205"/><text class="txt" x="700" y="610">开放预留区</text><text class="small" x="735" y="637">D7 预留插座回路</text>
-  <rect class="db" x="990" y="744" width="62" height="42" rx="4"/><text x="1002" y="771" fill="#fff" font-family="Microsoft YaHei" font-size="15">DB-2</text><text class="small" x="935" y="815">二楼分配电箱建议位</text>
-  <path class="route" d="M1020 744V690H770V335M1020 690H350V330M1020 690H770V620"/>
-  <!-- D5 tea / lounge -->
-  <g class="socket"><rect x="228" y="197" width="22" height="16"/><rect x="330" y="197" width="22" height="16"/><rect x="450" y="197" width="22" height="16"/><rect x="472" y="300" width="16" height="22"/><rect x="472" y="420" width="16" height="22"/></g>
-  <!-- D6 main office -->
-  <g class="socket"><rect x="540" y="197" width="22" height="16"/><rect x="665" y="197" width="22" height="16"/><rect x="790" y="197" width="22" height="16"/><rect x="915" y="197" width="22" height="16"/><rect x="1012" y="300" width="16" height="22"/><rect x="1012" y="420" width="16" height="22"/><rect x="850" y="472" width="22" height="16"/><rect x="700" y="472" width="22" height="16"/></g>
-  <!-- D7 open reserve -->
-  <g class="socket"><rect x="590" y="532" width="22" height="16"/><rect x="720" y="532" width="22" height="16"/><rect x="850" y="532" width="22" height="16"/><rect x="1012" y="575" width="16" height="22"/><rect x="1012" y="670" width="16" height="22"/><rect x="850" y="702" width="22" height="16"/><rect x="700" y="702" width="22" height="16"/><rect x="560" y="702" width="22" height="16"/></g>
-  <g transform="translate(1110 165)"><rect class="note" width="220" height="230" rx="10"/><text class="txt" x="18" y="38">图例</text><rect class="socket" x="18" y="60" width="22" height="16"/><text class="small" x="52" y="75">预留插座点</text><path class="route" d="M18 112H45"/><text class="small" x="52" y="117">建议敷设走向</text><rect class="db" x="18" y="145" width="38" height="25"/><text class="small" x="65" y="164">二楼分配电箱</text><text class="small" x="18" y="205">D5：茶台/休闲</text><text class="small" x="118" y="205">D6：主办公</text><text class="small" x="18" y="228">D7：开放预留</text></g>
-  <rect class="note" x="70" y="842" width="980" height="45" rx="8"/><text class="small" x="90" y="870">本图为插座位置与回路示意。最终回路数、线径、断路器、弱电与空调专线须由现场持证电工按负荷及物业要求深化确认。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+<style>
+ .t{font:600 30px 'Microsoft YaHei',sans-serif;fill:#142d40}.st{font:15px 'Microsoft YaHei',sans-serif;fill:#587181}.tx{font:16px 'Microsoft YaHei',sans-serif;fill:#1e3d51}.sm{font:13px 'Microsoft YaHei',sans-serif;fill:#4e6677}.wall{fill:#fbfaf6;stroke:#26363e;stroke-width:7;stroke-linejoin:round}.part{fill:#f2f6f5;stroke:#80939d;stroke-width:1.5}.void{fill:#e5ecef;stroke:#6c7f8a;stroke-width:2;stroke-dasharray:9 7}.wire{fill:none;stroke:#116eaa;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}.wire2{fill:none;stroke:#734f9e;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9 7}.out{fill:#fff;stroke:#c9312b;stroke-width:2.5}.db{fill:#224b67;stroke:#fff;stroke-width:2}.dim{stroke:#9fb0b8;stroke-width:1.3;fill:none}.dimt{font:13px 'Microsoft YaHei',sans-serif;fill:#778d99}.box{fill:#fffefa;stroke:#cbd8dd;stroke-width:1.5}.drawing{transform:rotate(180deg);transform-origin:390px 464px}.drawing text{transform:rotate(180deg);transform-box:fill-box;transform-origin:center}.entry{font:600 15px 'Microsoft YaHei',sans-serif;fill:#19719e}
+</style>
+<rect width="1600" height="980" fill="#f2f6f7"/>
+<text class="t" x="70" y="54">1801 · 二楼插座及回路平面图</text>
+<text class="st" x="70" y="82">按当前夹层楼板边界绘制：不是完整大矩形；左侧 L 形为楼梯洞口及挑空，二楼楼面为约 69.67㎡ 的钢结构夹层范围。</text>
+<!-- Exact current upper floor boundary, derived from upperBoundary in the 3D model. Rotated to keep the original entrance direction at screen bottom. -->
+<g class="drawing">
+<path class="wall" d="M625 207L625 212L660 212L660 207L695 207L695 720L85 720L85 311L563 311L563 212L85 212L85 207L625 207Z"/>
+<!-- floor zones, matched to current 3D upper zones -->
+<rect class="part" x="100" y="225" width="454" height="77"/><text class="tx" x="260" y="263">侧边连接楼面 / 贴墙出口带</text><text class="sm" x="316" y="285">C5</text>
+<rect class="void" x="100" y="315" width="463" height="96"/><text class="tx" x="242" y="360">楼梯洞口 / 挑空</text><text class="sm" x="285" y="383">踏步隐藏</text>
+<rect class="part" x="100" y="425" width="170" height="280"/><text class="tx" x="139" y="540">临挑空茶台</text><text class="sm" x="178" y="563">C6</text>
+<rect class="part" x="285" y="425" width="194" height="280"/><text class="tx" x="325" y="530">直播 / 日常办公</text><text class="sm" x="362" y="553">C7</text>
+<rect class="part" x="494" y="425" width="186" height="280"/><text class="tx" x="535" y="530">主电脑位</text><text class="sm" x="550" y="553">C8 独立回路</text>
+<!-- dimensions from upper slab geometry -->
+<path class="dim" d="M85 748H695M85 740V758M695 740V758"/><text class="dimt" x="307" y="767">二楼最大宽 8.725m</text><path class="dim" d="M715 720V207M707 720H723M707 207H723"/><text class="dimt" transform="translate(735 530) rotate(-90)">二楼最大进深 9.400m</text>
+<rect class="db" x="635" y="735" width="55" height="32" rx="3"/><text x="646" y="757" fill="#fff" font-family="Microsoft YaHei" font-size="14">AP-2</text><text class="sm" x="565" y="790">建议二楼贴墙分配电箱</text>
+<path class="wire" d="M663 735V680H585V498M663 680H386V500M663 680H190V500M663 680V258"/><path class="wire2" d="M663 680H645V260"/>
+<!-- C5 outlets -->
+<g class="out"><g transform="translate(140 228)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(250 228)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(360 228)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(470 228)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(585 228)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(675 280)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
+<!-- C6/C7/C8 outlets -->
+<g class="out"><g transform="translate(120 450)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(120 550)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(120 665)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(250 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(300 450)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(385 450)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(460 550)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(385 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(515 450)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(595 450)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(665 550)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(595 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
+<path d="M563 304V280M553 293L563 280L573 293" fill="none" stroke="#19719e" stroke-width="2.5"/><text class="entry" x="574" y="295">下至原正门</text>
+</g>
+<rect class="box" x="790" y="150" width="740" height="470" rx="10"/><text class="tx" x="820" y="190">插座回路表（平面表达）</text><path d="M810 210H1510M920 210V580M1110 210V580M1280 210V580" stroke="#cbd8dd" stroke-width="1.2"/>
+<text class="sm" x="830" y="238">回路</text><text class="sm" x="950" y="238">服务区域</text><text class="sm" x="1140" y="238">图中线路</text><text class="sm" x="1310" y="238">插座形式 / 安装建议</text>
+<g class="sm"><text x="830" y="280">C5</text><text x="950" y="280">贴墙出口 / 连接楼面</text><text x="1140" y="280">蓝色实线</text><text x="1310" y="280">普通五孔，避开洞口栏杆</text><text x="830" y="330">C6</text><text x="950" y="330">茶台 / 休闲区</text><text x="1140" y="330">蓝色实线</text><text x="1310" y="330">茶台台面及墙边预留</text><text x="830" y="380">C7</text><text x="950" y="380">直播 / 日常办公</text><text x="1140" y="380">蓝色实线</text><text x="1310" y="380">普通五孔，设备到位复核</text><text x="830" y="430">C8</text><text x="950" y="430">主电脑位</text><text x="1140" y="430">蓝色实线</text><text x="1310" y="430">建议独立回路，UPS/弱电另核</text><text x="830" y="480">AP-2</text><text x="950" y="480">二楼分配电箱</text><text x="1140" y="480">放射式引出</text><text x="1310" y="480">断路器、线径现场深化</text></g>
+<rect class="box" x="790" y="650" width="740" height="155" rx="10"/><text class="tx" x="820" y="688">图例与施工边界</text><g class="sm"><text x="820" y="722">○=普通插座点　AP=配电箱　蓝实线=普通插座回路　紫虚线=出口带预留回路</text><text x="820" y="752">此图严格按当前三维模型的二楼楼板边界绘制：西侧及中部灰色虚线区域均为楼梯洞口 / 挑空，不是二楼可敷设楼面。</text><text x="820" y="782">最终线径、漏保、接地、桥架及大功率设备专线应由持证电工结合设备清单、物业条件和消防要求深化。</text></g>
+<text class="sm" x="70" y="920">统一阅读方向：屏幕下方 = 原正门入口　｜　版本：插座位置及回路表达优化版 · 二楼</text>
 </svg>
