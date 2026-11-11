@@ -721,6 +721,12 @@
           ><label><input type="checkbox" id="spin" />自动旋转</label
           ><span class="muted">鼠标拖动旋转 · 右键拖动平移 · 滚轮缩放</span>
         </div>
+        <div class="tools" id="socketTools" hidden>
+          <span class="muted">电路图：点击五孔插座面板进行选择</span
+          ><strong id="socketPicked">未选择插座</strong
+          ><button id="removeSocket" disabled>删除选中插座</button
+          ><button id="restoreSockets">恢复全部插座</button
+        </div>
         <div class="tools measure-tools">
           <button id="measureToggle" aria-pressed="false">开始测量</button
           ><label
@@ -807,7 +813,7 @@
     </main>
     <script
       type="module"
-      src="./3d-assets/office-height-only.js?v=25-3d-circuit-layer"
+      src="./3d-assets/office-height-only.js?v=26-selectable-five-hole-sockets"
     ></script>
   </body>
 </html>
