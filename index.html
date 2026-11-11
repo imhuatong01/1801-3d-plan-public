@@ -715,22 +715,20 @@
               font-size: 13px;
             "
             >1801 · 完整双层三维图</span
-          ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="allDimensions" />显示尺寸</label
-          ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="circuitLayer" />显示电路</label
-          ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="furniture" />显示家具</label
-          ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="labels" />显示用途</label
-          ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="frame" checked />显示钢架</label
-          ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="wetWalls" checked />显示卫浴</label
-          ><label style="white-space: nowrap; font-size: 12px"
-            ><input type="checkbox" id="daylight" checked />显示采光</label>
+          ><button id="dimensionBoard">尺寸板</button
+          ><button id="circuitBoard">电路板</button
+          ><button id="steelBoard">钢架板</button
+          ><button id="wetBoard">卫浴板</button
+          ><span class="muted" style="white-space: nowrap">采光面 · 默认显示</span>
         </div>
         <div id="legacyControls" hidden aria-hidden="true">
+          <input type="checkbox" id="allDimensions" />
+          <input type="checkbox" id="circuitLayer" />
+          <input type="checkbox" id="furniture" />
+          <input type="checkbox" id="labels" />
+          <input type="checkbox" id="frame" checked />
+          <input type="checkbox" id="wetWalls" checked />
+          <input type="checkbox" id="daylight" checked />
           <input type="checkbox" id="dimensions" checked />
           <input type="checkbox" id="cornerDimensions" checked />
           <input type="checkbox" id="frameDimensions" checked />
