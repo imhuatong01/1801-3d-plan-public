@@ -807,11 +807,11 @@
             <div class="fallback-card">
               <h2>三维视窗暂未启动</h2>
               <p id="fallbackReason">当前浏览器没有成功启用三维加速；可先查看平面图，或重新载入三维模型。</p>
-              <img src="./1801_一楼空间尺寸.svg" alt="1801 一楼空间尺寸平面图" />
+              <img src="./1801_一楼插座回路示意.svg" alt="1801 一楼电路平面示意图" />
               <div class="fallback-actions">
                 <button type="button" id="retry3d">重新载入三维</button>
-                <a href="./1801_一楼空间尺寸.svg" target="_blank" rel="noopener">打开一楼平面大图</a>
-                <a href="./1801_二楼空间尺寸.svg" target="_blank" rel="noopener">打开二楼平面大图</a>
+                <a href="./1801_一楼插座回路示意.svg" target="_blank" rel="noopener">打开一楼平面大图</a>
+                <a href="./1801_二楼插座回路示意.svg" target="_blank" rel="noopener">打开二楼平面大图</a>
               </div>
             </div>
           </div>
@@ -838,6 +838,8 @@
         };
         document.querySelector('#retry3d').onclick = () => location.reload();
         window.addEventListener('error', event => {
+          const source = event.target;
+          if (source !== window && !(source?.tagName === 'SCRIPT' && source.src.includes('office-height-only.js'))) return;
           const text = event.message || '三维模型资源未能载入';
           showFallback(`三维模型未能启动：${text}。可先查看下方平面图，或重新载入。`);
         }, true);
