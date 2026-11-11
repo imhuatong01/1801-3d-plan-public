@@ -11,6 +11,8 @@ function fitViewport(){const next=Math.max(1,1.4/camera.aspect);camera.position.
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(9.7,2.5,-4.8);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=65;controls.maxPolarAngle=Math.PI*.49;controls.autoRotateSpeed=.7;
 scene.add(new THREE.HemisphereLight(0xffffff,0x98a9b7,1.8));const sun=new THREE.DirectionalLight(0xfff1dc,2);sun.position.set(5,24,-12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-25;sun.shadow.camera.right=25;sun.shadow.camera.top=25;sun.shadow.camera.bottom=-25;sun.shadow.normalBias=.03;scene.add(sun);
 const ground=new THREE.Group(),upper=new THREE.Group(),stairs=new THREE.Group(),structure=new THREE.Group(),shell=new THREE.Group(),labelGroup=new THREE.Group();const model=new THREE.Group();model.scale.z=-1;scene.add(model);model.add(ground,upper,stairs,structure,shell,labelGroup);upper.position.y=5.40;
+// Keep the stair structure readable while hiding every tread, as requested.
+const stairTreads=new THREE.Group();stairs.add(stairTreads);stairTreads.visible=false;
 const stairShift=0;stairs.scale.x=-1;stairs.position.x=29.975;const stairStorage=new THREE.Group(),openingRails=new THREE.Group();stairStorage.scale.x=-1;stairStorage.position.x=29.975;openingRails.scale.x=-1;openingRails.position.x=29.975;ground.add(stairStorage);upper.add(openingRails);
 const partitions=[],labels=[],pickables=[];const mat=(c,op=1)=>new THREE.MeshStandardMaterial({color:c,roughness:.72,transparent:op<1,opacity:op,depthWrite:op===1});const glass=mat('#89c2d4',.23),steel=mat('#333b42'),wallmat=mat('#edf0ec'),wood=mat('#ccb18a'),white=mat('#fbfaf6'),charcoal=mat('#4c6576');
 function box(g,x,y,z,w,h,d,m){const a=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),typeof m==='string'?mat(m):m);a.position.set(x+w/2,y+h/2,z+d/2);a.castShadow=true;a.receiveShadow=true;g.add(a);return a}
@@ -124,7 +126,7 @@ zone(ground,17.43,6.04,1.845,1.50,'#d4c6a4','内侧楼梯起步区','平面预�
 const rise=5.40/34,going=.28,flightRun=4.48,stairW=1.5,midHeight=2.70;
 for(let i=0;i<16;i++){
  const x1=12.545+i*going,x2=17.025-(i+1)*going,h1=(i+1)*rise,h2=midHeight+(i+1)*rise;
- box(stairs,x1,h1-.1,6.04,going,.1,stairW,steel);box(stairs,x2,h2-.1,7.74,going,.1,stairW,steel);
+  box(stairTreads,x1,h1-.1,6.04,going,.1,stairW,steel);box(stairTreads,x2,h2-.1,7.74,going,.1,stairW,steel);
  box(stairStorage,x1+.02,0,6.09,going-.04,Math.max(.03,h1-.15),1.40,'#8e928b');
 }
 box(stairs,17.025,2.40,6.04,2.2,.3,3.2,steel);
@@ -211,6 +213,8 @@ function showFlatPlan(file,title){
  $('#spacePlanTitle').textContent=title;planImage.src='./'+file;$('#spacePlanOpen').href='./'+file;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('1801_一楼左侧_软包通道示意.svg','一楼左侧 · 软包吧台 / 健身平面示意');
+$('#electricalGround').onclick=()=>showFlatPlan('1801_一楼插座回路示意.svg','一楼 · 插座回路示意（踏步隐藏）');
+$('#electricalUpper').onclick=()=>showFlatPlan('1801_二楼插座回路示意.svg','二楼 · 插座回路示意（踏步隐藏）');
 $('#planClose').onclick=()=>closeSpacePlan();
 function closeSpacePlan(){roomPlan.hidden=true;host.classList.remove('plan-open');renderer.domElement.style.visibility='visible'}
 function spaceView(level){
@@ -259,3 +263,5 @@ document.querySelectorAll('[data-mode],#overallDimensions,#reset').forEach(b=>b.
 if(location.hash==='#bar-gym')$('#barGymView').click();
 
 if(location.hash==='#soft-plan')$('#softPlanView').click();
+if(location.hash==='#electrical-ground')$('#electricalGround').click();
+if(location.hash==='#electrical-upper')$('#electricalUpper').click();
