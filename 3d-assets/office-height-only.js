@@ -171,16 +171,16 @@ const permanentlyDeletedSocketIds=new Set(['S04','S05','S06','S07','S11','S12','
 function roundHole(g,x,y){const h=new THREE.Mesh(new THREE.CircleGeometry(.024,12),socketHole);h.position.set(x,y,.031);g.add(h)}
 function outlet(g,x,z,side='z',color=circuitRed,circuit='C1',floor='一楼'){const o=new THREE.Group(),id=`S${String(++socketSeq).padStart(2,'0')}`,rimMaterial=color.clone();o.position.set(x,.38,z);if(side==='x')o.rotation.y=Math.PI/2;g.add(o);if(permanentlyDeletedSocketIds.has(id)){g.remove(o);return null}const rim=box(o,-.215,-.145,-.035,.43,.29,.025,rimMaterial),plate=box(o,-.195,-.125,-.02,.39,.25,.05,socketFace);roundHole(o,-.055,.062);roundHole(o,.055,.062);roundHole(o,0,-.008);roundHole(o,-.068,-.074);roundHole(o,.068,-.074);const meta={id,circuit,floor,root:o,rim,plate,baseColor:rimMaterial.color.clone()};o.userData.socket=meta;plate.userData.socket=meta;circuitPickables.push(plate);socketItems.push(meta);return o}
 function circuitRoute(g,points,color=circuitBlue){line(g,points.map(([x,z])=>[x,.13,z]),color)}
-// 一楼 C1-C4：右侧办公区改为两条长墙各三点、相互对称；入口右手墙另设两点。
-for(const x of [1.25,4.60,7.95,8.40])outlet(circuitGround,x,7.53,'z',circuitRed,'C1','一楼');for(const z of [1.25,3.40,5.55])outlet(circuitGround,8.98,z,'x',circuitRed,'C1','一楼');for(const x of [1.25,4.60,7.95])outlet(circuitGround,x,.12,'z',circuitRed,'C1','一楼');
+// 一楼 C1-C4：每条长墙的三点作为居中一组，给两端与桌位布置留出余地；入口右手墙另设两点。
+for(const x of [3.00,4.60,6.20,8.40])outlet(circuitGround,x,7.53,'z',circuitRed,'C1','一楼');for(const z of [1.25,3.40,5.55])outlet(circuitGround,8.98,z,'x',circuitRed,'C1','一楼');for(const x of [3.00,4.60,6.20])outlet(circuitGround,x,.12,'z',circuitRed,'C1','一楼');
 for(const [x,z,s] of [[11.1,1.0,'z'],[12.7,1.0,'z'],[13.35,4.2,'x']])outlet(circuitGround,x,z,s,circuitRed,'C2','一楼');for(const [x,z,s] of [[17.0,1.2,'z'],[18.85,2.9,'x'],[18.85,5.2,'x'],[18.85,7.5,'x'],[17.0,9.12,'z'],[14.6,9.12,'z']])outlet(circuitGround,x,z,s,circuitRed,'C3','一楼');
 for(const z of [6.45,8.45])outlet(circuitGround,12.85,z,'x',mat('#8550aa'),'C4','一楼');
 circuitRoute(circuitGround,[[9.92,10.15],[9.92,.55],[8.6,.55],[8.6,6.75],[.85,6.75]]);circuitRoute(circuitGround,[[11.3,5.1],[12.85,5.1],[12.85,7.5]],circuitPurple);box(circuitGround,9.63,.10,10.05,.58,.55,.12,'#224b67');
 // 二楼 C5-C8：按当前 L 形夹层楼面及洞口边界布点。
 for(const x of [11.2,12.8,14.4,16.0,17.6])outlet(circuitUpper,x,9.24,'z',circuitRed,'C5','二楼');outlet(circuitUpper,19.25,8.0,'x',circuitRed,'C5','二楼');for(const z of [1.2,3.0,5.0])outlet(circuitUpper,10.8,z,'x',circuitRed,'C6','二楼');for(const x of [12.8,15.0,17.2])outlet(circuitUpper,x,.12,'z',circuitRed,'C7','二楼');
 for(const [x,z,s] of [[11.25,1.3,'z'],[13.7,1.3,'z'],[16.0,1.3,'z']])outlet(circuitUpper,x,z,s,circuitRed,'C7','二楼');for(const [x,z,s] of [[18.9,3.3,'x'],[18.9,5.4,'x'],[18.9,7.0,'x'],[16.2,7.25,'z'],[13.8,7.25,'z']])outlet(circuitUpper,x,z,s,circuitRed,'C8','二楼');
-// 入口右手侧墙：两点沿墙居中、等距布置；与办公区 C1 同回路示意。
-for(const z of [2.55,5.15])outlet(circuitGround,8.98,z,'x',circuitRed,'C1','一楼');
+// 入口右手侧外墙：两点沿墙居中、等距布置；不占下沉通道边，与办公区 C1 同回路示意。
+for(const z of [2.55,5.15])outlet(circuitGround,.12,z,'x',circuitRed,'C1','一楼');
 circuitRoute(circuitUpper,[[18.85,.52],[18.85,7.1],[17.2,7.1],[17.2,1.6]]);circuitRoute(circuitUpper,[[18.85,7.1],[14.2,7.1],[14.2,1.7]]);box(circuitUpper,18.65,.10,.20,.58,.55,.12,'#224b67');
 // Existing 500mm columns remain at the CAD positions; no implied permission to alter them.
 for(const x of [8.65,18.425])box(shell,x,0,.5,.5,8.4,.5,'#8c969a');
