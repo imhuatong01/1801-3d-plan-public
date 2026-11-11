@@ -112,6 +112,53 @@
         background: #f0f5f7;
         z-index: 2;
       }
+      #loading[hidden] {
+        display: none;
+      }
+      #renderFallback {
+        position: absolute;
+        inset: 0;
+        z-index: 8;
+        display: grid;
+        place-items: center;
+        padding: 22px;
+        background: #edf3f6;
+      }
+      #renderFallback[hidden] {
+        display: none;
+      }
+      #renderFallback .fallback-card {
+        width: min(760px, 100%);
+        padding: 22px;
+        border: 1px solid #c3d5df;
+        border-radius: 12px;
+        background: #fff;
+        color: #355162;
+        text-align: center;
+      }
+      #renderFallback h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        font-weight: 500;
+      }
+      #renderFallback p {
+        margin: 0 0 15px;
+        color: #58717f;
+      }
+      #renderFallback img {
+        display: block;
+        width: min(560px, 100%);
+        max-height: 270px;
+        margin: 0 auto 15px;
+        object-fit: contain;
+        background: #f3f5f4;
+      }
+      #renderFallback .fallback-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
       .side {
         display: flex;
         flex-direction: column;
@@ -801,6 +848,18 @@
           </div>
           <output class="measure-readout" id="measureReadout"></output>
           <div id="loading">正在载入1801三维模型…</div>
+          <div id="renderFallback" hidden>
+            <div class="fallback-card">
+              <h2>三维视窗暂未启动</h2>
+              <p id="fallbackReason">当前浏览器没有成功启用三维加速；可先查看平面图，或重新载入三维模型。</p>
+              <img src="./1801_一楼空间尺寸.svg" alt="1801 一楼空间尺寸平面图" />
+              <div class="fallback-actions">
+                <button type="button" id="retry3d">重新载入三维</button>
+                <a href="./1801_一楼空间尺寸.svg" target="_blank" rel="noopener">打开一楼平面大图</a>
+                <a href="./1801_二楼空间尺寸.svg" target="_blank" rel="noopener">打开二楼平面大图</a>
+              </div>
+            </div>
+          </div>
           <div class="hint">
             鼠标指向区域显示范围、长宽和面积，移开隐藏；勾选“全部尺寸”可固定显示。单位：米。钢架数字为柱轴距，非净空；面积含柱与通行空间，子区域不可相加。模型尺寸供布局比较，结构未验算。
           </div>
@@ -811,9 +870,28 @@
         <div id="selected"></div>
       </aside>
     </main>
+    <script>
+      (function () {
+        const loading = document.querySelector('#loading');
+        const fallback = document.querySelector('#renderFallback');
+        const reason = document.querySelector('#fallbackReason');
+        const showFallback = message => {
+          if (document.querySelector('#viewport canvas[data-ready="true"]')) return;
+          loading.hidden = true;
+          reason.textContent = message || reason.textContent;
+          fallback.hidden = false;
+        };
+        document.querySelector('#retry3d').onclick = () => location.reload();
+        window.addEventListener('error', event => {
+          const text = event.message || '三维模型资源未能载入';
+          showFallback(`三维模型未能启动：${text}。可先查看下方平面图，或重新载入。`);
+        }, true);
+        window.setTimeout(() => showFallback('三维模型等待超过 12 秒仍未启动。可先查看下方平面图，或重新载入。'), 12000);
+      })();
+    </script>
     <script
       type="module"
-      src="./3d-assets/office-height-only.js?v=26-selectable-five-hole-sockets"
+      src="./3d-assets/office-height-only.js?v=27-render-fallback"
     ></script>
   </body>
 </html>
