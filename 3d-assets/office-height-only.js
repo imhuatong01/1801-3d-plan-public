@@ -26,25 +26,25 @@ function plant(g,x,z){box(g,x-.17,0,z-.17,.34,.4,.34,'#eee7da');const b=new THRE
 function rail(g,x,z,w,d){box(g,x,0,z,w,1.08,d,glass);box(g,x,1.08,z,w,.045,d,steel)}
 // Ground outline uses the same CAD vertices as the existing 1801 page, including its notches.
 const verified=await fetch('./1801_专页核对数据.json').then(r=>r.json());
-const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#b9b9b3'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
+const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#c2bfb7'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
 
 // Proposed finish levels: side rooms 0.000, central passage -0.100; no structural cutting instruction.
 const groundFloorMeshes=[floor],upperFloorMeshes=[];
 const sidePolys=[[[3.9, 7.675], [5.15, 7.675], [9.15, 7.675], [9.15, 0.0], [0.125, 0.0], [0.125, 0.1], [0.0, 0.1], [0.0, 0.5], [0.0, 1.0], [0.0, 7.675], [0.05, 7.675], [0.25, 7.675], [0.7, 7.675], [3.9, 7.675]], [[10.8, 9.4], [18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.025, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 9.4], [10.8, 9.4]]];
-for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth:.1,bevelEnabled:false});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat('#c7c3b9'));m.position.y=-.1;m.receiveShadow=true;ground.add(m);groundFloorMeshes.push(m)}
+for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth:.1,bevelEnabled:false});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat('#c8c5bd'));m.position.y=-.1;m.receiveShadow=true;ground.add(m);groundFloorMeshes.push(m)}
 // Extend the owner's upper floor over the former entrance-side stair band.
 // Keep the CAD perimeter; proposed L-shaped opening reclaims floor above the low flight.
 const upperBoundary=[[18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 7.44], [17.53, 7.44], [17.53, 9.24], [10.7, 9.24], [10.7, 9.4], [10.8, 9.4], [18.425, 9.4]];
 const upperShape=new THREE.Shape();upperBoundary.forEach((p,i)=>i?upperShape.lineTo(p[0],-p[1]):upperShape.moveTo(p[0],-p[1]));upperShape.closePath();
 const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:.28,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-.28;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
-zone(ground,.1,.1,8.95,7.45,'#c4d5db','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
-const corridor=zone(ground,9.15,0,1.55,10.7,'#9caaa9','中间 · 完成面通道','原中间下沉示意取消；一楼全部统一为同一完成面，保持1.55米宽通道。');
+zone(ground,.1,.1,8.95,7.45,'#c7c4bc','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
+const corridor=zone(ground,9.15,0,1.55,10.7,'#bbb9b2','中间 · 完成面通道','原中间下沉示意取消；一楼全部统一为同一完成面，保持1.55米宽通道。');
 // The former raised sides drop 100mm to meet the original central passage level.
 // Restore the base slab after shifting the whole ground package, so every finished floor ends at the same plane.
 ground.position.y=-.10;floor.position.y+=.10;
-zone(ground,16.7,1.2,2.55,7.9,'#b7afa0','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
-zone(ground,10.85,.15,2.65,6.9,'#c8c3ae','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
-zone(ground,10.65,5.94,6.88,3.30,'#a2aaa8','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；按总层高8.40m、单层4.20m设置，平台顶2.10m。该高度下平台底约1.80m，现有平台下卫浴需另行调整，不能按净高合格理解。');
+zone(ground,16.7,1.2,2.55,7.9,'#c7c4bc','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
+zone(ground,10.85,.15,2.65,6.9,'#c7c4bc','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
+zone(ground,10.65,5.94,6.88,3.30,'#c5c2ba','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；按总层高8.40m、单层4.20m设置，平台顶2.10m。该高度下平台底约1.80m，现有平台下卫浴需另行调整，不能按净高合格理解。');
 const furnitureObjects=[];
 function furnitureStart(){return new Set([...ground.children,...upper.children])}
 function furnitureEnd(previous){for(const o of [...ground.children,...upper.children])if(!previous.has(o)){o.userData.furniture=true;furnitureObjects.push(o)}}
@@ -85,43 +85,14 @@ const lounge=new THREE.Group();lounge.position.set(17.25,0,4.35);upper.add(loung
 box(lounge,0,.20,0,1.05,.18,.78,'#557384');box(lounge,.10,.38,.08,.85,.68,.16,'#557384');
 for(const [x,z] of [[.08,.08],[.88,.08],[.08,.65],[.88,.65]])box(lounge,x,0,z,.08,.22,.08,steel);
 furnitureEnd(furnitureUpperStart);
-// Combined bathroom wholly under the raised turning platform.
+// One open shower only: ordinary waterproof floor is raised 25mm above the unified first-floor finish.
 const wet=new THREE.Group(),wetWalls=new THREE.Group();ground.add(wet);wet.add(wetWalls);
-box(wet,10.77,0,6.09,2.16,.06,3.10,'#c6d8d4');
-const smokedGlass=mat('#26383f',.78);
-// User screenshot: door in the stair-facing side (x=12.85), accessed below the high return flight.
-box(wetWalls,12.85,.06,6.09,.08,2.25,1.71,smokedGlass);
-box(wetWalls,12.85,.06,8.70,.08,2.25,.49,smokedGlass);
-box(wetWalls,12.85,2.16,7.80,.08,.15,.90,smokedGlass);
-box(wetWalls,10.77,.06,6.09,.08,2.25,3.10,smokedGlass);
-box(wetWalls,10.85,.06,9.11,2.00,2.25,.08,smokedGlass);
-box(wetWalls,10.85,.06,6.09,2.00,2.25,.08,smokedGlass);
-const wetDoor=new THREE.Group();wet.add(wetDoor);
-// Inward-open glass leaf; jambs stay on the user's circled face.
-box(wetDoor,11.95,.06,7.80,.90,2.10,.035,smokedGlass);
-for(const x of [11.95,12.825])box(wetDoor,x,.06,7.79,.025,2.10,.05,steel);
-for(const y of [.06,2.135])box(wetDoor,11.95,y,7.79,.90,.025,.05,steel);
-box(wetDoor,12.05,1.02,7.845,.035,.20,.025,wood);
-for(const [x,z] of [[10.78,6.10],[12.87,6.10],[10.78,9.14],[12.87,9.14],[12.87,7.775],[12.87,8.70]])box(wetWalls,x,.06,z,.025,2.25,.025,steel);
-for(const y of [.06,2.285]){
- box(wetWalls,10.78,y,6.10,.025,.025,3.065,steel);
- box(wetWalls,12.87,y,6.10,.025,.025,1.675,steel);box(wetWalls,12.87,y,8.725,.025,.025,.44,steel);
- box(wetWalls,10.78,y,9.14,2.115,.025,.025,steel);box(wetWalls,10.78,y,6.10,2.115,.025,.025,steel);
-}
-box(wetWalls,10.77,2.31,6.09,2.16,.03,3.10,mat('#b8c6c7',.20));
-line(wet,[[12.85,.075,8.70],[11.95,.075,7.80],[12.85,.075,7.80]],'#b58a4e');
-box(wet,12.85,.061,7.80,.08,.015,.90,wood);
-// Fixtures moved away from the new door swing and approach.
-box(wet,10.95,.06,8.28,.60,.42,.48,white);box(wet,10.95,.48,8.64,.60,.40,.12,white);
-box(wet,12.50,.06,6.35,.35,.76,.50,wood);box(wet,12.47,.82,6.33,.38,.06,.54,white);
-box(wet,10.85,.065,6.17,1.10,.025,1.10,'#83a8ab');
-box(wet,11.95,.09,6.17,.025,1.95,1.10,glass);
-box(wet,10.90,1.05,6.40,.03,1.02,.03,steel);box(wet,10.92,2.07,6.35,.24,.03,.20,steel);
-label(wet,'卫浴门 · 按红圈位置',13.0,2.35,8.25,'#946a2e',2.7);
-const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#c0d2ce','转身平台下 · 卫生间＋淋浴','外框2.16×3.10m，约6.70㎡；墙内约2.00×2.94m，约5.88㎡，未扣洁具。总层高改为8.40m、单层4.20m后，等分双跑平台底约1.80m，不满足此前2.25m净高目标；此卫浴仅保留位置示意，需改楼梯或另移卫浴后才能施工。');
-label(wet,'平台下卫浴 2.16×3.10m',11.85,2.95,7.7,'#276d69',4.1);
-wetWalls.visible=$('#wetWalls').checked;
-$('#wetWalls').onchange=e=>wetWalls.visible=e.target.checked;
+box(wet,10.77,.005,6.09,2.16,.025,3.10,mat('#c4c1ba'));
+// The single shower head is the only fitting retained in this zone.
+box(wet,12.58,1.72,6.24,.05,.43,.05,steel);box(wet,12.38,2.12,6.16,.25,.05,.20,steel);
+const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#c5c2bb','平台下 · 纯淋浴区','外框2.16×3.10m，约6.70㎡。仅保留一个花洒；无马桶、台盆、柜体、玻璃隔断或门。防水完成面较一楼统一完成面高约25mm。');wetFloor.position.y=.025;
+wetWalls.visible=false;
+$('#wetWalls').onchange=()=>{wetWalls.visible=false};
 
 // First flight +X on inner side; return flight -X against the solid wall.
 zone(ground,17.43,6.04,1.845,1.50,'#d4c6a4','内侧楼梯起步区','平面预留约1.845×1.50m，茶吧已向室内挪开，保持无家具。');
@@ -195,7 +166,7 @@ const upperOriginalColumn=box(upper,18.425,0,.5,.5,levelHeight,.5,'#8c969a');upp
 // Merge every collinear run before creating a wall, so a straight wall has no false dark posts or panel seams.
 const solidWallSegments=[];for(let i=1;i<contour.length;i++){const a=contour[i-1],b=contour[i],entryGap=Math.abs(a[1]-10.7)<.01&&Math.abs(b[1]-10.7)<.01,daylightFace=(Math.abs(a[1])<.01&&Math.abs(b[1])<.01)||(Math.abs(a[0]-19.425)<.01&&Math.abs(b[0]-19.425)<.01);if(entryGap||daylightFace)continue;const prev=solidWallSegments.at(-1),dx=b[0]-a[0],dz=b[1]-a[1];if(prev){const px=prev.b[0]-prev.a[0],pz=prev.b[1]-prev.a[1],joined=Math.hypot(prev.b[0]-a[0],prev.b[1]-a[1])<.001,collinear=Math.abs(px*dz-pz*dx)<.001;if(joined&&collinear){prev.b=b;continue}}solidWallSegments.push({a:[...a],b:[...b]})}
 for(const {a,b} of solidWallSegments){const dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz);if(len<.03)continue;const w=box(shell,-len/2,0,-.06,len,8.4,.12,semiWallMat);w.position.set((a[0]+b[0])/2,4.2,(a[1]+b[1])/2);w.rotation.y=-Math.atan2(dz,dx);w.userData.hoverDimension={a:[a[0],.08,a[1]],b:[b[0],.08,b[1]],text:len.toFixed(3)+' m'}}
-for(const x of [9.15,10.70])box(ground,x-.035,-.1,10.68,.07,2.5,.07,'#2d87b0');box(ground,9.15,2.4,10.68,1.55,.07,.07,'#2d87b0');line(ground,[[9.15,-.1,10.7],[9.15,-.1,9.925],[9.925,-.1,10.7],[10.7,-.1,9.925],[10.7,-.1,10.7]],'#2580ab');
+const entryDoorMat=mat('#6c98a0',.36);box(ground,9.15,0,10.66,1.55,2.50,.035,entryDoorMat);for(const x of [9.15,10.70])box(ground,x-.025,0,10.655,.05,2.50,.06,steel);box(ground,9.15,2.45,10.655,1.55,.05,.06,steel);box(ground,10.40,1.10,10.61,.035,.22,.08,wood);label(ground,'1801-OPC空间',9.925,2.05,10.56,'#265a66',3.4);
 
 
 const furniturePlantsStart=furnitureStart();plant(ground,.5,.5);plant(upper,16.3,5.1);furnitureEnd(furniturePlantsStart);
@@ -208,7 +179,7 @@ label(labelGroup,'一楼层高 4.20m',20.5,2.10,5.4,'#466e82',4.2);line(labelGro
 label(stairs,'平台下模型净高约1.80m · 需调整卫浴',17.9,2.85,6.55,'#8a5c36',4.0);line(stairs,[[17.3,2.10,6.79],[17.3,3.92,6.79]],'#8a5c36');
 const facade=new THREE.Group();model.add(facade);const windowMat=mat('#5b91ad',.055);
 // The two exterior faces are one continuous L-shaped daylight surface, not solid walls.
-const daylightSouth=box(facade,0,.65,-.05,19.425,7.75,.05,windowMat),daylightRight=box(facade,19.425,.65,0,.05,7.75,9.4,windowMat);daylightSouth.userData.hoverDimension={a:[0,.08,0],b:[19.425,.08,0],text:'19.425 m'};daylightRight.userData.hoverDimension={a:[19.425,.08,0],b:[19.425,.08,9.4],text:'9.400 m'};
+const daylightSouth=box(facade,0,0,-.05,19.425,8.4,.05,windowMat),daylightRight=box(facade,19.425,0,0,.05,8.4,9.4,windowMat);daylightSouth.userData.hoverDimension={a:[0,.08,0],b:[19.425,.08,0],text:'19.425 m'};daylightRight.userData.hoverDimension={a:[19.425,.08,0],b:[19.425,.08,9.4],text:'9.400 m'};
 line(facade,[[0,.65,0],[19.425,.65,0],[19.425,.65,9.4]],'#4f8eac');line(facade,[[0,8.4,0],[19.425,8.4,0],[19.425,8.4,9.4]],'#4f8eac');
 label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);label(facade,'原图右侧外窗 · L型采光面',20.0,2.1,6.7,'#357c98',4.7);
 const pad=box(model,-2,-.4,-2,23.5,.2,15,'#e0e9ed');pad.receiveShadow=true;
