@@ -28,7 +28,7 @@ export function setupMeasurements(ctx){
   hoverRay.setFromCamera(hoverMouse,camera);const meshes=[];
   for(const g of [ground,upper,stairs,structure,shell,facade,supportReserve])g.traverse(o=>{if(o.isMesh&&!o.userData.areaOverlay&&!o.userData.hoverIgnore&&visible(o)&&(!o.material.transparent||o.material.opacity>.3||o.userData.hoverDimension))meshes.push(o)});
   const h=hoverRay.intersectObjects(meshes,false)[0];let nextRegion='',nextCorner=false,nextStraight=null,nextKey='none';
-  if(h){nextStraight=h.object.userData.hoverDimension||null;const v=model.worldToLocal(h.point.clone());if(ancestry(h.object,supportReserve))nextRegion='bar-gym';else if(ancestry(h.object,wet))nextRegion='bath';else if(ancestry(h.object,structure))nextRegion='frame';else if(ancestry(h.object,stairs))nextRegion=v.x<=12.95?'landing':v.z<7.64?'flight1':'flight2';else if(ancestry(h.object,upper)){const u=upper.worldToLocal(h.point.clone());nextRegion=u.z>=9.24?'upper-edge':u.z>=7.74&&u.x>=17.53&&u.x<=19.03?'arrival':u.z>=7.44&&u.x>=17.53?'upper-side':'upper';}else if(ancestry(h.object,shell))nextRegion='corner';else nextRegion=v.x<9.15?'office':v.x<=10.7?'corridor':v.z<=6.04?'bar-gym':v.x>=17.43&&v.x<=19.275&&v.z<=7.54?'approach':'owner';nextCorner=(v.x<.55&&v.z<.55)||(v.x>18.1&&v.z>9.0)||(v.x>18.0&&v.z<1.15)||(v.z>7.675&&v.x>8.8&&v.x<11.2);nextKey=h.object.uuid+'|'+nextRegion+'|'+(nextStraight?.text||'')+'|'+nextCorner;}
+  if(h){nextStraight=h.object.userData.hoverDimension||null;const v=model.worldToLocal(h.point.clone());if(ancestry(h.object,supportReserve))nextRegion='bar-gym';else if(ancestry(h.object,wet))nextRegion='bath';else if(ancestry(h.object,structure))nextRegion='frame';else if(ancestry(h.object,stairs))nextRegion=v.x<=12.95?'landing':v.z<7.64?'flight1':'flight2';else if(ancestry(h.object,upper))nextRegion='upper';else if(ancestry(h.object,shell))nextRegion='corner';else nextRegion=v.x<9.15?'office':v.x<=10.7?'corridor':v.z<=6.04?'bar-gym':v.x>=17.43&&v.x<=19.275&&v.z<=7.54?'approach':'owner';nextCorner=(v.x<.55&&v.z<.55)||(v.x>18.1&&v.z>9.0)||(v.x>18.0&&v.z<1.15)||(v.z>7.675&&v.x>8.8&&v.x<11.2);nextKey=h.object.uuid+'|'+nextRegion+'|'+(nextStraight?.text||'')+'|'+nextCorner;}
   const now=performance.now();if(nextKey!==hoverCandidateKey){hoverCandidateKey=nextKey;hoverCandidateAt=now;return}if(now-hoverCandidateAt>=100){hoverRegion=nextRegion;hoverCorner=nextCorner;hoverStraight=nextStraight;}
  }
  canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();hoverMouse.set((e.clientX-r.left)/r.width*2-1,1-(e.clientY-r.top)/r.height*2);pointerIn=true;focusRegion='';lastHover=0;});
@@ -90,18 +90,16 @@ export function setupMeasurements(ctx){
   flight2:{title:'第二跑楼梯',metric:'4.480 × 1.500 m · 投影约6.72㎡',note:'沿坡面长度约5.23m；这里只显示水平投影面积，含在整部楼梯21.38㎡内。',color:'#dfbe81'},
   landing:{title:'中转平台',metric:'2.200 × 3.200 m · 约7.04㎡',note:'按单层4.20m的等分双跑设置，平台顶标高2.10m；与下方卫浴上下重叠，净高需重新深化。',color:'#d5ba86'},
   approach:{title:'一楼上楼接近区',metric:'1.845 × 1.500 m · 约2.77㎡',note:'保持通行；不计入52.70㎡的吧台健身矩形。',color:'#b8b08b'},
-  upper:{title:'二楼主要完整矩形',metric:'8.725 × 7.440 m · 约64.91㎡',note:'二楼整层模型楼面合计69.67㎡；此矩形包含在其中，含柱及内部通道。',color:'#c4b197'},
-  'upper-side':{title:'二楼侧边楼面',metric:'1.895 × 1.800 m · 约3.41㎡',note:'已包含2.25㎡上楼到达区；属于二楼总楼面，面积不能重复相加。',color:'#a6bfc3'},
-  arrival:{title:'二楼上楼到达区',metric:'1.500 × 1.500 m · 约2.25㎡',note:'包含在二楼侧边楼面中，应保持畅通。',color:'#d6bc80'},
-  'upper-edge':{title:'二楼后侧窄边',metric:'宽0.160 m · 按轮廓约1.35㎡',note:'这是楼板边带，不按可布置区或正常通道使用。',color:'#b6adb8'},
+  upper:{title:'二楼钢结构楼面',metric:'约73.30㎡（扣上楼洞口）',note:'外轮廓约81.97㎡，扣第二跑楼梯洞口5.10 × 1.70m、约8.67㎡；含柱与内部通行空间。',color:'#c4b197'},
   owner:{title:'一楼私用侧整体',metric:'外框8.725 × 9.400 m · 约81.97㎡',note:'包含吧台健身区、楼梯、平台下卫浴及侧边通路，是整侧合计，不能与子区域相加。',color:'#b6c7b6'},
   frame:{title:'钢架示意',metric:'尺寸显示为柱轴距',note:'轴距不等于柱间净宽；结构位置及尺寸为方案示意，未验算。',color:'#91afb8'},
   corner:{title:'轮廓与柱位细节',metric:'小凹口、入口短段与柱截面',note:'对应数字直接沿边线显示；不单独作为房间面积。',color:'#91afb8'}
  };
  // A single quiet tint for every measured block; the rectangle defines the area.
  const areaHighlightColor='#79bcb0';for(const item of Object.values(areaInfo))item.color=areaHighlightColor;
- function areaPoly(key,g,points,y){
+ function areaPoly(key,g,points,y,holes=[]){
   const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],p[1]):sh.moveTo(p[0],p[1]));sh.closePath();
+  for(const points of holes){const hole=new THREE.Path();points.forEach((p,i)=>i?hole.lineTo(p[0],p[1]):hole.moveTo(p[0],p[1]));hole.closePath();sh.holes.push(hole)}
   const geo=new THREE.ShapeGeometry(sh);geo.rotateX(Math.PI/2);
   const material=new THREE.MeshBasicMaterial({color:areaInfo[key].color,transparent:true,opacity:.23,depthWrite:false,side:THREE.DoubleSide});
   const mesh=new THREE.Mesh(geo,material);mesh.position.y=y;mesh.userData.areaOverlay=true;g.add(mesh);
@@ -115,10 +113,7 @@ export function setupMeasurements(ctx){
  areaRect('bath',ground,10.77,6.09,2.16,3.1,.075);
  areaRect('landing',ground,10.75,6.04,2.2,3.2,2.125);
  areaRect('approach',ground,17.43,6.04,1.845,1.5,.035);
- areaRect('upper',upper,10.7,0,8.725,7.44,.035);
- areaRect('upper-side',upper,17.53,7.44,1.895,1.8,.035);
- areaRect('arrival',upper,17.53,7.74,1.5,1.5,.04);
- areaPoly('upper-edge',upper,[[10.7,9.24],[19.425,9.24],[19.425,9.4],[18.925,9.4],[18.925,9.3],[18.425,9.3],[18.425,9.4],[10.7,9.4]],.035);
+ areaPoly('upper',upper,[[10.7,0],[19.425,0],[19.425,9.4],[18.925,9.4],[18.925,9.3],[18.425,9.3],[18.425,9.4],[10.7,9.4]],.035,[[[12.25,7.60],[17.35,7.60],[17.35,9.30],[12.25,9.30]]]);
  areaPoly('owner',ground,[[10.7,0],[19.425,0],[19.425,9.4],[18.925,9.4],[18.925,9.3],[18.425,9.3],[18.425,9.4],[10.7,9.4]],.025);
  function flightOverlay(key,z,y1,y2){
   const ps=[[12.95,y1,z],[17.43,y2,z],[17.43,y2,z+1.5],[12.95,y1,z+1.5]],geo=new THREE.BufferGeometry();
@@ -154,14 +149,11 @@ export function setupMeasurements(ctx){
  quietText(stairDims,'2.200 × 3.200 m',[11.85,2.45,7.6],3.0);
  quietText(dims,'2.160 × 3.100 m',[11.85,1.35,8.8],2.8);
  qdim(stairDims,[17.43,.05,6.55],[19.275,.05,6.55],'1.845 m',1.8);
- // Complete upper floor rectangle, opening and side strip; no half-meeting-zone annotation.
+ // Complete upper steel deck and only the compact second-flight opening.
  qdim(upperDims,[10.7,.08,-.4],[19.425,.08,-.4],'8.725 m',2.0);
- qdim(upperDims,[19.75,.08,0],[19.75,.08,7.44],'7.440 m',2.0);
- quietText(upperDims,'8.725 × 7.440 m',[15.1,.17,2.55],3.3);
- quietText(upperDims,'64.91 ㎡',[15.1,.17,3.65],1.9);
- quietText(upperDims,'6.830 × 1.800 m',[13.9,.35,8.5],2.8);
- quietText(upperDims,'1.500 × 1.500 m',[18.28,.35,8.7],2.6);
- qdim(upperDims,[17.53,.08,7.2],[19.425,.08,7.2],'1.895 m',1.9);
+ qdim(upperDims,[19.75,.08,0],[19.75,.08,9.4],'9.400 m',2.0);
+ quietText(upperDims,'二楼钢结构楼面 73.30 ㎡',[15.1,.17,2.55],3.3);
+ quietText(upperDims,'上楼洞口 5.100 × 1.700 m',[14.8,.35,8.5],2.8);
  scopeOverride='corridor';quietText(dims,'16.59 ㎡',[9.925,.1,4.1],1.9);scopeOverride=null;
  scopeOverride='bath';quietText(dims,'6.70 ㎡',[11.85,1.05,8.8],1.9);scopeOverride=null;
  scopeOverride='landing';quietText(stairDims,'7.04 ㎡',[11.85,2.45,8.3],1.9);scopeOverride=null;
@@ -209,11 +201,13 @@ export function setupMeasurements(ctx){
   frameDims.visible=false;
  }
  $('#allDimensions').onchange=update;$('#dimensions').onchange=update;$('#cornerDimensions').onchange=update;$('#frameDimensions').onchange=update;update();
- const measured=new THREE.Group();scene.add(measured);const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let active=false,first=null,records=[],down;
+ const measured=new THREE.Group();scene.add(measured);const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let active=false,first=null,records=[],down,preview=null;
  const stat=s=>{$('#measureStatus').textContent=s;$('#measureReadout').textContent=active?s:''};
  function dispose(g){g.traverse(o=>{o.geometry?.dispose();if(o.material){o.material.map?.dispose();o.material.dispose()}});g.removeFromParent()}
- function clear(){for(const c of [...measured.children])dispose(c);first=null;records=[];stat(active?'点选起点，再点终点。':'测量已清空。')}
- function toggle(){active=!active;$('#measureToggle').textContent=active?'结束测量':'开始测量';$('#measureToggle').classList.toggle('active',active);$('#measureToggle').setAttribute('aria-pressed',String(active));canvas.style.cursor=active?'crosshair':'';controls.autoRotate=false;$('#spin').checked=false;stat(active?'点选起点，再点终点；拖动仍可旋转。':'已结束测量，结果保留。')}
+ function clearPreview(){if(preview){dispose(preview);preview=null}}
+ function previewTo(p){clearPreview();if(!first||!p)return;const g=new THREE.Group();measured.add(g);segment(g,first.p,p,'#df671e');marker(g,p);preview=g}
+ function clear(){for(const c of [...measured.children])dispose(c);first=null;preview=null;records=[];stat(active?'点选起点，再点终点。':'测量已清空。')}
+ function toggle(){active=!active;if(!active&&first){dispose(first.group);first=null;clearPreview()}$('#measureToggle').textContent=active?'结束测量':'开始测量';$('#measureToggle').classList.toggle('active',active);$('#measureToggle').setAttribute('aria-pressed',String(active));canvas.style.cursor=active?'crosshair':'';controls.autoRotate=false;$('#spin').checked=false;stat(active?'点选起点，再点终点；拖动仍可旋转。':'已结束测量，结果保留。')}
  $('#measureToggle').onclick=toggle;$('#measureClear').onclick=clear;
  $('#measureUndo').onclick=()=>{if(first){dispose(first.group);first=null}else{const g=records.pop();if(g)dispose(g)}stat('已撤销；点选新的起点。')};
  $('#measureType').onchange=clear;document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',clear));
@@ -233,10 +227,11 @@ export function setupMeasurements(ctx){
  }
  function marker(g,p){const m=new THREE.Mesh(new THREE.SphereGeometry(.07,12,8),new THREE.MeshBasicMaterial({color:'#e06420',depthTest:false}));m.position.copy(p);m.renderOrder=120;g.add(m)}
  canvas.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
+ canvas.addEventListener('pointermove',e=>{if(!active||!first)return;previewTo(point(e))});
  canvas.addEventListener('pointerup',e=>{if(!active||e.button!==0||!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;if(getMode()==='split'){stat('拆层状态有展示位移，请切换整体或单层后测量。');return}
   const p=point(e);if(!p){stat('请点选模型范围内的位置；靠近端点可自动吸附。');return}
-  if(!first){const g=new THREE.Group();measured.add(g);marker(g,p);first={p,group:g};stat('起点已选，点选终点。');return}
-  const a=first.p,d=p.distanceTo(a);if(d<.001){stat('两点太近，请重新选择终点。');return}const g=first.group;marker(g,p);segment(g,a,p,'#df671e');const horizontal=Math.hypot(p.x-a.x,p.z-a.z),vertical=Math.abs(p.y-a.y);const message=`距离 ${d.toFixed(3)} m · 水平 ${horizontal.toFixed(3)} m · 高差 ${vertical.toFixed(3)} m`;text(g,`${d.toFixed(3)} m`,a.clone().add(p).multiplyScalar(.5).add(new THREE.Vector3(0,.25,0)),'#a74c20');g.userData={distance:d,horizontal,vertical};records.push(g);first=null;stat(message);canvas.dataset.lastMeasurement=JSON.stringify(g.userData);
+  if(!first){const g=new THREE.Group();measured.add(g);marker(g,p);first={p,group:g};stat('起点已选，移动鼠标预览，点选终点。');return}
+  const a=first.p,d=p.distanceTo(a);if(d<.001){stat('两点太近，请重新选择终点。');return}clearPreview();const g=first.group;marker(g,p);segment(g,a,p,'#df671e');const horizontal=Math.hypot(p.x-a.x,p.z-a.z),vertical=Math.abs(p.y-a.y);const message=`距离 ${d.toFixed(3)} m · 水平 ${horizontal.toFixed(3)} m · 高差 ${vertical.toFixed(3)} m`;text(g,`${d.toFixed(3)} m`,a.clone().add(p).multiplyScalar(.5).add(new THREE.Vector3(0,.25,0)),'#a74c20');g.userData={distance:d,horizontal,vertical};records.push(g);first=null;stat(message);canvas.dataset.lastMeasurement=JSON.stringify(g.userData);
  });
  return {isActive:()=>active,update,focusArea:(key)=>{focusRegion=key;update();}};
 }

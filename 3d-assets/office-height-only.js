@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=17-overall-two-point';
+import {setupMeasurements} from './measurements-height-only.js?v=18-live-preview-clear';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -24,14 +24,13 @@ function desk(g,x,z,w=1.35,d=.65){box(g,x,.72,z,w,.055,d,white);for(const dx of 
 function chair(g,x,z,rot=0){const c=new THREE.Group();c.position.set(x,0,z);c.rotation.y=rot;g.add(c);box(c,-.23,.43,-.23,.46,.08,.46,charcoal);box(c,-.23,.5,.19,.46,.45,.06,charcoal);box(c,-.035,.08,-.035,.07,.35,.07,steel);box(c,-.25,.05,-.025,.5,.035,.05,steel);box(c,-.025,.05,-.25,.05,.035,.5,steel)}
 function plant(g,x,z){box(g,x-.17,0,z-.17,.34,.4,.34,'#eee7da');const b=new THREE.Mesh(new THREE.SphereGeometry(.36,9,8),mat('#5e9279'));b.scale.y=1.6;b.position.set(x,.8,z);g.add(b)}
 function rail(g,x,z,w,d){
- const alongX=w>=d,long=alongX?w:d,gap=long>1?.10:0,count=long>1?3:1,panel=(long-gap*(count-1))/count;
+ const alongX=w>=d,long=alongX?w:d,gap=long>1?.05:0,count=long>1?3:1,panel=(long-gap*(count-1))/count;
  for(let i=0;i<count;i++){const at=i*(panel+gap);if(alongX)box(g,x+at,0,z,panel,1.08,d,glass);else box(g,x,0,z+at,w,1.08,panel,glass)}
  box(g,x,1.08,z,w,.045,d,steel)
 }
-// Sloped stair guards use continuous glass panels with a slim dark handrail.
-// Unlike the former baluster-only rendering, both open sides read as glass safety railings.
+// Sloped stair guards use three installable glass panels with 50mm gaps and a slim dark handrail.
 function slopeGlassRail(g,a,b){
- const h=1.05,dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),gap=.10,panel=(len-gap*2)/3,ux=dx/len,uy=dy/len;
+ const h=1.05,dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),gap=.05,panel=(len-gap*2)/3,ux=dx/len,uy=dy/len;
  for(let i=0;i<3;i++){const start=i*(panel+gap),end=start+panel,p0=[a[0]+ux*start,a[1]+uy*start,a[2]],p1=[a[0]+ux*end,a[1]+uy*end,a[2]],positions=[...p0,...p1,p1[0],p1[1]+h,p1[2],p0[0],p0[1]+h,p0[2]];
   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex([0,1,2,0,2,3]);geo.computeVertexNormals();
   const pane=new THREE.Mesh(geo,mat('#89c2d4',.30));pane.material.side=THREE.DoubleSide;pane.castShadow=true;pane.receiveShadow=true;g.add(pane)}
@@ -50,10 +49,12 @@ const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000
 const groundFloorMeshes=[floor],upperFloorMeshes=[];
 const sidePolys=[[[3.9, 7.675], [5.15, 7.675], [9.15, 7.675], [9.15, 0.0], [0.125, 0.0], [0.125, 0.1], [0.0, 0.1], [0.0, 0.5], [0.0, 1.0], [0.0, 7.675], [0.05, 7.675], [0.25, 7.675], [0.7, 7.675], [3.9, 7.675]], [[10.8, 9.4], [18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.025, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 9.4], [10.8, 9.4]]];
 for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth:.1,bevelEnabled:false});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat('#d6d5cd'));m.position.y=-.1;m.receiveShadow=true;ground.add(m);groundFloorMeshes.push(m)}
-// Extend the owner's upper floor over the former entrance-side stair band.
-// Keep the CAD perimeter; proposed L-shaped opening reclaims floor above the low flight.
-const upperBoundary=[[18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 7.44], [17.53, 7.44], [17.53, 9.24], [10.7, 9.24], [10.7, 9.4], [10.8, 9.4], [18.425, 9.4]];
+// The earlier L-shaped cut-out was much wider than the second stair flight and made the mezzanine read as an incomplete deck.
+// Restore the deck around the stair.  Keep only a compact opening around the upper flight and its installation clearance.
+const upperBoundary=[[18.425,9.4],[18.425,9.3],[18.925,9.3],[18.925,9.4],[19.425,9.4],[19.425,0.0],[10.7,0.0],[10.7,9.4],[10.8,9.4],[18.425,9.4]];
 const upperShape=new THREE.Shape();upperBoundary.forEach((p,i)=>i?upperShape.lineTo(p[0],-p[1]):upperShape.moveTo(p[0],-p[1]));upperShape.closePath();
+const stairOpening=[[12.25,7.60],[17.35,7.60],[17.35,9.30],[12.25,9.30]];
+const stairHole=new THREE.Path();stairOpening.forEach((p,i)=>i?stairHole.lineTo(p[0],-p[1]):stairHole.moveTo(p[0],-p[1]));stairHole.closePath();upperShape.holes.push(stairHole);
 // Keep the mezzanine as a thin floor finish only: the field condition has no exposed grey-white fascia band.
 const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:.04,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-.04;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
 zone(ground,.1,.1,8.95,7.45,'#d6d5cd','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
@@ -139,9 +140,9 @@ for(const z of [6.015,7.565])slopeGlassRail(stairs,[12.545,lowerFinish+rise,z],[
 for(const z of [7.715])slopeGlassRail(stairs,[17.025,midHeight+rise,z],[12.545,levelHeight,z]);
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);rail(midGuard,19.25,5.99,.05,3.25);rail(midGuard,17.025,5.99,2.275,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
-// Guardrail at the stair opening: required to protect the open edge.
-rail(openingRails,10.7,7.38,6.89,.06);
-rail(openingRails,17.53,7.44,.06,.30);
+// Guardrail follows the reduced stair opening, not the former oversized L-shaped void.
+rail(openingRails,12.25,7.54,5.10,.06);
+rail(openingRails,17.29,7.60,.06,1.70);
 box(openingRails,17.43,-.15,7.74,.1,.15,1.5,steel);
 // Restore the outer perimeter guard; it is not the short inner guard removed above.
 rail(upper,10.7,0,.07,7.44);rail(upper,19.355,0,.07,9.4);
@@ -245,8 +246,9 @@ let boardMode='',wetChildSnapshot=null;
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
  if(boardMode==='wet'&&wetChildSnapshot){for(const [child,visible] of wetChildSnapshot)child.visible=visible;wetChildSnapshot=null}
+ if(boardMode==='furniture'){$('#furniture').checked=false;updateFurniture()}
  if(boardMode==='circuit'){$('#circuitLayer').checked=false;updateCircuitLayer();wet.visible=true;wetFloor.visible=true;stairs.visible=true;stairStorage.visible=true;openingRails.visible=true}
- boardMode='';setMode('all');upperOriginalColumn.visible=false;facade.visible=$('#daylight').checked;structure.visible=$('#frame').checked;supportStudy.update('all');markBoard('#circuitBoard',false);markBoard('#steelBoard',false);markBoard('#wetBoard',false)
+ boardMode='';setMode('all');upperOriginalColumn.visible=false;facade.visible=$('#daylight').checked;structure.visible=$('#frame').checked;supportStudy.update('all');markBoard('#circuitBoard',false);markBoard('#steelBoard',false);markBoard('#wetBoard',false);markBoard('#furnitureBoard',false)
 }
 function showSteelBoard(){
  if(boardMode==='steel'){restoreFullBoard();return}
@@ -267,9 +269,15 @@ function showCircuitBoard(){
  structure.visible=false;stairs.visible=false;stairStorage.visible=false;openingRails.visible=false;wet.visible=false;wetFloor.visible=false;supportStudy.reserve.visible=false;$('#daylight').checked=true;facade.visible=true;
  camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路参考 · 墙顶走线、竖向下引；总线由正门左侧配电箱引出';markBoard('#circuitBoard',true)
 }
+function showFurnitureBoard(){
+ if(boardMode==='furniture'){restoreFullBoard();return}
+ if(boardMode)restoreFullBoard();boardMode='furniture';closeSpacePlan();setMode('all');upperOriginalColumn.visible=true;
+ $('#furniture').checked=true;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=!!q.userData.furniture);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));
+ structure.visible=false;supportStudy.reserve.visible=false;camera.position.set(25,20,-24);controls.target.set(15.3,2.8,-4.7);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='家具参考 · 二楼柱边办公桌 / 茶桌（第一版）';markBoard('#furnitureBoard',true)
+}
 $('#dimensionBoard').onclick=()=>{if(boardMode)restoreFullBoard();const on=!$('#dimensionBoard').classList.contains('active');$('#allDimensions').checked=on;$('#dimensions').checked=on;$('#allDimensions').dispatchEvent(new Event('change'));$('#dimensions').dispatchEvent(new Event('change'));markBoard('#dimensionBoard',on)};
 $('#circuitBoard').onclick=showCircuitBoard;
-$('#steelBoard').onclick=showSteelBoard;$('#wetBoard').onclick=showWetBoard;
+$('#steelBoard').onclick=showSteelBoard;$('#wetBoard').onclick=showWetBoard;$('#furnitureBoard').onclick=showFurnitureBoard;
 function reset(){pad.visible=mode!=='upper';facade.visible=$('#daylight').checked&&mode!=='upper';camera.up.set(0,1,0);camera.position.set(25,20,-24);if(mode==='split')camera.position.set(26,25,-28);controls.target.set(9.7,mode==='split'?4:mode==='upper'||mode==='ground'?0:2.5,-4.8);if(mode==='upper'){camera.position.set(26,15,-18);controls.target.set(15,1,-4.4)}controls.update()}$('#reset').onclick=reset;$('#supportView').onclick=()=>{$('#supportReserve').checked=true;$('#frame').checked=true;setMode('ground');reset();structure.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;facade.visible=false;$('#labels').checked=true;labels.forEach(s=>s.visible=supportStudy.labels.includes(s)||s.userData.labelText==='原入口');camera.position.set(26,15,-17);controls.target.set(15,1.2,-4.7);controls.update();$('#modeLabel').textContent='沿楼梯外侧候选柱位＋低柜 · 仅空间预留，未做承载验算';};$('#restFocus').onclick=()=>{setMode('upper');reset();upperOriginalColumn.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#labels').checked=true;labels.forEach(q=>q.visible=q.userData.labelText.includes('并入主办公区')||q.userData.labelText.includes('出口贴墙'));camera.position.set(24,15,-15);controls.target.set(15.2,.4,-5.0);controls.update();};$('#stairView').onclick=()=>{setMode('ground');reset();$('#labels').checked=true;labels.forEach(s=>s.visible=s.parent===stairs||s.userData.labelText==='原入口');$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(16,21,-7.599);controls.target.set(16,0,-7.6);controls.update()};$('#bossFocus').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;setMode('all');upperOriginalColumn.visible=false;reset();camera.position.set(29,18,-20);controls.target.set(15,3,-4.7);controls.update()};$('#heightView').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#daylight').checked=false;facade.visible=false;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(34,6,-4);controls.target.set(14.7,4.2,-4);controls.update()};$('#entryView').onclick=()=>{camera.position.set(9.925,12,-21);controls.target.set(9.925,1.5,-3);controls.update()};$('#top').onclick=()=>{const cx=mode==='upper'?15.05:9.7;camera.position.set(cx,mode==='upper'?18:24,-4.799);controls.target.set(cx,0,-4.8);controls.update()};$('#zoomIn').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(.8).add(controls.target);controls.update()};$('#zoomOut').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(1.25).add(controls.target);controls.update()};function fullView(on){$('#viewer').classList.toggle('expanded',on);document.body.style.overflow=on?'hidden':'';$('#full').textContent=on?'退出全屏':'全屏'}$('#full').onclick=()=>fullView(!$('#viewer').classList.contains('expanded'));window.addEventListener('keydown',e=>{if(e.key==='Escape')fullView(false)});
 const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let start;renderer.domElement.addEventListener('pointerdown',e=>start=[e.clientX,e.clientY]);renderer.domElement.addEventListener('pointerup',e=>{if(!start||Math.hypot(e.clientX-start[0],e.clientY-start[1])>5)return;if(measurement.isActive())return;const r=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(pointer,camera);const socketHits=ray.intersectObjects(circuitPickables.filter(x=>x.visible&&x.parent.visible),true);if(socketHits[0]?.object.userData.socket){selectSocket(socketHits[0].object.userData.socket);return}const hits=ray.intersectObjects(pickables.filter(x=>x.visible&&x.parent.visible));if(hits[0]){const d=hits[0].object.userData;$('#selected').replaceChildren();const h=document.createElement('b'),p=document.createElement('p');h.textContent=d.name;p.textContent=d.desc;$('#selected').append(h,p)}});
 const measurement=setupMeasurements({scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve:supportStudy.reserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode:()=>mode});
