@@ -86,28 +86,29 @@ label(upper,'出口贴墙 · 到达区1.50×1.50m',18.28,.55,8.45,'#966b30',3.5)
 label(upper,'并入主办公区 · 约8.46㎡',15.1,.55,6.65,'#4f7379',3.7);
 label(upper,'仅端头补板打开',11.85,.55,7.4,'#276d69',3.4);
 const furnitureUpperStart=furnitureStart();
-box(upper,11.65,.72,.95,.7,.09,2.6,wood);
-for(let i=0;i<3;i++){chair(upper,11.12,1.35+i*.85,-Math.PI/2);chair(upper,12.88,1.35+i*.85,Math.PI/2)}
-box(upper,11.7,.815,1.65,.6,.035,.65,'#8b6546');
-for(const [x,z,r] of [[11.95,1.9,.1],[11.8,2.05,.045],[12.15,2.05,.045],[12.15,1.7,.045]]){const cup=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.09,20),mat('#e8dccb'));cup.position.set(x,.89,z);upper.add(cup)}
-const pc=new THREE.Group();pc.position.set(18.1,0,1.6);pc.rotation.y=-Math.PI/2;upper.add(pc);desk(pc,0,0,2.2,.9);chair(pc,1.1,-.55,Math.PI);
-box(upper,16.85,0,1.2,.3,1.1,3.2,steel);box(upper,17.2,0,4.65,.8,.85,.35,wood);
-desk(upper,14.1,3.7,2,.65);chair(upper,15.1,3.1,Math.PI);
-box(upper,16.3,0,3.15,.05,1.5,.05,steel);box(upper,16.18,1.5,3.05,.3,.2,.2,charcoal);
-// Quiet lounge chair: movable furniture, not a partition; kept clear of the stair opening.
-const lounge=new THREE.Group();lounge.position.set(17.25,0,4.35);upper.add(lounge);
-box(lounge,0,.20,0,1.05,.18,.78,'#557384');box(lounge,.10,.38,.08,.85,.68,.16,'#557384');
-for(const [x,z] of [[.08,.08],[.88,.08],[.08,.65],[.88,.65]])box(lounge,x,0,z,.08,.22,.08,steel);
+// Furniture v1: column-wrapping work desk and separate tea table, matching the marked two zones.
+const columnDesk=new THREE.Group();upper.add(columnDesk);
+// Existing 500mm column occupies x18.425–18.925 / z0.50–1.00; desktop wraps around it without touching the column.
+box(columnDesk,17.12,.72,.25,1.18,.09,.68,wood);box(columnDesk,17.86,.72,1.06,.66,.09,.86,wood);box(columnDesk,18.98,.72,.25,.25,.09,.68,wood);
+for(const [x,z] of [[17.20,.30],[18.18,.30],[17.94,1.80],[18.43,1.80],[19.12,.30]])box(columnDesk,x,0,z,.06,.72,.06,steel);
+chair(upper,17.42,1.78,Math.PI);
+const teaTable=new THREE.Group();upper.add(teaTable);box(teaTable,13.55,.72,2.08,2.00,.09,.82,wood);
+for(const [x,z] of [[13.65,2.16],[15.38,2.16],[13.65,2.78],[15.38,2.78]])box(teaTable,x,0,z,.06,.72,.06,steel);
+for(const [x,z,r] of [[13.72,3.12,Math.PI],[14.55,3.12,Math.PI],[15.38,3.12,Math.PI],[14.10,1.52,0],[15.00,1.52,0]])chair(upper,x,z,r);
+function furnitureNote(text,x,z){const s=label(upper,text,x,1.28,z,'#385d6d',3.45);s.userData.furniture=true;return s}
+furnitureNote('柱边办公桌 1.80×0.75m',18.05,2.10);furnitureNote('茶桌 2.00×0.82m',14.55,3.70);
 furnitureEnd(furnitureUpperStart);
 // One enclosed shower only: ordinary waterproof floor is raised 25mm above the unified first-floor finish.
 const wet=new THREE.Group(),wetWalls=new THREE.Group();ground.add(wet);wet.add(wetWalls);
 box(wet,10.77,.005,6.09,2.16,.025,3.10,mat('#d0cfc7'));
 // The single shower head is the only fitting retained in this zone.
 box(wet,12.58,1.72,6.24,.05,.43,.05,steel);box(wet,12.38,2.12,6.16,.25,.05,.20,steel);
-const showerGlass=mat('#26383f',.78);
-// Keep the original acrylic-glass enclosure and its stair-side glass door; no other fittings return.
+const showerGlass=mat('#26383f',.78),showerDoorGlass=mat('#365159',.68);
+// Keep the original acrylic-glass enclosure and its stair-side glass door; only one hand basin returns.
 box(wetWalls,10.77,.03,6.09,.06,2.25,3.10,showerGlass);box(wetWalls,10.85,.03,6.09,2.00,2.25,.06,showerGlass);box(wetWalls,10.85,.03,9.13,2.00,2.25,.06,showerGlass);
-box(wetWalls,12.85,.03,6.09,.06,2.25,1.66,showerGlass);box(wetWalls,12.85,.03,8.75,.06,2.25,.44,showerGlass);const showerDoor=new THREE.Group();wetWalls.add(showerDoor);box(showerDoor,11.95,.03,7.78,.90,2.10,.035,showerGlass);for(const x of [11.95,12.825])box(showerDoor,x,.03,7.77,.025,2.10,.05,steel);for(const y of [.03,2.105])box(showerDoor,11.95,y,7.77,.90,.025,.05,steel);
+box(wetWalls,12.85,.03,6.09,.06,2.25,1.66,showerGlass);box(wetWalls,12.85,.03,8.75,.06,2.25,.44,showerGlass);const showerDoor=new THREE.Group();wetWalls.add(showerDoor);box(showerDoor,11.95,.03,7.78,.90,2.10,.035,showerDoorGlass);for(const x of [11.95,12.825])box(showerDoor,x,.03,7.77,.025,2.10,.05,steel);for(const y of [.03,2.105])box(showerDoor,11.95,y,7.77,.90,.025,.05,steel);box(showerDoor,12.62,.78,7.735,.055,.54,.075,steel);
+// Closed door and one compact hand basin; no toilet, cabinet or additional shower fitting is added.
+box(wet,10.93,.78,6.42,.48,.10,.36,white);box(wet,11.12,.05,6.56,.08,.73,.08,steel);box(wet,11.11,.91,6.57,.06,.24,.06,steel);
 const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#d0cfc7','平台下 · 纯淋浴区','外框2.16×3.10m，约6.70㎡。保留亚克力玻璃围合、进门玻璃门及一个花洒；无马桶、台盆、柜体。防水完成面较一楼统一完成面高约25mm。');wetFloor.position.y=.025;
 $('#wetWalls').checked=true;wetWalls.visible=true;
 $('#wetWalls').onchange=e=>{wetWalls.visible=e.target.checked};
@@ -161,42 +162,44 @@ function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeome
 // five-hole panel (two-pin plus three-pin). These positions were removed by the user
 // in the live review and are now deliberately absent from the published layout.
 const circuitGround=new THREE.Group(),circuitUpper=new THREE.Group(),circuitPickables=[],socketItems=[];ground.add(circuitGround);upper.add(circuitUpper);circuitGround.visible=false;circuitUpper.visible=false;
-const circuitRed=mat('#d74638'),circuitBlue='#1683c2',circuitPurple='#7a56a4',socketFace=mat('#f7f4ea'),socketHole=mat('#273b46');
+const circuitBlue='#1683c2',circuitAmber='#c98926',circuitTeal='#187a80',circuitPurple='#7a56a4',c1Mat=mat('#1975a3'),c2Mat=mat('#c98926'),c3Mat=mat('#187a80'),c4Mat=mat('#7a56a4'),socketFace=mat('#f7f4ea'),socketHole=mat('#273b46');
 let socketSeq=0,selectedSocket=null;
 const permanentlyDeletedSocketIds=new Set(['S04','S05','S06','S07','S11','S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','S22','S23','S24','S25','S26','S27','S28','S29','S30','S34','S35','S36','S38','S39','S40','S41']);
 function roundHole(g,x,y){const h=new THREE.Mesh(new THREE.CircleGeometry(.024,12),socketHole);h.position.set(x,y,.031);g.add(h)}
-function outlet(g,x,z,side='z',color=circuitRed,circuit='C1',floor='一楼',height=.38){const o=new THREE.Group(),id=`S${String(++socketSeq).padStart(2,'0')}`,rimMaterial=color.clone();o.position.set(x,height,z);if(side==='x')o.rotation.y=Math.PI/2;g.add(o);if(permanentlyDeletedSocketIds.has(id)){g.remove(o);return null}const rim=box(o,-.215,-.145,-.035,.43,.29,.025,rimMaterial),plate=box(o,-.195,-.125,-.02,.39,.25,.05,socketFace);roundHole(o,-.055,.062);roundHole(o,.055,.062);roundHole(o,0,-.008);roundHole(o,-.068,-.074);roundHole(o,.068,-.074);const meta={id,circuit,floor,root:o,rim,plate,baseColor:rimMaterial.color.clone()};o.userData.socket=meta;plate.userData.socket=meta;circuitPickables.push(plate);socketItems.push(meta);return o}
-function circuitRoute(g,points,color=circuitBlue,y=.13){line(g,points.map(([x,z])=>[x,y,z]),color)}
+function outlet(g,x,z,side='z',color=c1Mat,circuit='C1',floor='一楼',height=.38){const o=new THREE.Group(),id=`S${String(++socketSeq).padStart(2,'0')}`,rimMaterial=color.clone();o.position.set(x,height,z);if(side==='x')o.rotation.y=Math.PI/2;g.add(o);if(permanentlyDeletedSocketIds.has(id)){g.remove(o);return null}const rim=box(o,-.215,-.145,-.035,.43,.29,.025,rimMaterial),plate=box(o,-.195,-.125,-.02,.39,.25,.05,socketFace);roundHole(o,-.055,.062);roundHole(o,.055,.062);roundHole(o,0,-.008);roundHole(o,-.068,-.074);roundHole(o,.068,-.074);const meta={id,circuit,floor,root:o,rim,plate,baseColor:rimMaterial.color.clone()};o.userData.socket=meta;plate.userData.socket=meta;circuitPickables.push(plate);socketItems.push(meta);return o}
+function wire(g,points,color=circuitBlue){line(g,points,color)}
+function tray(g,points,color,y=2.85){wire(g,points.map(([x,z])=>[x,y,z]),color)}
+function drop(g,x,z,color,from=2.85,to=.38){wire(g,[[x,from,z],[x,to,z]],color)}
 // 一楼 C1-C4：每条长墙的三点作为居中一组，给两端与桌位布置留出余地；入口右手墙另设两点。
-for(const x of [3.00,4.60,6.20,8.40])outlet(circuitGround,x,7.53,'z',circuitRed,'C1','一楼');for(const z of [1.25,3.40,5.55])outlet(circuitGround,8.98,z,'x',circuitRed,'C1','一楼');for(const x of [3.00,4.60,6.20])outlet(circuitGround,x,.12,'z',circuitRed,'C1','一楼');
-for(const [x,z,s] of [[11.1,1.0,'z'],[12.7,1.0,'z'],[13.35,4.2,'x']])outlet(circuitGround,x,z,s,circuitRed,'C2','一楼');for(const [x,z,s] of [[17.0,1.2,'z'],[18.85,2.9,'x'],[18.85,5.2,'x'],[18.85,7.5,'x'],[17.0,9.12,'z'],[14.6,9.12,'z']])outlet(circuitGround,x,z,s,circuitRed,'C3','一楼');
-for(const z of [6.45,8.45])outlet(circuitGround,12.85,z,'x',mat('#8550aa'),'C4','一楼');
-// Circuit drawing: all branches return to one bus.  The total bus leaves the entry and turns left first.
-// From there, a central route serves both floors; short orthogonal drops make each outlet's route legible.
-const entryBus=[[9.925,10.15],[8.72,10.15],[8.72,6.75],[.85,6.75]];circuitRoute(circuitGround,entryBus);circuitRoute(circuitGround,[[8.72,6.75],[8.72,.55],[17.20,.55]]);box(circuitGround,8.42,.10,9.86,.58,.55,.12,'#224b67');
-// C1 · open office: centred groups on the long walls and the two entry-side wall points.
-circuitRoute(circuitGround,[[.85,6.75],[8.60,6.75]]);for(const x of [3.00,4.60,6.20,8.40])circuitRoute(circuitGround,[[x,6.75],[x,7.53]]);circuitRoute(circuitGround,[[.85,6.75],[.85,.55],[8.60,.55]]);for(const x of [3.00,4.60,6.20])circuitRoute(circuitGround,[[x,.55],[x,.12]]);for(const z of [1.25,3.40,5.55])circuitRoute(circuitGround,[[8.60,z],[8.98,z]]);for(const z of [2.55,5.15])circuitRoute(circuitGround,[[.85,z],[.12,z]]);
-// C2 · tea / bar side.
-circuitRoute(circuitGround,[[11.10,.55],[13.35,.55],[13.35,4.20]]);for(const x of [11.10,12.70])circuitRoute(circuitGround,[[x,.55],[x,1.00]]);
-// C3 · right-side open area, including the two floor-level points under the upper-wall locations.
-circuitRoute(circuitGround,[[17.20,.55],[17.20,8.65],[18.85,8.65],[18.85,2.90]]);for(const z of [5.20,7.50])circuitRoute(circuitGround,[[18.85,8.65],[18.85,z]]);circuitRoute(circuitGround,[[17.20,1.20],[17.20,.55]]);circuitRoute(circuitGround,[[17.20,8.65],[17.20,9.12],[17.00,9.12]]);circuitRoute(circuitGround,[[17.20,8.65],[14.60,8.65],[14.60,9.12]]);for(const x of [12.80,17.20])circuitRoute(circuitGround,[[x,.12],[x,.55]]);
-// C4 · the single waterproof outlet circuit; enclosure is hidden in circuit view, but its route remains clear.
-circuitRoute(circuitGround,[[12.35,.55],[12.35,9.11]],circuitPurple);for(const z of [6.45,8.45])circuitRoute(circuitGround,[[12.35,z],[12.85,z]],circuitPurple);
-// 二楼 C5-C8：按当前 L 形夹层楼面及洞口边界布点。
-for(const x of [11.2,12.8,14.4,16.0,17.6])outlet(circuitUpper,x,9.24,'z',circuitRed,'C5','二楼');outlet(circuitUpper,19.25,8.0,'x',circuitRed,'C5','二楼');for(const z of [1.2,3.0,5.0])outlet(circuitUpper,10.8,z,'x',circuitRed,'C6','二楼');for(const x of [12.8,15.0,17.2])outlet(circuitUpper,x,.12,'z',circuitRed,'C7','二楼');
-for(const [x,z,s] of [[11.25,1.3,'z'],[13.7,1.3,'z'],[16.0,1.3,'z']])outlet(circuitUpper,x,z,s,circuitRed,'C7','二楼');for(const [x,z,s] of [[18.9,3.3,'x'],[18.9,5.4,'x'],[18.9,7.0,'x'],[16.2,7.25,'z'],[13.8,7.25,'z']])outlet(circuitUpper,x,z,s,circuitRed,'C8','二楼');
-// 入口右手侧外墙：两点沿墙居中、等距布置；不占下沉通道边，与办公区 C1 同回路示意。
-for(const z of [2.55,5.15])outlet(circuitGround,.12,z,'x',circuitRed,'C1','一楼');
-// 二楼箭头所示两个外墙点：在一楼同一轴线、贴脚线位置各补一个。
-for(const x of [12.8,17.2])outlet(circuitGround,x,.12,'z',circuitRed,'C3','一楼');
-// 卫浴插座设在洗手干区后墙，离开淋浴喷淋范围；实际须采用带漏保防溅型并按电工深化。
-outlet(circuitGround,12.35,9.11,'z',mat('#8550aa'),'C4','一楼',1.10);
-// Riser from the entry-side main bus to the upper-floor routes.
-line(circuitGround,[[10.85,.13,.55],[10.85,4.33,.55]],circuitBlue);circuitRoute(circuitUpper,[[10.85,.55],[10.85,8.70],[17.60,8.70]]);
-// C5 / C6 · upper perimeter outlets.
-for(const x of [11.20,12.80,14.40,16.00,17.60])circuitRoute(circuitUpper,[[x,8.70],[x,9.24]]);circuitRoute(circuitUpper,[[17.60,8.70],[19.25,8.70],[19.25,8.00]]);for(const z of [1.20,3.00,5.00])circuitRoute(circuitUpper,[[10.85,z],[10.80,z]]);
-// C7 / C8 · the interior and right-wall groups, each shown as a direct branch from the bus.
-circuitRoute(circuitUpper,[[10.85,.55],[17.20,.55]]);for(const x of [12.80,15.00,17.20])circuitRoute(circuitUpper,[[x,.55],[x,.12]]);for(const x of [11.25,13.70,16.00])circuitRoute(circuitUpper,[[x,.55],[x,1.30]]);circuitRoute(circuitUpper,[[17.20,.55],[18.90,.55],[18.90,7.25],[13.80,7.25]]);for(const z of [3.30,5.40,7.00])circuitRoute(circuitUpper,[[18.90,7.25],[18.90,z]]);circuitRoute(circuitUpper,[[16.20,7.25],[16.20,7.25]]);box(circuitUpper,10.56,.10,.20,.58,.55,.12,'#224b67');
+for(const x of [3.00,4.60,6.20,8.40])outlet(circuitGround,x,7.53,'z',c1Mat,'C1','一楼');for(const z of [1.25,3.40,5.55])outlet(circuitGround,8.98,z,'x',c1Mat,'C1','一楼');for(const x of [3.00,4.60,6.20])outlet(circuitGround,x,.12,'z',c1Mat,'C1','一楼');
+for(const [x,z,s] of [[11.1,1.0,'z'],[12.7,1.0,'z'],[13.35,4.2,'x']])outlet(circuitGround,x,z,s,c2Mat,'C2','一楼');for(const [x,z,s] of [[17.0,1.2,'z'],[18.85,2.9,'x'],[18.85,5.2,'x'],[18.85,7.5,'x'],[17.0,9.12,'z'],[14.6,9.12,'z']])outlet(circuitGround,x,z,s,c3Mat,'C3','一楼');
+for(const z of [6.45,8.45])outlet(circuitGround,12.85,z,'x',c4Mat,'C4','一楼');
+// 配电箱位于正门左侧：主干先沿入口侧墙左转，再沿墙/顶面敷设；所有末端均用垂直下引连接到插座。
+const trayY=2.85;box(circuitGround,8.42,1.15,9.86,.58,.72,.12,'#224b67');wire(circuitGround,[[8.71,1.87,10.00],[8.71,trayY,10.00],[.85,trayY,10.00],[.85,trayY,.55]],circuitBlue);
+// C1 · 开放办公普通插座回路（蓝）。
+tray(circuitGround,[[.85,7.30],[8.60,7.30]],circuitBlue);for(const x of [3.00,4.60,6.20,8.40])drop(circuitGround,x,7.53,circuitBlue);
+tray(circuitGround,[[.85,.55],[8.60,.55]],circuitBlue);for(const x of [3.00,4.60,6.20])drop(circuitGround,x,.12,circuitBlue);for(const z of [1.25,3.40,5.55])drop(circuitGround,8.98,z,circuitBlue);for(const z of [2.55,5.15]){tray(circuitGround,[[.85,z],[.12,z]],circuitBlue);drop(circuitGround,.12,z,circuitBlue)}
+// C2 · 吧台/设备预留回路（琥珀）。
+tray(circuitGround,[[8.71,.55],[13.35,.55],[13.35,4.20]],circuitAmber);for(const [x,z] of [[11.10,1.00],[12.70,1.00],[13.35,4.20]])drop(circuitGround,x,z,circuitAmber);
+// C3 · 右侧开放区回路（青绿）。
+tray(circuitGround,[[8.71,.55],[17.20,.55],[17.20,8.65],[18.85,8.65],[18.85,2.90]],circuitTeal);for(const [x,z] of [[17.0,1.2],[18.85,2.9],[18.85,5.2],[18.85,7.5],[17.0,9.12],[14.6,9.12]])drop(circuitGround,x,z,circuitTeal);for(const x of [12.8,17.2])drop(circuitGround,x,.12,circuitTeal)
+// C4 · 卫浴防溅专用回路（紫），仅显示从顶面引下的独立管线，不与普通插座串接。
+tray(circuitGround,[[8.71,.55],[12.35,.55],[12.35,9.11]],circuitPurple);for(const z of [6.45,8.45]){tray(circuitGround,[[12.35,z],[12.85,z]],circuitPurple);drop(circuitGround,12.85,z,circuitPurple)}
+// 二楼 C5-C8：按当前 L 形夹层楼面及洞口边界布点，独立竖向干线从一楼配电箱上引。
+for(const x of [11.2,12.8,14.4,16.0,17.6])outlet(circuitUpper,x,9.24,'z',c1Mat,'C5','二楼');outlet(circuitUpper,19.25,8.0,'x',c1Mat,'C5','二楼');for(const z of [1.2,3.0,5.0])outlet(circuitUpper,10.8,z,'x',c2Mat,'C6','二楼');for(const x of [12.8,15.0,17.2])outlet(circuitUpper,x,.12,'z',c2Mat,'C7','二楼');
+for(const [x,z,s] of [[11.25,1.3,'z'],[13.7,1.3,'z'],[16.0,1.3,'z']])outlet(circuitUpper,x,z,s,c2Mat,'C7','二楼');for(const [x,z,s] of [[18.9,3.3,'x'],[18.9,5.4,'x'],[18.9,7.0,'x'],[16.2,7.25,'z'],[13.8,7.25,'z']])outlet(circuitUpper,x,z,s,c3Mat,'C8','二楼');
+// These four points retain their established positions and IDs after the user removed the other legacy points.
+for(const z of [2.55,5.15])outlet(circuitGround,.12,z,'x',c1Mat,'C1','一楼');for(const x of [12.8,17.2])outlet(circuitGround,x,.12,'z',c3Mat,'C3','一楼');
+// 卫浴点设在干区后墙，避开花洒喷淋范围；最终须用防溅面板、漏保回路并由持证电工深化。
+outlet(circuitGround,12.35,9.11,'z',c4Mat,'C4','一楼',1.10);drop(circuitGround,12.35,9.11,circuitPurple,trayY,1.10);
+// 上楼竖向干线：从入口侧配电箱顶部进入夹层，再沿二楼顶面分回路。
+wire(circuitGround,[[10.85,trayY,.55],[10.85,levelHeight,.55]],circuitBlue);const upperTrayY=2.85;wire(circuitUpper,[[10.85,0,.55],[10.85,upperTrayY,.55]]);
+// C5 · 二楼周边普通插座回路（蓝）。
+tray(circuitUpper,[[10.85,8.70],[17.60,8.70]],circuitBlue,upperTrayY);for(const x of [11.20,12.80,14.40,16.00,17.60])drop(circuitUpper,x,9.24,circuitBlue,upperTrayY);tray(circuitUpper,[[17.60,8.70],[19.25,8.70]],circuitBlue,upperTrayY);drop(circuitUpper,19.25,8.00,circuitBlue,upperTrayY);
+// C6/C7 · 茶台及日常办公回路（琥珀）。
+tray(circuitUpper,[[10.85,.55],[17.20,.55]],circuitAmber,upperTrayY);for(const z of [1.20,3.00,5.00])drop(circuitUpper,10.80,z,circuitAmber,upperTrayY);for(const x of [12.80,15.00,17.20])drop(circuitUpper,x,.12,circuitAmber,upperTrayY);for(const x of [11.25,13.70,16.00])drop(circuitUpper,x,1.30,circuitAmber,upperTrayY);
+// C8 · 二楼右侧设备/扩展回路（青绿）。
+tray(circuitUpper,[[17.20,.55],[18.90,.55],[18.90,7.25],[13.80,7.25]],circuitTeal,upperTrayY);for(const z of [3.30,5.40,7.00])drop(circuitUpper,18.90,z,circuitTeal,upperTrayY);for(const x of [16.20,13.80])drop(circuitUpper,x,7.25,circuitTeal,upperTrayY);box(circuitUpper,10.56,1.15,.20,.58,.72,.12,'#224b67');
 // Existing 500mm columns remain at the CAD positions; no implied permission to alter them.
 for(const x of [8.65,18.425])box(shell,x,0,.5,.5,8.4,.5,'#8c969a');
 const upperOriginalColumn=box(upper,18.425,0,.5,.5,levelHeight,.5,'#8c969a');upperOriginalColumn.visible=false;
@@ -257,7 +260,7 @@ function showCircuitBoard(){
  $('#furniture').checked=false;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#circuitLayer').checked=true;updateCircuitLayer();
  // Circuit version keeps only architecture, outlet symbols and routes: no steel, stair, shower or glass enclosure.
  structure.visible=false;stairs.visible=false;stairStorage.visible=false;openingRails.visible=false;wet.visible=false;wetFloor.visible=false;supportStudy.reserve.visible=false;$('#daylight').checked=true;facade.visible=true;
- camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路版本 · 插座与完整回路线；总线由正门左转引出';markBoard('#circuitBoard',true)
+ camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路参考 · 墙顶走线、竖向下引；总线由正门左侧配电箱引出';markBoard('#circuitBoard',true)
 }
 $('#dimensionBoard').onclick=()=>{if(boardMode)restoreFullBoard();const on=!$('#dimensionBoard').classList.contains('active');$('#allDimensions').checked=on;$('#dimensions').checked=on;$('#allDimensions').dispatchEvent(new Event('change'));$('#dimensions').dispatchEvent(new Event('change'));markBoard('#dimensionBoard',on)};
 $('#circuitBoard').onclick=showCircuitBoard;
@@ -309,7 +312,7 @@ function updateFurniture(){
  // Legacy furniture plans are semantic records, not permanent coloured floor patches.
  for(const p of pickables)p.visible=p===corridor;
  renderer.domElement.dataset.legacyZonePatchesVisible=String(pickables.filter(p=>p!==corridor&&p.visible).length);
- for(const q of labels)if(/开放办公预留区|平地运动|第一跑下|私用休闲|主电脑位|临挑空 · 茶桌|直播 \/|低柜 ·/.test(q.userData.labelText||''))q.visible=show&&$('#labels').checked;
+ for(const q of labels){if(q.userData.furniture)q.visible=show;else if(/开放办公预留区|平地运动|第一跑下|私用休闲|主电脑位|临挑空 · 茶桌|直播 \/|低柜 ·/.test(q.userData.labelText||''))q.visible=show&&$('#labels').checked}
  supportStudy.update();
   if(boardMode) supportStudy.reserve.visible=false;
  renderer.domElement.dataset.furnitureVisible=String(show);
