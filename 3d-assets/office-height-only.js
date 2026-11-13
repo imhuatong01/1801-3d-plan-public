@@ -138,7 +138,8 @@ for(const z of [6.015,7.565]){line(stairs,[[12.545,rise+1.05,z],[17.025,midHeigh
 for(const z of [7.715]){line(stairs,[[17.025,midHeight+rise+1.05,z],[12.545,levelHeight+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,17.025-i*going-.025,midHeight+(i+1)*rise,z-.025,.05,1.05,.05,steel)}
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);rail(midGuard,19.25,5.99,.05,3.25);rail(midGuard,17.025,5.99,2.275,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
-// The long inner guard beside the original curtain wall is redundant and is intentionally omitted.
+// Guardrail at the stair opening: required to protect the open edge.
+rail(openingRails,10.7,7.38,6.89,.06);
 rail(openingRails,17.53,7.44,.06,.30);
 box(openingRails,17.43,-.15,7.74,.1,.15,1.5,steel);
 // Restore the outer perimeter guard; it is not the short inner guard removed above.
@@ -155,8 +156,8 @@ label(stairs,'第一跑内侧 · 宽目标1.50m',15.3,1.5,6.0,'#96621e',4.2);
 label(stairs,'第二跑贴墙 · 二楼出口',15.3,5.70,9.0,'#287b8b',4.2);
 label(stairs,'平台2.20×3.20m / 顶2.10m',18.45,2.50,7.6,'#755b3e',4.2);
 // Proposed framing only; member sizes and supports require engineering.
-// The user-marked non-corner black posts at both daylight-side lines are removed from this layout view.
-const removedDaylightFacadePosts=new Set(['10.82|0.13','11.70|0.13','17.70|0.13','10.82|9.32','11.70|9.32','17.70|9.32']);
+// The user-marked temporary black posts are removed from this layout view.
+const removedDaylightFacadePosts=new Set(['10.82|0.13','11.70|0.13','17.70|0.13','19.29|0.13','10.82|9.32','11.70|9.32','17.70|9.32','19.29|9.32']);
 for(const x of [10.82,11.70,17.70,19.29])for(const z of [.13,9.32])if(!removedDaylightFacadePosts.has(`${x}|${z}`))box(structure,x-.08,0,z-.08,.16,lowerBeamHeight+.2,.16,steel);
 for(const x of [10.82,11.70])box(structure,x-.075,lowerBeamHeight,0,.15,.2,7.28,steel);
 for(const x of [17.70,19.29])box(structure,x-.075,lowerBeamHeight,0,.15,.2,9.4,steel);
