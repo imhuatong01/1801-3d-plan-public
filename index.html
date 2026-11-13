@@ -574,6 +574,25 @@
       .viewer > #socketTools[hidden] {
         display: none;
       }
+      #furnitureEditor {
+        position: absolute;
+        z-index: 24;
+        top: 64px;
+        right: 12px;
+        width: min(278px, calc(100% - 24px));
+        padding: 10px;
+        border: 1px solid #9ebbc7;
+        border-radius: 10px;
+        background: #fffffff2;
+        box-shadow: 0 5px 20px #28465722;
+        color: #31566c;
+      }
+      #furnitureEditor[hidden] { display: none; }
+      #furnitureEditor b { display: block; font-size: 14px; }
+      #furnitureEditor .editor-tip { display: block; margin: 2px 0 8px; color: #607986; font-size: 12px; }
+      #furnitureEditor .editor-row { display: flex; gap: 5px; margin-top: 5px; }
+      #furnitureEditor button { flex: 1 1 0; padding: 5px 4px; font-size: 12px; }
+      #furnitureEditor #furnitureReset { flex-basis: 100%; color: #667e8a; }
       .viewer.tools-open > .tools:not(#modes) {
         display: flex;
       }
@@ -745,6 +764,15 @@
           <strong id="socketPicked">未选择插座</strong>
           <button id="removeSocket" disabled>隐藏选中插座</button>
         </div>
+        <aside id="furnitureEditor" hidden aria-live="polite">
+          <b id="furniturePicked">点选二楼家具</b>
+          <span class="editor-tip">可直接拖动；也可用下面按钮微调。摆放会在本机浏览器自动保留。</span>
+          <div class="editor-row"><button id="furnitureUp">↑ 前移</button></div>
+          <div class="editor-row"><button id="furnitureLeft">← 左移</button><button id="furnitureRight">右移 →</button></div>
+          <div class="editor-row"><button id="furnitureDown">↓ 后移</button></div>
+          <div class="editor-row"><button id="furnitureSmaller">－ 缩小</button><button id="furnitureLarger">＋ 放大</button></div>
+          <div class="editor-row"><button id="furnitureReset">恢复这一版初始摆放</button></div>
+        </aside>
         <div class="viewport" id="viewport">
           <div id="spacePlan" hidden>
             <div class="plan-bar">
@@ -848,7 +876,7 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=62-beams-flush-to-deck"
+          src="./3d-assets/office-height-only.js?v=63-remove-daylight-rail"
     ></script>
   </body>
 </html>
