@@ -119,7 +119,8 @@ box(stairs,17.025,midHeight-.30,6.04,2.2,.3,3.2,steel);
 // Translucent section rendering preserves visibility; actual wall/fire construction is not verified.
 // No low grey-white wall band here: this side remains open in the current field condition.
 for(const z of [6.015,7.565])slopeGlassRail(stairs,[12.545,lowerFinish+rise,z],[17.025,midHeight,z]);
-for(const z of [7.715,9.215])slopeGlassRail(stairs,[17.025,midHeight+rise,z],[12.545,levelHeight,z]);
+// The return flight is against the existing solid wall on this side, so only its open edge needs glass.
+for(const z of [7.715])slopeGlassRail(stairs,[17.025,midHeight+rise,z],[12.545,levelHeight,z]);
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);rail(midGuard,19.25,5.99,.05,3.25);rail(midGuard,17.025,5.99,2.275,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
 // Guardrail at the stair opening: required to protect the open edge.
@@ -135,12 +136,14 @@ stairArrow([12.6,.32,6.79],[16.85,2.22,6.79],0xd28a24);stairArrow([18.125,2.22,6
 label(stairs,'第一跑内侧 · 宽目标1.50m',15.3,1.5,6.0,'#96621e',4.2);
 label(stairs,'第二跑贴墙 · 二楼出口',15.3,5.70,9.0,'#287b8b',4.2);
 label(stairs,'平台2.20×3.20m / 顶2.10m',18.45,2.50,7.6,'#755b3e',4.2);
-// Proposed framing only; member sizes and supports require engineering.
-// All temporary black vertical support posts are omitted from this layout view at the user's direction.
-for(const x of [10.82,11.70])box(structure,x-.075,lowerBeamHeight,0,.15,.2,7.28,steel);
-for(const x of [17.70,19.29])box(structure,x-.075,lowerBeamHeight,0,.15,.2,9.4,steel);
-for(const z of [.13,7.34,9.34])box(structure,10.7,lowerBeamHeight,z-.06,8.725,.2,.12,steel);
-box(structure,17.53,lowerBeamHeight,7.44,.15,.2,1.8,steel);
+// Minimal support scheme: a clean ring of continuous under-slab beams plus one cross beam.
+// It bears at the existing concrete-column / wall positions; no added forest of vertical posts is implied.
+const frameBeam=mat('#27313a');
+box(structure,10.70,lowerBeamHeight-.26,.05,8.73,.26,.18,frameBeam);
+box(structure,10.70,lowerBeamHeight-.26,9.22,8.73,.26,.18,frameBeam);
+box(structure,10.70,lowerBeamHeight-.26,.05,.18,.26,9.35,frameBeam);
+box(structure,19.245,lowerBeamHeight-.26,.05,.18,.26,9.35,frameBeam);
+box(structure,10.70,lowerBeamHeight-.26,7.30,8.73,.26,.18,frameBeam);
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a)}
 // 3D electrical overlay mirrors the two circuit drawings. Every socket is a selectable
 // five-hole panel (two-pin plus three-pin). These positions were removed by the user
