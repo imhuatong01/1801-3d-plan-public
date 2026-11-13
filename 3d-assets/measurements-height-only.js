@@ -65,8 +65,9 @@ export function setupMeasurements(ctx){
  quietText(dims,'81.97 ㎡',[15.15,.16,2.9],1.9);
  qdim(dims,[9.15,.06,10.9],[10.7,.06,10.9],'1.550 m',1.9,[0,.18,.3]);
  qdim(dims,[9.925,.08,0],[9.925,.08,10.7],'10.700 m',2.0);
- qdim(dims,[21,0,4.8],[21,4.92,4.8],'4.92 m',2.0);
- qdim(upperDims,[20.3,0,4.8],[20.3,3.0,4.8],'3.00 m',2.0);
+ qdim(dims,[21,0,4.8],[21,4.20,4.8],'4.20 m',2.0);
+ qdim(upperDims,[20.3,0,4.8],[20.3,4.20,4.8],'4.20 m',2.0);
+ qdim(dims,[22,0,4.8],[22,8.40,4.8],'总层高 8.40 m',2.35);
  // Proposed bar + gym: full rectangle before the stair, including candidate posts.
  scopeOverride='bar-gym';
  outline(dims,10.7,0,8.725,6.04,.09);
@@ -83,7 +84,7 @@ export function setupMeasurements(ctx){
   bath:{title:'平台下卫浴',metric:'2.160 × 3.100 m · 外框约6.70㎡',note:'墙内2.000 × 2.940m、约5.88㎡，未扣洁具；外框已包含在平台投影中。',color:'#9bbfa8'},
   flight1:{title:'第一跑楼梯',metric:'4.480 × 1.500 m · 投影约6.72㎡',note:'沿坡面长度约5.23m；这里只显示水平投影面积，含在整部楼梯21.38㎡内。',color:'#dfbe81'},
   flight2:{title:'第二跑楼梯',metric:'4.480 × 1.500 m · 投影约6.72㎡',note:'沿坡面长度约5.23m；这里只显示水平投影面积，含在整部楼梯21.38㎡内。',color:'#dfbe81'},
-  landing:{title:'中转平台',metric:'2.200 × 3.200 m · 约7.04㎡',note:'平台顶标高2.70m；包含在楼梯总投影内，与下方卫浴上下重叠。',color:'#d5ba86'},
+  landing:{title:'中转平台',metric:'2.200 × 3.200 m · 约7.04㎡',note:'按单层4.20m的等分双跑设置，平台顶标高2.10m；与下方卫浴上下重叠，净高需重新深化。',color:'#d5ba86'},
   approach:{title:'一楼上楼接近区',metric:'1.845 × 1.500 m · 约2.77㎡',note:'保持通行；不计入52.70㎡的吧台健身矩形。',color:'#b8b08b'},
   upper:{title:'二楼主要完整矩形',metric:'8.725 × 7.440 m · 约64.91㎡',note:'二楼整层模型楼面合计69.67㎡；此矩形包含在其中，含柱及内部通道。',color:'#c4b197'},
   'upper-side':{title:'二楼侧边楼面',metric:'1.895 × 1.800 m · 约3.41㎡',note:'已包含2.25㎡上楼到达区；属于二楼总楼面，面积不能重复相加。',color:'#a6bfc3'},
@@ -108,7 +109,7 @@ export function setupMeasurements(ctx){
  areaRect('bar-gym',ground,10.7,0,8.725,6.04,.035);
  areaRect('corridor',ground,9.15,0,1.55,10.7,-.075);
  areaRect('bath',ground,10.77,6.09,2.16,3.1,.075);
- areaRect('landing',ground,10.75,6.04,2.2,3.2,2.725);
+ areaRect('landing',ground,10.75,6.04,2.2,3.2,2.125);
  areaRect('approach',ground,17.43,6.04,1.845,1.5,.035);
  areaRect('upper',upper,10.7,0,8.725,7.44,.035);
  areaRect('upper-side',upper,17.53,7.44,1.895,1.8,.035);
@@ -121,7 +122,7 @@ export function setupMeasurements(ctx){
   const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:areaInfo[key].color,transparent:true,opacity:.23,depthWrite:false,side:THREE.DoubleSide}));mesh.userData.areaOverlay=true;ground.add(mesh);
   const border=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(ps.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:areaInfo[key].color,transparent:true,opacity:.85}));ground.add(border);areaOverlays.push({key,mesh,border});
  }
- flightOverlay('flight1',6.04,2.72,.18);flightOverlay('flight2',7.74,2.88,5.42);
+ flightOverlay('flight1',6.04,2.12,.18);flightOverlay('flight2',7.74,2.28,4.22);
  const gymInfo=$('#barGymInfo');let lastAreaKey=null;
  function updateArea(key,enabled){
   const item=areaInfo[key],canShow=enabled&&!!item;
@@ -145,8 +146,8 @@ export function setupMeasurements(ctx){
  qdim(stairDims,[10.47,.1,6.04],[10.47,.1,9.24],'3.200 m',1.9);
  quietText(stairDims,'4.480 × 1.500 m',[15.5,1.6,6.25],3.0);
  quietText(stairDims,'4.480 × 1.500 m',[15.5,4.5,8.9],3.0);
- outline(stairDims,10.75,6.04,2.2,3.2,2.72);
- quietText(stairDims,'2.200 × 3.200 m',[11.85,3.05,7.6],3.0);
+ outline(stairDims,10.75,6.04,2.2,3.2,2.12);
+ quietText(stairDims,'2.200 × 3.200 m',[11.85,2.45,7.6],3.0);
  quietText(dims,'2.160 × 3.100 m',[11.85,1.35,8.8],2.8);
  qdim(stairDims,[17.43,.05,6.55],[19.275,.05,6.55],'1.845 m',1.8);
  // Complete upper floor rectangle, opening and side strip; no half-meeting-zone annotation.
@@ -159,7 +160,7 @@ export function setupMeasurements(ctx){
  qdim(upperDims,[17.53,.08,7.2],[19.425,.08,7.2],'1.895 m',1.9);
  scopeOverride='corridor';quietText(dims,'16.59 ㎡',[9.925,.1,4.1],1.9);scopeOverride=null;
  scopeOverride='bath';quietText(dims,'6.70 ㎡',[11.85,1.05,8.8],1.9);scopeOverride=null;
- scopeOverride='landing';quietText(stairDims,'7.04 ㎡',[11.85,3.05,8.3],1.9);scopeOverride=null;
+ scopeOverride='landing';quietText(stairDims,'7.04 ㎡',[11.85,2.45,8.3],1.9);scopeOverride=null;
  scopeOverride='flight1';quietText(stairDims,'6.72 ㎡',[15.5,1.6,6.85],1.9);scopeOverride=null;
  scopeOverride='flight2';quietText(stairDims,'6.72 ㎡',[15.5,4.5,8.3],1.9);scopeOverride=null;
  scopeOverride='approach';quietText(dims,'1.845 × 1.500 m',[18.35,.2,6.85],2.8);quietText(dims,'2.77 ㎡',[18.35,.2,7.35],1.9);scopeOverride=null;
@@ -168,9 +169,9 @@ export function setupMeasurements(ctx){
  scopeOverride='upper-edge';quietText(upperDims,'0.160 m · 1.35 ㎡',[14.7,.4,9.32],2.8);scopeOverride=null;
  // Proposed steel frame: centre-to-centre, not clear distance or verified structural spans.
  const xs=[10.82,11.70,17.70,19.29];
- for(let i=0;i<3;i++)qdim(frameDims,[xs[i],4.80,-.7],[xs[i+1],4.80,-.7],(xs[i+1]-xs[i]).toFixed(2)+' m',1.5);
- qdim(frameDims,[20.45,4.80,.13],[20.45,4.80,7.34],'7.21 m',1.7);
- qdim(frameDims,[20.45,4.80,7.34],[20.45,4.80,9.34],'2.00 m',1.7);
+ for(let i=0;i<3;i++)qdim(frameDims,[xs[i],3.80,-.7],[xs[i+1],3.80,-.7],(xs[i+1]-xs[i]).toFixed(2)+' m',1.5);
+ qdim(frameDims,[20.45,3.80,.13],[20.45,3.80,7.34],'7.21 m',1.7);
+ qdim(frameDims,[20.45,3.80,7.34],[20.45,3.80,9.34],'2.00 m',1.7);
  function update(){
   model.updateMatrixWorld(true);
   const now=performance.now();if(now-lastHover>50){findHover();lastHover=now;}

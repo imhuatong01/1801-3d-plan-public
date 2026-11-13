@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import {setupSupportStudy} from './support-side-bath.js?v=3-space';
+import {setupSupportStudy} from './support-side-bath.js?v=4-equal-heights';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=13-unified-blocks';
+import {setupMeasurements} from './measurements-height-only.js?v=14-equal-heights';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -10,7 +10,8 @@ let viewportFit=1;
 function fitViewport(){const next=Math.max(1,1.4/camera.aspect);camera.position.sub(controls.target).multiplyScalar(next/viewportFit).add(controls.target);viewportFit=next;controls.update();}
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(9.7,2.5,-4.8);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=65;controls.maxPolarAngle=Math.PI*.49;controls.autoRotateSpeed=.7;
 scene.add(new THREE.HemisphereLight(0xffffff,0x98a9b7,1.8));const sun=new THREE.DirectionalLight(0xfff1dc,2);sun.position.set(5,24,-12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-25;sun.shadow.camera.right=25;sun.shadow.camera.top=25;sun.shadow.camera.bottom=-25;sun.shadow.normalBias=.03;scene.add(sun);
-const ground=new THREE.Group(),upper=new THREE.Group(),stairs=new THREE.Group(),structure=new THREE.Group(),shell=new THREE.Group(),labelGroup=new THREE.Group();const model=new THREE.Group();model.scale.z=-1;scene.add(model);model.add(ground,upper,stairs,structure,shell,labelGroup);upper.position.y=5.40;
+const totalHeight=8.40,levelHeight=4.20,slabDepth=.28,lowerBeamHeight=levelHeight-slabDepth;
+const ground=new THREE.Group(),upper=new THREE.Group(),stairs=new THREE.Group(),structure=new THREE.Group(),shell=new THREE.Group(),labelGroup=new THREE.Group();const model=new THREE.Group();model.scale.z=-1;scene.add(model);model.add(ground,upper,stairs,structure,shell,labelGroup);upper.position.y=levelHeight;
 // Keep the stair structure readable while hiding every tread, as requested.
 const stairTreads=new THREE.Group();stairs.add(stairTreads);stairTreads.visible=false;
 const stairShift=0;stairs.scale.x=-1;stairs.position.x=29.975;const stairStorage=new THREE.Group(),openingRails=new THREE.Group();stairStorage.scale.x=-1;stairStorage.position.x=29.975;openingRails.scale.x=-1;openingRails.position.x=29.975;ground.add(stairStorage);upper.add(openingRails);
@@ -42,7 +43,7 @@ const corridor=zone(ground,9.15,0,1.55,10.7,'#9caaa9','中间 · 下沉通道','
 box(ground,9.11,-.01,0,.04,.014,7.675,'#b99c65');box(ground,10.7,-.01,0,.04,.014,9.4,'#b99c65');
 zone(ground,16.7,1.2,2.55,7.9,'#b7afa0','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
 zone(ground,10.85,.15,2.65,6.9,'#c8c3ae','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
-zone(ground,10.65,5.94,6.88,3.30,'#a2aaa8','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；平台顶2.70m，第一跑在内侧、第二跑靠实体墙，二楼出口贴墙。卫浴回到转身平台下；仅端头补板打开，模型内第一跑及平台最小梁下余量约2.22m，尚须复核实际梁、装修及管线。');
+zone(ground,10.65,5.94,6.88,3.30,'#a2aaa8','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；按总层高8.40m、单层4.20m设置，平台顶2.10m。该高度下平台底约1.80m，现有平台下卫浴需另行调整，不能按净高合格理解。');
 const furnitureObjects=[];
 function furnitureStart(){return new Set([...ground.children,...upper.children])}
 function furnitureEnd(previous){for(const o of [...ground.children,...upper.children])if(!previous.has(o)){o.userData.furniture=true;furnitureObjects.push(o)}}
@@ -64,7 +65,7 @@ zone(upper,16.85,1.2,2.35,4.2,'#b5cbd1','二楼 · 主电脑位','外墙侧深�
 zone(upper,13.85,2.6,2.65,2.35,'#c6bacb','二楼 · 直播与日常办公','直播和日常办公，家具避开楼梯洞口；大屏已按要求移除。');
 // U flights swapped: upper arrival against the original solid wall.
 zone(upper,17.53,7.74,1.50,1.50,'#d5c9a4','二楼 · 贴墙出口','第二跑沿实体墙折返上楼；到达区1.50×1.50m，保持无家具，通过入口侧楼面连接办公区。');
-zone(upper,11.89,5.94,5.64,1.50,'#bccbb7','并入主办公区 · 约8.46㎡','恢复原内侧楼面，仅撤端头补板；梁下与平台之间模型余量约2.22m，尚须复核实际构造。');
+zone(upper,11.89,5.94,5.64,1.50,'#bccbb7','并入主办公区 · 约8.46㎡','恢复原内侧楼面，仅撤端头补板；总层高改为8.40m、单层4.20m后，楼梯与平台净空需重新深化。');
 zone(upper,10.73,5.0,1.16,2.44,'#a4c1b7','保留原侧边楼面','仅端头1.19×1.80m补板撤除，其他楼面恢复。');
 label(upper,'出口贴墙 · 到达区1.50×1.50m',18.28,.55,8.45,'#966b30',3.5);
 label(upper,'并入主办公区 · 约8.46㎡',15.1,.55,6.65,'#4f7379',3.7);
@@ -116,31 +117,32 @@ box(wet,10.85,.065,6.17,1.10,.025,1.10,'#83a8ab');
 box(wet,11.95,.09,6.17,.025,1.95,1.10,glass);
 box(wet,10.90,1.05,6.40,.03,1.02,.03,steel);box(wet,10.92,2.07,6.35,.24,.03,.20,steel);
 label(wet,'卫浴门 · 按红圈位置',13.0,2.35,8.25,'#946a2e',2.7);
-const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#c0d2ce','转身平台下 · 卫生间＋淋浴','外框2.16×3.10m，约6.70㎡；墙内约2.00×2.94m，约5.88㎡，未扣洁具。平台底2.40m，暂留地面60mm、吊顶及设备空间90mm，净高目标2.25m。门洞目标0.90m，按截图红圈设在紧贴梯段的侧面，从高梯段下方通道进入、向内开启；深色玻璃围挡。排水和实际梁厚需复核。');
+const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#c0d2ce','转身平台下 · 卫生间＋淋浴','外框2.16×3.10m，约6.70㎡；墙内约2.00×2.94m，约5.88㎡，未扣洁具。总层高改为8.40m、单层4.20m后，等分双跑平台底约1.80m，不满足此前2.25m净高目标；此卫浴仅保留位置示意，需改楼梯或另移卫浴后才能施工。');
 label(wet,'平台下卫浴 2.16×3.10m',11.85,2.95,7.7,'#276d69',4.1);
 wetWalls.visible=$('#wetWalls').checked;
 $('#wetWalls').onchange=e=>wetWalls.visible=e.target.checked;
 
 // First flight +X on inner side; return flight -X against the solid wall.
 zone(ground,17.43,6.04,1.845,1.50,'#d4c6a4','内侧楼梯起步区','平面预留约1.845×1.50m，茶吧已向室内挪开，保持无家具。');
-const rise=5.40/34,going=.28,flightRun=4.48,stairW=1.5,midHeight=2.70;
+const rise=levelHeight/34,going=.28,flightRun=4.48,stairW=1.5,midHeight=levelHeight/2;
 for(let i=0;i<16;i++){
  const x1=12.545+i*going,x2=17.025-(i+1)*going,h1=(i+1)*rise,h2=midHeight+(i+1)*rise;
   box(stairTreads,x1,h1-.1,6.04,going,.1,stairW,steel);box(stairTreads,x2,h2-.1,7.74,going,.1,stairW,steel);
  box(stairStorage,x1+.02,0,6.09,going-.04,Math.max(.03,h1-.15),1.40,'#8e928b');
 }
-box(stairs,17.025,2.40,6.04,2.2,.3,3.2,steel);
+box(stairs,17.025,midHeight-.30,6.04,2.2,.3,3.2,steel);
 // Continuous finished wall assumed here; no rail on this wall-side edge.
 // Translucent section rendering preserves visibility; actual wall/fire construction is not verified.
 box(stairs,12.445,0,9.24,6.88,.55,.06,wallmat); // Existing solid wall shown cut away, not glazing.
 for(const z of [6.015,7.565]){line(stairs,[[12.545,rise+1.05,z],[17.025,midHeight+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,12.545+i*going-.025,(i+1)*rise,z-.025,.05,1.05,.05,steel)}
-for(const z of [7.715]){line(stairs,[[17.025,midHeight+rise+1.05,z],[12.545,5.40+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,17.025-i*going-.025,midHeight+(i+1)*rise,z-.025,.05,1.05,.05,steel)}
+for(const z of [7.715]){line(stairs,[[17.025,midHeight+rise+1.05,z],[12.545,levelHeight+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,17.025-i*going-.025,midHeight+(i+1)*rise,z-.025,.05,1.05,.05,steel)}
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);rail(midGuard,19.25,5.99,.05,3.25);rail(midGuard,17.025,5.99,2.275,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
 rail(openingRails,10.7,7.38,6.89,.06);
 rail(openingRails,17.53,7.44,.06,.30);
 box(openingRails,17.43,-.15,7.74,.1,.15,1.5,steel);
-rail(upper,10.7,0,.07,7.44);rail(upper,19.355,0,.07,9.4);
+// This daylight-facade edge already has the original exterior glazing, so no added inner glass guard is shown here.
+rail(upper,19.355,0,.07,9.4);
 // User confirms this perimeter is an existing solid wall, not an open edge.
 // Show a cutaway at 1.10m for inspection; this is not the actual wall height.
 const existingSolidWall=new THREE.Group();upper.add(existingSolidWall);
@@ -148,18 +150,18 @@ for(const [x,w,d] of [[10.7,7.725,.13],[18.425,.5,.03],[18.925,.5,.13]])box(exis
 label(existingSolidWall,'原实体墙 · 剖切显示',12.1,1.35,9.33,'#687b7d',3.0);
 
 function stairArrow(a,b,color){const from=new THREE.Vector3(...a),delta=new THREE.Vector3(...b).sub(from);const arrow=new THREE.ArrowHelper(delta.clone().normalize(),from,delta.length(),color,.32,.18);stairs.add(arrow)}
-stairArrow([12.6,.42,6.79],[16.85,2.92,6.79],0xd28a24);stairArrow([18.125,2.92,6.79],[18.125,2.92,8.49],0xd28a24);stairArrow([16.85,2.94,8.49],[12.6,5.62,8.49],0x258b9a);
+stairArrow([12.6,.32,6.79],[16.85,2.22,6.79],0xd28a24);stairArrow([18.125,2.22,6.79],[18.125,2.22,8.49],0xd28a24);stairArrow([16.85,2.24,8.49],[12.6,4.42,8.49],0x258b9a);
 label(stairs,'第一跑内侧 · 宽目标1.50m',15.3,1.5,6.0,'#96621e',4.2);
 label(stairs,'第二跑贴墙 · 二楼出口',15.3,5.70,9.0,'#287b8b',4.2);
-label(stairs,'平台2.20×3.20m / 顶2.70m',18.45,3.10,7.6,'#755b3e',4.2);
+label(stairs,'平台2.20×3.20m / 顶2.10m',18.45,2.50,7.6,'#755b3e',4.2);
 // Proposed framing only; member sizes and supports require engineering.
 // The three non-corner posts at the daylight facade are removed from this layout view.
 const removedDaylightFacadePosts=new Set(['10.82|0.13','11.70|0.13','17.70|0.13']);
-for(const x of [10.82,11.70,17.70,19.29])for(const z of [.13,9.32])if(!removedDaylightFacadePosts.has(`${x}|${z}`))box(structure,x-.08,0,z-.08,.16,5.12,.16,steel);
-for(const x of [10.82,11.70])box(structure,x-.075,4.92,0,.15,.2,7.28,steel);
-for(const x of [17.70,19.29])box(structure,x-.075,4.92,0,.15,.2,9.4,steel);
-for(const z of [.13,7.34,9.34])box(structure,10.7,4.92,z-.06,8.725,.2,.12,steel);
-box(structure,17.53,4.92,7.44,.15,.2,1.8,steel);
+for(const x of [10.82,11.70,17.70,19.29])for(const z of [.13,9.32])if(!removedDaylightFacadePosts.has(`${x}|${z}`))box(structure,x-.08,0,z-.08,.16,lowerBeamHeight+.2,.16,steel);
+for(const x of [10.82,11.70])box(structure,x-.075,lowerBeamHeight,0,.15,.2,7.28,steel);
+for(const x of [17.70,19.29])box(structure,x-.075,lowerBeamHeight,0,.15,.2,9.4,steel);
+for(const z of [.13,7.34,9.34])box(structure,10.7,lowerBeamHeight,z-.06,8.725,.2,.12,steel);
+box(structure,17.53,lowerBeamHeight,7.44,.15,.2,1.8,steel);
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a)}
 // 3D electrical overlay mirrors the two circuit drawings. Every socket is a selectable
 // five-hole panel (two-pin plus three-pin). These positions were removed by the user
@@ -188,7 +190,7 @@ outlet(circuitGround,12.35,9.11,'z',mat('#8550aa'),'C4','一楼',1.10);
 circuitRoute(circuitUpper,[[18.85,.52],[18.85,7.1],[17.2,7.1],[17.2,1.6]]);circuitRoute(circuitUpper,[[18.85,7.1],[14.2,7.1],[14.2,1.7]]);box(circuitUpper,18.65,.10,.20,.58,.55,.12,'#224b67');
 // Existing 500mm columns remain at the CAD positions; no implied permission to alter them.
 for(const x of [8.65,18.425])box(shell,x,0,.5,.5,8.4,.5,'#8c969a');
-const upperOriginalColumn=box(upper,18.425,0,.5,.5,3.00,.5,'#8c969a');upperOriginalColumn.visible=false;
+const upperOriginalColumn=box(upper,18.425,0,.5,.5,levelHeight,.5,'#8c969a');upperOriginalColumn.visible=false;
 // Low perimeter walls retain the footprint while keeping the interior visible.
 for(let i=1;i<contour.length;i++){const a=contour[i-1],b=contour[i];if(Math.abs(a[1]-10.7)<.01&&Math.abs(b[1]-10.7)<.01)continue;const dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz);if(len<.03)continue;const w=box(shell,-len/2,0,-.06,len,.55,.12,wallmat);w.position.set((a[0]+b[0])/2,.275,(a[1]+b[1])/2);w.rotation.y=-Math.atan2(dz,dx)}
 for(const x of [9.15,10.70])box(ground,x-.035,-.1,10.68,.07,2.5,.07,'#2d87b0');box(ground,9.15,2.4,10.68,1.55,.07,.07,'#2d87b0');line(ground,[[9.15,-.1,10.7],[9.15,-.1,9.925],[9.925,-.1,10.7],[10.7,-.1,9.925],[10.7,-.1,10.7]],'#2580ab');
@@ -199,17 +201,17 @@ label(ground,'右侧 · 开放办公预留区',4.5,1.4,2.5);
 label(ground,'左侧老板区 · 平地运动',18,1.4,5,'#8b6343');label(ground,'第一跑下 · 储物',14.975,1,6.7,'#566368');label(ground,'私用休闲',11.9,1.4,1.8,'#677243');
 label(ground,'原入口',9.925,2.9,10.7,'#176a9c');label(ground,'通道 −0.10m',9.925,.5,5,'#8e6340',3.1);
 label(upper,'主电脑位 · 朝向外侧',18,1.6,2.8);label(upper,'临挑空 · 茶桌',11.9,1.5,2.2,'#677243');label(upper,'直播 / 日常办公',15,2.2,4.0,'#77558b');
-label(labelGroup,'二楼目标净高 3.00m',20.5,6.90,5.4,'#466e82',4.2);line(labelGroup,[[20,5.40,5.4],[20,8.4,5.4]],'#708899');
-label(labelGroup,'一楼梁下目标 4.92m',20.5,2.46,5.4,'#466e82',4.2);line(labelGroup,[[20,0,5.4],[20,4.92,5.4]],'#708899');
-label(stairs,'模型最紧梁下净空约2.22m',17.9,4.0,6.55,'#426d66',4.0);line(stairs,[[17.3,2.7,6.79],[17.3,4.92,6.79]],'#426d66');
+label(labelGroup,'二楼层高 4.20m',20.5,6.30,5.4,'#466e82',4.2);line(labelGroup,[[20,4.20,5.4],[20,8.4,5.4]],'#708899');
+label(labelGroup,'一楼层高 4.20m',20.5,2.10,5.4,'#466e82',4.2);line(labelGroup,[[20,0,5.4],[20,4.20,5.4]],'#708899');
+label(stairs,'平台下模型净高约1.80m · 需调整卫浴',17.9,2.85,6.55,'#8a5c36',4.0);line(stairs,[[17.3,2.10,6.79],[17.3,3.92,6.79]],'#8a5c36');
 const facade=new THREE.Group();model.add(facade);const windowMat=mat('#8bbbd0',.09);
 box(facade,0,.65,-.05,19.425,7.75,.05,windowMat);box(facade,19.425,.65,0,.05,7.75,9.4,windowMat);
 line(facade,[[0,.65,0],[19.425,.65,0],[19.425,.65,9.4]],'#65a3bd');line(facade,[[0,8.4,0],[19.425,8.4,0],[19.425,8.4,9.4]],'#65a3bd');
 // Window bands identify confirmed facade sides only; sill, head and divisions are illustrative.
 label(facade,'原图下侧外窗 · 采光面',8.0,.55,-.55,'#357c98',5.2);label(facade,'原图右侧外窗',20.0,2.1,6.7,'#357c98',4.4);
 const pad=box(model,-2,-.4,-2,23.5,.2,15,'#e0e9ed');pad.receiveShadow=true;
-const supportStudy=setupSupportStudy({model,ground,box,label,mat,trainingMat});
-let mode='all';function setMode(m){mode=m;supportStudy.update(m);ground.visible=m!=='upper';upper.visible=m!=='ground';stairs.visible=m==='all'||m==='ground';shell.visible=m==='all'||m==='ground';structure.visible=$('#frame').checked&&m==='all';labelGroup.visible=m==='all';upper.position.y=m==='split'?9.40:5.40;if(m==='upper')upper.position.y=0;const text={all:'整体 · 两层关系',ground:'一楼 · 左老板私用 / 中下沉通道 / 右办公会议',upper:'二楼 · 电脑 / 茶桌 / 开放预留区',split:'拆层展示 · 二层临时上移4米，非实际高度'};$('#modeLabel').textContent=text[m];document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));updateCircuitLayer();controls.target.set(9.7,m==='split'?4:m==='all'?2.5:0,-4.8);controls.update()}
+const supportStudy=setupSupportStudy({model,ground,box,label,mat,trainingMat,supportHeight:lowerBeamHeight+.2});
+let mode='all';function setMode(m){mode=m;supportStudy.update(m);ground.visible=m!=='upper';upper.visible=m!=='ground';stairs.visible=m==='all'||m==='ground';shell.visible=m==='all'||m==='ground';structure.visible=$('#frame').checked&&m==='all';labelGroup.visible=m==='all';upper.position.y=m==='split'?8.20:levelHeight;if(m==='upper')upper.position.y=0;const text={all:'整体 · 两层关系',ground:'一楼 · 左老板私用 / 中下沉通道 / 右办公会议',upper:'二楼 · 电脑 / 茶桌 / 开放预留区',split:'拆层展示 · 二层临时上移4米，非实际高度'};$('#modeLabel').textContent=text[m];document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));updateCircuitLayer();controls.target.set(9.7,m==='split'?4:m==='all'?2.5:0,-4.8);controls.update()}
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{setMode(b.dataset.mode);upperOriginalColumn.visible=mode==='upper'||mode==='split';reset()});$('#labels').onchange=e=>labels.forEach(s=>s.visible=s.parent===labelGroup||e.target.checked);$('#frame').onchange=()=>setMode(mode);$('#spin').onchange=e=>controls.autoRotate=e.target.checked;$('#daylight').onchange=e=>facade.visible=e.target.checked&&mode!=='upper';
 function selectSocket(meta){if(selectedSocket)selectedSocket.rim.material.color.copy(selectedSocket.baseColor);selectedSocket=meta||null;if(selectedSocket)selectedSocket.rim.material.color.set('#137bb3');$('#socketPicked').textContent=selectedSocket?`${selectedSocket.id} · ${selectedSocket.floor} ${selectedSocket.circuit} · 五孔（两孔＋三孔）`:'未选择插座';$('#removeSocket').disabled=!selectedSocket}
 function updateCircuitLayer(){const show=$('#circuitLayer').checked;circuitGround.visible=show&&mode!=='upper';circuitUpper.visible=show&&mode!=='ground';$('#socketTools').hidden=!show;if(!show)selectSocket(null);renderer.domElement.dataset.circuitLayerVisible=String(show)}
@@ -290,7 +292,7 @@ function updateFurniture(){
 }
 $('#furniture').onchange=updateFurniture;
 
-new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();fitViewport();renderer.setSize(host.clientWidth,host.clientHeight)}).observe(host);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();$('#loading').remove();renderer.domElement.dataset.ready='true';renderer.domElement.dataset.orientation='CAD-X_to_X;CAD-Y_to_negative-Z';renderer.domElement.dataset.gymArea='20.145';renderer.domElement.dataset.zone2Area='69.6710';renderer.domElement.dataset.baseUpperArea='59.261';renderer.domElement.dataset.recoveredArea='10.4100';renderer.domElement.dataset.landing='2.2';renderer.domElement.dataset.upperLevel='5.40';renderer.domElement.dataset.upperNetHeight='3.00';renderer.domElement.dataset.lowerBeamHeight='4.92';renderer.domElement.dataset.risers='34';renderer.domElement.dataset.candidateColumns='4';renderer.domElement.dataset.structuralVerified='false';renderer.domElement.dataset.stairShift='0';renderer.domElement.dataset.wetArea='6.696';renderer.domElement.dataset.wetLevel='ground-under-turning-platform';renderer.domElement.dataset.wetClearHeightTarget='2.25';renderer.domElement.dataset.stairWidth='1.50';renderer.domElement.dataset.layoutVersion='user-circled-stair-side-door';renderer.domElement.dataset.wetHeightConflict='false';renderer.domElement.dataset.stairHeadroomConflict='false';renderer.domElement.dataset.modeledMinimumHeadroom='2.22';renderer.domElement.dataset.headroomScope='current-modeled-beam-and-slab-only';renderer.domElement.dataset.stairRiser='0.158824';renderer.domElement.dataset.stairGoing='0.28';renderer.domElement.dataset.firstFlightDirection='-X';renderer.domElement.dataset.returnFlightDirection='+X';if(location.hash==='#connection')$('#connectionView').click();if(location.hash==='#left')$('#bossFocus').click();if(location.hash==='#rest')$('#restFocus').click();if(location.hash==='#wet')$('#wetFocus').click();if(location.hash==='#stairs')$('#stairView').click();if(location.hash==='#supports')$('#supportView').click();function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();measurement.update();renderer.render(scene,camera)}animate();
+new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();fitViewport();renderer.setSize(host.clientWidth,host.clientHeight)}).observe(host);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();$('#loading').remove();renderer.domElement.dataset.ready='true';renderer.domElement.dataset.orientation='CAD-X_to_X;CAD-Y_to_negative-Z';renderer.domElement.dataset.gymArea='20.145';renderer.domElement.dataset.zone2Area='69.6710';renderer.domElement.dataset.baseUpperArea='59.261';renderer.domElement.dataset.recoveredArea='10.4100';renderer.domElement.dataset.landing='2.2';renderer.domElement.dataset.upperLevel='4.20';renderer.domElement.dataset.upperNetHeight='4.20';renderer.domElement.dataset.lowerBeamHeight='3.92';renderer.domElement.dataset.risers='34';renderer.domElement.dataset.candidateColumns='4';renderer.domElement.dataset.structuralVerified='false';renderer.domElement.dataset.stairShift='0';renderer.domElement.dataset.wetArea='6.696';renderer.domElement.dataset.wetLevel='ground-under-turning-platform';renderer.domElement.dataset.wetClearHeightTarget='2.25';renderer.domElement.dataset.stairWidth='1.50';renderer.domElement.dataset.layoutVersion='equal-4.20m-floor-heights';renderer.domElement.dataset.wetHeightConflict='true';renderer.domElement.dataset.stairHeadroomConflict='true';renderer.domElement.dataset.modeledMinimumHeadroom='1.80';renderer.domElement.dataset.headroomScope='equal-floor-height-model-before-service-runs';renderer.domElement.dataset.stairRiser='0.123529';renderer.domElement.dataset.stairGoing='0.28';renderer.domElement.dataset.firstFlightDirection='-X';renderer.domElement.dataset.returnFlightDirection='+X';if(location.hash==='#connection')$('#connectionView').click();if(location.hash==='#left')$('#bossFocus').click();if(location.hash==='#rest')$('#restFocus').click();if(location.hash==='#wet')$('#wetFocus').click();if(location.hash==='#stairs')$('#stairView').click();if(location.hash==='#supports')$('#supportView').click();function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();measurement.update();renderer.render(scene,camera)}animate();
 
 function overallDimensions(){
  closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
