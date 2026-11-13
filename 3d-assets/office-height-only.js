@@ -146,14 +146,16 @@ stairArrow([12.6,.32,6.79],[16.85,2.22,6.79],0xd28a24);stairArrow([18.125,2.22,6
 label(stairs,'第一跑内侧 · 宽目标1.50m',15.3,1.5,6.0,'#96621e',4.2);
 label(stairs,'第二跑贴墙 · 二楼出口',15.3,5.70,9.0,'#287b8b',4.2);
 label(stairs,'平台2.20×3.20m / 顶2.10m',18.45,2.50,7.6,'#755b3e',4.2);
-// Minimal support scheme: a clean ring of continuous under-slab beams plus one cross beam.
-// It bears at the existing concrete-column / wall positions; no added forest of vertical posts is implied.
+// Minimal support scheme: a clean ring of continuous under-slab beams plus regularly spaced secondary cross beams.
+// The secondary beams make the mezzanine a true steel deck rather than an unsupported plate; no added forest of vertical posts is implied.
 const frameBeam=mat('#27313a');
 box(structure,10.70,lowerBeamHeight-.26,.05,8.73,.26,.18,frameBeam);
 box(structure,10.70,lowerBeamHeight-.26,9.22,8.73,.26,.18,frameBeam);
 box(structure,10.70,lowerBeamHeight-.26,.05,.18,.26,9.35,frameBeam);
 box(structure,19.245,lowerBeamHeight-.26,.05,.18,.26,9.35,frameBeam);
 box(structure,10.70,lowerBeamHeight-.26,7.30,8.73,.26,.18,frameBeam);
+// Five lightweight transverse secondary beams keep the open office deck on a regular roughly-1.5m module.
+for(const x of [12.25,13.70,15.15,16.60,18.05])box(structure,x,lowerBeamHeight-.22,.18,.14,.18,7.08,frameBeam);
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a)}
 // 3D electrical overlay mirrors the two circuit drawings. Every socket is a selectable
 // five-hole panel (two-pin plus three-pin). These positions were removed by the user
