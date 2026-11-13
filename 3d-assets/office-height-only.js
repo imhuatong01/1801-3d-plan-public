@@ -121,11 +121,7 @@ rail(openingRails,17.53,7.44,.06,.30);
 box(openingRails,17.43,-.15,7.74,.1,.15,1.5,steel);
 // Restore the outer perimeter guard; it is not the short inner guard removed above.
 rail(upper,10.7,0,.07,7.44);rail(upper,19.355,0,.07,9.4);
-// User confirms this perimeter is an existing solid wall, not an open edge.
-// Show a cutaway at 1.10m for inspection; this is not the actual wall height.
-const existingSolidWall=new THREE.Group();upper.add(existingSolidWall);
-for(const [x,w,d] of [[10.7,7.725,.13],[18.425,.5,.03],[18.925,.5,.13]])box(existingSolidWall,x,0,9.27,w,1.10,d,wallmat);
-label(existingSolidWall,'原实体墙 · 剖切显示',12.1,1.35,9.33,'#687b7d',3.0);
+// No short cutaway wall band is shown here: it is not present in the field condition.
 
 function stairArrow(a,b,color){const from=new THREE.Vector3(...a),delta=new THREE.Vector3(...b).sub(from);const arrow=new THREE.ArrowHelper(delta.clone().normalize(),from,delta.length(),color,.32,.18);stairs.add(arrow)}
 stairArrow([12.6,.32,6.79],[16.85,2.22,6.79],0xd28a24);stairArrow([18.125,2.22,6.79],[18.125,2.22,8.49],0xd28a24);stairArrow([16.85,2.24,8.49],[12.6,4.42,8.49],0x258b9a);
