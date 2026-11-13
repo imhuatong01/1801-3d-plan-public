@@ -7,7 +7,7 @@ export function setupMeasurements(ctx){
  function segment(g,a,b,color){const o=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color,depthTest:false}));o.renderOrder=100;g.add(o)}
  function dim(g,a,b,str,c='#287397'){const av=new THREE.Vector3(...a),bv=new THREE.Vector3(...b);segment(g,av,bv,c);const dir=bv.clone().sub(av).normalize();const tick=new THREE.Vector3(-dir.z,0,dir.x).multiplyScalar(.14);for(const p of [av,bv])segment(g,p.clone().sub(tick),p.clone().add(tick),c);text(g,str,av.clone().add(bv).multiplyScalar(.5).add(new THREE.Vector3(0,.22,0)),c,4.5)}
  // Dimension-only overlay: local model coordinates, no furniture zone names.
- const quietLabels=[],quietLines=[];let scopeOverride=null,hoverRegion='',hoverCorner=false,focusRegion='',hoverStraight=null;
+ const quietLabels=[],quietLines=[];let scopeOverride=null,hoverRegion='',hoverCorner=false,focusRegion='',hoverStraight=null,hoverCandidateKey='',hoverCandidateAt=0;
  const hoverRay=new THREE.Raycaster(),hoverMouse=new THREE.Vector2();let pointerIn=false,lastHover=0;
  // One concise length label appears only while the cursor is on a single straight model edge.
  const straightHover=new THREE.Group();model.add(straightHover);straightHover.visible=false;
@@ -24,15 +24,12 @@ export function setupMeasurements(ctx){
  }
  function ancestry(o,target){for(let a=o;a;a=a.parent)if(a===target)return true;return false}
  function findHover(){
-  if(!pointerIn){hoverRegion='';hoverCorner=false;hoverStraight=null;return;}
+  if(!pointerIn){hoverRegion='';hoverCorner=false;hoverStraight=null;hoverCandidateKey='';return;}
   hoverRay.setFromCamera(hoverMouse,camera);const meshes=[];
-  for(const g of [ground,upper,stairs,structure,shell,facade,supportReserve])g.traverse(o=>{if(o.isMesh&&!o.userData.areaOverlay&&visible(o)&&(!o.material.transparent||o.material.opacity>.3||o.userData.hoverDimension))meshes.push(o)});
-  const h=hoverRay.intersectObjects(meshes,false)[0];hoverRegion='';hoverCorner=false;hoverStraight=null;if(!h)return;
-  hoverStraight=h.object.userData.hoverDimension||null;
-  const v=model.worldToLocal(h.point.clone());
-  if(ancestry(h.object,supportReserve))hoverRegion='bar-gym';else if(ancestry(h.object,wet))hoverRegion='bath';else if(ancestry(h.object,structure))hoverRegion='frame';else if(ancestry(h.object,stairs))hoverRegion=v.x<=12.95?'landing':v.z<7.64?'flight1':'flight2';else if(ancestry(h.object,upper)){const u=upper.worldToLocal(h.point.clone());hoverRegion=u.z>=9.24?'upper-edge':u.z>=7.74&&u.x>=17.53&&u.x<=19.03?'arrival':u.z>=7.44&&u.x>=17.53?'upper-side':'upper';}else if(ancestry(h.object,shell))hoverRegion='corner';
-  else hoverRegion=v.x<9.15?'office':v.x<=10.7?'corridor':v.z<=6.04?'bar-gym':v.x>=17.43&&v.x<=19.275&&v.z<=7.54?'approach':'owner';
-  hoverCorner=(v.x<.55&&v.z<.55)||(v.x>18.1&&v.z>9.0)||(v.x>18.0&&v.z<1.15)||(v.z>7.675&&v.x>8.8&&v.x<11.2);
+  for(const g of [ground,upper,stairs,structure,shell,facade,supportReserve])g.traverse(o=>{if(o.isMesh&&!o.userData.areaOverlay&&!o.userData.hoverIgnore&&visible(o)&&(!o.material.transparent||o.material.opacity>.3||o.userData.hoverDimension))meshes.push(o)});
+  const h=hoverRay.intersectObjects(meshes,false)[0];let nextRegion='',nextCorner=false,nextStraight=null,nextKey='none';
+  if(h){nextStraight=h.object.userData.hoverDimension||null;const v=model.worldToLocal(h.point.clone());if(ancestry(h.object,supportReserve))nextRegion='bar-gym';else if(ancestry(h.object,wet))nextRegion='bath';else if(ancestry(h.object,structure))nextRegion='frame';else if(ancestry(h.object,stairs))nextRegion=v.x<=12.95?'landing':v.z<7.64?'flight1':'flight2';else if(ancestry(h.object,upper)){const u=upper.worldToLocal(h.point.clone());nextRegion=u.z>=9.24?'upper-edge':u.z>=7.74&&u.x>=17.53&&u.x<=19.03?'arrival':u.z>=7.44&&u.x>=17.53?'upper-side':'upper';}else if(ancestry(h.object,shell))nextRegion='corner';else nextRegion=v.x<9.15?'office':v.x<=10.7?'corridor':v.z<=6.04?'bar-gym':v.x>=17.43&&v.x<=19.275&&v.z<=7.54?'approach':'owner';nextCorner=(v.x<.55&&v.z<.55)||(v.x>18.1&&v.z>9.0)||(v.x>18.0&&v.z<1.15)||(v.z>7.675&&v.x>8.8&&v.x<11.2);nextKey=h.object.uuid+'|'+nextRegion+'|'+(nextStraight?.text||'')+'|'+nextCorner;}
+  const now=performance.now();if(nextKey!==hoverCandidateKey){hoverCandidateKey=nextKey;hoverCandidateAt=now;return}if(now-hoverCandidateAt>=100){hoverRegion=nextRegion;hoverCorner=nextCorner;hoverStraight=nextStraight;}
  }
  canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();hoverMouse.set((e.clientX-r.left)/r.width*2-1,1-(e.clientY-r.top)/r.height*2);pointerIn=true;focusRegion='';lastHover=0;});
  canvas.addEventListener('pointerleave',()=>{pointerIn=false;hoverRegion='';hoverCorner=false;});
