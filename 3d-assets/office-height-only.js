@@ -12,8 +12,8 @@ const controls=new OrbitControls(camera,renderer.domElement);controls.target.set
 scene.add(new THREE.HemisphereLight(0xffffff,0x98a9b7,1.8));const sun=new THREE.DirectionalLight(0xfff1dc,2);sun.position.set(5,24,-12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-25;sun.shadow.camera.right=25;sun.shadow.camera.top=25;sun.shadow.camera.bottom=-25;sun.shadow.normalBias=.03;scene.add(sun);
 const totalHeight=8.40,levelHeight=4.20,slabDepth=.28,lowerBeamHeight=levelHeight-slabDepth;
 const ground=new THREE.Group(),upper=new THREE.Group(),stairs=new THREE.Group(),structure=new THREE.Group(),shell=new THREE.Group(),labelGroup=new THREE.Group();const model=new THREE.Group();model.scale.z=-1;scene.add(model);model.add(ground,upper,stairs,structure,shell,labelGroup);upper.position.y=levelHeight;
-// Keep the stair structure readable while hiding every tread, as requested.
-const stairTreads=new THREE.Group();stairs.add(stairTreads);stairTreads.visible=false;
+// Show the actual stair treads so the circulation route can be read directly in the 3D model.
+const stairTreads=new THREE.Group();stairs.add(stairTreads);stairTreads.visible=true;
 const stairShift=0;stairs.scale.x=-1;stairs.position.x=29.975;const stairStorage=new THREE.Group(),openingRails=new THREE.Group();stairStorage.scale.x=-1;stairStorage.position.x=29.975;openingRails.scale.x=-1;openingRails.position.x=29.975;ground.add(stairStorage);upper.add(openingRails);
 const partitions=[],labels=[],pickables=[];const mat=(c,op=1)=>new THREE.MeshStandardMaterial({color:c,roughness:.72,transparent:op<1,opacity:op,depthWrite:op===1});const glass=mat('#89c2d4',.23),steel=mat('#333b42'),wallmat=mat('#edf0ec'),wood=mat('#ccb18a'),white=mat('#fbfaf6'),charcoal=mat('#4c6576');
 function box(g,x,y,z,w,h,d,m){const a=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),typeof m==='string'?mat(m):m);a.position.set(x+w/2,y+h/2,z+d/2);a.castShadow=true;a.receiveShadow=true;g.add(a);return a}
@@ -156,9 +156,7 @@ label(stairs,'第一跑内侧 · 宽目标1.50m',15.3,1.5,6.0,'#96621e',4.2);
 label(stairs,'第二跑贴墙 · 二楼出口',15.3,5.70,9.0,'#287b8b',4.2);
 label(stairs,'平台2.20×3.20m / 顶2.10m',18.45,2.50,7.6,'#755b3e',4.2);
 // Proposed framing only; member sizes and supports require engineering.
-// The user-marked temporary black posts are removed from this layout view.
-const removedDaylightFacadePosts=new Set(['10.82|0.13','11.70|0.13','17.70|0.13','19.29|0.13','10.82|9.32','11.70|9.32','17.70|9.32','19.29|9.32']);
-for(const x of [10.82,11.70,17.70,19.29])for(const z of [.13,9.32])if(!removedDaylightFacadePosts.has(`${x}|${z}`))box(structure,x-.08,0,z-.08,.16,lowerBeamHeight+.2,.16,steel);
+// All temporary black vertical support posts are omitted from this layout view at the user's direction.
 for(const x of [10.82,11.70])box(structure,x-.075,lowerBeamHeight,0,.15,.2,7.28,steel);
 for(const x of [17.70,19.29])box(structure,x-.075,lowerBeamHeight,0,.15,.2,9.4,steel);
 for(const z of [.13,7.34,9.34])box(structure,10.7,lowerBeamHeight,z-.06,8.725,.2,.12,steel);
