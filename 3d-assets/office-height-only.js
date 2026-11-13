@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=16-stable-hover-target';
+import {setupMeasurements} from './measurements-height-only.js?v=17-overall-two-point';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -23,13 +23,18 @@ function partition(g,x,z,w,d){const a=box(g,x,0,z,w,2.5,d,glass);partitions.push
 function desk(g,x,z,w=1.35,d=.65){box(g,x,.72,z,w,.055,d,white);for(const dx of [.06,w-.09])box(g,x+dx,0,z+.07,.04,.72,d-.14,steel);box(g,x+w*.4,.78,z+d*.7,.45,.32,.035,charcoal);box(g,x+w*.5,.78,z+d*.7,.04,.04,.12,steel)}
 function chair(g,x,z,rot=0){const c=new THREE.Group();c.position.set(x,0,z);c.rotation.y=rot;g.add(c);box(c,-.23,.43,-.23,.46,.08,.46,charcoal);box(c,-.23,.5,.19,.46,.45,.06,charcoal);box(c,-.035,.08,-.035,.07,.35,.07,steel);box(c,-.25,.05,-.025,.5,.035,.05,steel);box(c,-.025,.05,-.25,.05,.035,.5,steel)}
 function plant(g,x,z){box(g,x-.17,0,z-.17,.34,.4,.34,'#eee7da');const b=new THREE.Mesh(new THREE.SphereGeometry(.36,9,8),mat('#5e9279'));b.scale.y=1.6;b.position.set(x,.8,z);g.add(b)}
-function rail(g,x,z,w,d){box(g,x,0,z,w,1.08,d,glass);box(g,x,1.08,z,w,.045,d,steel)}
+function rail(g,x,z,w,d){
+ const alongX=w>=d,long=alongX?w:d,gap=long>1?.10:0,count=long>1?3:1,panel=(long-gap*(count-1))/count;
+ for(let i=0;i<count;i++){const at=i*(panel+gap);if(alongX)box(g,x+at,0,z,panel,1.08,d,glass);else box(g,x,0,z+at,w,1.08,panel,glass)}
+ box(g,x,1.08,z,w,.045,d,steel)
+}
 // Sloped stair guards use continuous glass panels with a slim dark handrail.
 // Unlike the former baluster-only rendering, both open sides read as glass safety railings.
 function slopeGlassRail(g,a,b){
- const h=1.05,positions=[...a,...b,b[0],b[1]+h,b[2],a[0],a[1]+h,a[2]];
- const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex([0,1,2,0,2,3]);geo.computeVertexNormals();
- const pane=new THREE.Mesh(geo,mat('#89c2d4',.30));pane.material.side=THREE.DoubleSide;pane.castShadow=true;pane.receiveShadow=true;g.add(pane);
+ const h=1.05,dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),gap=.10,panel=(len-gap*2)/3,ux=dx/len,uy=dy/len;
+ for(let i=0;i<3;i++){const start=i*(panel+gap),end=start+panel,p0=[a[0]+ux*start,a[1]+uy*start,a[2]],p1=[a[0]+ux*end,a[1]+uy*end,a[2]],positions=[...p0,...p1,p1[0],p1[1]+h,p1[2],p0[0],p0[1]+h,p0[2]];
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex([0,1,2,0,2,3]);geo.computeVertexNormals();
+  const pane=new THREE.Mesh(geo,mat('#89c2d4',.30));pane.material.side=THREE.DoubleSide;pane.castShadow=true;pane.receiveShadow=true;g.add(pane)}
  line(g,[[a[0],a[1]+h,a[2]],[b[0],b[1]+h,b[2]]],'#333b42');
 }
 // A slim rectangular steel stringer directly below a stair run: supports the treads without cluttering the room with posts.

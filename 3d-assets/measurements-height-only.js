@@ -222,7 +222,8 @@ export function setupMeasurements(ctx){
  function snap(p,candidates,event){if(!$('#measureSnap').checked)return p;const r=canvas.getBoundingClientRect();let best=13,result=p;for(const v of candidates){const q=v.clone().project(camera);if(q.z< -1||q.z>1)continue;const distance=Math.hypot((q.x+1)*r.width/2+r.left-event.clientX,(1-q.y)*r.height/2+r.top-event.clientY);if(distance<best){best=distance;result=v}}return result.clone()}
  function point(event){const r=canvas.getBoundingClientRect();mouse.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);ray.setFromCamera(mouse,camera);
   if($('#measureType').value==='floor'){
-   const meshes=getMode()==='upper'?upperFloorMeshes:groundFloorMeshes;
+   // In the overall 3D view, the ray selects the nearest visible floor, so users can measure either level without changing views first.
+   const meshes=getMode()==='upper'?upperFloorMeshes:getMode()==='ground'?groundFloorMeshes:[...upperFloorMeshes,...groundFloorMeshes];
    const h=ray.intersectObjects(meshes,false)[0];if(!h)return;
    const candidates=[];for(const obj of meshes){const at=obj.geometry.getAttribute('position');let max=-Infinity;const verts=[];for(let i=0;i<at.count;i++){const v=new THREE.Vector3().fromBufferAttribute(at,i).applyMatrix4(obj.matrixWorld);verts.push(v);max=Math.max(max,v.y)}for(const v of verts)if(Math.abs(v.y-max)<.001)candidates.push(v)}
    return snap(h.point,candidates,event);
@@ -233,7 +234,6 @@ export function setupMeasurements(ctx){
  function marker(g,p){const m=new THREE.Mesh(new THREE.SphereGeometry(.07,12,8),new THREE.MeshBasicMaterial({color:'#e06420',depthTest:false}));m.position.copy(p);m.renderOrder=120;g.add(m)}
  canvas.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
  canvas.addEventListener('pointerup',e=>{if(!active||e.button!==0||!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;if(getMode()==='split'){stat('拆层状态有展示位移，请切换整体或单层后测量。');return}
-  if($('#measureType').value==='floor'&&getMode()==='all'){stat('平面测量请先选“只看一楼”或“只看二楼”，避免遮挡。');return}
   const p=point(e);if(!p){stat('请点选模型范围内的位置；靠近端点可自动吸附。');return}
   if(!first){const g=new THREE.Group();measured.add(g);marker(g,p);first={p,group:g};stat('起点已选，点选终点。');return}
   const a=first.p,d=p.distanceTo(a);if(d<.001){stat('两点太近，请重新选择终点。');return}const g=first.group;marker(g,p);segment(g,a,p,'#df671e');const horizontal=Math.hypot(p.x-a.x,p.z-a.z),vertical=Math.abs(p.y-a.y);const message=`距离 ${d.toFixed(3)} m · 水平 ${horizontal.toFixed(3)} m · 高差 ${vertical.toFixed(3)} m`;text(g,`${d.toFixed(3)} m`,a.clone().add(p).multiplyScalar(.5).add(new THREE.Vector3(0,.25,0)),'#a74c20');g.userData={distance:d,horizontal,vertical};records.push(g);first=null;stat(message);canvas.dataset.lastMeasurement=JSON.stringify(g.userData);
