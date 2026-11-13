@@ -151,6 +151,8 @@ const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGua
 openingRails.scale.x=1;openingRails.position.x=0;
 // Guardrail follows the reduced stair opening, not the former oversized L-shaped void.
 rail(openingRails,12.25,7.54,5.10,.06);
+// Close the left end of the stair opening as a safety guard.  This is an internal void edge, not the exterior daylight facade.
+rail(openingRails,12.25,7.60,.06,1.70);
 rail(openingRails,17.29,7.60,.06,1.70);
 box(openingRails,17.43,-.15,7.74,.1,.15,1.5,steel);
 // Keep the interior-edge guard only.  The exterior L-shaped daylight glass is already the enclosure and has no added handrail.
