@@ -1,14 +1,20 @@
 import * as THREE from 'three';
 export function setupMeasurements(ctx){
- const {scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,wet,supportReserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode}=ctx;
+ const {scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode}=ctx;
  const $=s=>document.querySelector(s),canvas=renderer.domElement;
  const dims=new THREE.Group(),upperDims=new THREE.Group(),stairDims=new THREE.Group();ground.add(dims);upper.add(upperDims);stairs.add(stairDims);
  function text(g,str,p,color='#9c542d',size=3.4){const c=document.createElement('canvas');c.width=1024;c.height=128;const a=c.getContext('2d');a.fillStyle='#ffffffef';a.fillRect(0,0,1024,128);a.fillStyle=color;a.font='bold 48px Microsoft YaHei';a.textAlign='center';a.textBaseline='middle';a.fillText(str,512,64,1000);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,toneMapped:false}));s.position.copy(p);s.scale.set(size,size/8,1);s.renderOrder=110;g.add(s);return s}
  function segment(g,a,b,color){const o=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color,depthTest:false}));o.renderOrder=100;g.add(o)}
  function dim(g,a,b,str,c='#287397'){const av=new THREE.Vector3(...a),bv=new THREE.Vector3(...b);segment(g,av,bv,c);const dir=bv.clone().sub(av).normalize();const tick=new THREE.Vector3(-dir.z,0,dir.x).multiplyScalar(.14);for(const p of [av,bv])segment(g,p.clone().sub(tick),p.clone().add(tick),c);text(g,str,av.clone().add(bv).multiplyScalar(.5).add(new THREE.Vector3(0,.22,0)),c,4.5)}
  // Dimension-only overlay: local model coordinates, no furniture zone names.
- const quietLabels=[],quietLines=[];let scopeOverride=null,hoverRegion='',hoverCorner=false,focusRegion='';
+ const quietLabels=[],quietLines=[];let scopeOverride=null,hoverRegion='',hoverCorner=false,focusRegion='',hoverStraight=null;
  const hoverRay=new THREE.Raycaster(),hoverMouse=new THREE.Vector2();let pointerIn=false,lastHover=0;
+ // One concise length label appears only while the cursor is on a single straight model edge.
+ const straightHover=new THREE.Group();model.add(straightHover);straightHover.visible=false;
+ const straightLineMat=new THREE.LineBasicMaterial({color:'#277b99',depthTest:false}),straightTickMat=new THREE.LineBasicMaterial({color:'#277b99',depthTest:false});
+ const straightLine=new THREE.Line(new THREE.BufferGeometry(),straightLineMat),straightTickA=new THREE.Line(new THREE.BufferGeometry(),straightTickMat),straightTickB=new THREE.Line(new THREE.BufferGeometry(),straightTickMat);straightHover.add(straightLine,straightTickA,straightTickB);
+ const straightCanvas=document.createElement('canvas');straightCanvas.width=512;straightCanvas.height=96;const straightCtx=straightCanvas.getContext('2d');const straightTexture=new THREE.CanvasTexture(straightCanvas);straightTexture.colorSpace=THREE.SRGBColorSpace;const straightLabel=new THREE.Sprite(new THREE.SpriteMaterial({map:straightTexture,transparent:true,depthTest:false,depthWrite:false,toneMapped:false}));straightLabel.renderOrder=130;straightHover.add(straightLabel);
+ function updateStraightHover(spec){straightHover.visible=!!spec;if(!spec)return;const a=new THREE.Vector3(...spec.a),b=new THREE.Vector3(...spec.b),dir=b.clone().sub(a),mid=a.clone().add(b).multiplyScalar(.5);const cross=new THREE.Vector3(-dir.z,0,dir.x).normalize().multiplyScalar(.13);straightLine.geometry.setFromPoints([a,b]);straightTickA.geometry.setFromPoints([a.clone().sub(cross),a.clone().add(cross)]);straightTickB.geometry.setFromPoints([b.clone().sub(cross),b.clone().add(cross)]);straightCtx.clearRect(0,0,512,96);straightCtx.font='500 56px Segoe UI,Microsoft YaHei,sans-serif';straightCtx.textAlign='center';straightCtx.textBaseline='middle';straightCtx.strokeStyle='rgba(255,255,255,.9)';straightCtx.lineWidth=5;straightCtx.strokeText(spec.text,256,49,490);straightCtx.fillStyle='#186886';straightCtx.fillText(spec.text,256,49,490);straightTexture.needsUpdate=true;straightLabel.position.copy(mid).add(new THREE.Vector3(0,.32,0));straightLabel.scale.set(1.65,.31,1)}
  function regionFor(g,p,str=''){
   if(scopeOverride)return scopeOverride;
   if(g===frameDims)return 'frame';if(g===cornerDims)return 'corner';if(g===stairDims){if(str.startsWith('4.480'))return p[1]>3?'flight2':'flight1';if(str.startsWith('2.200'))return 'landing';if(str==='1.845 m')return 'approach';return 'stairs';}if(g===upperDims){if(str.startsWith('6.830'))return 'opening';if(str.startsWith('1.500'))return 'arrival';if(str==='1.895 m')return 'upper-side';return 'upper';}
@@ -18,10 +24,11 @@ export function setupMeasurements(ctx){
  }
  function ancestry(o,target){for(let a=o;a;a=a.parent)if(a===target)return true;return false}
  function findHover(){
-  if(!pointerIn){hoverRegion='';hoverCorner=false;return;}
+  if(!pointerIn){hoverRegion='';hoverCorner=false;hoverStraight=null;return;}
   hoverRay.setFromCamera(hoverMouse,camera);const meshes=[];
-  for(const g of [ground,upper,stairs,structure,shell,supportReserve])g.traverse(o=>{if(o.isMesh&&!o.userData.areaOverlay&&visible(o)&&(!o.material.transparent||o.material.opacity>.3))meshes.push(o)});
-  const h=hoverRay.intersectObjects(meshes,false)[0];hoverRegion='';hoverCorner=false;if(!h)return;
+  for(const g of [ground,upper,stairs,structure,shell,facade,supportReserve])g.traverse(o=>{if(o.isMesh&&!o.userData.areaOverlay&&visible(o)&&(!o.material.transparent||o.material.opacity>.3||o.userData.hoverDimension))meshes.push(o)});
+  const h=hoverRay.intersectObjects(meshes,false)[0];hoverRegion='';hoverCorner=false;hoverStraight=null;if(!h)return;
+  hoverStraight=h.object.userData.hoverDimension||null;
   const v=model.worldToLocal(h.point.clone());
   if(ancestry(h.object,supportReserve))hoverRegion='bar-gym';else if(ancestry(h.object,wet))hoverRegion='bath';else if(ancestry(h.object,structure))hoverRegion='frame';else if(ancestry(h.object,stairs))hoverRegion=v.x<=12.95?'landing':v.z<7.64?'flight1':'flight2';else if(ancestry(h.object,upper)){const u=upper.worldToLocal(h.point.clone());hoverRegion=u.z>=9.24?'upper-edge':u.z>=7.74&&u.x>=17.53&&u.x<=19.03?'arrival':u.z>=7.44&&u.x>=17.53?'upper-side':'upper';}else if(ancestry(h.object,shell))hoverRegion='corner';
   else hoverRegion=v.x<9.15?'office':v.x<=10.7?'corridor':v.z<=6.04?'bar-gym':v.x>=17.43&&v.x<=19.275&&v.z<=7.54?'approach':'owner';
@@ -175,9 +182,9 @@ export function setupMeasurements(ctx){
  function update(){
   model.updateMatrixWorld(true);
   const now=performance.now();if(now-lastHover>50){findHover();lastHover=now;}
-  const enabled=$('#dimensions').checked;for(const l of quietLines)l.visible=enabled&&regionVisible(l);
+  const enabled=false;for(const l of quietLines)l.visible=false;
   canvas.dataset.hoverDimensionRegion=focusRegion||hoverRegion;
-  updateArea(focusRegion||hoverRegion,enabled);
+  updateArea(focusRegion||hoverRegion,true);updateStraightHover(hoverStraight);
 
   const occupied=[],ww=canvas.clientWidth,hh=canvas.clientHeight;
   for(const q of quietLabels){
@@ -200,9 +207,9 @@ export function setupMeasurements(ctx){
   canvas.dataset.barGymArea='52.699';canvas.dataset.barGymBounds='10.700,0.000,19.425,6.040';
   canvas.dataset.visibleDimensionLabels=String(quietLabels.filter(q=>q.visible&&visible(q)).length);
   const on=$('#dimensions').checked;
-  dims.visible=upperDims.visible=stairDims.visible=on;
-  cornerDims.visible=on&&$('#cornerDimensions').checked;
-  frameDims.visible=on&&$('#frameDimensions').checked&&$('#frame').checked&&getMode()==='all';
+  dims.visible=upperDims.visible=stairDims.visible=false;
+  cornerDims.visible=false;
+  frameDims.visible=false;
  }
  $('#allDimensions').onchange=update;$('#dimensions').onchange=update;$('#cornerDimensions').onchange=update;$('#frameDimensions').onchange=update;update();
  const measured=new THREE.Group();scene.add(measured);const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let active=false,first=null,records=[],down;
