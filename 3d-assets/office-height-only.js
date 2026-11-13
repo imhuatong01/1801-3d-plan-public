@@ -32,6 +32,11 @@ function slopeGlassRail(g,a,b){
  const pane=new THREE.Mesh(geo,mat('#89c2d4',.30));pane.material.side=THREE.DoubleSide;pane.castShadow=true;pane.receiveShadow=true;g.add(pane);
  line(g,[[a[0],a[1]+h,a[2]],[b[0],b[1]+h,b[2]]],'#333b42');
 }
+// A slim rectangular steel stringer directly below a stair run: supports the treads without cluttering the room with posts.
+function slopeStringer(g,a,b){
+ const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),beam=new THREE.Mesh(new THREE.BoxGeometry(len,.18,.14),steel);
+ beam.position.set((a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);beam.rotation.z=Math.atan2(dy,dx);beam.castShadow=true;beam.receiveShadow=true;g.add(beam);
+}
 // Ground outline uses the same CAD vertices as the existing 1801 page, including its notches.
 const verified=await fetch('./1801_专页核对数据.json').then(r=>r.json());
 const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#d1d0c8'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
@@ -114,6 +119,11 @@ for(let i=0;i<16;i++){
  const x1=12.545+i*going,x2=17.025-(i+1)*going,h1=lowerFinish+(i+1)*rise,h2=midHeight+(i+1)*rise;
   box(stairTreads,x1,h1-.1,6.04,going,.1,stairW,steel);box(stairTreads,x2,h2-.1,7.74,going,.1,stairW,steel);
 }
+// Two continuous side stringers under each flight transfer every tread load into the lower floor, the platform and the upper floor.
+for(const z of [6.15,7.43])slopeStringer(stairs,[12.545,lowerFinish-.12,z],[17.025,midHeight-.22,z]);
+for(const z of [7.85,9.13])slopeStringer(stairs,[17.025,midHeight-.12,z],[12.545,levelHeight-.38,z]);
+// The platform is carried by its own two edge beams, tying the two stringer runs together.
+for(const z of [6.12,9.00])box(stairs,17.025,midHeight-.44,z,2.2,.18,.14,steel);
 box(stairs,17.025,midHeight-.30,6.04,2.2,.3,3.2,steel);
 // Continuous finished wall assumed here; no rail on this wall-side edge.
 // Translucent section rendering preserves visibility; actual wall/fire construction is not verified.
