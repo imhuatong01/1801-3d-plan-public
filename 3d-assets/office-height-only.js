@@ -36,7 +36,8 @@ for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>
 // Keep the CAD perimeter; proposed L-shaped opening reclaims floor above the low flight.
 const upperBoundary=[[18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 7.44], [17.53, 7.44], [17.53, 9.24], [10.7, 9.24], [10.7, 9.4], [10.8, 9.4], [18.425, 9.4]];
 const upperShape=new THREE.Shape();upperBoundary.forEach((p,i)=>i?upperShape.lineTo(p[0],-p[1]):upperShape.moveTo(p[0],-p[1]));upperShape.closePath();
-const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:.28,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-.28;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
+// Keep the mezzanine as a thin floor finish only: the field condition has no exposed grey-white fascia band.
+const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:.04,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-.04;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
 zone(ground,.1,.1,8.95,7.45,'#d6d5cd','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
 const corridor=zone(ground,9.15,0,1.55,10.7,'#cbcac3','中间 · 完成面通道','原中间下沉示意取消；一楼全部统一为同一完成面，保持1.55米宽通道。');
 // The former raised sides drop 100mm to meet the original central passage level.
@@ -109,7 +110,7 @@ for(let i=0;i<16;i++){
 box(stairs,17.025,midHeight-.30,6.04,2.2,.3,3.2,steel);
 // Continuous finished wall assumed here; no rail on this wall-side edge.
 // Translucent section rendering preserves visibility; actual wall/fire construction is not verified.
-box(stairs,12.445,0,9.24,6.88,.55,.06,wallmat); // Existing solid wall shown cut away, not glazing.
+// No low grey-white wall band here: this side remains open in the current field condition.
 for(const z of [6.015,7.565]){line(stairs,[[12.545,lowerFinish+rise+1.05,z],[17.025,midHeight+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,12.545+i*going-.025,lowerFinish+(i+1)*rise,z-.025,.05,1.05,.05,steel)}
 for(const z of [7.715]){line(stairs,[[17.025,midHeight+rise+1.05,z],[12.545,levelHeight+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,17.025-i*going-.025,midHeight+(i+1)*rise,z-.025,.05,1.05,.05,steel)}
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);rail(midGuard,19.25,5.99,.05,3.25);rail(midGuard,17.025,5.99,2.275,.05);
@@ -147,12 +148,22 @@ let socketSeq=0,selectedSocket=null;
 const permanentlyDeletedSocketIds=new Set(['S04','S05','S06','S07','S11','S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','S22','S23','S24','S25','S26','S27','S28','S29','S30','S34','S35','S36','S38','S39','S40','S41']);
 function roundHole(g,x,y){const h=new THREE.Mesh(new THREE.CircleGeometry(.024,12),socketHole);h.position.set(x,y,.031);g.add(h)}
 function outlet(g,x,z,side='z',color=circuitRed,circuit='C1',floor='一楼',height=.38){const o=new THREE.Group(),id=`S${String(++socketSeq).padStart(2,'0')}`,rimMaterial=color.clone();o.position.set(x,height,z);if(side==='x')o.rotation.y=Math.PI/2;g.add(o);if(permanentlyDeletedSocketIds.has(id)){g.remove(o);return null}const rim=box(o,-.215,-.145,-.035,.43,.29,.025,rimMaterial),plate=box(o,-.195,-.125,-.02,.39,.25,.05,socketFace);roundHole(o,-.055,.062);roundHole(o,.055,.062);roundHole(o,0,-.008);roundHole(o,-.068,-.074);roundHole(o,.068,-.074);const meta={id,circuit,floor,root:o,rim,plate,baseColor:rimMaterial.color.clone()};o.userData.socket=meta;plate.userData.socket=meta;circuitPickables.push(plate);socketItems.push(meta);return o}
-function circuitRoute(g,points,color=circuitBlue){line(g,points.map(([x,z])=>[x,.13,z]),color)}
+function circuitRoute(g,points,color=circuitBlue,y=.13){line(g,points.map(([x,z])=>[x,y,z]),color)}
 // 一楼 C1-C4：每条长墙的三点作为居中一组，给两端与桌位布置留出余地；入口右手墙另设两点。
 for(const x of [3.00,4.60,6.20,8.40])outlet(circuitGround,x,7.53,'z',circuitRed,'C1','一楼');for(const z of [1.25,3.40,5.55])outlet(circuitGround,8.98,z,'x',circuitRed,'C1','一楼');for(const x of [3.00,4.60,6.20])outlet(circuitGround,x,.12,'z',circuitRed,'C1','一楼');
 for(const [x,z,s] of [[11.1,1.0,'z'],[12.7,1.0,'z'],[13.35,4.2,'x']])outlet(circuitGround,x,z,s,circuitRed,'C2','一楼');for(const [x,z,s] of [[17.0,1.2,'z'],[18.85,2.9,'x'],[18.85,5.2,'x'],[18.85,7.5,'x'],[17.0,9.12,'z'],[14.6,9.12,'z']])outlet(circuitGround,x,z,s,circuitRed,'C3','一楼');
 for(const z of [6.45,8.45])outlet(circuitGround,12.85,z,'x',mat('#8550aa'),'C4','一楼');
-circuitRoute(circuitGround,[[9.92,10.15],[9.92,.55],[8.6,.55],[8.6,6.75],[.85,6.75]]);circuitRoute(circuitGround,[[9.92,.55],[17.2,.55]]);circuitRoute(circuitGround,[[11.3,5.1],[12.35,5.1],[12.35,9.11]],circuitPurple);box(circuitGround,9.63,.10,10.05,.58,.55,.12,'#224b67');
+// Circuit drawing: all branches return to one bus.  The total bus leaves the entry and turns left first.
+// From there, a central route serves both floors; short orthogonal drops make each outlet's route legible.
+const entryBus=[[9.925,10.15],[8.72,10.15],[8.72,6.75],[.85,6.75]];circuitRoute(circuitGround,entryBus);circuitRoute(circuitGround,[[8.72,6.75],[8.72,.55],[17.20,.55]]);box(circuitGround,8.42,.10,9.86,.58,.55,.12,'#224b67');
+// C1 · open office: centred groups on the long walls and the two entry-side wall points.
+circuitRoute(circuitGround,[[.85,6.75],[8.60,6.75]]);for(const x of [3.00,4.60,6.20,8.40])circuitRoute(circuitGround,[[x,6.75],[x,7.53]]);circuitRoute(circuitGround,[[.85,6.75],[.85,.55],[8.60,.55]]);for(const x of [3.00,4.60,6.20])circuitRoute(circuitGround,[[x,.55],[x,.12]]);for(const z of [1.25,3.40,5.55])circuitRoute(circuitGround,[[8.60,z],[8.98,z]]);for(const z of [2.55,5.15])circuitRoute(circuitGround,[[.85,z],[.12,z]]);
+// C2 · tea / bar side.
+circuitRoute(circuitGround,[[11.10,.55],[13.35,.55],[13.35,4.20]]);for(const x of [11.10,12.70])circuitRoute(circuitGround,[[x,.55],[x,1.00]]);
+// C3 · right-side open area, including the two floor-level points under the upper-wall locations.
+circuitRoute(circuitGround,[[17.20,.55],[17.20,8.65],[18.85,8.65],[18.85,2.90]]);for(const z of [5.20,7.50])circuitRoute(circuitGround,[[18.85,8.65],[18.85,z]]);circuitRoute(circuitGround,[[17.20,1.20],[17.20,.55]]);circuitRoute(circuitGround,[[17.20,8.65],[17.20,9.12],[17.00,9.12]]);circuitRoute(circuitGround,[[17.20,8.65],[14.60,8.65],[14.60,9.12]]);for(const x of [12.80,17.20])circuitRoute(circuitGround,[[x,.12],[x,.55]]);
+// C4 · the single waterproof outlet circuit; enclosure is hidden in circuit view, but its route remains clear.
+circuitRoute(circuitGround,[[12.35,.55],[12.35,9.11]],circuitPurple);for(const z of [6.45,8.45])circuitRoute(circuitGround,[[12.35,z],[12.85,z]],circuitPurple);
 // 二楼 C5-C8：按当前 L 形夹层楼面及洞口边界布点。
 for(const x of [11.2,12.8,14.4,16.0,17.6])outlet(circuitUpper,x,9.24,'z',circuitRed,'C5','二楼');outlet(circuitUpper,19.25,8.0,'x',circuitRed,'C5','二楼');for(const z of [1.2,3.0,5.0])outlet(circuitUpper,10.8,z,'x',circuitRed,'C6','二楼');for(const x of [12.8,15.0,17.2])outlet(circuitUpper,x,.12,'z',circuitRed,'C7','二楼');
 for(const [x,z,s] of [[11.25,1.3,'z'],[13.7,1.3,'z'],[16.0,1.3,'z']])outlet(circuitUpper,x,z,s,circuitRed,'C7','二楼');for(const [x,z,s] of [[18.9,3.3,'x'],[18.9,5.4,'x'],[18.9,7.0,'x'],[16.2,7.25,'z'],[13.8,7.25,'z']])outlet(circuitUpper,x,z,s,circuitRed,'C8','二楼');
@@ -162,7 +173,12 @@ for(const z of [2.55,5.15])outlet(circuitGround,.12,z,'x',circuitRed,'C1','一�
 for(const x of [12.8,17.2])outlet(circuitGround,x,.12,'z',circuitRed,'C3','一楼');
 // 卫浴插座设在洗手干区后墙，离开淋浴喷淋范围；实际须采用带漏保防溅型并按电工深化。
 outlet(circuitGround,12.35,9.11,'z',mat('#8550aa'),'C4','一楼',1.10);
-circuitRoute(circuitUpper,[[18.85,.52],[18.85,7.1],[17.2,7.1],[17.2,1.6]]);circuitRoute(circuitUpper,[[18.85,7.1],[14.2,7.1],[14.2,1.7]]);box(circuitUpper,18.65,.10,.20,.58,.55,.12,'#224b67');
+// Riser from the entry-side main bus to the upper-floor routes.
+line(circuitGround,[[10.85,.13,.55],[10.85,4.33,.55]],circuitBlue);circuitRoute(circuitUpper,[[10.85,.55],[10.85,8.70],[17.60,8.70]]);
+// C5 / C6 · upper perimeter outlets.
+for(const x of [11.20,12.80,14.40,16.00,17.60])circuitRoute(circuitUpper,[[x,8.70],[x,9.24]]);circuitRoute(circuitUpper,[[17.60,8.70],[19.25,8.70],[19.25,8.00]]);for(const z of [1.20,3.00,5.00])circuitRoute(circuitUpper,[[10.85,z],[10.80,z]]);
+// C7 / C8 · the interior and right-wall groups, each shown as a direct branch from the bus.
+circuitRoute(circuitUpper,[[10.85,.55],[17.20,.55]]);for(const x of [12.80,15.00,17.20])circuitRoute(circuitUpper,[[x,.55],[x,.12]]);for(const x of [11.25,13.70,16.00])circuitRoute(circuitUpper,[[x,.55],[x,1.30]]);circuitRoute(circuitUpper,[[17.20,.55],[18.90,.55],[18.90,7.25],[13.80,7.25]]);for(const z of [3.30,5.40,7.00])circuitRoute(circuitUpper,[[18.90,7.25],[18.90,z]]);circuitRoute(circuitUpper,[[16.20,7.25],[16.20,7.25]]);box(circuitUpper,10.56,.10,.20,.58,.55,.12,'#224b67');
 // Existing 500mm columns remain at the CAD positions; no implied permission to alter them.
 for(const x of [8.65,18.425])box(shell,x,0,.5,.5,8.4,.5,'#8c969a');
 const upperOriginalColumn=box(upper,18.425,0,.5,.5,levelHeight,.5,'#8c969a');upperOriginalColumn.visible=false;
@@ -203,7 +219,8 @@ let boardMode='',wetChildSnapshot=null;
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
  if(boardMode==='wet'&&wetChildSnapshot){for(const [child,visible] of wetChildSnapshot)child.visible=visible;wetChildSnapshot=null}
- boardMode='';setMode('all');upperOriginalColumn.visible=false;facade.visible=$('#daylight').checked;structure.visible=$('#frame').checked;supportStudy.update('all');markBoard('#steelBoard',false);markBoard('#wetBoard',false)
+ if(boardMode==='circuit'){$('#circuitLayer').checked=false;updateCircuitLayer();wet.visible=true;wetFloor.visible=true;stairs.visible=true;stairStorage.visible=true;openingRails.visible=true}
+ boardMode='';setMode('all');upperOriginalColumn.visible=false;facade.visible=$('#daylight').checked;structure.visible=$('#frame').checked;supportStudy.update('all');markBoard('#circuitBoard',false);markBoard('#steelBoard',false);markBoard('#wetBoard',false)
 }
 function showSteelBoard(){
  if(boardMode==='steel'){restoreFullBoard();return}
@@ -216,8 +233,16 @@ function showWetBoard(){
  for(const child of ground.children)child.visible=child===wet||groundFloorMeshes.includes(child);upper.visible=false;stairs.visible=false;shell.visible=false;structure.visible=false;labelGroup.visible=false;facade.visible=false;upperOriginalColumn.visible=false;supportStudy.reserve.visible=false;
  camera.position.set(22,5.5,-12);controls.target.set(11.85,1.2,-7.7);controls.update();markBoard('#wetBoard',true)
 }
+function showCircuitBoard(){
+ if(boardMode==='circuit'){restoreFullBoard();return}
+ if(boardMode)restoreFullBoard();boardMode='circuit';closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
+ $('#furniture').checked=false;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#circuitLayer').checked=true;updateCircuitLayer();
+ // Circuit version keeps only architecture, outlet symbols and routes: no steel, stair, shower or glass enclosure.
+ structure.visible=false;stairs.visible=false;stairStorage.visible=false;openingRails.visible=false;wet.visible=false;wetFloor.visible=false;supportStudy.reserve.visible=false;$('#daylight').checked=true;facade.visible=true;
+ camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路版本 · 插座与完整回路线；总线由正门左转引出';markBoard('#circuitBoard',true)
+}
 $('#dimensionBoard').onclick=()=>{if(boardMode)restoreFullBoard();const on=!$('#dimensionBoard').classList.contains('active');$('#allDimensions').checked=on;$('#dimensions').checked=on;$('#allDimensions').dispatchEvent(new Event('change'));$('#dimensions').dispatchEvent(new Event('change'));markBoard('#dimensionBoard',on)};
-$('#circuitBoard').onclick=()=>{if(boardMode)restoreFullBoard();const on=!$('#circuitLayer').checked;if(on)$('#circuitView').click();else{$('#circuitLayer').checked=false;updateCircuitLayer()}markBoard('#circuitBoard',on)};
+$('#circuitBoard').onclick=showCircuitBoard;
 $('#steelBoard').onclick=showSteelBoard;$('#wetBoard').onclick=showWetBoard;
 function reset(){pad.visible=mode!=='upper';facade.visible=$('#daylight').checked&&mode!=='upper';camera.up.set(0,1,0);camera.position.set(25,20,-24);if(mode==='split')camera.position.set(26,25,-28);controls.target.set(9.7,mode==='split'?4:mode==='upper'||mode==='ground'?0:2.5,-4.8);if(mode==='upper'){camera.position.set(26,15,-18);controls.target.set(15,1,-4.4)}controls.update()}$('#reset').onclick=reset;$('#supportView').onclick=()=>{$('#supportReserve').checked=true;$('#frame').checked=true;setMode('ground');reset();structure.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;facade.visible=false;$('#labels').checked=true;labels.forEach(s=>s.visible=supportStudy.labels.includes(s)||s.userData.labelText==='原入口');camera.position.set(26,15,-17);controls.target.set(15,1.2,-4.7);controls.update();$('#modeLabel').textContent='沿楼梯外侧候选柱位＋低柜 · 仅空间预留，未做承载验算';};$('#restFocus').onclick=()=>{setMode('upper');reset();upperOriginalColumn.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#labels').checked=true;labels.forEach(q=>q.visible=q.userData.labelText.includes('并入主办公区')||q.userData.labelText.includes('出口贴墙'));camera.position.set(24,15,-15);controls.target.set(15.2,.4,-5.0);controls.update();};$('#stairView').onclick=()=>{setMode('ground');reset();$('#labels').checked=true;labels.forEach(s=>s.visible=s.parent===stairs||s.userData.labelText==='原入口');$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(16,21,-7.599);controls.target.set(16,0,-7.6);controls.update()};$('#bossFocus').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;setMode('all');upperOriginalColumn.visible=false;reset();camera.position.set(29,18,-20);controls.target.set(15,3,-4.7);controls.update()};$('#heightView').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#daylight').checked=false;facade.visible=false;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(34,6,-4);controls.target.set(14.7,4.2,-4);controls.update()};$('#entryView').onclick=()=>{camera.position.set(9.925,12,-21);controls.target.set(9.925,1.5,-3);controls.update()};$('#top').onclick=()=>{const cx=mode==='upper'?15.05:9.7;camera.position.set(cx,mode==='upper'?18:24,-4.799);controls.target.set(cx,0,-4.8);controls.update()};$('#zoomIn').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(.8).add(controls.target);controls.update()};$('#zoomOut').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(1.25).add(controls.target);controls.update()};function fullView(on){$('#viewer').classList.toggle('expanded',on);document.body.style.overflow=on?'hidden':'';$('#full').textContent=on?'退出全屏':'全屏'}$('#full').onclick=()=>fullView(!$('#viewer').classList.contains('expanded'));window.addEventListener('keydown',e=>{if(e.key==='Escape')fullView(false)});
 const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let start;renderer.domElement.addEventListener('pointerdown',e=>start=[e.clientX,e.clientY]);renderer.domElement.addEventListener('pointerup',e=>{if(!start||Math.hypot(e.clientX-start[0],e.clientY-start[1])>5)return;if(measurement.isActive())return;const r=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(pointer,camera);const socketHits=ray.intersectObjects(circuitPickables.filter(x=>x.visible&&x.parent.visible),true);if(socketHits[0]?.object.userData.socket){selectSocket(socketHits[0].object.userData.socket);return}const hits=ray.intersectObjects(pickables.filter(x=>x.visible&&x.parent.visible));if(hits[0]){const d=hits[0].object.userData;$('#selected').replaceChildren();const h=document.createElement('b'),p=document.createElement('p');h.textContent=d.name;p.textContent=d.desc;$('#selected').append(h,p)}});
@@ -295,7 +320,7 @@ $('#barGymView').onclick=()=>{
  camera.position.set(15.0625,18,-13.5);controls.target.set(15.0625,0,-4.7);viewportFit=1;fitViewport();
  measurement.focusArea('bar-gym');
 };
-$('#circuitView').onclick=()=>{closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;$('#furniture').checked=false;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#circuitLayer').checked=true;updateCircuitLayer();$('#daylight').checked=true;facade.visible=true;camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路图 · 红色为插座点，蓝色为回路示意；踏步隐藏';};
+$('#circuitView').onclick=showCircuitBoard;
 document.querySelectorAll('[data-mode],#overallDimensions,#reset').forEach(b=>b.addEventListener('click',()=>measurement.focusArea('')));
 if(location.hash==='#bar-gym')$('#barGymView').click();
 
