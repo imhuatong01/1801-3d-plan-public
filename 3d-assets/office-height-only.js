@@ -26,25 +26,25 @@ function plant(g,x,z){box(g,x-.17,0,z-.17,.34,.4,.34,'#eee7da');const b=new THRE
 function rail(g,x,z,w,d){box(g,x,0,z,w,1.08,d,glass);box(g,x,1.08,z,w,.045,d,steel)}
 // Ground outline uses the same CAD vertices as the existing 1801 page, including its notches.
 const verified=await fetch('./1801_专页核对数据.json').then(r=>r.json());
-const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#c2bfb7'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
+const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#d1d0c8'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
 
 // Proposed finish levels: side rooms 0.000, central passage -0.100; no structural cutting instruction.
 const groundFloorMeshes=[floor],upperFloorMeshes=[];
 const sidePolys=[[[3.9, 7.675], [5.15, 7.675], [9.15, 7.675], [9.15, 0.0], [0.125, 0.0], [0.125, 0.1], [0.0, 0.1], [0.0, 0.5], [0.0, 1.0], [0.0, 7.675], [0.05, 7.675], [0.25, 7.675], [0.7, 7.675], [3.9, 7.675]], [[10.8, 9.4], [18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.025, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 9.4], [10.8, 9.4]]];
-for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth:.1,bevelEnabled:false});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat('#c8c5bd'));m.position.y=-.1;m.receiveShadow=true;ground.add(m);groundFloorMeshes.push(m)}
+for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth:.1,bevelEnabled:false});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat('#d6d5cd'));m.position.y=-.1;m.receiveShadow=true;ground.add(m);groundFloorMeshes.push(m)}
 // Extend the owner's upper floor over the former entrance-side stair band.
 // Keep the CAD perimeter; proposed L-shaped opening reclaims floor above the low flight.
 const upperBoundary=[[18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 7.44], [17.53, 7.44], [17.53, 9.24], [10.7, 9.24], [10.7, 9.4], [10.8, 9.4], [18.425, 9.4]];
 const upperShape=new THREE.Shape();upperBoundary.forEach((p,i)=>i?upperShape.lineTo(p[0],-p[1]):upperShape.moveTo(p[0],-p[1]));upperShape.closePath();
 const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:.28,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-.28;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
-zone(ground,.1,.1,8.95,7.45,'#c7c4bc','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
-const corridor=zone(ground,9.15,0,1.55,10.7,'#bbb9b2','中间 · 完成面通道','原中间下沉示意取消；一楼全部统一为同一完成面，保持1.55米宽通道。');
+zone(ground,.1,.1,8.95,7.45,'#d6d5cd','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
+const corridor=zone(ground,9.15,0,1.55,10.7,'#cbcac3','中间 · 完成面通道','原中间下沉示意取消；一楼全部统一为同一完成面，保持1.55米宽通道。');
 // The former raised sides drop 100mm to meet the original central passage level.
 // Restore the base slab after shifting the whole ground package, so every finished floor ends at the same plane.
 ground.position.y=-.10;floor.position.y+=.10;
-zone(ground,16.7,1.2,2.55,7.9,'#c7c4bc','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
-zone(ground,10.85,.15,2.65,6.9,'#c7c4bc','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
-zone(ground,10.65,5.94,6.88,3.30,'#c5c2ba','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；按总层高8.40m、单层4.20m设置，平台顶2.10m。该高度下平台底约1.80m，现有平台下卫浴需另行调整，不能按净高合格理解。');
+zone(ground,16.7,1.2,2.55,7.9,'#d6d5cd','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
+zone(ground,10.85,.15,2.65,6.9,'#d6d5cd','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
+zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；按总层高8.40m、单层4.20m设置，平台顶2.10m。该高度下平台底约1.80m，现有平台下卫浴需另行调整，不能按净高合格理解。');
 const furnitureObjects=[];
 function furnitureStart(){return new Set([...ground.children,...upper.children])}
 function furnitureEnd(previous){for(const o of [...ground.children,...upper.children])if(!previous.has(o)){o.userData.furniture=true;furnitureObjects.push(o)}}
@@ -85,14 +85,18 @@ const lounge=new THREE.Group();lounge.position.set(17.25,0,4.35);upper.add(loung
 box(lounge,0,.20,0,1.05,.18,.78,'#557384');box(lounge,.10,.38,.08,.85,.68,.16,'#557384');
 for(const [x,z] of [[.08,.08],[.88,.08],[.08,.65],[.88,.65]])box(lounge,x,0,z,.08,.22,.08,steel);
 furnitureEnd(furnitureUpperStart);
-// One open shower only: ordinary waterproof floor is raised 25mm above the unified first-floor finish.
+// One enclosed shower only: ordinary waterproof floor is raised 25mm above the unified first-floor finish.
 const wet=new THREE.Group(),wetWalls=new THREE.Group();ground.add(wet);wet.add(wetWalls);
-box(wet,10.77,.005,6.09,2.16,.025,3.10,mat('#c4c1ba'));
+box(wet,10.77,.005,6.09,2.16,.025,3.10,mat('#d0cfc7'));
 // The single shower head is the only fitting retained in this zone.
 box(wet,12.58,1.72,6.24,.05,.43,.05,steel);box(wet,12.38,2.12,6.16,.25,.05,.20,steel);
-const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#c5c2bb','平台下 · 纯淋浴区','外框2.16×3.10m，约6.70㎡。仅保留一个花洒；无马桶、台盆、柜体、玻璃隔断或门。防水完成面较一楼统一完成面高约25mm。');wetFloor.position.y=.025;
-wetWalls.visible=false;
-$('#wetWalls').onchange=()=>{wetWalls.visible=false};
+const showerGlass=mat('#38575f',.62);
+// Keep the original acrylic-glass enclosure and its stair-side glass door; no other fittings return.
+box(wetWalls,10.77,.03,6.09,.06,2.25,3.10,showerGlass);box(wetWalls,10.85,.03,6.09,2.00,2.25,.06,showerGlass);box(wetWalls,10.85,.03,9.13,2.00,2.25,.06,showerGlass);
+box(wetWalls,12.85,.03,6.09,.06,2.25,1.66,showerGlass);box(wetWalls,12.85,.03,8.75,.06,2.25,.44,showerGlass);const showerDoor=new THREE.Group();wetWalls.add(showerDoor);box(showerDoor,11.95,.03,7.78,.90,2.10,.035,showerGlass);for(const x of [11.95,12.825])box(showerDoor,x,.03,7.77,.025,2.10,.05,steel);for(const y of [.03,2.105])box(showerDoor,11.95,y,7.77,.90,.025,.05,steel);
+const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#d0cfc7','平台下 · 纯淋浴区','外框2.16×3.10m，约6.70㎡。保留亚克力玻璃围合、进门玻璃门及一个花洒；无马桶、台盆、柜体。防水完成面较一楼统一完成面高约25mm。');wetFloor.position.y=.025;
+$('#wetWalls').checked=true;wetWalls.visible=true;
+$('#wetWalls').onchange=e=>{wetWalls.visible=e.target.checked};
 
 // First flight +X on inner side; return flight -X against the solid wall.
 zone(ground,17.43,6.04,1.845,1.50,'#d4c6a4','内侧楼梯起步区','平面预留约1.845×1.50m，茶吧已向室内挪开，保持无家具。');
@@ -166,7 +170,7 @@ const upperOriginalColumn=box(upper,18.425,0,.5,.5,levelHeight,.5,'#8c969a');upp
 // Merge every collinear run before creating a wall, so a straight wall has no false dark posts or panel seams.
 const solidWallSegments=[];for(let i=1;i<contour.length;i++){const a=contour[i-1],b=contour[i],entryGap=Math.abs(a[1]-10.7)<.01&&Math.abs(b[1]-10.7)<.01,daylightFace=(Math.abs(a[1])<.01&&Math.abs(b[1])<.01)||(Math.abs(a[0]-19.425)<.01&&Math.abs(b[0]-19.425)<.01);if(entryGap||daylightFace)continue;const prev=solidWallSegments.at(-1),dx=b[0]-a[0],dz=b[1]-a[1];if(prev){const px=prev.b[0]-prev.a[0],pz=prev.b[1]-prev.a[1],joined=Math.hypot(prev.b[0]-a[0],prev.b[1]-a[1])<.001,collinear=Math.abs(px*dz-pz*dx)<.001;if(joined&&collinear){prev.b=b;continue}}solidWallSegments.push({a:[...a],b:[...b]})}
 for(const {a,b} of solidWallSegments){const dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz);if(len<.03)continue;const w=box(shell,-len/2,0,-.06,len,8.4,.12,semiWallMat);w.position.set((a[0]+b[0])/2,4.2,(a[1]+b[1])/2);w.rotation.y=-Math.atan2(dz,dx);w.userData.hoverDimension={a:[a[0],.08,a[1]],b:[b[0],.08,b[1]],text:len.toFixed(3)+' m'}}
-const entryDoorMat=mat('#6c98a0',.36);box(ground,9.15,0,10.66,1.55,2.50,.035,entryDoorMat);for(const x of [9.15,10.70])box(ground,x-.025,0,10.655,.05,2.50,.06,steel);box(ground,9.15,2.45,10.655,1.55,.05,.06,steel);box(ground,10.40,1.10,10.61,.035,.22,.08,wood);label(ground,'1801-OPC空间',9.925,2.05,10.56,'#265a66',3.4);
+const entryDoorMat=mat('#6c98a0',.36);box(ground,9.15,0,10.66,1.55,2.50,.035,entryDoorMat);for(const x of [9.15,10.70])box(ground,x-.025,0,10.655,.05,2.50,.06,steel);box(ground,9.15,2.45,10.655,1.55,.05,.06,steel);box(ground,10.40,1.10,10.61,.035,.22,.08,wood);const doorSignCanvas=document.createElement('canvas');doorSignCanvas.width=900;doorSignCanvas.height=180;const doorSignCtx=doorSignCanvas.getContext('2d');doorSignCtx.fillStyle='rgba(238,248,249,.96)';doorSignCtx.fillRect(8,8,884,164);doorSignCtx.strokeStyle='#1e687d';doorSignCtx.lineWidth=7;doorSignCtx.strokeRect(8,8,884,164);doorSignCtx.font='700 84px Microsoft YaHei,Segoe UI,sans-serif';doorSignCtx.textAlign='center';doorSignCtx.textBaseline='middle';doorSignCtx.fillStyle='#174e61';doorSignCtx.fillText('1801-OPC空间',450,95);const doorSignTexture=new THREE.CanvasTexture(doorSignCanvas);doorSignTexture.colorSpace=THREE.SRGBColorSpace;const doorSign=new THREE.Sprite(new THREE.SpriteMaterial({map:doorSignTexture,transparent:true,depthTest:false,depthWrite:false,toneMapped:false}));doorSign.position.set(9.925,1.75,10.57);doorSign.scale.set(2.6,.52,1);doorSign.renderOrder=145;ground.add(doorSign);
 
 
 const furniturePlantsStart=furnitureStart();plant(ground,.5,.5);plant(upper,16.3,5.1);furnitureEnd(furniturePlantsStart);
@@ -182,7 +186,8 @@ const facade=new THREE.Group();model.add(facade);const windowMat=mat('#5b91ad',.
 const daylightSouth=box(facade,0,0,-.05,19.425,8.4,.05,windowMat),daylightRight=box(facade,19.425,0,0,.05,8.4,9.4,windowMat);daylightSouth.userData.hoverDimension={a:[0,.08,0],b:[19.425,.08,0],text:'19.425 m'};daylightRight.userData.hoverDimension={a:[19.425,.08,0],b:[19.425,.08,9.4],text:'9.400 m'};
 line(facade,[[0,.65,0],[19.425,.65,0],[19.425,.65,9.4]],'#4f8eac');line(facade,[[0,8.4,0],[19.425,8.4,0],[19.425,8.4,9.4]],'#4f8eac');
 label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);label(facade,'原图右侧外窗 · L型采光面',20.0,2.1,6.7,'#357c98',4.7);
-const pad=box(model,-2,-.4,-2,23.5,.2,15,'#e0e9ed');pad.receiveShadow=true;
+// Exterior apron deliberately uses a cool blue-grey, distinct from the warm light-grey self-leveling interior.
+const pad=box(model,-2,-.4,-2,23.5,.2,15,'#bcced4');pad.receiveShadow=true;
 const supportStudy=setupSupportStudy({model,ground,box,label,mat,trainingMat,supportHeight:lowerBeamHeight+.2});
 let mode='all';function setMode(m){mode=m;supportStudy.update(m);ground.visible=m!=='upper';upper.visible=m!=='ground';stairs.visible=m==='all'||m==='ground';shell.visible=m==='all'||m==='ground';structure.visible=$('#frame').checked&&m==='all';labelGroup.visible=m==='all';upper.position.y=m==='split'?8.20:levelHeight;if(m==='upper')upper.position.y=0;const text={all:'整体 · 两层关系',ground:'一楼 · 左老板私用 / 中下沉通道 / 右办公会议',upper:'二楼 · 电脑 / 茶桌 / 开放预留区',split:'拆层展示 · 二层临时上移4米，非实际高度'};$('#modeLabel').textContent=text[m];document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));updateCircuitLayer();controls.target.set(9.7,m==='split'?4:m==='all'?2.5:0,-4.8);controls.update()}
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{setMode(b.dataset.mode);upperOriginalColumn.visible=mode==='upper'||mode==='split';reset()});$('#labels').onchange=e=>labels.forEach(s=>s.visible=s.parent===labelGroup||e.target.checked);$('#frame').onchange=()=>setMode(mode);$('#spin').onchange=e=>controls.autoRotate=e.target.checked;$('#daylight').onchange=e=>facade.visible=e.target.checked&&mode!=='upper';
