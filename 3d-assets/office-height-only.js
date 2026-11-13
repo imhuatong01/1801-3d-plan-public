@@ -67,10 +67,10 @@ zone(ground,10.85,.15,2.65,6.9,'#d6d5cd','老板侧 · 休闲茶吧','开放休�
 zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；按总层高8.40m、单层4.20m设置，平台顶2.10m。该高度下平台底约1.80m，现有平台下卫浴需另行调整，不能按净高合格理解。');
 const furnitureObjects=[],furnitureMovables=[],furnitureAnchoredNotes=[];
 const furnitureStorageKey='1801-furniture-reference-v1';
-function markFurnitureMovable(object,id,name){object.userData.furnitureMovable={id,name,initial:{x:object.position.x,z:object.position.z,scale:object.scale.x}};furnitureMovables.push(object);return object}
-function saveFurnitureLayout(){try{localStorage.setItem(furnitureStorageKey,JSON.stringify(furnitureMovables.map(o=>({id:o.userData.furnitureMovable.id,x:o.position.x,z:o.position.z,scale:o.scale.x}))))}catch{}}
-function restoreFurnitureLayout(){try{const saved=JSON.parse(localStorage.getItem(furnitureStorageKey)||'[]');for(const item of saved){const object=furnitureMovables.find(o=>o.userData.furnitureMovable.id===item.id);if(object&&Number.isFinite(item.x)&&Number.isFinite(item.z)&&Number.isFinite(item.scale)){object.position.x=item.x;object.position.z=item.z;object.scale.setScalar(THREE.MathUtils.clamp(item.scale,.55,1.8))}}}catch{}}
-function resetFurnitureLayout(){for(const object of furnitureMovables){const initial=object.userData.furnitureMovable.initial;object.position.x=initial.x;object.position.z=initial.z;object.scale.setScalar(initial.scale)}try{localStorage.removeItem(furnitureStorageKey)}catch{}}
+function markFurnitureMovable(object,id,name){object.userData.furnitureMovable={id,name,initial:{x:object.position.x,z:object.position.z,scale:object.scale.x,rotation:object.rotation.y}};furnitureMovables.push(object);return object}
+function saveFurnitureLayout(){try{localStorage.setItem(furnitureStorageKey,JSON.stringify(furnitureMovables.map(o=>({id:o.userData.furnitureMovable.id,x:o.position.x,z:o.position.z,scale:o.scale.x,rotation:o.rotation.y}))))}catch{}}
+function restoreFurnitureLayout(){try{const saved=JSON.parse(localStorage.getItem(furnitureStorageKey)||'[]');for(const item of saved){const object=furnitureMovables.find(o=>o.userData.furnitureMovable.id===item.id);if(object&&Number.isFinite(item.x)&&Number.isFinite(item.z)&&Number.isFinite(item.scale)){object.position.x=item.x;object.position.z=item.z;object.scale.setScalar(THREE.MathUtils.clamp(item.scale,.55,1.8));if(Number.isFinite(item.rotation))object.rotation.y=item.rotation}}}catch{}}
+function resetFurnitureLayout(){for(const object of furnitureMovables){const initial=object.userData.furnitureMovable.initial;object.position.x=initial.x;object.position.z=initial.z;object.rotation.y=initial.rotation;object.scale.setScalar(initial.scale)}try{localStorage.removeItem(furnitureStorageKey)}catch{}}
 function updateFurnitureAnchoredNotes(){for(const note of furnitureAnchoredNotes){const a=note.userData.furnitureAnchor;note.position.x=a.x+a.owner.position.x;note.position.z=a.z+a.owner.position.z}}
 function furnitureStart(){return new Set([...ground.children,...upper.children])}
 function furnitureEnd(previous){for(const o of [...ground.children,...upper.children])if(!previous.has(o)){o.userData.furniture=true;furnitureObjects.push(o)}}
@@ -153,7 +153,6 @@ openingRails.scale.x=1;openingRails.position.x=0;
 rail(openingRails,12.25,7.54,5.10,.06);
 // Close the left end of the stair opening as a safety guard.  This is an internal void edge, not the exterior daylight facade.
 rail(openingRails,12.25,7.60,.06,1.70);
-rail(openingRails,17.29,7.60,.06,1.70);
 box(openingRails,17.43,-.15,7.74,.1,.15,1.5,steel);
 // Keep the interior-edge guard only.  The exterior L-shaped daylight glass is already the enclosure and has no added handrail.
 rail(upper,10.7,0,.07,7.44);
@@ -185,14 +184,16 @@ const permanentlyDeletedSocketIds=new Set(['S04','S05','S06','S07','S11','S12','
 function roundHole(g,x,y){const h=new THREE.Mesh(new THREE.CircleGeometry(.024,12),socketHole);h.position.set(x,y,.031);g.add(h)}
 function outlet(g,x,z,side='z',color=c1Mat,circuit='C1',floor='一楼',height=.38){const o=new THREE.Group(),id=`S${String(++socketSeq).padStart(2,'0')}`,rimMaterial=color.clone();o.position.set(x,height,z);if(side==='x')o.rotation.y=Math.PI/2;g.add(o);if(permanentlyDeletedSocketIds.has(id)){g.remove(o);return null}const rim=box(o,-.215,-.145,-.035,.43,.29,.025,rimMaterial),plate=box(o,-.195,-.125,-.02,.39,.25,.05,socketFace);roundHole(o,-.055,.062);roundHole(o,.055,.062);roundHole(o,0,-.008);roundHole(o,-.068,-.074);roundHole(o,.068,-.074);const meta={id,circuit,floor,root:o,rim,plate,baseColor:rimMaterial.color.clone()};o.userData.socket=meta;plate.userData.socket=meta;circuitPickables.push(plate);socketItems.push(meta);return o}
 function wire(g,points,color=circuitBlue){line(g,points,color)}
-function tray(g,points,color,y=2.85){wire(g,points.map(([x,z])=>[x,y,z]),color)}
-function drop(g,x,z,color,from=2.85,to=.38){wire(g,[[x,from,z],[x,to,z]],color)}
+// Routing is shown at the finished-floor / skirting level, then rises only the short distance into each outlet.
+// It is a layout reference only; final conduit type and protection are for the licensed electrician to confirm.
+function tray(g,points,color,y=.10){wire(g,points.map(([x,z])=>[x,y,z]),color)}
+function drop(g,x,z,color,from=.10,to=.38){wire(g,[[x,from,z],[x,to,z]],color)}
 // 一楼 C1-C4：每条长墙的三点作为居中一组，给两端与桌位布置留出余地；入口右手墙另设两点。
 for(const x of [3.00,4.60,6.20,8.40])outlet(circuitGround,x,7.53,'z',c1Mat,'C1','一楼');for(const z of [1.25,3.40,5.55])outlet(circuitGround,8.98,z,'x',c1Mat,'C1','一楼');for(const x of [3.00,4.60,6.20])outlet(circuitGround,x,.12,'z',c1Mat,'C1','一楼');
 for(const [x,z,s] of [[11.1,1.0,'z'],[12.7,1.0,'z'],[13.35,4.2,'x']])outlet(circuitGround,x,z,s,c2Mat,'C2','一楼');for(const [x,z,s] of [[17.0,1.2,'z'],[18.85,2.9,'x'],[18.85,5.2,'x'],[18.85,7.5,'x'],[17.0,9.12,'z'],[14.6,9.12,'z']])outlet(circuitGround,x,z,s,c3Mat,'C3','一楼');
 for(const z of [6.45,8.45])outlet(circuitGround,12.85,z,'x',c4Mat,'C4','一楼');
-// 配电箱位于正门左侧：主干先沿入口侧墙左转，再沿墙/顶面敷设；所有末端均用垂直下引连接到插座。
-const trayY=2.85;box(circuitGround,8.42,1.15,9.86,.58,.72,.12,'#224b67');wire(circuitGround,[[8.71,1.87,10.00],[8.71,trayY,10.00],[.85,trayY,10.00],[.85,trayY,.55]],circuitBlue);
+// 配电箱位于正门左侧：主干先贴近完成地面左转，再沿地脚线分配；所有末端只短距离上引到插座。
+const trayY=.10;box(circuitGround,8.42,1.15,9.86,.58,.72,.12,'#224b67');wire(circuitGround,[[8.71,1.15,10.00],[8.71,trayY,10.00],[.85,trayY,10.00],[.85,trayY,.55]],circuitBlue);
 // C1 · 开放办公普通插座回路（蓝）。
 tray(circuitGround,[[.85,7.30],[8.60,7.30]],circuitBlue);for(const x of [3.00,4.60,6.20,8.40])drop(circuitGround,x,7.53,circuitBlue);
 tray(circuitGround,[[.85,.55],[8.60,.55]],circuitBlue);for(const x of [3.00,4.60,6.20])drop(circuitGround,x,.12,circuitBlue);for(const z of [1.25,3.40,5.55])drop(circuitGround,8.98,z,circuitBlue);for(const z of [2.55,5.15]){tray(circuitGround,[[.85,z],[.12,z]],circuitBlue);drop(circuitGround,.12,z,circuitBlue)}
@@ -200,7 +201,7 @@ tray(circuitGround,[[.85,.55],[8.60,.55]],circuitBlue);for(const x of [3.00,4.60
 tray(circuitGround,[[8.71,.55],[13.35,.55],[13.35,4.20]],circuitAmber);for(const [x,z] of [[11.10,1.00],[12.70,1.00],[13.35,4.20]])drop(circuitGround,x,z,circuitAmber);
 // C3 · 右侧开放区回路（青绿）。
 tray(circuitGround,[[8.71,.55],[17.20,.55],[17.20,8.65],[18.85,8.65],[18.85,2.90]],circuitTeal);for(const [x,z] of [[17.0,1.2],[18.85,2.9],[18.85,5.2],[18.85,7.5],[17.0,9.12],[14.6,9.12]])drop(circuitGround,x,z,circuitTeal);for(const x of [12.8,17.2])drop(circuitGround,x,.12,circuitTeal)
-// C4 · 卫浴防溅专用回路（紫），仅显示从顶面引下的独立管线，不与普通插座串接。
+// C4 · 卫浴防溅专用回路（紫），沿地脚线独立布设后短距离上引，不与普通插座串接。
 tray(circuitGround,[[8.71,.55],[12.35,.55],[12.35,9.11]],circuitPurple);for(const z of [6.45,8.45]){tray(circuitGround,[[12.35,z],[12.85,z]],circuitPurple);drop(circuitGround,12.85,z,circuitPurple)}
 // 二楼 C5-C8：按当前 L 形夹层楼面及洞口边界布点，独立竖向干线从一楼配电箱上引。
 for(const x of [11.2,12.8,14.4,16.0,17.6])outlet(circuitUpper,x,9.24,'z',c1Mat,'C5','二楼');outlet(circuitUpper,19.25,8.0,'x',c1Mat,'C5','二楼');for(const z of [1.2,3.0,5.0])outlet(circuitUpper,10.8,z,'x',c2Mat,'C6','二楼');for(const x of [12.8,15.0,17.2])outlet(circuitUpper,x,.12,'z',c2Mat,'C7','二楼');
@@ -209,8 +210,8 @@ for(const [x,z,s] of [[11.25,1.3,'z'],[13.7,1.3,'z'],[16.0,1.3,'z']])outlet(circ
 for(const z of [2.55,5.15])outlet(circuitGround,.12,z,'x',c1Mat,'C1','一楼');for(const x of [12.8,17.2])outlet(circuitGround,x,.12,'z',c3Mat,'C3','一楼');
 // 卫浴点设在干区后墙，避开花洒喷淋范围；最终须用防溅面板、漏保回路并由持证电工深化。
 outlet(circuitGround,12.35,9.11,'z',c4Mat,'C4','一楼',1.10);drop(circuitGround,12.35,9.11,circuitPurple,trayY,1.10);
-// 上楼竖向干线：从入口侧配电箱顶部进入夹层，再沿二楼顶面分回路。
-wire(circuitGround,[[10.85,trayY,.55],[10.85,levelHeight,.55]],circuitBlue);const upperTrayY=2.85;wire(circuitUpper,[[10.85,0,.55],[10.85,upperTrayY,.55]]);
+// 上楼竖向干线：仅在入口侧墙内由一楼地脚线位置上引，二楼继续贴地脚线分回路。
+wire(circuitGround,[[10.85,trayY,.55],[10.85,levelHeight,.55]],circuitBlue);const upperTrayY=.10;wire(circuitUpper,[[10.85,0,.55],[10.85,upperTrayY,.55]]);
 // C5 · 二楼周边普通插座回路（蓝）。
 tray(circuitUpper,[[10.85,8.70],[17.60,8.70]],circuitBlue,upperTrayY);for(const x of [11.20,12.80,14.40,16.00,17.60])drop(circuitUpper,x,9.24,circuitBlue,upperTrayY);tray(circuitUpper,[[17.60,8.70],[19.25,8.70]],circuitBlue,upperTrayY);drop(circuitUpper,19.25,8.00,circuitBlue,upperTrayY);
 // C6/C7 · 茶台及日常办公回路（琥珀）。
@@ -278,7 +279,7 @@ function showCircuitBoard(){
  $('#furniture').checked=false;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#circuitLayer').checked=true;updateCircuitLayer();
  // Circuit version keeps only architecture, outlet symbols and routes: no steel, stair, shower or glass enclosure.
  structure.visible=false;stairs.visible=false;stairStorage.visible=false;openingRails.visible=false;wet.visible=false;wetFloor.visible=false;supportStudy.reserve.visible=false;$('#daylight').checked=true;facade.visible=true;
- camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路参考 · 墙顶走线、竖向下引；总线由正门左侧配电箱引出';markBoard('#circuitBoard',true)
+ camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路参考 · 沿地脚线/地面走线、短距离上引；总线由正门左侧配电箱引出';markBoard('#circuitBoard',true)
 }
 function showFurnitureBoard(){
  if(boardMode==='furniture'){restoreFullBoard();return}
@@ -303,7 +304,9 @@ function clearFurnitureSelection(){selectedFurniture=null;furnitureDrag=null;fur
 function updateFurnitureOutline(){if(selectedFurniture&&boardMode==='furniture'){furnitureOutline.setFromObject(selectedFurniture);furnitureOutline.visible=true}else furnitureOutline.visible=false}
 function nudgeFurniture(dx,dz){if(!selectedFurniture)return;selectedFurniture.position.x+=dx;selectedFurniture.position.z+=dz;saveFurnitureLayout();updateFurnitureAnchoredNotes()}
 function scaleFurniture(step){if(!selectedFurniture)return;const size=THREE.MathUtils.clamp(selectedFurniture.scale.x+step,.55,1.8);selectedFurniture.scale.setScalar(size);saveFurnitureLayout()}
-$('#furnitureUp').onclick=()=>nudgeFurniture(0,-.15);$('#furnitureDown').onclick=()=>nudgeFurniture(0,.15);$('#furnitureLeft').onclick=()=>nudgeFurniture(-.15,0);$('#furnitureRight').onclick=()=>nudgeFurniture(.15,0);$('#furnitureSmaller').onclick=()=>scaleFurniture(-.08);$('#furnitureLarger').onclick=()=>scaleFurniture(.08);$('#furnitureReset').onclick=()=>{resetFurnitureLayout();updateFurnitureAnchoredNotes();clearFurnitureSelection()};
+function rotateFurniture(step){if(!selectedFurniture)return;selectedFurniture.rotation.y+=step;saveFurnitureLayout()}
+$('#furnitureUp').onclick=()=>nudgeFurniture(0,-.15);$('#furnitureDown').onclick=()=>nudgeFurniture(0,.15);$('#furnitureLeft').onclick=()=>nudgeFurniture(-.15,0);$('#furnitureRight').onclick=()=>nudgeFurniture(.15,0);$('#furnitureSmaller').onclick=()=>scaleFurniture(-.08);$('#furnitureLarger').onclick=()=>scaleFurniture(.08);$('#furnitureTurnLeft').onclick=()=>rotateFurniture(Math.PI/12);$('#furnitureTurnRight').onclick=()=>rotateFurniture(-Math.PI/12);$('#furnitureReset').onclick=()=>{resetFurnitureLayout();updateFurnitureAnchoredNotes();clearFurnitureSelection()};
+$('#furnitureDeselect').onclick=clearFurnitureSelection;
 renderer.domElement.addEventListener('pointerdown',e=>{start=[e.clientX,e.clientY];if(e.button!==0||boardMode!=='furniture'||measurement.isActive())return;const object=furnitureAt(e);if(!object)return;selectFurniture(object);const world=new THREE.Vector3();if(!ray.ray.intersectPlane(furniturePlane,world))return;const local=upper.worldToLocal(world.clone());furnitureDrag={pointerId:e.pointerId,object,start:local,origin:object.position.clone()};controls.enabled=false;renderer.domElement.setPointerCapture(e.pointerId);renderer.domElement.style.cursor='grabbing';e.preventDefault()});
 renderer.domElement.addEventListener('pointermove',e=>{if(!furnitureDrag||furnitureDrag.pointerId!==e.pointerId)return;pointerRay(e);const world=new THREE.Vector3();if(!ray.ray.intersectPlane(furniturePlane,world))return;const local=upper.worldToLocal(world.clone()),d=local.clone().sub(furnitureDrag.start);furnitureDrag.object.position.x=furnitureDrag.origin.x+d.x;furnitureDrag.object.position.z=furnitureDrag.origin.z+d.z;updateFurnitureAnchoredNotes()});
 function finishFurnitureDrag(e){if(!furnitureDrag||furnitureDrag.pointerId!==e.pointerId)return;saveFurnitureLayout();furnitureDrag=null;controls.enabled=true;renderer.domElement.style.cursor='grab'}
