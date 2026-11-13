@@ -187,8 +187,8 @@ label(labelGroup,'一楼层高 4.20m',20.5,2.10,5.4,'#466e82',4.2);line(labelGro
 label(stairs,'平台下模型净高约1.80m · 需调整卫浴',17.9,2.85,6.55,'#8a5c36',4.0);line(stairs,[[17.3,2.10,6.79],[17.3,3.92,6.79]],'#8a5c36');
 const facade=new THREE.Group();model.add(facade);const windowMat=mat('#5b91ad',.055);
 // The two exterior faces are one continuous L-shaped daylight surface, not solid walls.
-const daylightSouth=box(facade,0,0,-.05,19.425,8.4,.05,windowMat),daylightRight=box(facade,19.425,0,0,.05,8.4,9.4,windowMat);daylightSouth.userData.hoverDimension={a:[0,.08,0],b:[19.425,.08,0],text:'19.425 m'};daylightRight.userData.hoverDimension={a:[19.425,.08,0],b:[19.425,.08,9.4],text:'9.400 m'};
-line(facade,[[0,.65,0],[19.425,.65,0],[19.425,.65,9.4]],'#4f8eac');line(facade,[[0,8.4,0],[19.425,8.4,0],[19.425,8.4,9.4]],'#4f8eac');
+const daylightSouth=box(facade,0,-.10,-.05,19.425,8.50,.05,windowMat),daylightRight=box(facade,19.425,-.10,0,.05,8.50,9.4,windowMat);daylightSouth.userData.hoverDimension={a:[0,-.10,0],b:[19.425,-.10,0],text:'19.425 m'};daylightRight.userData.hoverDimension={a:[19.425,-.10,0],b:[19.425,-.10,9.4],text:'9.400 m'};
+line(facade,[[0,-.10,0],[19.425,-.10,0],[19.425,-.10,9.4]],'#4f8eac');line(facade,[[0,8.4,0],[19.425,8.4,0],[19.425,8.4,9.4]],'#4f8eac');
 label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);label(facade,'原图右侧外窗 · L型采光面',20.0,2.1,6.7,'#357c98',4.7);
 // Exterior apron deliberately uses a cool blue-grey, distinct from the warm light-grey self-leveling interior.
 const pad=box(model,-2,-.4,-2,23.5,.2,15,'#bcced4');pad.receiveShadow=true;
