@@ -24,6 +24,14 @@ function desk(g,x,z,w=1.35,d=.65){box(g,x,.72,z,w,.055,d,white);for(const dx of 
 function chair(g,x,z,rot=0){const c=new THREE.Group();c.position.set(x,0,z);c.rotation.y=rot;g.add(c);box(c,-.23,.43,-.23,.46,.08,.46,charcoal);box(c,-.23,.5,.19,.46,.45,.06,charcoal);box(c,-.035,.08,-.035,.07,.35,.07,steel);box(c,-.25,.05,-.025,.5,.035,.05,steel);box(c,-.025,.05,-.25,.05,.035,.5,steel)}
 function plant(g,x,z){box(g,x-.17,0,z-.17,.34,.4,.34,'#eee7da');const b=new THREE.Mesh(new THREE.SphereGeometry(.36,9,8),mat('#5e9279'));b.scale.y=1.6;b.position.set(x,.8,z);g.add(b)}
 function rail(g,x,z,w,d){box(g,x,0,z,w,1.08,d,glass);box(g,x,1.08,z,w,.045,d,steel)}
+// Sloped stair guards use continuous glass panels with a slim dark handrail.
+// Unlike the former baluster-only rendering, both open sides read as glass safety railings.
+function slopeGlassRail(g,a,b){
+ const h=1.05,positions=[...a,...b,b[0],b[1]+h,b[2],a[0],a[1]+h,a[2]];
+ const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex([0,1,2,0,2,3]);geo.computeVertexNormals();
+ const pane=new THREE.Mesh(geo,mat('#89c2d4',.30));pane.material.side=THREE.DoubleSide;pane.castShadow=true;pane.receiveShadow=true;g.add(pane);
+ line(g,[[a[0],a[1]+h,a[2]],[b[0],b[1]+h,b[2]]],'#333b42');
+}
 // Ground outline uses the same CAD vertices as the existing 1801 page, including its notches.
 const verified=await fetch('./1801_专页核对数据.json').then(r=>r.json());
 const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#d1d0c8'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
@@ -105,14 +113,13 @@ const lowerFinish=-.10,stairRiseHeight=levelHeight-lowerFinish,rise=stairRiseHei
 for(let i=0;i<16;i++){
  const x1=12.545+i*going,x2=17.025-(i+1)*going,h1=lowerFinish+(i+1)*rise,h2=midHeight+(i+1)*rise;
   box(stairTreads,x1,h1-.1,6.04,going,.1,stairW,steel);box(stairTreads,x2,h2-.1,7.74,going,.1,stairW,steel);
- box(stairStorage,x1+.02,0,6.09,going-.04,Math.max(.03,h1-.15),1.40,'#8e928b');
 }
 box(stairs,17.025,midHeight-.30,6.04,2.2,.3,3.2,steel);
 // Continuous finished wall assumed here; no rail on this wall-side edge.
 // Translucent section rendering preserves visibility; actual wall/fire construction is not verified.
 // No low grey-white wall band here: this side remains open in the current field condition.
-for(const z of [6.015,7.565]){line(stairs,[[12.545,lowerFinish+rise+1.05,z],[17.025,midHeight+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,12.545+i*going-.025,lowerFinish+(i+1)*rise,z-.025,.05,1.05,.05,steel)}
-for(const z of [7.715]){line(stairs,[[17.025,midHeight+rise+1.05,z],[12.545,levelHeight+1.05,z]],'#59646a');for(let i=0;i<16;i+=2)box(stairs,17.025-i*going-.025,midHeight+(i+1)*rise,z-.025,.05,1.05,.05,steel)}
+for(const z of [6.015,7.565])slopeGlassRail(stairs,[12.545,lowerFinish+rise,z],[17.025,midHeight,z]);
+for(const z of [7.715,9.215])slopeGlassRail(stairs,[17.025,midHeight+rise,z],[12.545,levelHeight,z]);
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);rail(midGuard,19.25,5.99,.05,3.25);rail(midGuard,17.025,5.99,2.275,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
 // Guardrail at the stair opening: required to protect the open edge.
