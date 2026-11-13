@@ -10,7 +10,7 @@ let viewportFit=1;
 function fitViewport(){const next=Math.max(1,1.4/camera.aspect);camera.position.sub(controls.target).multiplyScalar(next/viewportFit).add(controls.target);viewportFit=next;controls.update();}
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(9.7,2.5,-4.8);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=65;controls.maxPolarAngle=Math.PI*.49;controls.autoRotateSpeed=.7;
 scene.add(new THREE.HemisphereLight(0xffffff,0x98a9b7,1.8));const sun=new THREE.DirectionalLight(0xfff1dc,2);sun.position.set(5,24,-12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-25;sun.shadow.camera.right=25;sun.shadow.camera.top=25;sun.shadow.camera.bottom=-25;sun.shadow.normalBias=.03;scene.add(sun);
-const totalHeight=8.40,levelHeight=4.20,slabDepth=.28,lowerBeamHeight=levelHeight-slabDepth;
+const totalHeight=8.40,levelHeight=4.20,slabDepth=.28,lowerBeamHeight=levelHeight-slabDepth,upperDeckUnderside=levelHeight-.08;
 const ground=new THREE.Group(),upper=new THREE.Group(),stairs=new THREE.Group(),structure=new THREE.Group(),shell=new THREE.Group(),labelGroup=new THREE.Group();const model=new THREE.Group();model.scale.z=-1;scene.add(model);model.add(ground,upper,stairs,structure,shell,labelGroup);upper.position.y=levelHeight;
 // Show the actual stair treads so the circulation route can be read directly in the 3D model.
 const stairTreads=new THREE.Group();stairs.add(stairTreads);stairTreads.visible=true;
@@ -154,15 +154,15 @@ label(stairs,'第一跑内侧 · 宽目标1.50m',15.3,1.5,6.0,'#96621e',4.2);
 label(stairs,'第二跑贴墙 · 二楼出口',15.3,5.70,9.0,'#287b8b',4.2);
 label(stairs,'平台2.20×3.20m / 顶2.10m',18.45,2.50,7.6,'#755b3e',4.2);
 // Minimal support scheme: a clean ring of continuous under-slab beams plus regularly spaced secondary cross beams.
-// The secondary beams make the mezzanine a true steel deck rather than an unsupported plate; no added forest of vertical posts is implied.
+// Every beam top is flush to the underside of the deck; no artificial air gap remains between steel and panel.
 const frameBeam=mat('#27313a');
-box(structure,10.70,lowerBeamHeight-.26,.05,8.73,.26,.18,frameBeam);
-box(structure,10.70,lowerBeamHeight-.26,9.22,8.73,.26,.18,frameBeam);
-box(structure,10.70,lowerBeamHeight-.26,.05,.18,.26,9.35,frameBeam);
-box(structure,19.245,lowerBeamHeight-.26,.05,.18,.26,9.35,frameBeam);
-box(structure,10.70,lowerBeamHeight-.26,7.30,8.73,.26,.18,frameBeam);
+box(structure,10.70,upperDeckUnderside-.26,.05,8.73,.26,.18,frameBeam);
+box(structure,10.70,upperDeckUnderside-.26,9.22,8.73,.26,.18,frameBeam);
+box(structure,10.70,upperDeckUnderside-.26,.05,.18,.26,9.35,frameBeam);
+box(structure,19.245,upperDeckUnderside-.26,.05,.18,.26,9.35,frameBeam);
+box(structure,10.70,upperDeckUnderside-.26,7.30,8.73,.26,.18,frameBeam);
 // Five lightweight transverse secondary beams keep the open office deck on a regular roughly-1.5m module.
-for(const x of [12.25,13.70,15.15,16.60,18.05])box(structure,x,lowerBeamHeight-.22,.18,.14,.18,7.08,frameBeam);
+for(const x of [12.25,13.70,15.15,16.60,18.05])box(structure,x,upperDeckUnderside-.18,.18,.14,.18,7.08,frameBeam);
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a)}
 // 3D electrical overlay mirrors the two circuit drawings. Every socket is a selectable
 // five-hole panel (two-pin plus three-pin). These positions were removed by the user
@@ -235,7 +235,7 @@ line(facade,[[0,-.10,0],[19.425,-.10,0],[19.425,-.10,9.4]],'#4f8eac');line(facad
 label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);label(facade,'原图右侧外窗 · L型采光面',20.0,2.1,6.7,'#357c98',4.7);
 // Exterior apron deliberately uses a cool blue-grey, distinct from the warm light-grey self-leveling interior.
 const pad=box(model,-2,-.4,-2,23.5,.2,15,'#bcced4');pad.receiveShadow=true;
-const supportStudy=setupSupportStudy({model,ground,box,label,mat,trainingMat,supportHeight:lowerBeamHeight+.2});
+const supportStudy=setupSupportStudy({model,ground,box,label,mat,trainingMat,supportHeight:upperDeckUnderside});
 let mode='all';function setMode(m){mode=m;supportStudy.update(m);ground.visible=m!=='upper';upper.visible=m!=='ground';stairs.visible=m==='all'||m==='ground';shell.visible=m==='all'||m==='ground';structure.visible=$('#frame').checked&&m==='all';labelGroup.visible=m==='all';upper.position.y=m==='split'?8.20:levelHeight;if(m==='upper')upper.position.y=0;const text={all:'整体 · 两层关系',ground:'一楼 · 左老板私用 / 中下沉通道 / 右办公会议',upper:'二楼 · 电脑 / 茶桌 / 开放预留区',split:'拆层展示 · 二层临时上移4米，非实际高度'};$('#modeLabel').textContent=text[m];document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));updateCircuitLayer();controls.target.set(9.7,m==='split'?4:m==='all'?2.5:0,-4.8);controls.update()}
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{setMode(b.dataset.mode);upperOriginalColumn.visible=mode==='upper'||mode==='split';reset()});$('#labels').onchange=e=>labels.forEach(s=>s.visible=s.parent===labelGroup||e.target.checked);$('#frame').onchange=()=>setMode(mode);$('#spin').onchange=e=>controls.autoRotate=e.target.checked;$('#daylight').onchange=e=>facade.visible=e.target.checked&&mode!=='upper';
 function selectSocket(meta){if(selectedSocket)selectedSocket.rim.material.color.copy(selectedSocket.baseColor);selectedSocket=meta||null;if(selectedSocket)selectedSocket.rim.material.color.set('#137bb3');$('#socketPicked').textContent=selectedSocket?`${selectedSocket.id} · ${selectedSocket.floor} ${selectedSocket.circuit} · 五孔（两孔＋三孔）`:'未选择插座';$('#removeSocket').disabled=!selectedSocket}
@@ -336,7 +336,7 @@ $('#furniture').onchange=updateFurniture;
 new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();fitViewport();renderer.setSize(host.clientWidth,host.clientHeight)}).observe(host);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();$('#loading').remove();renderer.domElement.dataset.ready='true';renderer.domElement.dataset.orientation='CAD-X_to_X;CAD-Y_to_negative-Z';renderer.domElement.dataset.gymArea='20.145';renderer.domElement.dataset.zone2Area='69.6710';renderer.domElement.dataset.baseUpperArea='59.261';renderer.domElement.dataset.recoveredArea='10.4100';renderer.domElement.dataset.landing='2.2';renderer.domElement.dataset.upperLevel='4.20';renderer.domElement.dataset.upperNetHeight='4.20';renderer.domElement.dataset.lowerBeamHeight='3.92';renderer.domElement.dataset.risers='34';renderer.domElement.dataset.candidateColumns='4';renderer.domElement.dataset.structuralVerified='false';renderer.domElement.dataset.stairShift='0';renderer.domElement.dataset.wetArea='6.696';renderer.domElement.dataset.wetLevel='ground-under-turning-platform';renderer.domElement.dataset.wetClearHeightTarget='2.25';renderer.domElement.dataset.stairWidth='1.50';renderer.domElement.dataset.layoutVersion='equal-4.20m-floor-heights';renderer.domElement.dataset.wetHeightConflict='true';renderer.domElement.dataset.stairHeadroomConflict='true';renderer.domElement.dataset.modeledMinimumHeadroom='1.80';renderer.domElement.dataset.headroomScope='equal-floor-height-model-before-service-runs';renderer.domElement.dataset.stairRiser='0.123529';renderer.domElement.dataset.stairGoing='0.28';renderer.domElement.dataset.firstFlightDirection='-X';renderer.domElement.dataset.returnFlightDirection='+X';if(location.hash==='#connection')$('#connectionView').click();if(location.hash==='#left')$('#bossFocus').click();if(location.hash==='#rest')$('#restFocus').click();if(location.hash==='#wet')$('#wetFocus').click();if(location.hash==='#stairs')$('#stairView').click();if(location.hash==='#supports')$('#supportView').click();function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();measurement.update();renderer.render(scene,camera)}animate();
 
 // Current deck result after closing the oversized former opening.  This overrides the legacy summary values above.
-renderer.domElement.dataset.zone2Area='73.295';renderer.domElement.dataset.baseUpperArea='73.295';renderer.domElement.dataset.recoveredArea='3.890';
+renderer.domElement.dataset.zone2Area='73.295';renderer.domElement.dataset.baseUpperArea='73.295';renderer.domElement.dataset.recoveredArea='3.890';renderer.domElement.dataset.lowerBeamHeight=String(upperDeckUnderside);
 function overallDimensions(){
  closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
  $('#furniture').checked=false;$('#labels').checked=false;labels.forEach(q=>q.visible=false);
