@@ -32,6 +32,7 @@
   "developer_area_m2": 261.32,
   "developer_area_basis": "未注明，不能把差值认定公摊",
   "height": {
+    "floor17_level_m": 67.99,
     "floor18_level_m": 72.19,
     "floor19_level_m": 76.39,
     "roof_structure_level_m": 80.59,

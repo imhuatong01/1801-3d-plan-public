@@ -533,7 +533,7 @@
         padding: 6px;
         box-shadow: 0 3px 16px #28465712;
       }
-      #siteLegend {
+      #siteLegend, #floorStackInfo {
         position: absolute;
         bottom: 14px;
         left: 12px;
@@ -549,10 +549,10 @@
       }
       #siteLegend span { display: inline-flex; align-items: center; margin-right: 12px; gap: 5px; }
       #siteLegend i { width: 9px; height: 9px; border-radius: 2px; background: var(--ink); }
-      #siteLegend small { display: block; margin-top: 3px; }
-      #siteLegend nav { display: flex; gap: 5px; margin-top: 6px; pointer-events: auto; }
-      #siteLegend button { font-size: 12px; padding: 3px 8px; }
-      .viewport:has(#siteLegend:not([hidden])) > .hint { display: none; }
+      #siteLegend small, #floorStackInfo small { display: block; margin-top: 3px; }
+      #siteLegend nav, #floorStackInfo nav { display: flex; gap: 5px; margin-top: 6px; pointer-events: auto; }
+      #siteLegend button, #floorStackInfo button { font-size: 12px; padding: 3px 8px; }
+      .viewport:has(#siteLegend:not([hidden]),#floorStackInfo:not([hidden])) > .hint { display: none; }
       #modes {
         top: 10px;
         left: 10px;
@@ -760,6 +760,7 @@
           ><button id="wetBoard">淋浴参考</button
           ><button id="furnitureBoard">家具参考</button
           ><button id="siteFrameBoard">现场框架</button
+          ><button id="floorStackBoard" aria-pressed="false">17楼 / 18楼</button
           ><button id="measureToggle" aria-pressed="false">量尺寸</button
           ><button id="measureClear">清除测量</button
           ><span class="muted" style="white-space: nowrap">采光面 · 默认显示</span>
@@ -797,6 +798,13 @@
           <div class="editor-row"><button id="furnitureReset">恢复这一版初始摆放</button></div>
         </aside>
         <div class="viewport" id="viewport">
+          <aside id="floorStackInfo" hidden>
+            <b>17 楼与 18 楼相差 4.20 米</b>
+            <small>17 楼仅画进门右侧开放区，梁、柱、窗按 18 楼同位置示意。</small>
+            <small>绿色圆环标出 18 楼雨水立管，在入口短廊靠开放区侧墙外约 0.40 米。</small>
+            <small>污水和废水立管标在公共水井。户内接点、地漏和 17 楼管位待核。</small>
+            <nav aria-label="楼层对照视角"><button type="button" id="levelsOverview">两层全景</button><button type="button" id="levelsDrain">看排水位置</button></nav>
+          </aside>
           <aside id="siteLegend" hidden aria-label="现场材质图例">
             <span><i style="--ink:#989893"></i>混凝土梁柱</span>
             <span><i style="--ink:#495357"></i>窗框</span>
@@ -912,7 +920,7 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=73-surveyed-site"
+          src="./3d-assets/office-height-only.js?v=74-floor-comparison"
     ></script>
   </body>
 </html>

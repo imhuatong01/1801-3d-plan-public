@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import {addSiteShell} from './site-shell.js?v=71';
-import {addSiteServices} from './site-services.js?v=73';
+import {addSiteServices} from './site-services.js?v=74';
+import {buildFloorComparison} from './floor-comparison.js?v=74';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=19-site-surfaces';
+import {setupMeasurements} from './measurements-height-only.js?v=74-floor-stack';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -32,9 +33,9 @@ function partition(g,x,z,w,d){const a=box(g,x,0,z,w,2.5,d,glass);partitions.push
 function desk(g,x,z,w=1.35,d=.65){box(g,x,.72,z,w,.055,d,white);for(const dx of [.06,w-.09])box(g,x+dx,0,z+.07,.04,.72,d-.14,steel);box(g,x+w*.4,.78,z+d*.7,.45,.32,.035,charcoal);box(g,x+w*.5,.78,z+d*.7,.04,.04,.12,steel)}
 function chair(g,x,z,rot=0){const c=new THREE.Group();c.position.set(x,0,z);c.rotation.y=rot;g.add(c);box(c,-.23,.43,-.23,.46,.08,.46,charcoal);box(c,-.23,.5,.19,.46,.45,.06,charcoal);box(c,-.035,.08,-.035,.07,.35,.07,steel);box(c,-.25,.05,-.025,.5,.035,.05,steel);box(c,-.025,.05,-.25,.05,.035,.5,steel);return c}
 function plant(g,x,z){box(g,x-.17,0,z-.17,.34,.4,.34,'#eee7da');const b=new THREE.Mesh(new THREE.SphereGeometry(.36,9,8),mat('#5e9279'));b.scale.y=1.6;b.position.set(x,.8,z);g.add(b)}
-function rail(g,x,z,w,d){
- const alongX=w>=d,long=alongX?w:d,gap=long>1?.05:0,count=long>1?3:1,panel=(long-gap*(count-1))/count;
- for(let i=0;i<count;i++){const at=i*(panel+gap);if(alongX)box(g,x+at,0,z,panel,1.08,d,glass);else box(g,x,0,z+at,w,1.08,panel,glass)}
+function rail(g,x,z,w,d,firstGlassGap=0){
+ const alongX=w>=d,long=alongX?w:d,gap=long>1?.05:0,count=long>1?3:1,panel=(long-firstGlassGap-gap*(count-1))/count;
+ for(let i=0;i<count;i++){const at=firstGlassGap+i*(panel+gap);if(alongX)box(g,x+at,0,z,panel,1.08,d,glass);else box(g,x,0,z+at,w,1.08,panel,glass)}
  box(g,x,1.08,z,w,.045,d,steel)
 }
 // Sloped stair guards use three installable glass panels with 50mm gaps and a slim dark handrail.
@@ -51,7 +52,7 @@ function slopeStringer(g,a,b){
  beam.position.set((a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);beam.rotation.z=Math.atan2(dy,dx);beam.castShadow=true;beam.receiveShadow=true;g.add(beam);
 }
 // Ground outline uses the same CAD vertices as the existing 1801 page, including its notches.
-const verified=await fetch('./1801_专页核对数据.json').then(r=>r.json());
+const verified=await fetch('./1801_专页核对数据.json?v=74').then(r=>r.json());
 const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#d1d0c8'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
 
 // Proposed finish levels: side rooms 0.000, central passage -0.100; no structural cutting instruction.
@@ -165,6 +166,11 @@ rail(openingRails,12.25,7.60,.06,1.70);
 box(openingRails,17.43,-.15,7.74,.1,.15,1.5,steel);
 // Keep the interior-edge guard only.  The exterior L-shaped daylight glass is already the enclosure and has no added handrail.
 rail(upper,10.7,0,.07,7.44);
+// Carry the exposed mezzanine edge to the inner face of the 120 mm end wall.
+const guardReturn=new THREE.Group();
+guardReturn.name='mezzanine-edge-guard-extension';
+upper.add(guardReturn);
+rail(guardReturn,10.7,7.44,.07,9.34-7.44,.05);
 // No short cutaway wall band is shown here: it is not present in the field condition.
 
 function stairArrow(a,b,color){const from=new THREE.Vector3(...a),delta=new THREE.Vector3(...b).sub(from);const arrow=new THREE.ArrowHelper(delta.clone().normalize(),from,delta.length(),color,.32,.18);stairs.add(arrow)}
@@ -204,7 +210,14 @@ for(const x of [3.00,4.60,6.20,8.40])outlet(circuitGround,x,7.53,'z',c1Mat,'C1',
 for(const [x,z,s] of [[11.1,1.0,'z'],[12.7,1.0,'z'],[13.35,4.2,'x']])outlet(circuitGround,x,z,s,c2Mat,'C2','一楼');for(const [x,z,s] of [[17.0,1.2,'z'],[18.85,2.9,'x'],[18.85,5.2,'x'],[18.85,7.5,'x'],[17.0,9.12,'z'],[14.6,9.12,'z']])outlet(circuitGround,x,z,s,c3Mat,'C3','一楼');
 for(const z of [6.45,8.45])outlet(circuitGround,12.85,z,'x',c4Mat,'C4','一楼');
 // 入口总电箱按红圈改至内侧墙位：箱体保持原规格，主干先贴近完成地面左转，再沿地脚线分配。
-const trayY=.10,entryPanel={x:10.20,z:7.75};box(circuitGround,entryPanel.x-.29,1.15,entryPanel.z-.06,.58,.72,.12,'#224b67');wire(circuitGround,[[entryPanel.x,1.15,entryPanel.z],[entryPanel.x,trayY,entryPanel.z],[.85,trayY,entryPanel.z],[.85,trayY,.55]],circuitBlue);
+const trayY=.10,entryPanelX=8.25,entryWallFace=7.675-.06;
+const entryPanel=box(circuitGround,entryPanelX-.29,1.15,entryWallFace-.12,.58,.72,.12,'#224b67');
+entryPanel.name='entrance-wall-distribution-board';
+box(circuitGround,entryPanelX-.265,1.175,entryWallFace-.127,.53,.67,.007,'#335b72');
+box(circuitGround,entryPanelX+.18,1.46,entryWallFace-.14,.025,.09,.013,'#adbcc1');
+const feedZ=entryWallFace-.06;
+wire(circuitGround,[[entryPanelX,1.15,feedZ],[entryPanelX,trayY,feedZ],[entryPanelX,trayY,7.30]],circuitBlue);
+wire(circuitGround,[[.85,trayY,7.30],[.85,trayY,.55]],circuitBlue);
 // C1 · 开放办公普通插座回路（蓝）。
 tray(circuitGround,[[.85,7.30],[8.60,7.30]],circuitBlue);for(const x of [3.00,4.60,6.20,8.40])drop(circuitGround,x,7.53,circuitBlue);
 tray(circuitGround,[[.85,.55],[8.60,.55]],circuitBlue);for(const x of [3.00,4.60,6.20])drop(circuitGround,x,.12,circuitBlue);for(const z of [1.25,3.40,5.55])drop(circuitGround,8.98,z,circuitBlue);for(const z of [2.55,5.15]){tray(circuitGround,[[.85,z],[.12,z]],circuitBlue);drop(circuitGround,.12,z,circuitBlue)}
@@ -292,6 +305,26 @@ existingOnly.add(doorHinge);
 box(doorHinge, 0, .01, 0, 1.08, 2.23, .04, oldDoorFinish);
 // Exterior apron deliberately uses a cool blue-grey, distinct from the warm light-grey self-leveling interior.
 const pad=box(model,-2,-.4,-2,23.5,.2,15,'#bcced4');pad.receiveShadow=true;
+const levelStudy=new THREE.Group();
+model.add(levelStudy);
+levelStudy.visible=false;
+const storeyGap=verified.height.floor18_level_m-verified.height.floor17_level_m;
+const floor17=buildFloorComparison({THREE,box,openOutline:sidePolys[0],storeyHeight:storeyGap,columnXs:[8.90],upperSlabUnderside:storeyGap-.16});
+floor17.position.y=lowerFinish-storeyGap;
+levelStudy.add(floor17);
+const floorNotes=[
+ label(levelStudy,'18楼  +72.190 m',2.60,lowerFinish+.26,8.29,'#26475c',3.55),
+ label(levelStudy,'17楼  +67.990 m',2.60,floor17.position.y+.26,8.29,'#26475c',3.55)
+];
+const drainMarkers=new THREE.Group();
+levelStudy.add(drainMarkers);
+// The DXF circle is a plan location. A ring identifies it without assuming a vertical pipe route.
+const rainAt={x:8.75,z:9.475};
+const rainRing=new THREE.Mesh(new THREE.RingGeometry(.12,.22,32),new THREE.MeshBasicMaterial({color:'#00877d',side:THREE.DoubleSide,depthTest:false}));
+rainRing.rotation.x=-Math.PI/2;rainRing.position.set(rainAt.x,lowerFinish+.03,rainAt.z);rainRing.renderOrder=95;
+drainMarkers.add(rainRing);
+line(drainMarkers,[[rainAt.x,lowerFinish+.03,rainAt.z],[rainAt.x,.85,rainAt.z],[rainAt.x-.8,.85,rainAt.z+.5]],'#00877d');
+floorNotes.push(label(drainMarkers,'18楼 · 雨水立管',rainAt.x-1.25,1.02,rainAt.z+.72,'#00766f',3.05));
 const supportStudy=setupSupportStudy({model,ground,box,label,mat,trainingMat,supportHeight:upperDeckUnderside});
 let mode='all';function setMode(m){mode=m;supportStudy.update(m);ground.visible=m!=='upper';upper.visible=m!=='ground';stairs.visible=m==='all'||m==='ground';shell.visible=m==='all'||m==='ground';fieldFrame.visible=m==='all'||m==='ground';structure.visible=$('#frame').checked&&m==='all';labelGroup.visible=m==='all';upper.position.y=m==='split'?8.20:levelHeight;if(m==='upper')upper.position.y=0;const text={all:'整体 · 两层关系',ground:'一楼 · 左老板私用 / 中下沉通道 / 右办公会议',upper:'二楼 · 电脑 / 茶桌 / 开放预留区',split:'拆层展示 · 二层临时上移4米，非实际高度'};$('#modeLabel').textContent=text[m];document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));updateCircuitLayer();controls.target.set(9.7,m==='split'?4:m==='all'?2.5:0,-4.8);controls.update()}
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{setMode(b.dataset.mode);upperOriginalColumn.visible=mode==='upper'||mode==='split';reset()});$('#labels').onchange=e=>labels.forEach(s=>s.visible=s.parent===labelGroup||e.target.checked);$('#frame').onchange=()=>setMode(mode);$('#spin').onchange=e=>controls.autoRotate=e.target.checked;$('#daylight').onchange=e=>facade.visible=e.target.checked&&mode!=='upper';
@@ -302,6 +335,9 @@ $('#removeSocket').onclick=()=>{if(!selectedSocket)return;selectedSocket.root.vi
 let boardMode='',wetChildSnapshot=null,siteReturnView=null;
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
+ if(boardMode==='floorstack'){
+  levelStudy.visible=false;pad.visible=true;$('#floorStackInfo').hidden=true;markBoard('#floorStackBoard',false);
+ }
  if(boardMode==='wet'&&wetChildSnapshot){for(const [child,visible] of wetChildSnapshot)child.visible=visible;wetChildSnapshot=null}
  if(boardMode==='furniture'){$('#furniture').checked=false;updateFurniture()}
  if(boardMode==='circuit'){$('#circuitLayer').checked=false;updateCircuitLayer();wet.visible=true;wetFloor.visible=true;stairs.visible=true;stairStorage.visible=true;openingRails.visible=true}
@@ -335,7 +371,7 @@ function showCircuitBoard(){
  $('#furniture').checked=false;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#circuitLayer').checked=true;updateCircuitLayer();
  // Circuit version keeps only architecture, outlet symbols and routes: no steel, stair, shower or glass enclosure.
  structure.visible=false;stairs.visible=false;stairStorage.visible=false;openingRails.visible=false;wet.visible=false;wetFloor.visible=false;fieldFrame.visible=false;supportStudy.reserve.visible=false;$('#daylight').checked=true;facade.visible=true;
- camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路参考 · 沿地脚线/地面走线、短距离上引；总线由正门左侧配电箱引出';markBoard('#circuitBoard',true)
+ camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='电路参考 · AL1 总箱安装在进门右侧实体墙，箱底下引至墙脚';markBoard('#circuitBoard',true)
 }
 function showFurnitureBoard(){
  if(boardMode==='furniture'){restoreFullBoard();return}
@@ -376,6 +412,24 @@ function showSiteFrameBoard(){
 }
 $('#dimensionBoard').onclick=()=>{if(boardMode)restoreFullBoard();const on=!$('#dimensionBoard').classList.contains('active');$('#allDimensions').checked=on;$('#dimensions').checked=on;$('#allDimensions').dispatchEvent(new Event('change'));$('#dimensions').dispatchEvent(new Event('change'));markBoard('#dimensionBoard',on)};
 $('#circuitBoard').onclick=showCircuitBoard;
+function stackView(drain=false){
+ if(drain){camera.position.set(10.55,6.45,-17.8);controls.target.set(8.9,.15,-8.35);}
+ else {camera.position.set(17.5,8.5,-29);controls.target.set(9.5,1.75,-4.8);}
+ viewportFit=1;fitViewport();
+}
+function showFloorStack(){
+ if(boardMode==='floorstack'){restoreFullBoard();return;}
+ if(boardMode)restoreFullBoard();
+ siteReturnView={eye:camera.position.clone(),target:controls.target.clone(),fit:viewportFit};
+ closeSpacePlan();boardMode='floorstack';setMode('all');
+ pad.visible=false;levelStudy.visible=true;labelGroup.visible=false;
+ $('#labels').checked=false;labels.forEach(q=>q.visible=false);
+ floorNotes.forEach(note=>note.visible=true);
+ $('#floorStackInfo').hidden=false;markBoard('#floorStackBoard',true);stackView();
+}
+$('#floorStackBoard').onclick=showFloorStack;
+$('#levelsOverview').onclick=()=>stackView();
+$('#levelsDrain').onclick=()=>stackView(true);
 $('#steelBoard').onclick=showSteelBoard;$('#wetBoard').onclick=showWetBoard;$('#furnitureBoard').onclick=showFurnitureBoard;$('#siteFrameBoard').onclick=showSiteFrameBoard;
 function reset(){pad.visible=mode!=='upper';facade.visible=$('#daylight').checked&&mode!=='upper';camera.up.set(0,1,0);camera.position.set(25,20,-24);if(mode==='split')camera.position.set(26,25,-28);controls.target.set(9.7,mode==='split'?4:mode==='upper'||mode==='ground'?0:2.5,-4.8);if(mode==='upper'){camera.position.set(26,15,-18);controls.target.set(15,1,-4.4)}controls.update()}$('#reset').onclick=reset;$('#supportView').onclick=()=>{$('#supportReserve').checked=true;$('#frame').checked=true;setMode('ground');reset();structure.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;facade.visible=false;$('#labels').checked=true;labels.forEach(s=>s.visible=supportStudy.labels.includes(s)||s.userData.labelText==='原入口');camera.position.set(26,15,-17);controls.target.set(15,1.2,-4.7);controls.update();$('#modeLabel').textContent='沿楼梯外侧候选柱位＋低柜 · 仅空间预留，未做承载验算';};$('#restFocus').onclick=()=>{setMode('upper');reset();upperOriginalColumn.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#labels').checked=true;labels.forEach(q=>q.visible=q.userData.labelText.includes('并入主办公区')||q.userData.labelText.includes('出口贴墙'));camera.position.set(24,15,-15);controls.target.set(15.2,.4,-5.0);controls.update();};$('#stairView').onclick=()=>{setMode('ground');reset();$('#labels').checked=true;labels.forEach(s=>s.visible=s.parent===stairs||s.userData.labelText==='原入口');$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(16,21,-7.599);controls.target.set(16,0,-7.6);controls.update()};$('#bossFocus').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;setMode('all');upperOriginalColumn.visible=false;reset();camera.position.set(29,18,-20);controls.target.set(15,3,-4.7);controls.update()};$('#heightView').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#daylight').checked=false;facade.visible=false;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(34,6,-4);controls.target.set(14.7,4.2,-4);controls.update()};$('#entryView').onclick=()=>{camera.position.set(9.925,12,-21);controls.target.set(9.925,1.5,-3);controls.update()};$('#top').onclick=()=>{const cx=mode==='upper'?15.05:9.7;camera.position.set(cx,mode==='upper'?18:24,-4.799);controls.target.set(cx,0,-4.8);controls.update()};$('#zoomIn').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(.8).add(controls.target);controls.update()};$('#zoomOut').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(1.25).add(controls.target);controls.update()};function fullView(on){$('#viewer').classList.toggle('expanded',on);document.body.style.overflow=on?'hidden':'';$('#full').textContent=on?'退出全屏':'全屏'}$('#full').onclick=()=>fullView(!$('#viewer').classList.contains('expanded'));window.addEventListener('keydown',e=>{if(e.key==='Escape')fullView(false)});
 const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let start;
@@ -399,7 +453,7 @@ renderer.domElement.addEventListener('pointermove',e=>{if(!furnitureDrag||furnit
 function finishFurnitureDrag(e){if(!furnitureDrag||furnitureDrag.pointerId!==e.pointerId)return;saveFurnitureLayout();furnitureDrag=null;controls.enabled=true;renderer.domElement.style.cursor='grab'}
 renderer.domElement.addEventListener('pointerup',finishFurnitureDrag);renderer.domElement.addEventListener('pointercancel',finishFurnitureDrag);
 renderer.domElement.addEventListener('pointerup',e=>{if(!start||Math.hypot(e.clientX-start[0],e.clientY-start[1])>5)return;if(measurement.isActive())return;const object=furnitureAt(e);if(object){selectFurniture(object);return}const socketHits=ray.intersectObjects(circuitPickables.filter(x=>x.visible&&x.parent.visible),true);if(socketHits[0]?.object.userData.socket){selectSocket(socketHits[0].object.userData.socket);return}const hits=ray.intersectObjects(pickables.filter(x=>x.visible&&x.parent.visible));if(hits[0]){const d=hits[0].object.userData;$('#selected').replaceChildren();const h=document.createElement('b'),p=document.createElement('p');h.textContent=d.name;p.textContent=d.desc;$('#selected').append(h,p)}});
-const measurement=setupMeasurements({scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve:supportStudy.reserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode:()=>boardMode==='siteframe'?'siteframe':mode,fieldFrame,rawFloor});
+const measurement=setupMeasurements({scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve:supportStudy.reserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode:()=>['siteframe','floorstack'].includes(boardMode)?boardMode:mode,fieldFrame,rawFloor,floor17});
 $('#connectionView').onclick=()=>{setMode('upper');reset();upperOriginalColumn.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#labels').checked=true;labels.forEach(q=>q.visible=q.userData.labelText.includes('侧边连接楼面')||q.userData.labelText.includes('并入主办公区')||q.userData.labelText.includes('出口贴墙')||q.userData.labelText.includes('主电脑位'));camera.position.set(23,15,-13);controls.target.set(16.6,0,-5.3);controls.update();};
 
 $('#wetFocus').onclick=()=>{setMode('ground');reset();$('#labels').checked=true;labels.forEach(q=>q.visible=q.parent===wet||q.userData.labelText==='原入口');$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(22,5.5,-12);controls.target.set(11.85,1.2,-7.7);controls.update();};
@@ -423,7 +477,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=24-cad-orientation';$('#spacePlanTitle').textContent=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=74';$('#spacePlanTitle').textContent=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('1801_一楼左侧_软包通道示意.svg','一楼左侧 · 软包吧台 / 健身平面示意');
 $('#electricalGround').onclick=()=>showFlatPlan('1801_一楼插座回路示意.svg','一楼 · 插座回路示意（踏步隐藏）');
@@ -484,3 +538,15 @@ if(location.hash==='#electrical-ground')$('#electricalGround').click();
 if(location.hash==='#electrical-upper')$('#electricalUpper').click();
 
 if(location.hash==='#site-frame')showSiteFrameBoard();
+if(location.hash==='#floors-17-18')showFloorStack();
+if(location.hash==='#site-outlet'){showSiteFrameBoard();$('#siteOutlet').click();}
+if(location.hash==='#guard-return'){
+ siteReturnView={eye:camera.position.clone(),target:controls.target.clone(),fit:viewportFit};
+ boardMode='guard';fieldFrame.visible=false;
+ controls.target.set(13.6,4.15,-7.80);camera.position.set(8.1,14.0,-10.25);
+ viewportFit=1;fitViewport();
+}
+if(location.hash==='#entry-panel'){
+ showCircuitBoard();controls.target.set(8.85,1.15,-7.85);camera.position.set(12.45,3.1,-3.9);
+ viewportFit=1;fitViewport();
+}

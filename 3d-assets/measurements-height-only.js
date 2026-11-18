@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 export function setupMeasurements(ctx){
- const {scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode,fieldFrame,rawFloor}=ctx;
+ const {scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode,fieldFrame,rawFloor,floor17}=ctx;
+ const stackFloors=[...upperFloorMeshes,...groundFloorMeshes,floor17.getObjectByName('floor17-slab')];
  const $=s=>document.querySelector(s),canvas=renderer.domElement;
  const dims=new THREE.Group(),upperDims=new THREE.Group(),stairDims=new THREE.Group();ground.add(dims);upper.add(upperDims);stairs.add(stairDims);
  function text(g,str,p,color='#9c542d',size=3.4){const c=document.createElement('canvas');c.width=1024;c.height=128;const a=c.getContext('2d');a.fillStyle='#ffffffef';a.fillRect(0,0,1024,128);a.fillStyle=color;a.font='bold 48px Microsoft YaHei';a.textAlign='center';a.textBaseline='middle';a.fillText(str,512,64,1000);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,toneMapped:false}));s.position.copy(p);s.scale.set(size,size/8,1);s.renderOrder=110;g.add(s);return s}
@@ -170,7 +171,7 @@ export function setupMeasurements(ctx){
  qdim(frameDims,[20.45,3.80,7.34],[20.45,3.80,9.34],'2.00 m',1.7);
  function update(){
   model.updateMatrixWorld(true);
-  if(getMode()==='siteframe'){
+  if(getMode()==='siteframe'||getMode()==='floorstack'){
    hoverStraight=null;hoverCandidateKey='';hoverRegion='';hoverCorner=false;
    updateArea('',false);updateStraightHover(null);canvas.dataset.hoverDimensionRegion='';return;
   }
@@ -221,12 +222,12 @@ export function setupMeasurements(ctx){
  function point(event){const r=canvas.getBoundingClientRect();mouse.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);ray.setFromCamera(mouse,camera);
   if($('#measureType').value==='floor'){
    // In the overall 3D view, the ray selects the nearest visible floor, so users can measure either level without changing views first.
-   const meshes=getMode()==='siteframe'?[rawFloor]:getMode()==='upper'?upperFloorMeshes:getMode()==='ground'?groundFloorMeshes:[...upperFloorMeshes,...groundFloorMeshes];
+   const meshes=getMode()==='siteframe'?[rawFloor]:getMode()==='floorstack'?stackFloors:getMode()==='upper'?upperFloorMeshes:getMode()==='ground'?groundFloorMeshes:[...upperFloorMeshes,...groundFloorMeshes];
    const h=ray.intersectObjects(meshes,false)[0];if(!h)return;
    const candidates=[];for(const obj of meshes){const at=obj.geometry.getAttribute('position');let max=-Infinity;const verts=[];for(let i=0;i<at.count;i++){const v=new THREE.Vector3().fromBufferAttribute(at,i).applyMatrix4(obj.matrixWorld);verts.push(v);max=Math.max(max,v.y)}for(const v of verts)if(Math.abs(v.y-max)<.001)candidates.push(v)}
    return snap(h.point,candidates,event);
   }
-  const meshes=[];for(const group of [ground,upper,stairs,structure,shell,fieldFrame])group.traverse(o=>{if(o.isMesh&&visible(o)&&!o.userData.name&&o.material.opacity===1)meshes.push(o)});
+  const meshes=[];for(const group of [ground,upper,stairs,structure,shell,fieldFrame,floor17])group.traverse(o=>{if(o.isMesh&&visible(o)&&!o.userData.name&&o.material.opacity===1)meshes.push(o)});
   const h=ray.intersectObjects(meshes,false)[0];if(!h)return;const attr=h.object.geometry.getAttribute('position');const points=[];for(let i=0;i<attr.count;i++)points.push(new THREE.Vector3().fromBufferAttribute(attr,i).applyMatrix4(h.object.matrixWorld));return snap(h.point,points,event);
  }
  function marker(g,p){const m=new THREE.Mesh(new THREE.SphereGeometry(.07,12,8),new THREE.MeshBasicMaterial({color:'#e06420',depthTest:false}));m.position.copy(p);m.renderOrder=120;g.add(m)}
