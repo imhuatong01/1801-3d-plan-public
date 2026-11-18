@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {addSiteShell} from './site-shell.js?v=71';
-import {addSiteServices} from './site-services.js?v=71';
+import {addSiteServices} from './site-services.js?v=73';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
 import {setupMeasurements} from './measurements-height-only.js?v=19-site-surfaces';
@@ -8,8 +8,15 @@ const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.setSize(host.clientWidth,host.clientHeight);host.prepend(renderer.domElement);
-let viewportFit=1;
-function fitViewport(){const next=Math.max(1,1.4/camera.aspect);camera.position.sub(controls.target).multiplyScalar(next/viewportFit).add(controls.target);viewportFit=next;controls.update();}
+let viewportFit=1,insideSite=false;
+function fitViewport(){
+ if(insideSite){
+  camera.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(43/2))/Math.min(1,camera.aspect)));
+  camera.updateProjectionMatrix();return;
+ }
+ camera.fov=43;camera.updateProjectionMatrix();
+ const next=Math.max(1,1.4/camera.aspect);camera.position.sub(controls.target).multiplyScalar(next/viewportFit).add(controls.target);viewportFit=next;controls.update();
+}
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(9.7,2.5,-4.8);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=65;controls.maxPolarAngle=Math.PI*.49;controls.autoRotateSpeed=.7;
 scene.add(new THREE.HemisphereLight(0xffffff,0x98a9b7,1.8));const sun=new THREE.DirectionalLight(0xfff1dc,2);sun.position.set(5,24,-12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-25;sun.shadow.camera.right=25;sun.shadow.camera.top=25;sun.shadow.camera.bottom=-25;sun.shadow.normalBias=.03;scene.add(sun);
 const totalHeight=8.40,levelHeight=4.20,slabDepth=.28,lowerBeamHeight=levelHeight-slabDepth,upperDeckUnderside=levelHeight-.08;
@@ -300,6 +307,8 @@ function restoreFullBoard(){
  if(boardMode==='circuit'){$('#circuitLayer').checked=false;updateCircuitLayer();wet.visible=true;wetFloor.visible=true;stairs.visible=true;stairStorage.visible=true;openingRails.visible=true}
  if(boardMode==='siteframe'){
   existingOnly.visible=false;
+  useInteriorFinish(false);
+  camera.fov=43;camera.updateProjectionMatrix();
   $('#siteLegend').hidden=true;
   controls.maxPolarAngle=Math.PI*.49;
  }
@@ -334,16 +343,24 @@ function showFurnitureBoard(){
  $('#furniture').checked=true;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=!!q.userData.furniture);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));
  structure.visible=false;supportStudy.reserve.visible=false;camera.position.set(25,20,-24);controls.target.set(15.3,2.8,-4.7);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='家具参考 · 点选后可拖动 / 微调 / 缩放（第一版）';updateFurnitureEditor();markBoard('#furnitureBoard',true)
 }
+const originalInteriorFinish=mat('#a5a39e');
+function useInteriorFinish(on){
+ insideSite=on;
+ for(const wall of shell.children){
+  if(wall.material===semiWallMat||wall.material===originalInteriorFinish)wall.material=on?originalInteriorFinish:semiWallMat;
+ }
+}
 function siteView(eye, target, overview=false){
+ useInteriorFinish(!overview);
  controls.target.set(...target);
  camera.position.set(...eye);
  viewportFit=1;
- if(overview)fitViewport();
+ fitViewport();
  controls.update();
 }
 $('#siteOverview').onclick=()=>siteView([25,17,-25],[9.7,3.4,-4.8],true);
 $('#siteWindows').onclick=()=>siteView([9.65,1.85,-7.05],[18.30,4.05,-1.25]);
-$('#siteOutlet').onclick=()=>siteView([14.50,2.00,-3.00],[2.50,3.40,-6.80],true);
+$('#siteOutlet').onclick=()=>siteView([14.50,2.00,-3.00],[2.50,3.40,-6.80]);
 function showSiteFrameBoard(){
  if(boardMode==='siteframe'){restoreFullBoard();return}
  if(boardMode)restoreFullBoard();

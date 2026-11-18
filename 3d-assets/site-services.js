@@ -71,6 +71,10 @@ export function addSiteServices({ THREE, group, box, top }) {
   const cabinet = box(fire, 0.062, 0.04, 6.725, 0.20, 1.62, 0.75, cabinetEdge);
   cabinet.name = 'site-fire-cabinet';
   for (const y of [0.09, 0.87]) box(fire, 0.262, y, 6.763, 0.012, 0.74, 0.674, cabinetDoor);
+  const reel = new THREE.Mesh(new THREE.TorusGeometry(0.21, 0.044, 8, 32), fireRed);
+  reel.rotation.y = Math.PI / 2;
+  reel.position.set(0.279, 1.24, 7.10);
+  fire.add(reel);
   const riser = pipe(fire, [0.13, 0.48, 7.56], [0.13, 6.62, 7.56], 0.04, fireRed);
   riser.name = 'site-fire-riser';
   pipe(fire, [0.13, 0.48, 7.56], [0.13, 0.48, 7.46], 0.04, fireRed);
