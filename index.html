@@ -548,6 +548,7 @@
         pointer-events: none;
       }
       #siteLegend span { display: inline-flex; align-items: center; margin-right: 12px; gap: 5px; }
+      #steelDatumTools { max-width: min(430px, calc(100% - 24px)); line-height: 1.5; }
       #siteLegend i { width: 9px; height: 9px; border-radius: 2px; background: var(--ink); }
       #siteLegend small, #floorStackInfo small, #steelDatumTools small { display: block; margin-top: 3px; }
       #siteLegend nav, #floorStackInfo nav, #steelDatumTools nav { display: flex; gap: 5px; margin-top: 6px; pointer-events: auto; }
@@ -804,10 +805,11 @@
         </aside>
         <div class="viewport" id="viewport">
           <aside id="steelDatumTools" hidden>
-            <b>原窗腰梁上沿与夹层钢梁顶齐平</b>
-            <small>模型标高：梁顶 +4.53 米，楼板面 +4.57 米。连接节点待深化。</small>
+            <b id="steelViewTitle">原窗腰梁上沿与夹层钢梁顶齐平</b>
+            <small id="steelViewLevels">模型标高：梁顶 +4.53 米，楼板面 +4.57 米。连接节点待深化。</small>
             <small id="showerBeamClearance"></small>
-            <nav aria-label="钢梁观察角度"><button type="button" id="steelDatumView">看梁顶对齐</button><button type="button" id="steelOverall">钢架全景</button></nav>
+            <small id="stairFlightsInfo" hidden></small>
+            <nav aria-label="钢架观察角度"><button type="button" id="steelStairs">看楼梯与淋浴</button><button type="button" id="steelDatumView">看梁顶对齐</button><button type="button" id="steelOverall">钢架全景</button></nav>
           </aside>
           <aside id="floorStackInfo" hidden>
             <b>17 楼与 18 楼相差 4.20 米</b>
@@ -931,7 +933,7 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=75-window-lights"
+          src="./3d-assets/office-height-only.js?v=76-stair-clearance"
     ></script>
   </body>
 </html>

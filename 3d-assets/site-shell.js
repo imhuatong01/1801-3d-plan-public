@@ -1,10 +1,29 @@
 // Plan elevations in metres, relative to the 18F building datum (+72.190 m).
 const beltBase = 3.86, beltHeight = 0.67, steelTop = beltBase + beltHeight;
 const finishThickness = 0.04, floorFinish = steelTop + finishThickness;
-const lowerFinish = -0.10, riser = (floorFinish - lowerFinish) / 34;
+const lowerFinish = -0.10, lowerRisers = 18, upperRisers = 13, going = 0.28;
+const riser = (floorFinish - lowerFinish) / (lowerRisers + upperRisers);
+const midLanding = lowerFinish + lowerRisers * riser;
+const lowerLandingX = 12.95, thresholdX = 17.43;
+const lowerStartX = lowerLandingX + (lowerRisers - 1) * going;
+const upperStartX = thresholdX - (upperRisers - 1) * going;
+const platformBeamDepth = 0.44, wetFloorFinish = lowerFinish + 0.03;
+const opening = [[10.92,5.94],[14.63,5.94],[14.63,7.60],[thresholdX,7.60],[thresholdX,9.30],[10.92,9.30]];
+const midPlatformOutline = [[10.75,6.04],[lowerLandingX,6.04],[lowerLandingX,7.64],
+  [upperStartX,7.64],[upperStartX,9.24],[10.75,9.24]];
+function planArea(points) {
+  return Math.abs(points.reduce((sum,[x,z],i)=>{
+    const [nextX,nextZ]=points[(i+1)%points.length];
+    return sum + x*nextZ - nextX*z;
+  },0))/2;
+}
 export const MEZZANINE = Object.freeze({
-  steelTop, finishThickness, floorFinish, lowerFinish, riser,
-  roomTop: 8.40, primaryDepth: 0.26, midLanding: lowerFinish + 17 * riser,
+  steelTop, finishThickness, floorFinish, lowerFinish, riser, lowerRisers, upperRisers,
+  going, midLanding, lowerStartX, lowerLandingX, upperStartX, thresholdX, opening, midPlatformOutline,
+  openingArea: planArea(opening), upperArea: 81.965 - planArea(opening),
+  platformArea: planArea(midPlatformOutline), platformBeamDepth, wetFloorFinish, wetHeadBottom: wetFloorFinish+2.22,
+  wetBeamClearance: midLanding-platformBeamDepth-wetFloorFinish,
+  roomTop: 8.40, primaryDepth: 0.26,
   beltInnerZ: 0.90, beltInnerX: 18.525
 });
 

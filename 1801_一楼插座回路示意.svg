@@ -14,10 +14,16 @@
 <path class="wall" d="M91 470L187 470L224 470L344 470L344 437L344 379L391 379L391 415L391 418L394 418L623 418L623 421L638 421L638 418L641 418L653 418L653 700L74 700L74 697L70 697L70 685L70 670L70 470L72 470L78 470Z"/>
 <!-- Functional drawing zones located from the current model coordinates -->
 <rect class="part" x="82" y="478" width="258" height="214"/><text class="tx" x="164" y="570">开放办公预留区</text><text class="sm" x="178" y="593">C1 普通插座</text>
-<rect class="part" x="345" y="379" width="47" height="321" fill="#edf1f1"/><text class="sm" transform="translate(371 610) rotate(-90)">下沉通道</text>
+<rect class="part" x="345" y="379" width="47" height="321" fill="#edf1f1"/><text class="sm" transform="translate(371 610) rotate(-90)">中央通道</text>
 <rect class="part" x="398" y="497" width="93" height="195"/><text class="sm" x="410" y="567">吧台 / 休闲</text><text class="sm" x="419" y="586">C2</text>
 <rect class="part" x="571" y="427" width="75" height="257"/><text class="sm" transform="translate(617 590) rotate(-90)">健身 / 开放预留 C3</text>
-<path class="void" d="M390 424H596V518H530V624H390Z"/><text class="tx" x="422" y="516">U 型楼梯洞口</text><text class="sm" x="428" y="538">踏步隐藏</text>
+<g id="stair-plan" aria-label="U形楼梯投影，下跑18级，上跑13级">
+<path fill="#dce8e4" stroke="#80939d" stroke-width="1.2" d="M392.5 518.8L458.5 518.8L458.5 470.8L492.1 470.8L492.1 422.8L392.5 422.8Z"/>
+<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M458.5 518.8L601.3 518.8L601.3 473.8L458.5 473.8Z"/>
+<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M492.1 467.8L592.9 467.8L592.9 422.8L492.1 422.8Z"/>
+<text x="529.9" y="499.9" text-anchor="middle" class="sm">下跑 18 级</text>
+<text x="542.5" y="448.6" text-anchor="middle" class="sm">上跑 13 级</text>
+</g>
 <rect class="wet" x="393" y="424" width="65" height="93"/><text class="sm" x="403" y="464">卫浴</text><text class="sm" x="402" y="484">C4-RCD</text>
 <!-- dimension strings derived from CAD data -->
 <path class="dim" d="M70 725H653M70 716V735M653 716V735"/><text class="dimt" x="319" y="744">CAD 主体最大宽 19.425m</text>

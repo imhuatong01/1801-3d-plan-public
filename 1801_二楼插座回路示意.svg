@@ -7,10 +7,10 @@
 <text class="st" x="70" y="82">二楼插座按夹层平面示意。窗腰梁上的壁灯与下层共用 WL1，全部灯号见一楼图。</text>
 <!-- Exact current upper floor boundary, derived from upperBoundary in the 3D model. Rotated to keep the original entrance direction at screen bottom. -->
 <g class="drawing">
-<path class="wall" d="M625 207L625 212L660 212L660 207L695 207L695 720L85 720L85 311L563 311L563 212L85 212L85 207L625 207Z"/>
-<!-- floor zones, matched to current 3D upper zones -->
-<rect class="part" x="100" y="225" width="454" height="77"/><text class="tx" x="260" y="263">侧边连接楼面 / 贴墙出口带</text><text class="sm" x="316" y="285">C5</text>
-<rect class="void" x="100" y="315" width="463" height="96"/><text class="tx" x="242" y="360">楼梯洞口 / 挑空</text><text class="sm" x="285" y="383">踏步隐藏</text>
+<path class="wall" fill-rule="evenodd" d="M625.086 207L625.086 212.457L660.043 212.457L660.043 207L695 207L695 720L85 720L85 207ZM100.381 395.828L359.762 395.828L359.762 305.234L555.521 305.234L555.521 212.457L100.381 212.457Z"/>
+<path id="current-stair-opening" class="void" d="M100.381 395.828L359.762 395.828L359.762 305.234L555.521 305.234L555.521 212.457L100.381 212.457Z"/>
+<text x="231.819" y="336.887" text-anchor="middle" class="sm">L 形楼梯洞口</text>
+<text x="312.221" y="257.754" text-anchor="middle" class="sm">挑空 17.23 ㎡</text>
 <rect class="part" x="100" y="425" width="170" height="280"/><text class="tx" x="139" y="540">临挑空茶台</text><text class="sm" x="178" y="563">C6</text>
 <rect class="part" x="285" y="425" width="194" height="280"/><text class="tx" x="325" y="530">直播 / 日常办公</text><text class="sm" x="362" y="553">C7</text>
 <rect class="part" x="494" y="425" width="186" height="280"/><text class="tx" x="535" y="530">主电脑位</text><text class="sm" x="550" y="553">C8 独立回路</text>
@@ -21,7 +21,7 @@
 <path class="wire" d="M663 735V680H585V498M663 680H386V500"/>
 <!-- Confirmed retained outlets only: C7 three points, C8 one point. -->
 <g class="out"><g transform="translate(250 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(385 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(595 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(665 550)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
-<path d="M563 304V280M553 293L563 280L573 293" fill="none" stroke="#19719e" stroke-width="2.5"/><text class="entry" x="574" y="295">下至原正门</text>
+<path d="M539 251H575M568 245L575 251L568 257" fill="none" stroke="#19719e" stroke-width="2.5"/><text class="entry" x="577" y="270">楼梯出口</text>
 </g>
 <rect class="box" x="790" y="150" width="740" height="470" rx="10"/><text class="tx" x="820" y="190">插座回路表（平面表达）</text><path d="M810 210H1510M920 210V405M1110 210V405M1280 210V405M810 405H1510" stroke="#cbd8dd" stroke-width="1.2"/>
 <text class="sm" x="830" y="238">回路</text><text class="sm" x="950" y="238">服务区域</text><text class="sm" x="1140" y="238">图中线路</text><text class="sm" x="1310" y="238">插座形式 / 安装建议</text>
@@ -33,6 +33,6 @@
   <text class="sm" x="830" y="526">本组窗腰梁壁灯共九盏，统一在一楼 WL1 项计量。</text>
   <a href="./1801_一楼插座回路示意.svg"><text x="830" y="562" class="entry" text-decoration="underline">查看一楼图上的 L01–L09 与配电路径</text></a>
 </g>
-<rect class="box" x="790" y="650" width="740" height="155" rx="10"/><text class="tx" x="820" y="688">图例与施工边界</text><g class="sm"><text x="820" y="722">○=普通插座点　AP=配电箱　蓝实线=普通插座回路　紫虚线=出口带预留回路</text><text x="820" y="752">此图严格按当前三维模型的二楼楼板边界绘制：西侧及中部灰色虚线区域均为楼梯洞口 / 挑空，不是二楼可敷设楼面。</text><text x="820" y="782">最终线径、漏保、接地、桥架及大功率设备专线应由持证电工结合设备清单、物业条件和消防要求深化。</text></g>
+<rect class="box" x="790" y="650" width="740" height="155" rx="10"/><text class="tx" x="820" y="688">图例与施工边界</text><g class="sm"><text x="820" y="722">○=普通插座点　AP=配电箱　蓝实线=普通插座回路</text><text x="820" y="752">灰色虚线沿 L 形洞口划定，挑空 17.23 ㎡。夹层模型楼面 64.74 ㎡。</text><text x="820" y="782">最终线径、漏保、接地、桥架及大功率设备专线应由持证电工结合设备清单、物业条件和消防要求深化。</text></g>
 <text class="sm" x="70" y="920">统一阅读方向：屏幕下方 = 原正门入口　｜　版本：插座位置及回路表达优化版 · 二楼</text>
 </svg>

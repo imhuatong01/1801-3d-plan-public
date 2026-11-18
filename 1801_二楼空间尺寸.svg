@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="850" viewBox="0 0 1280 850" role="img">
+<title>1801 · 夹层楼面尺寸</title><desc>与一楼同向，正门位于图面下方。</desc>
+<defs>
+<pattern id="void-hatch" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#f3f5f4"/><path d="M-3 3L3-3M0 14L14 0M11 17L17 11" stroke="#dbe3e1" stroke-width="1"/></pattern>
+<pattern id="soft-hatch" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M0 0H18V18" fill="none" stroke="#86a59b" opacity=".34" stroke-width=".8"/></pattern>
+<marker id="direction" orient="auto" markerWidth="7" markerHeight="7" refX="6" refY="3"><path d="M0 0L6 3L0 6Z" fill="#416b79"/></marker>
+</defs>
+<style>
+text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#24414a}
+.title{font-size:32px;font-weight:600}.sub,.muted{font-size:15px;fill:#5e7379}.sec{font-size:20px;font-weight:600}.value{font-size:19px;font-weight:500}
+.label,.small{font-size:17px;paint-order:stroke;stroke:#f8faf6;stroke-width:3px;stroke-linejoin:round}.small{font-size:13px}
+.dim{stroke:#809398;fill:none;stroke-width:1.2}.entry{font-size:16px;fill:#216d83;font-weight:600}
+</style>
+<rect width="1280" height="850" fill="#fafbf8"/>
+<text x="64" y="64" class="title">1801 · 夹层楼面尺寸</text>
+<text x="64" y="97" class="sub">与一楼同向，正门位于图面下方。</text>
+<path d="M64 124H1216M884 155V745M64 776H1216" fill="none" stroke="#cad5d1"/>
+<path fill="#e4ebe4" stroke="#4c666c" stroke-width="2" stroke-linejoin="round" d="M341.95 723.2L341.95 717.4L312.95 717.4L312.95 723.2L283.95 723.2L283.95 178L790 178L790 723.2Z"/>
+<path id="current-stair-opening" fill="url(#void-hatch)" stroke="#63838a" stroke-dasharray="6 4" stroke-width="1.5" d="M777.24 522.52L562.06 522.52L562.06 618.8L399.66 618.8L399.66 717.4L777.24 717.4Z"/>
+<text x="553.36" y="363.6" text-anchor="middle" class="label">夹层楼面</text>
+<text x="553.36" y="391.44" text-anchor="middle" class="label">64.74 ㎡</text>
+<text x="674" y="572.98" text-anchor="middle" class="label">L 形挑空</text>
+<text x="603.24" y="670.42" text-anchor="middle" class="label">17.23 ㎡</text>
+<path fill="none" stroke="#416b79" stroke-width="1.6" marker-end="url(#direction)" d="M424.02 670.42L380.52 670.42"/>
+<text x="355.58" y="659.4" text-anchor="middle" class="small">上楼出口</text>
+<path class="dim" d="M790 159H283.95M790 154v10M283.95 154v10"/><text x="536.975" y="152" class="small" text-anchor="middle">8.725 m</text>
+<path class="dim" d="M262.95 178V723.2M257.95 178h10M257.95 723.2h10"/><text x="257.95" y="450.6" class="small" text-anchor="end">9.400 m</text>
+<text x="914" y="206" class="sec">楼面与洞口</text>
+<text x="914" y="254" class="muted">夹层外轮廓</text>
+<text x="914" y="281" class="value">8.725 × 9.400 m</text>
+<text x="914" y="326" class="muted">外轮廓面积（已扣墙角缺口）</text>
+<text x="914" y="353" class="value">81.965 ㎡</text>
+<text x="914" y="398" class="muted">L 形楼梯洞口</text>
+<text x="914" y="425" class="value">17.226 ㎡</text>
+<text x="914" y="470" class="muted">扣洞后的楼面</text>
+<text x="914" y="497" class="value">64.739 ㎡</text>
+<text x="914" y="542" class="muted">上跑出口宽</text>
+<text x="914" y="569" class="value">1.50 m</text>
+<text x="914" y="614" class="muted">夹层完成面标高</text>
+<text x="914" y="641" class="value">+4.570 m</text>
+<text x="64" y="809" class="sub">斜线为楼梯挑空。楼面面积以楼板边界计，尚含柱位、通道及楼梯到达区。</text>
+</svg>

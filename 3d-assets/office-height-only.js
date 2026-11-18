@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import {addSiteShell,MEZZANINE} from './site-shell.js?v=75';
+import {addSiteShell,MEZZANINE} from './site-shell.js?v=76-stairs';
 import {makeWindowLighting} from './window-lights.js?v=75';
 import {addSiteServices} from './site-services.js?v=74';
 import {buildFloorComparison} from './floor-comparison.js?v=74';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=75-beam-datum';
+import {setupMeasurements} from './measurements-height-only.js?v=76-stairs';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -26,7 +26,7 @@ const upperDeckUnderside=MEZZANINE.steelTop, lowerBeamHeight=upperDeckUnderside-
 const ground=new THREE.Group(),upper=new THREE.Group(),stairs=new THREE.Group(),structure=new THREE.Group(),shell=new THREE.Group(),fieldFrame=new THREE.Group(),labelGroup=new THREE.Group();const model=new THREE.Group();model.scale.z=-1;scene.add(model);model.add(ground,upper,stairs,structure,shell,fieldFrame,labelGroup);upper.position.y=levelHeight;
 // Show the actual stair treads so the circulation route can be read directly in the 3D model.
 const stairTreads=new THREE.Group();stairs.add(stairTreads);stairTreads.visible=true;
-const stairShift=0;stairs.scale.x=-1;stairs.position.x=29.975;const stairStorage=new THREE.Group(),openingRails=new THREE.Group();stairStorage.scale.x=-1;stairStorage.position.x=29.975;openingRails.scale.x=-1;openingRails.position.x=29.975;ground.add(stairStorage);upper.add(openingRails);
+const stairShift=0;const stairStorage=new THREE.Group(),openingRails=new THREE.Group();stairStorage.scale.x=-1;stairStorage.position.x=29.975;openingRails.scale.x=-1;openingRails.position.x=29.975;ground.add(stairStorage);upper.add(openingRails);
 const partitions=[],labels=[],pickables=[];const mat=(c,op=1)=>new THREE.MeshStandardMaterial({color:c,roughness:.72,transparent:op<1,opacity:op,depthWrite:op===1});const glass=mat('#89c2d4',.23),steel=mat('#333b42'),wallmat=mat('#edf0ec'),semiWallMat=mat('#c0cbc8',.28),wood=mat('#ccb18a'),white=mat('#fbfaf6'),charcoal=mat('#4c6576');
 function box(g,x,y,z,w,h,d,m){const a=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),typeof m==='string'?mat(m):m);a.position.set(x+w/2,y+h/2,z+d/2);a.castShadow=true;a.receiveShadow=true;g.add(a);return a}
 function label(g,text,x,y,z,color='#254d65',scale=4.2){const c=document.createElement('canvas');c.width=768;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='#fffffff0';ctx.beginPath();ctx.roundRect(4,8,760,112,18);ctx.fill();ctx.strokeStyle='#c6d9e4';ctx.lineWidth=3;ctx.stroke();ctx.font='bold 60px Microsoft YaHei,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=color;let fs=60;while(ctx.measureText(text).width>720&&fs>28){fs-=2;ctx.font='bold '+fs+'px Microsoft YaHei,sans-serif'}ctx.fillText(text,384,65);const texture=new THREE.CanvasTexture(c);texture.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,depthTest:false,toneMapped:false}));s.position.set(x,y,z);s.scale.set(scale,scale/6,1);s.renderOrder=50;s.userData.labelText=text;g.add(s);labels.push(s);return s}
@@ -48,10 +48,13 @@ function slopeGlassRail(g,a,b){
   const pane=new THREE.Mesh(geo,mat('#89c2d4',.30));pane.material.side=THREE.DoubleSide;pane.castShadow=true;pane.receiveShadow=true;g.add(pane)}
  line(g,[[a[0],a[1]+h,a[2]],[b[0],b[1]+h,b[2]]],'#333b42');
 }
-// A slim rectangular steel stringer directly below a stair run: supports the treads without cluttering the room with posts.
-function slopeStringer(g,a,b){
- const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),beam=new THREE.Mesh(new THREE.BoxGeometry(len,.18,.14),steel);
- beam.position.set((a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);beam.rotation.z=Math.atan2(dy,dx);beam.castShadow=true;beam.receiveShadow=true;g.add(beam);
+// Side-elevation profiles provide square-cut ends against floor and platform faces.
+function steelProfile(parent,name,points,z,width){
+ const sh=new THREE.Shape();
+ points.forEach(([x,y],i)=>i?sh.lineTo(x,y):sh.moveTo(x,y));sh.closePath();
+ const geometry=new THREE.ExtrudeGeometry(sh,{depth:width,bevelEnabled:false});
+ const mesh=new THREE.Mesh(geometry,steel);mesh.position.z=z;mesh.name=name;
+ mesh.castShadow=mesh.receiveShadow=true;parent.add(mesh);return mesh;
 }
 // Ground outline uses the same CAD vertices as the existing 1801 page, including its notches.
 const verified=await fetch('./1801_专页核对数据.json?v=74').then(r=>r.json());
@@ -61,11 +64,10 @@ const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000
 const groundFloorMeshes=[floor],upperFloorMeshes=[];
 const sidePolys=[[[3.9, 7.675], [5.15, 7.675], [9.15, 7.675], [9.15, 0.0], [0.125, 0.0], [0.125, 0.1], [0.0, 0.1], [0.0, 0.5], [0.0, 1.0], [0.0, 7.675], [0.05, 7.675], [0.25, 7.675], [0.7, 7.675], [3.9, 7.675]], [[10.8, 9.4], [18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.025, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 9.4], [10.8, 9.4]]];
 for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth:.1,bevelEnabled:false});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat('#d6d5cd'));m.position.y=-.1;m.receiveShadow=true;ground.add(m);groundFloorMeshes.push(m)}
-// The earlier L-shaped cut-out was much wider than the second stair flight and made the mezzanine read as an incomplete deck.
-// Restore the deck around the stair.  Keep only a compact opening around the upper flight and its installation clearance.
+// The slab and trimmers follow the same headroom opening.
 const upperBoundary=[[18.425,9.4],[18.425,9.3],[18.925,9.3],[18.925,9.4],[19.425,9.4],[19.425,0.0],[10.7,0.0],[10.7,9.4],[10.8,9.4],[18.425,9.4]];
 const upperShape=new THREE.Shape();upperBoundary.forEach((p,i)=>i?upperShape.lineTo(p[0],-p[1]):upperShape.moveTo(p[0],-p[1]));upperShape.closePath();
-const stairOpening=[[12.25,7.60],[17.35,7.60],[17.35,9.30],[12.25,9.30]];
+const stairOpening=MEZZANINE.opening;
 const stairHole=new THREE.Path();stairOpening.forEach((p,i)=>i?stairHole.lineTo(p[0],-p[1]):stairHole.moveTo(p[0],-p[1]));stairHole.closePath();upperShape.holes.push(stairHole);
 // Keep the mezzanine as a thin floor finish only: the field condition has no exposed grey-white fascia band.
 const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:MEZZANINE.finishThickness,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-MEZZANINE.finishThickness;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
@@ -76,7 +78,7 @@ const corridor=zone(ground,9.15,0,1.55,10.7,'#cbcac3','中间 · 完成面通道
 ground.position.y=-.10;floor.position.y+=.10;
 zone(ground,16.7,1.2,2.55,7.9,'#d6d5cd','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
 zone(ground,10.85,.15,2.65,6.9,'#d6d5cd','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
-zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑目标1.50m，34级分17＋17级；上楼至夹层完成面，平台下淋浴仍需复核净高。');
+zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑目标1.50m，31级分18＋13级；两跑等踏高、等踏深，出口贴墙。');
 const furnitureObjects=[],furnitureMovables=[],furnitureAnchoredNotes=[];
 const furnitureStorageKey='1801-furniture-reference-v1';
 function markFurnitureMovable(object,id,name){object.userData.furnitureMovable={id,name,initial:{x:object.position.x,z:object.position.z,scale:object.scale.x,rotation:object.rotation.y}};furnitureMovables.push(object);return object}
@@ -104,11 +106,7 @@ zone(upper,16.85,1.2,2.35,4.2,'#b5cbd1','二楼 · 主电脑位','外墙侧深�
 zone(upper,13.85,2.6,2.65,2.35,'#c6bacb','二楼 · 直播与日常办公','直播和日常办公，家具避开楼梯洞口；大屏已按要求移除。');
 // U flights swapped: upper arrival against the original solid wall.
 zone(upper,17.53,7.74,1.50,1.50,'#d5c9a4','二楼 · 贴墙出口','第二跑沿实体墙折返上楼；到达区1.50×1.50m，保持无家具，通过入口侧楼面连接办公区。');
-zone(upper,11.89,5.94,5.64,1.50,'#bccbb7','并入主办公区 · 约8.46㎡','恢复原内侧楼面，仅撤端头补板；夹层完成面调整后，楼梯与平台净空需重新深化。');
-zone(upper,10.73,5.0,1.16,2.44,'#a4c1b7','保留原侧边楼面','仅端头1.19×1.80m补板撤除，其他楼面恢复。');
-label(upper,'出口贴墙 · 到达区1.50×1.50m',18.28,.55,8.45,'#966b30',3.5);
-label(upper,'并入主办公区 · 约8.46㎡',15.1,.55,6.65,'#4f7379',3.7);
-label(upper,'仅端头补板打开',11.85,.55,7.4,'#276d69',3.4);
+label(upper,'贴墙出口 · 上跑到达',18.28,.55,8.45,'#966b30',3.5);
 const furnitureUpperStart=furnitureStart();
 // Furniture v1: column-wrapping work desk and separate tea table, matching the marked two zones.
 const columnDesk=new THREE.Group();upper.add(columnDesk);
@@ -125,46 +123,107 @@ function furnitureNote(text,x,z,owner){const s=label(upper,text,x,1.28,z,'#385d6
 furnitureNote('柱边办公桌 1.80×0.75m',18.05,2.10,columnDesk);furnitureNote('茶桌 2.00×0.82m',14.55,3.70,teaTable);
 furnitureEnd(furnitureUpperStart);
 restoreFurnitureLayout();
-// One enclosed shower only: ordinary waterproof floor is raised 25mm above the unified first-floor finish.
+// Ground-group elevations are relative to the finished first-floor surface.
 const wet=new THREE.Group(),wetWalls=new THREE.Group();ground.add(wet);wet.add(wetWalls);
-box(wet,10.77,.005,6.09,2.16,.025,3.10,mat('#d0cfc7'));
-// The single shower head is the only fitting retained in this zone.
-box(wet,12.58,1.72,6.24,.05,.43,.05,steel);box(wet,12.38,2.12,6.16,.25,.05,.20,steel);
+const wetFloorFinish=MEZZANINE.wetFloorFinish, wetLocalFloor=wetFloorFinish-MEZZANINE.lowerFinish;
+const wetUnderPlatformBeam=MEZZANINE.wetBeamClearance;
+box(wet,10.77,.005,6.09,2.16,wetLocalFloor-.005,3.10,mat('#d0cfc7')).name='shower-finished-floor';
+const headBottom=MEZZANINE.wetHeadBottom-MEZZANINE.lowerFinish;
+const showerRiser=box(wet,12.795,1.05,6.46,.055,headBottom+.07-1.05,.045,steel);
+showerRiser.name='shower-wall-riser';
+const showerArm=box(wet,12.54,headBottom+.04,6.46,.255,.03,.045,steel);
+showerArm.name='shower-arm';
+const showerHead=box(wet,12.44,headBottom,6.38,.19,.04,.19,steel);
+showerHead.name='shower-head';
 const showerGlass=mat('#26383f',.78),showerDoorGlass=mat('#365159',.68);
-// Keep the original acrylic-glass enclosure and its stair-side glass door; only one hand basin returns.
-box(wetWalls,10.77,.03,6.09,.06,2.25,3.10,showerGlass);box(wetWalls,10.85,.03,6.09,2.00,2.25,.06,showerGlass);box(wetWalls,10.85,.03,9.13,2.00,2.25,.06,showerGlass);
-box(wetWalls,12.85,.03,6.09,.06,2.25,1.66,showerGlass);box(wetWalls,12.85,.03,8.75,.06,2.25,.44,showerGlass);const showerDoor=new THREE.Group();wetWalls.add(showerDoor);box(showerDoor,11.95,.03,7.78,.90,2.10,.035,showerDoorGlass);for(const x of [11.95,12.825])box(showerDoor,x,.03,7.77,.025,2.10,.05,steel);for(const y of [.03,2.105])box(showerDoor,11.95,y,7.77,.90,.025,.05,steel);box(showerDoor,12.62,.78,7.735,.055,.54,.075,steel);
-// Closed door and one compact hand basin; no toilet, cabinet or additional shower fitting is added.
+const glassHeight=2.23;
+box(wetWalls,10.77,wetLocalFloor,6.09,.06,glassHeight,3.10,showerGlass);
+for(const z of [6.09,9.13])box(wetWalls,10.83,wetLocalFloor,z,2.02,glassHeight,.06,showerGlass);
+for(const [z,depth] of [[6.09,1.66],[8.75,.44]])box(wetWalls,12.85,wetLocalFloor,z,.06,glassHeight,depth,showerGlass);
+// The closed door fills the opening in the stair-side wall at x=12.88.
+const showerDoor=new THREE.Group();showerDoor.name='shower-closed-door';wetWalls.add(showerDoor);
+box(showerDoor,12.86,wetLocalFloor+.025,7.775,.035,2.18,.95,showerDoorGlass);
+for(const z of [7.75,8.725])box(showerDoor,12.85,wetLocalFloor,z,.055,glassHeight,.025,steel);
+box(showerDoor,12.85,wetLocalFloor+glassHeight-.025,7.775,.055,.025,.95,steel);
+box(showerDoor,12.816,wetLocalFloor+.80,8.60,.11,.42,.035,steel);
 box(wet,10.93,.78,6.42,.48,.10,.36,white);box(wet,11.12,.05,6.56,.08,.73,.08,steel);box(wet,11.11,.91,6.57,.06,.24,.06,steel);
-const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#d0cfc7','平台下 · 纯淋浴区','外框2.16×3.10m，约6.70㎡。保留亚克力玻璃围合、进门玻璃门及一个花洒；无马桶、台盆、柜体。防水完成面较一楼统一完成面高约25mm。');wetFloor.position.y=.025;
+const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#d0cfc7','平台下 · 淋浴区','外框2.16×3.10m，含一个花洒、洗手池与封闭玻璃门。');wetFloor.position.y=wetLocalFloor-.005;
 $('#wetWalls').checked=true;wetWalls.visible=true;
 $('#wetWalls').onchange=e=>{wetWalls.visible=e.target.checked};
 
-// First flight +X on inner side; return flight -X against the solid wall.
-zone(ground,17.43,6.04,1.845,1.50,'#d4c6a4','内侧楼梯起步区','平面预留约1.845×1.50m，茶吧已向室内挪开，保持无家具。');
-const lowerFinish=MEZZANINE.lowerFinish,rise=MEZZANINE.riser,going=.28,flightRun=4.48,stairW=1.5,midHeight=MEZZANINE.midLanding;
-for(let i=0;i<16;i++){
- const x1=12.545+i*going,x2=17.025-(i+1)*going,h1=lowerFinish+(i+1)*rise,h2=midHeight+(i+1)*rise;
-  box(stairTreads,x1,h1-.1,6.04,going,.1,stairW,steel);box(stairTreads,x2,h2-.1,7.74,going,.1,stairW,steel);
+const {lowerFinish,riser:rise,going,lowerRisers,upperRisers,lowerLandingX,lowerStartX,
+ upperStartX,thresholdX,midLanding:midHeight,platformBeamDepth}=MEZZANINE;
+const stairW=1.50, approachDepth=19.275-lowerStartX;
+const showerDimension=new THREE.Group();
+showerDimension.name='shower-dimension-at-platform-edge';
+model.add(showerDimension);showerDimension.visible=false;
+const dimX=11.28,dimZ=9.43,dimBottom=MEZZANINE.wetFloorFinish,dimTop=midHeight-platformBeamDepth;
+line(showerDimension,[[dimX,dimBottom,dimZ],[dimX,dimTop,dimZ]],'#b44f20');
+for(const y of [dimBottom,dimTop])line(showerDimension,[[dimX-.11,y,dimZ],[dimX+.11,y,dimZ],[dimX+.11,y,9.06]],'#b44f20');
+const showerDimTag=label(showerDimension,'梁下净高 '+(dimTop-dimBottom).toFixed(2)+' 米',11.28,(dimTop+dimBottom)/2,dimZ+.03,'#944519',2.22);
+zone(ground,lowerStartX,6.04,approachDepth,stairW,'#d4c6a4','内侧楼梯起步区','进深约'+approachDepth.toFixed(2)+'m，保留一楼进出通路。');
+const flights=[
+ {id:'lower',start:lowerStartX,end:lowerLandingX,direction:-1,z:6.04,base:lowerFinish,count:lowerRisers},
+ {id:'upper',start:upperStartX,end:thresholdX,direction:1,z:7.74,base:midHeight,count:upperRisers}
+];
+for(const f of flights){
+ for(let i=0;i<f.count-1;i++){
+  const nose=f.start+f.direction*i*going, plane=f.base+(i+1)*rise;
+  const tread=box(stairTreads,Math.min(nose,nose+f.direction*going),plane-.10,f.z,going,.10,stairW,steel);
+  tread.name='stair-'+f.id+'-tread-'+String(i+1).padStart(2,'0');
+ }
+ for(const z of [f.z+.11,f.z+stairW-.11]){
+  const topAtStart=f.base-.10,topAtEnd=f.base+(f.count-1)*rise-.10;
+  const verticalDepth=.18/Math.cos(Math.atan(rise/going));
+  const lower=f.id==='lower';
+  let profile;
+  if(lower){
+   // A horizontal shoe sits on the existing floor. The first support terminates at this shoe.
+   const clipX=y=>f.start+(y-topAtStart)*f.direction*going/rise;
+   const shoeTop=lowerFinish+.018;
+   profile=[[clipX(shoeTop),shoeTop],[f.end,topAtEnd],[f.end,topAtEnd-verticalDepth],
+    [clipX(shoeTop+verticalDepth),shoeTop]];
+   const startX=clipX(shoeTop+verticalDepth);
+   box(stairs,startX,lowerFinish,z-.095,f.start-startX,.018,.19,steel).name='stair-base-shoe';
+  }else{
+   profile=[[f.start,topAtStart],[f.end,topAtEnd],[f.end,topAtEnd-verticalDepth],[f.start,topAtStart-verticalDepth]];
+  }
+  steelProfile(stairs,'stair-'+f.id+'-stringer',profile,z-.07,.14);
+  for(let i=0;i<f.count-1;i++){
+   const nose=f.start+f.direction*i*going, treadUnder=f.base+(i+1)*rise-.10;
+   const bearingEnd=nose+f.direction*going;
+   // A level seat supports the tread face; its inclined underside bears on the stringer.
+   const base=(lower&&i===0)?lowerFinish+.018:treadUnder-rise;
+   const pts=[[nose,treadUnder],[bearingEnd,treadUnder]];
+   if(lower&&i===0)pts.push([nose+f.direction*(base-topAtStart)*going/rise,base]);
+   pts.push([nose,base]);
+   steelProfile(stairs,'stair-'+f.id+'-tread-seat',pts,z-.055,.11);
+  }
+ }
 }
-// Two continuous side stringers under each flight transfer every tread load into the lower floor, the platform and the upper floor.
-for(const z of [6.15,7.43])slopeStringer(stairs,[12.545,lowerFinish-.12,z],[17.025,midHeight-.22,z]);
-for(const z of [7.85,9.13])slopeStringer(stairs,[17.025,midHeight-.12,z],[12.545,levelHeight-.38,z]);
-// The platform is carried by its own two edge beams, tying the two stringer runs together.
-for(const z of [6.12,9.00])box(stairs,17.025,midHeight-.44,z,2.2,.18,.14,steel);
-box(stairs,17.025,midHeight-.30,6.04,2.2,.3,3.2,steel);
-// Continuous finished wall assumed here; no rail on this wall-side edge.
-// Translucent section rendering preserves visibility; actual wall/fire construction is not verified.
-// No low grey-white wall band here: this side remains open in the current field condition.
-for(const z of [6.015,7.565])slopeGlassRail(stairs,[12.545,lowerFinish+rise,z],[17.025,midHeight,z]);
-// The return flight is against the existing solid wall on this side, so only its open edge needs glass.
-for(const z of [7.715])slopeGlassRail(stairs,[17.025,midHeight+rise,z],[12.545,levelHeight,z]);
-const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);rail(midGuard,19.25,5.99,.05,3.25);rail(midGuard,17.025,5.99,2.275,.05);
+const platformObstacles=[];
+function platformPart(name,x1,x2,z1,z2,bottom,top){
+ const mesh=box(stairs,x1,bottom,z1,x2-x1,top-bottom,z2-z1,steel);
+ mesh.name=name;platformObstacles.push(mesh);
+}
+const deckUnder=midHeight-.30, platformBeamUnder=midHeight-platformBeamDepth;
+platformPart('stair-turning-platform',10.75,lowerLandingX,6.04,9.24,deckUnder,midHeight);
+platformPart('stair-turning-platform-extension',lowerLandingX,upperStartX,7.64,9.24,deckUnder,midHeight);
+platformPart('platform-beam-lower-edge',10.75,lowerLandingX,6.12,6.26,platformBeamUnder,deckUnder);
+platformPart('platform-beam-wall-side',10.75,upperStartX,9.00,9.14,platformBeamUnder,deckUnder);
+platformPart('platform-beam-extension-edge',lowerLandingX,upperStartX,7.65,7.79,platformBeamUnder,deckUnder);
+for(const z of [6.015,7.565])slopeGlassRail(stairs,[lowerStartX,lowerFinish+rise,z],[lowerLandingX,midHeight,z]);
+slopeGlassRail(stairs,[upperStartX,midHeight+rise,7.715],[thresholdX,levelHeight,7.715]);
+const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);
+rail(midGuard,10.95,5.99,.05,3.25);
+rail(midGuard,11.00,5.99,lowerLandingX-11,.05);
+rail(midGuard,lowerLandingX,7.64,upperStartX-lowerLandingX,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
-// Guardrail follows the reduced stair opening, not the former oversized L-shaped void.
-rail(openingRails,12.25,7.54,5.10,.06);
-// Close the left end of the stair opening as a safety guard.  This is an internal void edge, not the exterior daylight facade.
-rail(openingRails,12.25,7.60,.06,1.70);
+// Follow the exposed faces of the L-shaped void and leave the stair exit open.
+rail(openingRails,10.92,5.88,14.63-10.92,.06);
+rail(openingRails,14.63,5.94,.06,7.60-5.94);
+rail(openingRails,14.69,7.54,thresholdX-14.69,.06);
+rail(openingRails,10.86,5.94,.06,9.30-5.94);
 
 // Keep the interior-edge guard only.  The exterior L-shaped daylight glass is already the enclosure and has no added handrail.
 rail(upper,10.7,0,.07,7.44);
@@ -176,10 +235,12 @@ rail(guardReturn,10.7,7.44,.07,9.34-7.44,.05);
 // No short cutaway wall band is shown here: it is not present in the field condition.
 
 function stairArrow(a,b,color){const from=new THREE.Vector3(...a),delta=new THREE.Vector3(...b).sub(from);const arrow=new THREE.ArrowHelper(delta.clone().normalize(),from,delta.length(),color,.32,.18);stairs.add(arrow)}
-stairArrow([12.6,lowerFinish+rise+.22,6.79],[16.85,midHeight+.18,6.79],0xd28a24);stairArrow([18.125,midHeight+.18,6.79],[18.125,midHeight+.18,8.49],0xd28a24);stairArrow([16.85,midHeight+rise+.18,8.49],[12.6,levelHeight+.18,8.49],0x258b9a);
-label(stairs,'第一跑内侧 · 宽目标1.50m',15.3,1.5,6.0,'#96621e',4.2);
-label(stairs,'第二跑贴墙 · 二楼出口',15.3,5.70,9.0,'#287b8b',4.2);
-label(stairs,'平台2.20×3.20m / 顶+'+midHeight.toFixed(3)+'m',18.45,midHeight+.45,7.6,'#755b3e',4.2);
+stairArrow([lowerStartX-.05,lowerFinish+rise+.22,6.79],[lowerLandingX+.08,midHeight+.18,6.79],0xd28a24);
+stairArrow([11.85,midHeight+.18,6.79],[11.85,midHeight+.18,8.49],0xd28a24);
+stairArrow([upperStartX+.04,midHeight+rise+.18,8.49],[thresholdX-.05,levelHeight+.18,8.49],0x258b9a);
+label(stairs,'第一跑 18级 · 宽1.50m',15.3,1.5,6.0,'#96621e',4.2);
+label(stairs,'第二跑 13级 · 贴墙出口',15.8,levelHeight+.65,9.0,'#287b8b',4.2);
+label(stairs,'转身平台顶 +'+midHeight.toFixed(3)+'m',11.75,midHeight+.45,7.6,'#755b3e',3.5);
 // Stop the steel at the inside faces of the two existing window beams. The top
 // contact plane is shared by every steel member and the underside of the finish.
 const frameBeam=mat('#27313a');
@@ -192,14 +253,14 @@ const outerSteelX=windowX-.18;
 frameMember('left-edge',10.70,windowZ,10.88,9.30);
 frameMember('column-side-edge',outerSteelX,1.00,windowX,9.30);
 frameMember('glazing-side-span',10.88,windowZ,outerSteelX,windowZ+.18);
-frameMember('stair-side-span',10.88,7.30,outerSteelX,7.48);
+frameMember('platform-opening-front',10.88,5.76,14.77,5.94);
+frameMember('platform-opening-return',14.63,5.94,14.77,7.60);
+frameMember('upper-flight-opening-side',14.77,7.42,outerSteelX,7.60);
 frameMember('back-wall-span',10.70,9.30,18.425,9.40);
-frameMember('opening-end',12.11,7.48,12.25,9.30);
-// The finished slab lip overhangs the last tread. Keep the steel header at
-// the end of the physical tread, so the header cannot run through the step.
-frameMember('opening-threshold',17.43,7.48,17.57,9.30);
+frameMember('opening-threshold',thresholdX,7.60,thresholdX+.14,9.30);
 for(const x of [12.25,13.70,15.15,16.60,18.05]){
- frameMember('floor-secondary',x,windowZ+.18,x+.14,7.30,.18);
+ const headerFace=x<14.63?5.76:7.42;
+ frameMember('floor-secondary',x,windowZ+.18,x+.14,headerFace,.18);
 }
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a);return a}
 // 3D electrical overlay mirrors the two circuit drawings. Every socket is a selectable
@@ -280,10 +341,8 @@ label(labelGroup,'夹层楼面 +'+levelHeight.toFixed(2)+'m',20.5,levelHeight+.1
 line(labelGroup,[[20,0,5.4],[20,levelHeight,5.4]],'#708899');
 label(labelGroup,'屋顶结构标高 +'+totalHeight.toFixed(2)+'m',20.5,totalHeight+.18,5.4,'#466e82',4.2);
 line(labelGroup,[[20,levelHeight,5.4],[20,totalHeight,5.4]],'#708899');
-const wetFloorFinish=lowerFinish+.03, wetUnderPlatformBeam=midHeight-.44-wetFloorFinish;
-$('#showerBeamClearance').textContent='淋浴区平台边梁下净高约 '+wetUnderPlatformBeam.toFixed(3)+' 米，距 2.20 米目标约差 '+Math.round((2.20-wetUnderPlatformBeam)*100)+' 厘米。';
-label(stairs,'淋浴区平台边梁下约'+wetUnderPlatformBeam.toFixed(3)+'m',17.9,midHeight+.75,6.55,'#8a5c36',4.0);
-line(stairs,[[17.6,wetFloorFinish,6.19],[17.6,midHeight-.44,6.19]],'#8a5c36');
+label(stairs,'淋浴边梁下 '+wetUnderPlatformBeam.toFixed(3)+'m',11.75,midHeight+.75,6.55,'#8a5c36',3.2);
+line(stairs,[[11.8,wetFloorFinish,6.19],[11.8,platformBeamUnder,6.19]],'#8a5c36');
 const facade=new THREE.Group();model.add(facade);const windowMat=mat('#5b91ad',.055);
 // Align the existing frame and the proposed fit-out to the same CAD plan coordinates.
 const siteShell = addSiteShell({ THREE, group: fieldFrame, box, shape, top: totalHeight });
@@ -301,7 +360,61 @@ circuitBelt.material=new THREE.MeshBasicMaterial({color:'#859399',transparent:tr
 circuitBelt.castShadow=circuitBelt.receiveShadow=false;
 windowLighting.circuit.add(circuitBelt);
 const lampTags=windowLighting.lights.map(lamp=>label(windowLighting.circuit,lamp.id,lamp.x,lamp.y+.30,lamp.z,'#74551f',1.18));
-addSiteServices({ THREE, group: fieldFrame, box, top: roofUnderside });
+const siteServices=addSiteServices({ THREE, group: fieldFrame, box, top: roofUnderside });
+
+// Probe the geometry in its assembled position, before any cutaway/exploded viewing transforms.
+// Test both sides of every obstruction boundary, every nosing and the continuous pitch line.
+const clearanceMeshes=[upperSlab,...structure.children,...siteShell.roofBeams,siteShell.belt,siteShell.ceiling];
+for(const group of [siteServices.ceilingPipes,siteServices.hvac,siteServices.fire]){
+ group.traverse(object=>{if(object.isMesh)clearanceMeshes.push(object)});
+}
+model.updateWorldMatrix(true,true);
+function checkClearance(rectangles,meshes){
+ const eps=.0002, ray=new THREE.Raycaster(), up=new THREE.Vector3(0,1,0);
+ const obstacles=meshes.map(mesh=>({mesh,bounds:new THREE.Box3().setFromObject(mesh)}));
+ let min=Infinity, limiting='', at=null;
+ function stations(lo,hi,limits){
+  const points=new Set([lo+eps,hi-eps,(lo+hi)/2]);
+  for(const value of limits)for(const x of [value-eps,value,value+eps]){
+   if(x>lo+eps&&x<hi-eps)points.add(x);
+  }
+  return [...points];
+ }
+ for(const r of rectangles){
+  const relevant=obstacles.filter(({bounds:b})=>b.max.x>r.x1&&b.min.x<r.x2&&-b.min.z>r.z1&&-b.max.z<r.z2);
+  const xs=stations(r.x1,r.x2,[...relevant.flatMap(o=>[o.bounds.min.x,o.bounds.max.x]),...stairOpening.map(p=>p[0])]);
+  const zs=stations(r.z1,r.z2,[...relevant.flatMap(o=>[-o.bounds.max.z,-o.bounds.min.z]),...stairOpening.map(p=>p[1])]);
+  for(const x of xs)for(const z of zs){
+   const y=r.height(x);
+   ray.set(new THREE.Vector3(x,y+eps,-z),up);
+   const candidates=relevant.filter(({bounds:b})=>x>=b.min.x&&x<=b.max.x&&-z>=b.min.z&&-z<=b.max.z&&b.max.y>y+eps);
+   const hit=ray.intersectObjects(candidates.map(o=>o.mesh),false)[0];
+   if(hit&&hit.point.y-y<min){min=hit.point.y-y;limiting=hit.object.name;at=[x,y,z];}
+  }
+ }
+ return {min,limiting,at};
+}
+const horizontal=(x1,x2,z1,z2,y)=>({x1,x2,z1,z2,height:()=>y});
+const flightClearances=flights.map(f=>{
+ const strips=[horizontal(Math.min(f.start,f.start-f.direction*.30),Math.max(f.start,f.start-f.direction*.30),f.z,f.z+stairW,f.base),
+  horizontal(Math.min(f.end,f.end+f.direction*.30),Math.max(f.end,f.end+f.direction*.30),f.z,f.z+stairW,f.base+f.count*rise)];
+ for(let i=0;i<f.count-1;i++){
+  const nose=f.start+f.direction*i*going, next=nose+f.direction*going;
+  strips.push({x1:Math.min(nose,next),x2:Math.max(nose,next),z1:f.z,z2:f.z+stairW,
+   height:x=>f.base+(1+(x-f.start)*f.direction/going)*rise});
+ }
+ return checkClearance(strips,clearanceMeshes);
+});
+const turnClearance=checkClearance([horizontal(11.00,lowerLandingX,6.04,9.24,midHeight),
+ horizontal(lowerLandingX,upperStartX,7.69,9.24,midHeight)],clearanceMeshes);
+const arrivalClearance=checkClearance([horizontal(thresholdX,thresholdX+1.50,7.74,9.24,levelHeight)],clearanceMeshes);
+const wetBounds=[horizontal(10.77,12.93,6.09,9.19,wetFloorFinish)];
+const showerOverhead=checkClearance(wetBounds,[...platformObstacles,...clearanceMeshes,showerHead,showerArm]);
+const stairMinimum=Math.min(...flightClearances.map(v=>v.min));
+$('#showerBeamClearance').textContent='淋浴完成面至边梁 '+wetUnderPlatformBeam.toFixed(3)+' m，至花洒底 '+
+ showerOverhead.min.toFixed(3)+' m。第一跑净空 '+flightClearances[0].min.toFixed(2)+' m，第二跑 '+
+ flightClearances[1].min.toFixed(2)+' m，中转平台 '+turnClearance.min.toFixed(2)+' m。模型尺寸，现场梁底和管线需复测。';
+
 
 // The final lower window on the short elevation has solid infill above it.
 const endWallBottom = siteShell.endWall.position.y - siteShell.endWall.geometry.parameters.height / 2;
@@ -366,6 +479,7 @@ $('#removeSocket').onclick=()=>{if(!selectedSocket)return;selectedSocket.root.vi
 let boardMode='',wetChildSnapshot=null,siteReturnView=null;
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
+ showerDimension.visible=false;
  upperSlab.visible=true;$('#focusLights').setAttribute('aria-pressed','false');
  if(boardMode==='steel'){
   steelDatumReference.visible=false;$('#steelDatumTools').hidden=true;
@@ -398,17 +512,34 @@ function showSteelBoard(){
  showSteelOverview();
 }
 function showSteelOverview(){
+ ground.visible=false;upper.visible=false;setStairInspection(false);
  steelDatumReference.visible=false;
  camera.position.set(26,17,-22);controls.target.set(15,2.6,-4.8);viewportFit=1;fitViewport();
 }
 function showSteelDatum(){
  if(boardMode!=='steel')showSteelBoard();
+ ground.visible=false;upper.visible=false;setStairInspection(false);
  steelDatumReference.visible=true;
  controls.target.set(14.6,upperDeckUnderside,-1.65);
  camera.position.set(11.0,6.15,-6.80);viewportFit=1;fitViewport();
 }
 $('#steelOverall').onclick=showSteelOverview;
 $('#steelDatumView').onclick=showSteelDatum;
+function setStairInspection(active){
+ showerDimension.visible=active;showerDimTag.visible=active;
+ $('#stairFlightsInfo').hidden=!active;
+ $('#steelViewTitle').textContent=active?'淋浴间与两跑楼梯':'原窗腰梁上沿与夹层钢梁顶齐平';
+ $('#steelViewLevels').hidden=active;
+}
+function showStairClearance(){
+ if(boardMode!=='steel')showSteelBoard();
+ steelDatumReference.visible=false;ground.visible=true;upper.visible=true;
+ const info=$('#stairFlightsInfo');
+ info.textContent='下跑 '+MEZZANINE.lowerRisers+' 级，上跑 '+MEZZANINE.upperRisers+' 级。每级高 '+(MEZZANINE.riser*1000).toFixed(1)+' 毫米，深 '+Math.round(MEZZANINE.going*1000)+' 毫米。';
+ setStairInspection(true);
+ camera.position.set(14.8,4.35,-18);controls.target.set(14.4,2.58,-7.4);viewportFit=1;fitViewport();
+}
+$('#steelStairs').onclick=showStairClearance;
 function showWetBoard(){
  if(boardMode==='wet'){restoreFullBoard();return}
  if(boardMode)restoreFullBoard();boardMode='wet';wetChildSnapshot=new Map([...ground.children].map(child=>[child,child.visible]));setMode('ground');
@@ -540,7 +671,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=75';$('#spacePlanTitle').textContent=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=76';$('#spacePlanTitle').textContent=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('1801_一楼左侧_软包通道示意.svg','一楼左侧 · 软包吧台 / 健身平面示意');
 $('#electricalGround').onclick=()=>showFlatPlan('1801_一楼插座回路示意.svg','18 楼 · 插座与沿梁照明平面');
@@ -570,10 +701,22 @@ function updateFurniture(){
 }
 $('#furniture').onchange=updateFurniture;
 
-new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();fitViewport();renderer.setSize(host.clientWidth,host.clientHeight)}).observe(host);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();$('#loading').remove();renderer.domElement.dataset.ready='true';renderer.domElement.dataset.orientation='CAD-X_to_X;CAD-Y_to_negative-Z';renderer.domElement.dataset.gymArea='20.145';renderer.domElement.dataset.zone2Area='69.6710';renderer.domElement.dataset.baseUpperArea='59.261';renderer.domElement.dataset.recoveredArea='10.4100';renderer.domElement.dataset.landing='2.2';renderer.domElement.dataset.upperLevel=levelHeight.toFixed(2);renderer.domElement.dataset.upperNetHeight=(roofUnderside-levelHeight).toFixed(2);renderer.domElement.dataset.lowerBeamHeight=lowerBeamHeight.toFixed(2);renderer.domElement.dataset.risers='34';renderer.domElement.dataset.candidateColumns='4';renderer.domElement.dataset.structuralVerified='false';renderer.domElement.dataset.stairShift='0';renderer.domElement.dataset.wetArea='6.696';renderer.domElement.dataset.wetLevel='ground-under-turning-platform';renderer.domElement.dataset.wetClearHeightTarget='2.25';renderer.domElement.dataset.stairWidth='1.50';renderer.domElement.dataset.layoutVersion='window-belt-aligned-mezzanine';renderer.domElement.dataset.wetHeightConflict='true';renderer.domElement.dataset.stairHeadroomCheck='partial';renderer.domElement.dataset.platformBeamClearance=(lowerBeamHeight-midHeight).toFixed(3);renderer.domElement.dataset.wetEdgeBeamClearance=wetUnderPlatformBeam.toFixed(3);renderer.domElement.dataset.stairRiser=rise.toFixed(6);renderer.domElement.dataset.stairGoing='0.28';renderer.domElement.dataset.returnFlightDirection='+X';if(location.hash==='#connection')$('#connectionView').click();if(location.hash==='#left')$('#bossFocus').click();if(location.hash==='#rest')$('#restFocus').click();if(location.hash==='#wet')$('#wetFocus').click();if(location.hash==='#stairs')$('#stairView').click();if(location.hash==='#supports')$('#supportView').click();function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();updateFurnitureAnchoredNotes();updateFurnitureOutline();measurement.update();renderer.render(scene,camera)}animate();
+new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();fitViewport();renderer.setSize(host.clientWidth,host.clientHeight)}).observe(host);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();$('#loading').remove();renderer.domElement.dataset.ready='true';Object.assign(renderer.domElement.dataset,{
+ orientation:'CAD-X_to_X;CAD-Y_to_negative-Z',gymArea:'20.145',zone2Area:MEZZANINE.upperArea.toFixed(3),baseUpperArea:MEZZANINE.upperArea.toFixed(3),
+ openingArea:MEZZANINE.openingArea.toFixed(3),landing:'2.2',platformArea:MEZZANINE.platformArea.toFixed(3),
+ upperLevel:levelHeight.toFixed(2),upperNetHeight:(roofUnderside-levelHeight).toFixed(2),lowerBeamHeight:lowerBeamHeight.toFixed(2),
+ risers:String(lowerRisers+upperRisers),lowerRisers:String(lowerRisers),upperRisers:String(upperRisers),candidateColumns:'0',
+ structuralVerified:'false',stairShift:'0',wetArea:'6.696',wetLevel:'ground-under-turning-platform',wetClearHeightTarget:'2.20',
+ stairWidth:'1.50',layoutVersion:'raised-turning-platform',wetHeightConflict:String(showerOverhead.min<2.20),
+ stairHeadroomCheck:(stairMinimum>=2.20&&turnClearance.min>=2&&arrivalClearance.min>=2)?'model-pass':'model-conflict',
+ platformBeamClearance:turnClearance.min.toFixed(3),wetEdgeBeamClearance:wetUnderPlatformBeam.toFixed(3),
+ wetOverheadClearance:showerOverhead.min.toFixed(3),stairRiser:rise.toFixed(6),stairGoing:going.toFixed(2),
+ lowerFlightClearance:flightClearances[0].min.toFixed(3),upperFlightClearance:flightClearances[1].min.toFixed(3),
+ upperArrivalClearance:arrivalClearance.min.toFixed(3),stairClearanceChecks:JSON.stringify({lower:flightClearances[0],upper:flightClearances[1],turn:turnClearance,arrival:arrivalClearance,wet:showerOverhead}),
+ returnFlightDirection:'+X',steelTop:upperDeckUnderside.toFixed(2)
+});
+if(location.hash==='#connection')$('#connectionView').click();if(location.hash==='#left')$('#bossFocus').click();if(location.hash==='#rest')$('#restFocus').click();if(location.hash==='#wet')$('#wetFocus').click();if(location.hash==='#stairs')$('#stairView').click();if(location.hash==='#supports')$('#supportView').click();function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();updateFurnitureAnchoredNotes();updateFurnitureOutline();measurement.update();renderer.render(scene,camera)}animate();
 
-// Current deck result after closing the oversized former opening.  This overrides the legacy summary values above.
-renderer.domElement.dataset.zone2Area='73.295';renderer.domElement.dataset.baseUpperArea='73.295';renderer.domElement.dataset.recoveredArea='3.890';renderer.domElement.dataset.steelTop=upperDeckUnderside.toFixed(2);
 function overallDimensions(){
  closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
  $('#furniture').checked=false;$('#labels').checked=false;labels.forEach(q=>q.visible=false);
@@ -603,6 +746,7 @@ if(location.hash==='#electrical-upper'){showCircuitBoard();$('#electricalUpper')
 
 if(location.hash==='#site-frame')showSiteFrameBoard();
 if(location.hash==='#steel-datum')showSteelDatum();
+if(location.hash==='#stair-clearance')showStairClearance();
 if(location.hash==='#floors-17-18')showFloorStack();
 if(location.hash==='#site-outlet'){showSiteFrameBoard();$('#siteOutlet').click();}
 if(location.hash==='#window-lights'){showCircuitBoard();focusWindowLights();}
