@@ -2,19 +2,21 @@
 <style>
  .t{font:600 30px 'Microsoft YaHei',sans-serif;fill:#142d40}.st{font:15px 'Microsoft YaHei',sans-serif;fill:#587181}.tx{font:16px 'Microsoft YaHei',sans-serif;fill:#1e3d51}.sm{font:13px 'Microsoft YaHei',sans-serif;fill:#4e6677}.wall{fill:#fbfaf6;stroke:#26363e;stroke-width:7;stroke-linejoin:round}.part{fill:#f2f6f5;stroke:#80939d;stroke-width:1.5}.void{fill:#e5ecef;stroke:#6c7f8a;stroke-width:2;stroke-dasharray:9 7}.wire{fill:none;stroke:#116eaa;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}.wire2{fill:none;stroke:#734f9e;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9 7}.out{fill:#fff;stroke:#c9312b;stroke-width:2.5}.db{fill:#224b67;stroke:#fff;stroke-width:2}.dim{stroke:#9fb0b8;stroke-width:1.3;fill:none}.dimt{font:13px 'Microsoft YaHei',sans-serif;fill:#778d99}.box{fill:#fffefa;stroke:#cbd8dd;stroke-width:1.5}.drawing{transform:rotate(180deg);transform-origin:390px 464px}.drawing text{transform:rotate(180deg);transform-box:fill-box;transform-origin:center}.entry{font:600 15px 'Microsoft YaHei',sans-serif;fill:#19719e}
 </style>
+<defs>
+<g id="lamp-WL2"><rect x="-10.5" y="-3" width="21" height="6" rx="1" fill="#6c4a8c"/><rect x="-8.76" y="-1.7" width="17.52" height="3.4" rx=".5" fill="#ebe2f5"/></g>
+</defs>
 <rect width="1600" height="980" fill="#f2f6f7"/>
-<text class="t" x="70" y="54">1801 · 二楼插座与照明索引</text>
-<text class="st" x="70" y="82">二楼插座按夹层平面示意。窗腰梁上的壁灯与下层共用 WL1，全部灯号见一楼图。</text>
+<text class="t" x="70" y="54">1801 · 夹层插座与上部照明平面图</text>
+<text class="st" x="70" y="82">左图为夹层插座。右图以整间房屋为范围，标出顶梁靠长边采光面的一排灯。</text>
 <!-- Exact current upper floor boundary, derived from upperBoundary in the 3D model. Rotated to keep the original entrance direction at screen bottom. -->
 <g class="drawing">
-<path class="wall" fill-rule="evenodd" d="M625.086 207L625.086 212.457L660.043 212.457L660.043 207L695 207L695 720L85 720L85 207ZM100.381 395.828L359.762 395.828L359.762 305.234L555.521 305.234L555.521 212.457L100.381 212.457Z"/>
-<path id="current-stair-opening" class="void" d="M100.381 395.828L359.762 395.828L359.762 305.234L555.521 305.234L555.521 212.457L100.381 212.457Z"/>
+<path class="wall" fill-rule="evenodd" d="M625.086 207L625.086 212.457L660.043 212.457L660.043 207L695 207L695 720L85 720L85 207ZM150.719 392.553L394.719 392.553L394.719 300.868L555.521 300.868L555.521 214.095L150.719 214.095Z"/>
+<path id="current-stair-opening" class="void" d="M150.719 392.553L394.719 392.553L394.719 300.868L555.521 300.868L555.521 214.095L150.719 214.095Z"/>
 <text x="231.819" y="336.887" text-anchor="middle" class="sm">L 形楼梯洞口</text>
-<text x="312.221" y="257.754" text-anchor="middle" class="sm">挑空 17.23 ㎡</text>
+<text x="312.221" y="257.754" text-anchor="middle" class="sm">挑空 15.07 ㎡</text>
 <rect class="part" x="100" y="425" width="170" height="280"/><text class="tx" x="139" y="540">临挑空茶台</text><text class="sm" x="178" y="563">C6</text>
 <rect class="part" x="285" y="425" width="194" height="280"/><text class="tx" x="325" y="530">直播 / 日常办公</text><text class="sm" x="362" y="553">C7</text>
 <rect class="part" x="494" y="425" width="186" height="280"/><text class="tx" x="535" y="530">主电脑位</text><text class="sm" x="550" y="553">C8 独立回路</text>
-<path id="wl1-projection" d="M85 669.9006H630.8189V316.9286" fill="none" stroke="#946a3c" stroke-width="2" stroke-dasharray="3 5" aria-label="WL1 窗腰梁照明投影"/>
 <!-- dimensions from upper slab geometry -->
 <path class="dim" d="M85 748H695M85 740V758M695 740V758"/><text class="dimt" x="307" y="767">二楼最大宽 8.725m</text><path class="dim" d="M715 720V207M707 720H723M707 207H723"/><text class="dimt" transform="translate(735 530) rotate(-90)">二楼最大进深 9.400m</text>
 <rect class="db" x="635" y="735" width="55" height="32" rx="3"/><text x="646" y="757" fill="#fff" font-family="Microsoft YaHei" font-size="14">AP-2</text><text class="sm" x="565" y="790">建议二楼贴墙分配电箱</text>
@@ -23,16 +25,43 @@
 <g class="out"><g transform="translate(250 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(385 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(595 690)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(665 550)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
 <path d="M539 251H575M568 245L575 251L568 257" fill="none" stroke="#19719e" stroke-width="2.5"/><text class="entry" x="577" y="270">楼梯出口</text>
 </g>
-<rect class="box" x="790" y="150" width="740" height="470" rx="10"/><text class="tx" x="820" y="190">插座回路表（平面表达）</text><path d="M810 210H1510M920 210V405M1110 210V405M1280 210V405M810 405H1510" stroke="#cbd8dd" stroke-width="1.2"/>
+<rect class="box" x="790" y="150" width="740" height="260" rx="10"/><text class="tx" x="820" y="190">插座回路表（平面表达）</text><path d="M810 210H1510M920 210V405M1110 210V405M1280 210V405M810 405H1510" stroke="#cbd8dd" stroke-width="1.2"/>
 <text class="sm" x="830" y="238">回路</text><text class="sm" x="950" y="238">服务区域</text><text class="sm" x="1140" y="238">图中线路</text><text class="sm" x="1310" y="238">插座形式 / 安装建议</text>
 <g class="sm"><text x="830" y="280">C7</text><text x="950" y="280">直播 / 日常办公</text><text x="1140" y="280">蓝色实线</text><text x="1310" y="280">保留3个普通五孔，设备到位复核</text><text x="830" y="330">C8</text><text x="950" y="330">主电脑位</text><text x="1140" y="330">蓝色实线</text><text x="1310" y="330">保留1个普通五孔，UPS/弱电另核</text><text x="830" y="380">AP-2</text><text x="950" y="380">二楼分配电箱</text><text x="1140" y="380">放射式引出</text><text x="1310" y="380">断路器、线径现场深化</text></g>
-<g id="lighting-plan-reference">
-  <text class="tx" x="830" y="450">窗腰梁壁灯 · WL1</text>
-  <path d="M830 483H890" fill="none" stroke="#946a3c" stroke-width="2" stroke-dasharray="3 5"/>
-  <text class="sm" x="904" y="488">夹层范围内的梁侧照明投影</text>
-  <text class="sm" x="830" y="526">本组窗腰梁壁灯共九盏，统一在一楼 WL1 项计量。</text>
-  <a href="./1801_一楼插座回路示意.svg"><text x="830" y="562" class="entry" text-decoration="underline">查看一楼图上的 L01–L09 与配电路径</text></a>
+<g id="upper-lighting-plan">
+<rect class="box" x="790" y="426" width="740" height="477" rx="10"/>
+<text x="820" y="459" class="tx" >WL2 · 上部临窗顶梁照明</text>
+<text x="1182" y="458" class="sm" >U01–U06　·　6 盏　·　标高 +7.94 m</text>
+<path d="M1457 726.25L1361 726.25L1323.5 726.25L1203.5 726.25L1203.5 759.25L1203.5 817L1157 817L1157 781L1157 778L1154 778L925.25 778L925.25 775L910.25 775L910.25 778L907.25 778L895.25 778L895.25 496L1474.25 496L1474.25 499L1478 499L1478 511L1478 526L1478 726.25L1476.5 726.25L1470.5 726.25L1457 726.25Z" fill="#f4f3ef" stroke="#76868a" stroke-width="1.7"/>
+<path d="M1157 496L895.25 496L895.25 778L910.25 778L910.25 775L925.25 775L925.25 778L1157 778ZM1128.8 676L1024.1 676L1024.1 726.4L955.1 726.4L955.1 774.1L1128.8 774.1Z" fill="#e3ece7" fill-rule="evenodd" stroke="#a2b3ac" stroke-width="1"/>
+<g id="lighting-layout" aria-label="灯具及照明支路平面投影">
+<g id="lighting-WL2" aria-label="WL2">
+<path data-route="WL2-skirt" data-kind="floor" d="M1229.9 722.65L1229.9 722.65L1229.9 721.45L1466.6 721.45L1466.6 721.45L1474.76 721.45L1474.76 694.6L1474.76 694.6L1474.76 524.29" fill="none" stroke="#6c4a8c" stroke-width="1.7" stroke-dasharray="6 4" stroke-linecap="round" stroke-linejoin="round"/>
+<g data-route="WL2-rise" data-kind="rise"><circle cx="1474.76" cy="524.29" r="5" fill="#fff" stroke="#6c4a8c" stroke-width="1.7"/><circle cx="1474.76" cy="524.29" r="1.7" fill="#6c4a8c"/></g>
+<path data-route="WL2-beam" data-kind="beam" d="M1474.76 524.29L1219.25 524.29L1219.25 526.75L1202.75 526.75L1202.75 524.29L966.5 524.29" fill="none" stroke="#6c4a8c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle data-route="WL2-U01" data-kind="tap" cx="1409" cy="524.29" r="1.45" fill="#6c4a8c"/>
+<circle data-route="WL2-U02" data-kind="tap" cx="1320.5" cy="524.29" r="1.45" fill="#6c4a8c"/>
+<circle data-route="WL2-U03" data-kind="tap" cx="1232" cy="524.29" r="1.45" fill="#6c4a8c"/>
+<circle data-route="WL2-U04" data-kind="tap" cx="1143.5" cy="524.29" r="1.45" fill="#6c4a8c"/>
+<circle data-route="WL2-U05" data-kind="tap" cx="1055" cy="524.29" r="1.45" fill="#6c4a8c"/>
+<circle data-route="WL2-U06" data-kind="tap" cx="966.5" cy="524.29" r="1.45" fill="#6c4a8c"/>
+<g id="lamp-U01" data-model-x="2.3" data-model-y="7.94" data-model-z="0.972" data-axis="x"><title>U01 · WL2</title><use href="#lamp-WL2" transform="translate(1409 525.16) scale(1)"/><text x="1409" y="545.16" class="sm" text-anchor="middle" style="font-weight:600;fill:#6c4a8c;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">U01</text></g>
+<g id="lamp-U02" data-model-x="5.25" data-model-y="7.94" data-model-z="0.972" data-axis="x"><title>U02 · WL2</title><use href="#lamp-WL2" transform="translate(1320.5 525.16) scale(1)"/><text x="1320.5" y="545.16" class="sm" text-anchor="middle" style="font-weight:600;fill:#6c4a8c;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">U02</text></g>
+<g id="lamp-U03" data-model-x="8.2" data-model-y="7.94" data-model-z="0.972" data-axis="x"><title>U03 · WL2</title><use href="#lamp-WL2" transform="translate(1232 525.16) scale(1)"/><text x="1232" y="545.16" class="sm" text-anchor="middle" style="font-weight:600;fill:#6c4a8c;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">U03</text></g>
+<g id="lamp-U04" data-model-x="11.15" data-model-y="7.94" data-model-z="0.972" data-axis="x"><title>U04 · WL2</title><use href="#lamp-WL2" transform="translate(1143.5 525.16) scale(1)"/><text x="1143.5" y="545.16" class="sm" text-anchor="middle" style="font-weight:600;fill:#6c4a8c;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">U04</text></g>
+<g id="lamp-U05" data-model-x="14.1" data-model-y="7.94" data-model-z="0.972" data-axis="x"><title>U05 · WL2</title><use href="#lamp-WL2" transform="translate(1055 525.16) scale(1)"/><text x="1055" y="545.16" class="sm" text-anchor="middle" style="font-weight:600;fill:#6c4a8c;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">U05</text></g>
+<g id="lamp-U06" data-model-x="17.05" data-model-y="7.94" data-model-z="0.972" data-axis="x"><title>U06 · WL2</title><use href="#lamp-WL2" transform="translate(966.5 525.16) scale(1)"/><text x="966.5" y="545.16" class="sm" text-anchor="middle" style="font-weight:600;fill:#6c4a8c;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">U06</text></g>
 </g>
-<rect class="box" x="790" y="650" width="740" height="155" rx="10"/><text class="tx" x="820" y="688">图例与施工边界</text><g class="sm"><text x="820" y="722">○=普通插座点　AP=配电箱　蓝实线=普通插座回路</text><text x="820" y="752">灰色虚线沿 L 形洞口划定，挑空 17.23 ㎡。夹层模型楼面 64.74 ㎡。</text><text x="820" y="782">最终线径、漏保、接地、桥架及大功率设备专线应由持证电工结合设备清单、物业条件和消防要求深化。</text></g>
-<text class="sm" x="70" y="920">统一阅读方向：屏幕下方 = 原正门入口　｜　版本：插座位置及回路表达优化版 · 二楼</text>
+</g>
+<text x="1022" y="623.5" class="sm" text-anchor="middle">夹层上方</text>
+<text x="1334" y="623.5" class="sm" text-anchor="middle">挑空区上方</text>
+<path d="M830 865h46" fill="none" stroke="#6c4a8c" stroke-width="2" stroke-dasharray="6 4"/><text x="885" y="869" class="sm" >地脚干线</text>
+<path d="M1015 865h46" fill="none" stroke="#6c4a8c" stroke-width="2"/><text x="1070" y="869" class="sm" >上部梁侧干线</text>
+<text x="1200" y="869" class="sm" >⊙ 竖向引线</text>
+ </g>
+<rect class="box" x="70" y="784" width="664" height="115" rx="9"/>
+<text x="90" y="816" class="tx" >图例与说明</text>
+<text x="90" y="843" class="sm" >○ 普通插座　 AP 配电箱　 蓝色实线为夹层插座回路</text>
+<text x="90" y="869" class="sm" >夹层楼面 66.90 ㎡，楼梯洞口 15.07 ㎡。保护器与线径由电工复核。</text>
+<text class="sm" x="70" y="920">正门入口位于图面下方　·　夹层插座及上部照明</text>
 </svg>

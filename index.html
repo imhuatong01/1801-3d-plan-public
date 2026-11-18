@@ -533,7 +533,7 @@
         padding: 6px;
         box-shadow: 0 3px 16px #28465712;
       }
-      #siteLegend, #floorStackInfo, #steelDatumTools {
+      #siteLegend, #floorStackInfo, #steelDatumTools, .service-info {
         position: absolute;
         bottom: 14px;
         left: 12px;
@@ -549,6 +549,13 @@
       }
       #siteLegend span { display: inline-flex; align-items: center; margin-right: 12px; gap: 5px; }
       #steelDatumTools { max-width: min(430px, calc(100% - 24px)); line-height: 1.5; }
+      .service-info {max-width:min(430px,calc(100% - 24px));line-height:1.55;}
+      .service-info p {margin:3px 0;}
+      .service-info button {pointer-events:auto; padding:4px 8px; margin:3px 3px 0 0;}
+      .viewport:has(.service-info:not([hidden])) > .hint {display:none;}
+      .viewport.plan-open > .service-info {display:none;}
+      #lightFilters {display:inline-flex;flex-wrap:wrap;gap:4px;}
+      #lightFilters button[aria-pressed="true"] {background:#214e5c;color:white;}
       #siteLegend i { width: 9px; height: 9px; border-radius: 2px; background: var(--ink); }
       #siteLegend small, #floorStackInfo small, #steelDatumTools small { display: block; margin-top: 3px; }
       #siteLegend nav, #floorStackInfo nav, #steelDatumTools nav { display: flex; gap: 5px; margin-top: 6px; pointer-events: auto; }
@@ -761,6 +768,8 @@
           ><button id="circuitBoard">电路参考</button
           ><button id="steelBoard">钢架参考</button
           ><button id="wetBoard">淋浴参考</button
+          ><button id="waterBoard">水路参考</button
+          ><button id="airBoard">空调参考</button
           ><button id="furnitureBoard">家具参考</button
           ><button id="siteFrameBoard">现场框架</button
           ><button id="floorStackBoard" aria-pressed="false">17楼 / 18楼</button
@@ -788,7 +797,8 @@
           <span class="muted">电路图：点击五孔插座面板进行选择</span>
           <strong id="socketPicked">未选择插座</strong>
           <button id="removeSocket" disabled>隐藏选中插座</button>
-          <button id="focusLights"><i class="lamp-symbol" aria-hidden="true"></i>WL1 横向条灯</button>
+          <button id="focusLights" aria-pressed="false"><i class="lamp-symbol" aria-hidden="true"></i>看照明布置</button>
+          <span id="lightFilters" hidden aria-label="照明回路"><button data-light="all">全部灯位</button><button data-light="WL1">下梁</button><button data-light="WL2">上梁</button><button data-light="WL3">对墙</button></span>
           <button id="openGroundElectric">18 楼电路平面</button>
           <button id="openUpperElectric">夹层电路平面</button>
         </div>
@@ -804,9 +814,18 @@
           <div class="editor-row"><button id="furnitureReset">恢复这一版初始摆放</button></div>
         </aside>
         <div class="viewport" id="viewport">
+          <aside class="service-info" id="waterInfo" hidden>
+            <b>18 楼淋浴废水 → 17 楼</b>
+            <p>淋浴地漏和洗手池支管在垫层内汇合，由一处穿板进入 17 楼顶内。绿色圆环是建议位置，生活废水接点待现场核实。</p>
+            <button id="openWaterSheet">看排水平面和剖面</button>
+          </aside>
+          <aside class="service-info" id="airInfo" hidden>
+            <b>空调与送风布置</b><p>夹层上下各一台吸顶机。挑空侧的两个条形风口接自原风口，沿实体墙分布。</p>
+            <button id="airOverall">四处全景</button><button id="airCassettes">夹层上下</button><button id="airOutlets">看风管分支</button>
+          </aside>
           <aside id="steelDatumTools" hidden>
             <b id="steelViewTitle">原窗腰梁上沿与夹层钢梁顶齐平</b>
-            <small id="steelViewLevels">模型标高：梁顶 +4.53 米，楼板面 +4.57 米。连接节点待深化。</small>
+            <small id="steelViewLevels"></small>
             <small id="showerBeamClearance"></small>
             <small id="stairFlightsInfo" hidden></small>
             <nav aria-label="钢架观察角度"><button type="button" id="steelStairs">看楼梯与淋浴</button><button type="button" id="steelDatumView">看梁顶对齐</button><button type="button" id="steelOverall">钢架全景</button></nav>
@@ -933,7 +952,7 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=76-stair-clearance"
+          src="./3d-assets/office-height-only.js?v=77-building-services"
     ></script>
   </body>
 </html>

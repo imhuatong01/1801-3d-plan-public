@@ -3,12 +3,12 @@
  .t{font:600 30px 'Microsoft YaHei',sans-serif;fill:#142d40}.st{font:15px 'Microsoft YaHei',sans-serif;fill:#587181}.tx{font:16px 'Microsoft YaHei',sans-serif;fill:#1e3d51}.sm{font:13px 'Microsoft YaHei',sans-serif;fill:#4e6677}.wall{fill:#fbfaf6;stroke:#26363e;stroke-width:7;stroke-linejoin:round}.part{fill:#f2f6f5;stroke:#80939d;stroke-width:1.5}.wet{fill:#e4f0ef;stroke:#416b73;stroke-width:2}.void{fill:#e5ecef;stroke:#6c7f8a;stroke-width:2;stroke-dasharray:9 7}.wire{fill:none;stroke:#116eaa;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}.wire2{fill:none;stroke:#734f9e;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9 7}.wire3{fill:none;stroke:#b46821;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2 7}.out{fill:#fff;stroke:#c9312b;stroke-width:2.5}.db{fill:#224b67;stroke:#fff;stroke-width:2}.dim{stroke:#9fb0b8;stroke-width:1.3;fill:none}.dimt{font:13px 'Microsoft YaHei',sans-serif;fill:#778d99}.box{fill:#fffefa;stroke:#cbd8dd;stroke-width:1.5}.drawing{transform:rotate(180deg);transform-origin:362px 540px}.drawing text{transform:rotate(180deg);transform-box:fill-box;transform-origin:center}.entry{font:600 15px 'Microsoft YaHei',sans-serif;fill:#19719e}
 </style>
 <defs>
-  <g id="linear-lamp"><rect x="-10.5" y="-2.9" width="21" height="5.8" rx="1" fill="#59574e"/>
-    <rect x="-8.76" y="-1.8" width="17.52" height="3.6" rx=".7" fill="#ffe2a1" stroke="#96642d" stroke-width=".6"/></g>
+<g id="lamp-WL1"><rect x="-10.5" y="-3" width="21" height="6" rx="1" fill="#a6530d"/><rect x="-8.76" y="-1.7" width="17.52" height="3.4" rx=".5" fill="#ffdf9c"/></g>
+<g id="lamp-WL3"><rect x="-10.5" y="-3" width="21" height="6" rx="1" fill="#227568"/><rect x="-8.76" y="-1.7" width="17.52" height="3.4" rx=".5" fill="#d9f1e6"/></g>
 </defs>
 <rect width="1600" height="980" fill="#f2f6f7"/>
 <text class="t" x="70" y="54">1801 · 一楼插座与照明平面图</text>
-<text class="st" x="70" y="82">窗腰梁内侧的九盏壁灯共用 WL1 照明支路。下图为全部点位。</text>
+<text class="st" x="70" y="82">地脚干线与墙面上引点按三维定位。靠窗 L 形梁与对侧实体墙分设照明支路。</text>
 <!-- CAD outer contour, 1:30 schematic scale. Rotated to keep the original entrance at screen bottom. -->
 <g class="drawing">
 <path class="wall" d="M91 470L187 470L224 470L344 470L344 437L344 379L391 379L391 415L391 418L394 418L623 418L623 421L638 421L638 418L641 418L653 418L653 700L74 700L74 697L70 697L70 685L70 670L70 470L72 470L78 470Z"/>
@@ -17,14 +17,18 @@
 <rect class="part" x="345" y="379" width="47" height="321" fill="#edf1f1"/><text class="sm" transform="translate(371 610) rotate(-90)">中央通道</text>
 <rect class="part" x="398" y="497" width="93" height="195"/><text class="sm" x="410" y="567">吧台 / 休闲</text><text class="sm" x="419" y="586">C2</text>
 <rect class="part" x="571" y="427" width="75" height="257"/><text class="sm" transform="translate(617 590) rotate(-90)">健身 / 开放预留 C3</text>
-<g id="stair-plan" aria-label="U形楼梯投影，下跑18级，上跑13级">
-<path fill="#dce8e4" stroke="#80939d" stroke-width="1.2" d="M392.5 518.8L458.5 518.8L458.5 470.8L492.1 470.8L492.1 422.8L392.5 422.8Z"/>
-<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M458.5 518.8L601.3 518.8L601.3 473.8L458.5 473.8Z"/>
-<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M492.1 467.8L592.9 467.8L592.9 422.8L492.1 422.8Z"/>
-<text x="529.9" y="499.9" text-anchor="middle" class="sm">下跑 18 级</text>
-<text x="542.5" y="448.6" text-anchor="middle" class="sm">上跑 13 级</text>
+<g id="stair-plan" aria-label="U形楼梯投影，下跑17级，上跑9级">
+<path fill="#dce8e4" stroke="#80939d" stroke-width="1.2" d="M392.5 518.8L466.9 518.8L466.9 470.8L525.7 470.8L525.7 422.8L392.5 422.8Z"/>
+<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M466.9 518.8L601.3 518.8L601.3 473.8L466.9 473.8Z"/>
+<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M525.7 467.8L592.9 467.8L592.9 422.8L525.7 422.8Z"/>
+<text x="534.1" y="501.1" text-anchor="middle" class="sm">下跑 17 级</text>
+<text x="559.3" y="449.5" text-anchor="middle" class="sm">上跑 9 级</text>
 </g>
-<rect class="wet" x="393" y="424" width="65" height="93"/><text class="sm" x="403" y="464">卫浴</text><text class="sm" x="402" y="484">C4-RCD</text>
+<path fill="#f5f8f4" stroke="#476467" stroke-width="1.3" d="M393.1 517.3L457.9 517.3L457.9 424.3L393.1 424.3Z"/>
+<g class="wet-head" data-model-x="12.535" data-model-z="6.475"><title>花洒中心</title><circle cx="446.050" cy="505.750" r="2.9" fill="#487d86" stroke="#f3faf7" stroke-width=".8"/></g>
+<g class="wet-drain" data-model-x="12.35" data-model-z="6.62"><title>地漏中心</title><rect x="438.600" y="499.500" width="3.8" height="3.8" fill="#fff" stroke="#487d86" stroke-width=".9"/></g>
+<path class="wet-basin" fill="#dceceb" stroke="#487d86" stroke-width="1.15" d="M394.9 444.4L409.3 444.4L409.3 433.6L394.9 433.6Z"/>
+<path stroke="#a66c39" stroke-width="3.8" d="M456.4 466.3L456.4 438.7"/>
 <!-- dimension strings derived from CAD data -->
 <path class="dim" d="M70 725H653M70 716V735M653 716V735"/><text class="dimt" x="319" y="744">CAD 主体最大宽 19.425m</text>
 <path class="dim" d="M670 700V379M662 700H678M662 379H678"/><text class="dimt" transform="translate(690 598) rotate(-90)">含入口最大进深 10.700m</text>
@@ -36,46 +40,80 @@
   <path d="M309 475.75L294 499H275" stroke="#224b67" stroke-width="1" fill="none"/>
   <text class="sm" x="234" y="515">AL1 总配电箱</text>
 </g>
-<path class="wire" d="M317.5 475.75V481H95.5V683.5H345V675"/><path class="wire" d="M345 675H205V520"/><path class="wire2" d="M345 675H445V470H425"/>
+<path class="wire" d="M317.5 475.75V481H95.5V683.5H345V675"/><path class="wire" d="M345 675H205V520"/><path class="wire2" d="M331.3 683.5H440.5V426.7"/>
 <!-- C1: three points on each long wall, plus two centred points at the entry-side wall. -->
 <g class="out"><g transform="translate(165 482)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(211 482)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(257 482)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(165 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(211 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(257 688)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(90 548)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g><g transform="translate(90 620)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
 <!-- C2 and C3 points removed in the confirmed layout. -->
-<g class="out"><g transform="translate(447 500)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
+<g class="out"><g transform="translate(440.5 426.7)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
 <path d="M391 398V374M381 387L391 374L401 387" fill="none" stroke="#19719e" stroke-width="2.5"/><text class="entry" x="402" y="390">原正门入口</text>
 </g>
-<g id="lighting-wl1" aria-label="WL1 窗腰梁壁灯与照明干线">
-  <path id="wl1-skirt" d="M406.5 606.65L651.66 606.65L651.66 407.54" fill="none" stroke="#a6530d" stroke-width="2.1" stroke-dasharray="6 3"/>
-  <path id="wl1-belt" d="M651.66 407.54L395.25 407.54L395.25 410.75L378.75 410.75L378.75 407.54L102 407.54L102 410.75L98.79 410.75L98.79 601.5714" fill="none" stroke="#a6530d" stroke-width="2.1" stroke-linejoin="round"/>
-  <circle cx="651.66" cy="407.54" r="4.6" stroke="#a6530d" stroke-width="1.5" fill="#fffbeb"/>
-  <circle cx="651.66" cy="407.54" r="1.5" fill="#a6530d"/>
-  <path d="M655 405L668 374H688" stroke="#946631" fill="none"/>
-  <text x="671" y="363" class="sm" style="fill:#834008">侧墙上引</text>
-  <g id="lamp-L01" data-model-x="1.6188" data-model-z="0.947" aria-label="L01 横向壁装线形灯"><use href="#linear-lamp" transform="translate(605.4375 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="605.4375" y="425.41" text-anchor="middle">L01</text></g>
-  <g id="lamp-L02" data-model-x="4.8563" data-model-z="0.947" aria-label="L02 横向壁装线形灯"><use href="#linear-lamp" transform="translate(508.3125 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="508.3125" y="425.41" text-anchor="middle">L02</text></g>
-  <g id="lamp-L03" data-model-x="8.0938" data-model-z="0.947" aria-label="L03 横向壁装线形灯"><use href="#linear-lamp" transform="translate(411.1875 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="411.1875" y="425.41" text-anchor="middle">L03</text></g>
-  <g id="lamp-L04" data-model-x="11.3312" data-model-z="0.947" aria-label="L04 横向壁装线形灯"><use href="#linear-lamp" transform="translate(314.0625 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="314.0625" y="425.41" text-anchor="middle">L04</text></g>
-  <g id="lamp-L05" data-model-x="14.5688" data-model-z="0.947" aria-label="L05 横向壁装线形灯"><use href="#linear-lamp" transform="translate(216.9375 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="216.9375" y="425.41" text-anchor="middle">L05</text></g>
-  <g id="lamp-L06" data-model-x="17.8063" data-model-z="0.947" aria-label="L06 横向壁装线形灯"><use href="#linear-lamp" transform="translate(119.8125 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="119.8125" y="425.41" text-anchor="middle">L06</text></g>
-  <g id="lamp-L07" data-model-x="18.478" data-model-z="2.0143" aria-label="L07 横向壁装线形灯"><use href="#linear-lamp" transform="translate(99.66 440.4286) rotate(90)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="87.66" y="443.9286" text-anchor="end">L07</text></g>
-  <g id="lamp-L08" data-model-x="18.478" data-model-z="4.7" aria-label="L08 横向壁装线形灯"><use href="#linear-lamp" transform="translate(99.66 521) rotate(90)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="87.66" y="524.5" text-anchor="end">L08</text></g>
-  <g id="lamp-L09" data-model-x="18.478" data-model-z="7.3857" aria-label="L09 横向壁装线形灯"><use href="#linear-lamp" transform="translate(99.66 601.5714) rotate(90)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="87.66" y="605.0714" text-anchor="end">L09</text></g>
+<g id="lighting-layout" aria-label="灯具及照明支路平面投影">
+<g id="lighting-WL1" aria-label="WL1">
+<path data-route="WL1-skirt" data-kind="floor" d="M408.9 606.65L408.9 606.65L643.8 606.65L643.8 606.65L651.66 606.65L651.66 579.8L651.66 579.8L651.66 407.54" fill="none" stroke="#a6530d" stroke-width="1.7" stroke-dasharray="6 4" stroke-linecap="round" stroke-linejoin="round"/>
+<g data-route="WL1-rise" data-kind="rise"><circle cx="651.66" cy="407.54" r="5" fill="#fff" stroke="#a6530d" stroke-width="1.7"/><circle cx="651.66" cy="407.54" r="1.7" fill="#a6530d"/></g>
+<path data-route="WL1-belt" data-kind="beam" d="M651.66 407.54L395.25 407.54L395.25 410.75L378.75 410.75L378.75 407.54L102 407.54L102 410.75L98.79 410.75L98.79 628.25" fill="none" stroke="#a6530d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle data-route="WL1-L01" data-kind="tap" cx="585" cy="407.54" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L02" data-kind="tap" cx="496.5" cy="407.54" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L03" data-kind="tap" cx="408" cy="407.54" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L04" data-kind="tap" cx="319.5" cy="407.54" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L05" data-kind="tap" cx="231" cy="407.54" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L06" data-kind="tap" cx="142.5" cy="407.54" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L07" data-kind="tap" cx="98.79" cy="451.25" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L08" data-kind="tap" cx="98.79" cy="539.75" r="1.45" fill="#a6530d"/>
+<circle data-route="WL1-L09" data-kind="tap" cx="98.79" cy="628.25" r="1.45" fill="#a6530d"/>
+<g id="lamp-L01" data-model-x="2.3" data-model-y="3.78" data-model-z="0.947" data-axis="x"><title>L01 · WL1</title><use href="#lamp-WL1" transform="translate(585 408.41) scale(1)"/><text x="585" y="425.41" class="sm" text-anchor="middle" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L01</text></g>
+<g id="lamp-L02" data-model-x="5.25" data-model-y="3.78" data-model-z="0.947" data-axis="x"><title>L02 · WL1</title><use href="#lamp-WL1" transform="translate(496.5 408.41) scale(1)"/><text x="496.5" y="425.41" class="sm" text-anchor="middle" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L02</text></g>
+<g id="lamp-L03" data-model-x="8.2" data-model-y="3.78" data-model-z="0.947" data-axis="x"><title>L03 · WL1</title><use href="#lamp-WL1" transform="translate(408 408.41) scale(1)"/><text x="408" y="425.41" class="sm" text-anchor="middle" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L03</text></g>
+<g id="lamp-L04" data-model-x="11.15" data-model-y="3.78" data-model-z="0.947" data-axis="x"><title>L04 · WL1</title><use href="#lamp-WL1" transform="translate(319.5 408.41) scale(1)"/><text x="319.5" y="425.41" class="sm" text-anchor="middle" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L04</text></g>
+<g id="lamp-L05" data-model-x="14.1" data-model-y="3.78" data-model-z="0.947" data-axis="x"><title>L05 · WL1</title><use href="#lamp-WL1" transform="translate(231 408.41) scale(1)"/><text x="231" y="425.41" class="sm" text-anchor="middle" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L05</text></g>
+<g id="lamp-L06" data-model-x="17.05" data-model-y="3.78" data-model-z="0.947" data-axis="x"><title>L06 · WL1</title><use href="#lamp-WL1" transform="translate(142.5 408.41) scale(1)"/><text x="142.5" y="425.41" class="sm" text-anchor="middle" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L06</text></g>
+<g id="lamp-L07" data-model-x="18.478" data-model-y="3.78" data-model-z="2.375" data-axis="z"><title>L07 · WL1</title><use href="#lamp-WL1" transform="translate(99.66 451.25) rotate(90) scale(1)"/><text x="86.66" y="455.25" class="sm" text-anchor="end" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L07</text></g>
+<g id="lamp-L08" data-model-x="18.478" data-model-y="3.78" data-model-z="5.325" data-axis="z"><title>L08 · WL1</title><use href="#lamp-WL1" transform="translate(99.66 539.75) rotate(90) scale(1)"/><text x="86.66" y="543.75" class="sm" text-anchor="end" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L08</text></g>
+<g id="lamp-L09" data-model-x="18.478" data-model-y="3.78" data-model-z="8.275" data-axis="z"><title>L09 · WL1</title><use href="#lamp-WL1" transform="translate(99.66 628.25) rotate(90) scale(1)"/><text x="86.66" y="632.25" class="sm" text-anchor="end" style="font-weight:600;fill:#a6530d;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">L09</text></g>
+</g>
+<g id="lighting-WL3" aria-label="WL3">
+<path data-route="WL3-skirt" data-kind="floor" d="M402.9 606.65L402.9 607.91L402.9 607.91" fill="none" stroke="#227568" stroke-width="1.7" stroke-dasharray="3 5" stroke-linecap="round" stroke-linejoin="round"/>
+<g data-route="WL3-office-rise" data-kind="rise"><circle cx="402.9" cy="607.91" r="5" fill="#fff" stroke="#227568" stroke-width="1.7"/><circle cx="402.9" cy="607.91" r="1.7" fill="#227568"/></g>
+<path data-route="WL3-office-wall" data-kind="wall" d="M402.9 607.91L585 607.91" fill="none" stroke="#227568" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path data-route="WL3-underpass" data-kind="floor" d="M402.9 607.91L402.9 607.91L402.9 604.7L336.3 604.7L336.3 659.66L319.5 659.66" fill="none" stroke="#227568" stroke-width="1.7" stroke-dasharray="3 5" stroke-linecap="round" stroke-linejoin="round"/>
+<g data-route="WL3-stair-rise" data-kind="rise"><circle cx="319.5" cy="659.66" r="5" fill="#fff" stroke="#227568" stroke-width="1.7"/><circle cx="319.5" cy="659.66" r="1.7" fill="#227568"/></g>
+<path data-route="WL3-stair-wall" data-kind="wall" d="M319.5 659.66L231 659.66" fill="none" stroke="#227568" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle data-route="WL3-W01" data-kind="tap" cx="585" cy="607.91" r="1.45" fill="#227568"/>
+<circle data-route="WL3-W02" data-kind="tap" cx="496.5" cy="607.91" r="1.45" fill="#227568"/>
+<circle data-route="WL3-W03" data-kind="tap" cx="408" cy="607.91" r="1.45" fill="#227568"/>
+<circle data-route="WL3-W04" data-kind="tap" cx="319.5" cy="659.66" r="1.45" fill="#227568"/>
+<circle data-route="WL3-W05" data-kind="tap" cx="231" cy="659.66" r="1.45" fill="#227568"/>
+<g id="lamp-W01" data-model-x="2.3" data-model-y="3.78" data-model-z="7.568" data-axis="x"><title>W01 · WL3</title><use href="#lamp-WL3" transform="translate(585 607.04) scale(1)"/><text x="585" y="597.04" class="sm" text-anchor="middle" style="font-weight:600;fill:#227568;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">W01</text></g>
+<g id="lamp-W02" data-model-x="5.25" data-model-y="3.78" data-model-z="7.568" data-axis="x"><title>W02 · WL3</title><use href="#lamp-WL3" transform="translate(496.5 607.04) scale(1)"/><text x="496.5" y="597.04" class="sm" text-anchor="middle" style="font-weight:600;fill:#227568;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">W02</text></g>
+<g id="lamp-W03" data-model-x="8.2" data-model-y="3.78" data-model-z="7.568" data-axis="x"><title>W03 · WL3</title><use href="#lamp-WL3" transform="translate(408 607.04) scale(1)"/><text x="408" y="597.04" class="sm" text-anchor="middle" style="font-weight:600;fill:#227568;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">W03</text></g>
+<g id="lamp-W04" data-model-x="11.15" data-model-y="3.78" data-model-z="9.293" data-axis="x"><title>W04 · WL3</title><use href="#lamp-WL3" transform="translate(319.5 658.79) scale(1)"/><text x="319.5" y="648.79" class="sm" text-anchor="middle" style="font-weight:600;fill:#227568;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">W04</text></g>
+<g id="lamp-W05" data-model-x="14.1" data-model-y="3.78" data-model-z="9.293" data-axis="x"><title>W05 · WL3</title><use href="#lamp-WL3" transform="translate(231 658.79) scale(1)"/><text x="231" y="648.79" class="sm" text-anchor="middle" style="font-weight:600;fill:#227568;paint-order:stroke;stroke:#fffdfa;stroke-width:3;stroke-linejoin:round">W05</text></g>
+</g>
 </g>
 <!-- Circuit schedule -->
-<rect class="box" x="760" y="150" width="760" height="490" rx="10"/><text class="tx" x="790" y="190">插座及照明回路表</text>
-<path d="M780 210H1500M900 210V455M1090 210V455M1270 210V455M780 455H1500" stroke="#cbd8dd" stroke-width="1.2"/>
+<rect class="box" x="760" y="150" width="760" height="560" rx="10"/><text class="tx" x="790" y="190">插座及照明回路表</text>
+<path d="M780 210H1500M900 210V496M1090 210V496M1270 210V496M780 496H1500" stroke="#cbd8dd" stroke-width="1.2"/>
 <text class="sm" x="800" y="238">回路</text><text class="sm" x="930" y="238">服务区域</text><text class="sm" x="1120" y="238">图中线路</text><text class="sm" x="1300" y="238">器具 / 安装位置</text>
 <g class="sm"><text x="800" y="280">C1</text><text x="930" y="280">右侧开放办公区</text><text x="1120" y="280">蓝色实线</text><text x="1300" y="280">8 个五孔：两长墙各 3 个，右墙 2 个</text><text x="800" y="330">C4</text><text x="930" y="330">平台下卫浴</text><text x="1120" y="330">紫色虚线</text><text x="1300" y="330">仅1个防溅漏保插座，设于洗手干区后墙</text><text x="800" y="380">AL1</text><text x="930" y="380">一楼总配电箱</text><text x="1120" y="380">下引接地面干线</text><text x="1300" y="380">入口右侧开放区，近转角内墙</text></g>
-<g class="sm" id="wl1-schedule">
-  <text x="800" y="430" style="font-weight:600;fill:#854211">WL1</text><text x="930" y="430">L 形窗腰梁</text>
-  <text x="1120" y="430">地面至梁侧</text><text x="1300" y="430">长边 6 盏 ＋ 短边 3 盏，共 9 盏</text>
-  <use href="#linear-lamp" transform="translate(853 496) scale(4)"/>
-  <text x="919" y="496" class="tx">横向壁装线形灯</text>
-  <text x="919" y="521">灯座约 700 mm，深色端盖、连续透光灯罩。灯身沿各自梁面横装。</text>
-  <path d="M800 557H859" stroke="#a6530d" stroke-width="2" stroke-dasharray="6 3"/>
-  <text x="875" y="562">WL1 低位干线</text><path d="M1065 557H1124" stroke="#a6530d" stroke-width="2"/>
-  <text x="1140" y="562">梁侧干线</text>
-  <text x="800" y="604">AL1 出线沿地脚敷设，在端部实体墙上引至窗腰梁。灯中心模型标高约 4.15 m。</text>
+<g id="lighting-schedule">
+<text x="800" y="429" class="sm" style="fill:#a6530d;font-weight:600">WL1</text>
+<text x="930" y="429" class="sm" >一楼 L 形窗腰梁</text>
+<text x="1120" y="429" class="sm" >地脚至灯位</text>
+<text x="1300" y="429" class="sm" >长边 6 盏，短边 3 盏，共 9 盏</text>
+<text x="800" y="470" class="sm" style="fill:#227568;font-weight:600">WL3</text>
+<text x="930" y="470" class="sm" >对侧实体墙</text>
+<text x="1120" y="470" class="sm" >地脚至灯位</text>
+<text x="1300" y="470" class="sm" >沿墙一排 5 盏</text>
+<use href="#lamp-WL1" transform="translate(845 539) scale(3.1)"/>
+<text x="905" y="545" class="tx" >横向壁装线形灯</text>
+<text x="905" y="571" class="sm" >灯座长约 700 mm，灯身平行所在梁面或墙面。</text>
+<path d="M800 612h46" fill="none" stroke="#a6530d" stroke-width="2" stroke-dasharray="6 4"/><text x="855" y="616" class="sm" >WL1 地脚</text>
+<path d="M970 612h46" fill="none" stroke="#a6530d" stroke-width="2"/><text x="1025" y="616" class="sm" >梁侧干线</text>
+<path d="M1155 612h46" fill="none" stroke="#227568" stroke-width="2" stroke-dasharray="6 4"/><text x="1210" y="616" class="sm" >WL3 地脚 / 埋地</text>
+<path d="M1320 612h46" fill="none" stroke="#227568" stroke-width="2"/><text x="1375" y="616" class="sm" >墙侧干线</text>
+<text x="800" y="680" class="sm" >沿梁灯距 2.95 m，转角两侧各退 1.475 m。对墙灯在楼梯末段前收止。</text>
+<text x="800" y="653" class="sm" >安装中心标高　L01–L09　+3.78 m　　 W01–W05　+3.78 m</text>
 </g>
-<rect class="box" x="760" y="670" width="760" height="140" rx="10"/><text class="tx" x="790" y="708">图例与施工边界</text><g class="sm"><text x="790" y="740">○=普通插座点　AL1=一楼总配电箱　蓝实线=普通插座　紫虚线=卫浴插座　棕色=WL1 照明</text><text x="790" y="770">布线按方案示意。线径、保护器与设备专线由电工结合负荷和现场条件确定。</text></g>
-<text class="sm" x="70" y="920">统一阅读方向：屏幕下方 = 原正门入口　｜　版本：插座位置及回路表达优化版 · 一楼</text>
+<rect class="box" x="760" y="741" width="760" height="125" rx="10"/><text class="tx" x="790" y="774">图例与施工边界</text><g class="sm"><text x="790" y="806">○=普通插座点　AL1=一楼总配电箱　蓝实线=普通插座　紫虚线=卫浴插座　棕色=WL1　青绿=WL3</text><text x="790" y="839">布线按方案示意。线径、保护器与设备专线由电工结合负荷和现场条件确定。</text></g>
+<text class="sm" x="70" y="920">正门入口位于图面下方　·　一楼插座及照明</text>
 </svg>

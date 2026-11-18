@@ -75,9 +75,10 @@ export function setupMeasurements(ctx){
  quietText(dims,'81.97 ㎡',[15.15,.16,2.9],1.9);
  qdim(dims,[9.15,.06,10.9],[10.7,.06,10.9],'1.550 m',1.9,[0,.18,.3]);
  qdim(dims,[9.925,.08,0],[9.925,.08,10.7],'10.700 m',2.0);
- qdim(dims,[21,0,4.8],[21,datum.floorFinish-datum.lowerFinish,4.8],(datum.floorFinish-datum.lowerFinish).toFixed(2)+' m',2.0);
+ qdim(dims,[21,0,4.8],[21,datum.floorFinish-datum.lowerFinish,4.8],(datum.floorFinish-datum.lowerFinish).toFixed(3)+' m',2.0);
  qdim(upperDims,[20.3,0,4.8],[20.3,datum.roomTop-datum.floorFinish,4.8],(datum.roomTop-datum.floorFinish).toFixed(2)+' m',2.0);
- qdim(dims,[22,0,4.8],[22,8.40,4.8],'总层高 8.40 m',2.35);
+ const fullHeight=datum.roomTop-datum.lowerFinish;
+ qdim(dims,[22,0,4.8],[22,fullHeight,4.8],'含下沉 '+fullHeight.toFixed(3)+' m',2.55);
  // Proposed bar + gym: full rectangle before the stair, including candidate posts.
  scopeOverride='bar-gym';
  outline(dims,10.7,0,8.725,6.04,.09);

@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 850" width="1320" height="850" role="img" aria-labelledby="title desc">
+<title id="title">18 楼淋浴间废水排水参考图</title>
+<desc id="desc">左图为淋浴间俯视，门在图下方，面对门内左侧是淋浴，右侧是洗手盆。两路废水在地坪下汇合后从同一建议点下穿。右图为18楼到17楼的剖面，下层顶内接生活废水系统的位置待现场确认。</desc>
+<defs>
+ <pattern id="slab" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+  <rect width="11" height="11" fill="#e0e4e3"/><path d="M2 0V11" stroke="#c3cbca" stroke-width="2"/>
+ </pattern>
+ <pattern id="finish" width="8" height="8" patternUnits="userSpaceOnUse">
+  <rect width="8" height="8" fill="#e5dac4"/><circle cx="4" cy="4" r="1" fill="#c9b28e"/>
+ </pattern>
+ <marker id="arrow" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+  <path d="M0 0L6 3 0 6" fill="none" stroke="#087d77" stroke-width="1.8"/>
+ </marker>
+ <style>
+ text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#243b41}
+ .title{font-size:38px;font-weight:650}.head{font-size:25px;font-weight:650}.body{font-size:19px}.small{font-size:16px;fill:#576b6f}
+ .tiny{font-size:14px;fill:#576b6f}.dim{stroke:#8c9a9b;stroke-width:1.5;fill:none}.border{stroke:#cfdbd9;fill:white;stroke-width:1.4}
+ .room{fill:#f4f6f4;stroke:#54676a;stroke-width:7;stroke-linejoin:round}
+ .drain{fill:none;stroke:#087d77;stroke-width:4.5;stroke-linejoin:round;stroke-linecap:round}
+ .future{fill:none;stroke:#087d77;stroke-width:4.5;stroke-linecap:round;stroke-dasharray:9 9}
+ .label{font-size:18px;font-weight:600}.green{fill:#07756f}.fixture{fill:#fdfefe;stroke:#536b70;stroke-width:2.4}
+ .callout{fill:none;stroke:#627c7f;stroke-width:1.7}.dot{fill:white;stroke:#087d77;stroke-width:3}
+ </style>
+</defs>
+<rect width="1320" height="850" fill="#f5f7f5"/>
+<text x="44" y="64" class="title">18 楼淋浴间废水排水</text>
+<text x="46" y="104" class="body">淋浴地漏与洗手盆分别排水，在地坪下汇合，经一处穿板点下引至 17 楼顶内。</text>
+<rect class="border" x="44" y="138" width="613" height="548" rx="8"/>
+<rect class="border" x="673" y="138" width="603" height="548" rx="8"/>
+<text x="72" y="181" class="head">18 楼 · 淋浴间俯视</text>
+<text x="699" y="181" class="head">18 楼至 17 楼 · 竖向剖面</text>
+<text x="700" y="212" class="small">管线层次与开孔为示意，剖面未按垂直比例绘制。</text>
+
+<!-- The entrance faces decreasing plan x. Plan screen right is increasing plan z. -->
+<path class="dim" d="M90 216H604.6M90 209v14M604.6 209v14"/>
+<rect x="305" y="201" width="84" height="24" fill="white"/><text x="347" y="220" class="small" text-anchor="middle">3.10 m</text>
+<rect x="90" y="230" width="514.6" height="358.56" fill="#f4f6f4"/>
+<path class="room" fill="none" style="fill:none" d="M365.6 588.56H90V230H604.6V588.56H531.56"/>
+<path d="M366 589H532" stroke="#91a9ad" stroke-width="3"/><text x="449" y="624" class="label" text-anchor="middle">入口</text>
+<path class="dim" d="M626 230V588.56m-6 -358.56h12m-12 358.56h12"/>
+<text transform="translate(632 409) rotate(-90)" class="tiny" text-anchor="middle" stroke="white" stroke-width="6" paint-order="stroke">2.16 m</text>
+<!-- Model plan coords. Floor drain (12.35,6.62), vanity (11.07,8.70), penetration (10.98,7.78). -->
+<path class="drain" d="M177.98 492.28V362.8H299.824L370.54 292.084"/>
+<path class="drain" d="M523.26 279.8V329.932H408.388L370.54 292.084"/>
+<path class="drain" d="M370.54 292.084V264.86"/>
+<path fill="none" stroke="#087d77" stroke-width="2" marker-end="url(#arrow)" d="M178 444v-14"/>
+<path fill="none" stroke="#087d77" stroke-width="2" marker-end="url(#arrow)" d="M233 362.8h14"/>
+<path fill="none" stroke="#087d77" stroke-width="2" marker-end="url(#arrow)" d="M460 329.932h-14"/>
+<rect x="169.68" y="483.98" width="16.6" height="16.6" rx="1.2" class="fixture"/>
+<path d="M172 487l11 10m0-10l-11 10" fill="none" stroke="#087d77" stroke-width="1.6"/>
+<text x="205" y="502" class="label">淋浴地漏</text>
+<g transform="translate(154 536)" fill="none" stroke="#688389" stroke-width="2.4">
+ <path d="M-19 17V2q0-7 7-7h16"/><path d="M-1-5q0-7 7-7t7 7Z" fill="#cddada"/><path d="M2 0l-2 5m7-5L5 6m7-6L10 4"/>
+</g>
+<text x="195" y="553" class="small">淋浴花洒</text>
+<rect x="491" y="252" width="64" height="55" rx="8" class="fixture"/>
+<ellipse cx="523" cy="281" rx="23" ry="16" fill="#e4eeeb" stroke="#849b9c" stroke-width="1.5"/>
+<circle cx="523" cy="284" r="2.9" fill="#087d77"/>
+<text x="486" y="362" class="label">洗手盆</text>
+<circle cx="370.54" cy="264.86" r="10" class="dot"/><circle cx="370.54" cy="264.86" r="4" fill="#087d77"/>
+<path class="callout" d="M360 265h-45l-12 14"/><text x="212" y="306" class="label green">建议穿板点</text>
+<text x="72" y="662" class="small">站在门口向内看，左侧淋浴、右侧洗手盆。</text>
+
+<!-- Cutaway: the lower drain destination is intentionally not assigned to a real riser. -->
+<text x="707" y="275" class="label">18F</text>
+<path d="M771 292H1229V306H771Z" fill="url(#finish)" stroke="#bfae92"/>
+<path d="M771 306H986V331H771ZM1013 306H1229V331H1013Z" fill="url(#slab)" stroke="#99a7a5"/>
+<path d="M771 291h458" stroke="#536a70" stroke-width="2"/>
+<text x="860" y="266" class="small">淋浴完成面垫高 100 mm</text><path class="callout" d="M1140 273v25"/>
+<path d="M830 282h18m-14 5h9" stroke="#536a70" stroke-width="2.2"/>
+<path class="drain" d="M839 286v13l94 5h32l34 9v62"/>
+<path class="drain" d="M1067 286v12l-52 4-16 11"/>
+<path d="M1070 278h-18" stroke="#536a70" stroke-width="2"/>
+<path d="M985 308v24m28-24v24" stroke="#b08858" stroke-width="2"/>
+<circle cx="999" cy="313" r="4" fill="#087d77"/>
+<path class="drain" style="stroke-width:2" d="M999 340v13" marker-end="url(#arrow)"/>
+<text x="779" y="373" class="small">18 楼楼板</text>
+<path class="callout" d="M867 365l25-36"/>
+<text x="1021" y="361" class="label green">合流后下引</text>
+<path class="future" d="M999 375L1017 391l142 9"/>
+<circle cx="1159" cy="400" r="6" fill="white" stroke="#087d77" stroke-width="2.5"/>
+<text x="895" y="454" class="label">17 楼顶部 · 生活废水接点待核</text>
+<text x="895" y="485" class="small">虚线表示待现场确认的接入段。</text>
+<path class="callout" d="M1135 435l24-27"/>
+<path class="dim" d="M752 302V588m-6-286h12m-12 286h12"/>
+<text transform="translate(747 463) rotate(-90)" class="small" text-anchor="middle" stroke="white" stroke-width="6" paint-order="stroke">楼层高差 4.20 m</text>
+<text x="706" y="603" class="label">17F</text>
+<path d="M771 590H1229V610H771Z" fill="url(#slab)" stroke="#99a7a5"/>
+<path d="M771 588h458" stroke="#536a70" stroke-width="2"/>
+<text x="861" y="639" class="small">17 楼地面标高仅作层间参照。</text>
+<path d="M44 718h1232" stroke="#c7d4d0" stroke-width="1.4"/>
+<text x="47" y="756" class="label">现场复核</text>
+<text x="160" y="756" class="body">核定穿板点、楼板梁筋、防水收口和排水坡度，并查明 17 楼生活废水管的接入位置。</text>
+<text x="160" y="792" class="small">100 mm 为淋浴完成面抬高值。管径、存水弯、坡降与楼板下部可用空间须结合现场深化。雨水系统独立。</text>
+</svg>

@@ -1,14 +1,18 @@
 // Plan elevations in metres, relative to the 18F building datum (+72.190 m).
-const beltBase = 3.86, beltHeight = 0.67, steelTop = beltBase + beltHeight;
-const finishThickness = 0.04, floorFinish = steelTop + finishThickness;
-const lowerFinish = -0.10, lowerRisers = 18, upperRisers = 13, going = 0.28;
+// The 18F/19F datum difference is 4.20 m. The 40 mm deck sits directly on steel.
+// The window-belt section and its alignment with the steel are design assumptions pending survey.
+const floorFinish = 4.20, finishThickness = 0.04, steelTop = floorFinish - finishThickness;
+const beltHeight = 0.67, beltBase = steelTop - beltHeight;
+const lowerFinish = -0.017, lowerRisers = 17, upperRisers = 9, going = 0.28;
 const riser = (floorFinish - lowerFinish) / (lowerRisers + upperRisers);
 const midLanding = lowerFinish + lowerRisers * riser;
-const lowerLandingX = 12.95, thresholdX = 17.43;
-const lowerStartX = lowerLandingX + (lowerRisers - 1) * going;
+const lowerStartX = 17.71, thresholdX = 17.43;
+const lowerLandingX = lowerStartX - (lowerRisers - 1) * going;
 const upperStartX = thresholdX - (upperRisers - 1) * going;
-const platformBeamDepth = 0.44, wetFloorFinish = lowerFinish + 0.03;
-const opening = [[10.92,5.94],[14.63,5.94],[14.63,7.60],[thresholdX,7.60],[thresholdX,9.30],[10.92,9.30]];
+const platformBeamDepth = 0.44, wetFloorFinish = lowerFinish + 0.10;
+const opening = [[11.64,6.00],[15.13,6.00],[15.13,7.68],[thresholdX,7.68],[thresholdX,9.27],[11.64,9.27]];
+const wetFixtures = Object.freeze({door:{x:12.88,z:8.25},head:{x:12.535,z:6.475},
+  drain:{x:12.35,z:6.62,width:.10,depth:.10},basin:{x:11.07,z:8.70,width:.48,depth:.36}});
 const midPlatformOutline = [[10.75,6.04],[lowerLandingX,6.04],[lowerLandingX,7.64],
   [upperStartX,7.64],[upperStartX,9.24],[10.75,9.24]];
 function planArea(points) {
@@ -18,10 +22,10 @@ function planArea(points) {
   },0))/2;
 }
 export const MEZZANINE = Object.freeze({
-  steelTop, finishThickness, floorFinish, lowerFinish, riser, lowerRisers, upperRisers,
+  steelTop, beltBase, beltHeight, finishThickness, floorFinish, lowerFinish, riser, lowerRisers, upperRisers,
   going, midLanding, lowerStartX, lowerLandingX, upperStartX, thresholdX, opening, midPlatformOutline,
   openingArea: planArea(opening), upperArea: 81.965 - planArea(opening),
-  platformArea: planArea(midPlatformOutline), platformBeamDepth, wetFloorFinish, wetHeadBottom: wetFloorFinish+2.22,
+  platformArea: planArea(midPlatformOutline), platformBeamDepth, wetFloorFinish, wetFixtures, wetHeadBottom: wetFloorFinish+2.22,
   wetBeamClearance: midLanding-platformBeamDepth-wetFloorFinish,
   roomTop: 8.40, primaryDepth: 0.26,
   beltInnerZ: 0.90, beltInnerX: 18.525
@@ -31,20 +35,25 @@ export function addSiteShell({ THREE, group, box, shape, top }) {
   const material = color => new THREE.MeshStandardMaterial({ color, roughness: 0.88 });
   const concrete = material('#989893');
   const frame = material('#495357');
-  const ceilingMaterial = material('#b0aea6');
+  const ceilingMaterial = new THREE.MeshStandardMaterial({
+    color: '#d7e3e5', roughness: 0.92, transparent: true, opacity: 0.17, depthWrite: false,
+    side: THREE.DoubleSide
+  });
   const width = 19.425;
   const depth = 9.40;
   const soffit = top - 0.25;
 
-  // The Shape uses (x,-z). Rotating its front normal upwards makes BackSide the
-  // underside: interior views show the ceiling, overhead views see the room.
-  ceilingMaterial.side = THREE.BackSide;
-  const ceilingGeometry = new THREE.ShapeGeometry(shape);
+  // Both faces follow the CAD outline, including the entry recess.
+  const ceilingGeometry = new THREE.ExtrudeGeometry(shape, {depth: top - soffit, bevelEnabled: false});
   ceilingGeometry.rotateX(-Math.PI / 2);
   const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
   ceiling.name = 'site-roof-soffit';
   ceiling.position.y = soffit;
-  ceiling.receiveShadow = true;
+  ceiling.renderOrder = 4;
+  const roofEdge = new THREE.LineSegments(new THREE.EdgesGeometry(ceilingGeometry),
+    new THREE.LineBasicMaterial({color:'#8d9fa4',transparent:true,opacity:0.40,depthWrite:false}));
+  roofEdge.renderOrder = 5;
+  ceiling.add(roofEdge);
   group.add(ceiling);
 
   // All three beam axes lie inside the uninterrupted, full-width part of the
@@ -105,9 +114,9 @@ export function addSiteShell({ THREE, group, box, shape, top }) {
   }
   const shortUpperGlazing = 6.85;
   const windowBays = {long: 12, short: 7};
-  windowBand(true, width, windowBays.long, -0.1, beltBase);
+  windowBand(true, width, windowBays.long, lowerFinish, beltBase);
   windowBand(true, width, windowBays.long, beltTop, soffit);
-  windowBand(false, depth, windowBays.short, -0.1, beltBase);
+  windowBand(false, depth, windowBays.short, lowerFinish, beltBase);
   windowBand(false, shortUpperGlazing, 5, beltTop, soffit);
   const endWall = box(group, width - 0.20, beltTop, shortUpperGlazing,
     0.20, soffit - beltTop, depth - shortUpperGlazing, material('#a3a49f'));

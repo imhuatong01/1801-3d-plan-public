@@ -1,11 +1,13 @@
 import * as THREE from 'three';
-import {addSiteShell,MEZZANINE} from './site-shell.js?v=76-stairs';
-import {makeWindowLighting} from './window-lights.js?v=75';
+import {addSiteShell,MEZZANINE} from './site-shell.js?v=77';
+import {makeWindowLighting,lightingColors} from './window-lights.js?v=77';
+import {makeAirLayout} from './air-layout.js?v=77';
+import {makeWastewater} from './wastewater.js?v=77';
 import {addSiteServices} from './site-services.js?v=74';
 import {buildFloorComparison} from './floor-comparison.js?v=74';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=76-stairs';
+import {setupMeasurements} from './measurements-height-only.js?v=77';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -58,9 +60,9 @@ function steelProfile(parent,name,points,z,width){
 }
 // Ground outline uses the same CAD vertices as the existing 1801 page, including its notches.
 const verified=await fetch('./1801_专页核对数据.json?v=74').then(r=>r.json());
-const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#d1d0c8'));floor.position.y=-.26;floor.receiveShadow=true;ground.add(floor);
+const contour=verified.geometry.poly.map(a=>[(a[0]+25113)/1000,(a[1]+10830)/1000]);const shape=new THREE.Shape();contour.forEach((p,i)=>i?shape.lineTo(p[0],-p[1]):shape.moveTo(p[0],-p[1]));shape.closePath();const fg=new THREE.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});fg.rotateX(-Math.PI/2);const floor=new THREE.Mesh(fg,mat('#d1d0c8'));floor.position.y=-.16;floor.receiveShadow=true;ground.add(floor);
 
-// Proposed finish levels: side rooms 0.000, central passage -0.100; no structural cutting instruction.
+// Both sides and the main aisle share the surveyed-coordinate floor reference.
 const groundFloorMeshes=[floor],upperFloorMeshes=[];
 const sidePolys=[[[3.9, 7.675], [5.15, 7.675], [9.15, 7.675], [9.15, 0.0], [0.125, 0.0], [0.125, 0.1], [0.0, 0.1], [0.0, 0.5], [0.0, 1.0], [0.0, 7.675], [0.05, 7.675], [0.25, 7.675], [0.7, 7.675], [3.9, 7.675]], [[10.8, 9.4], [18.425, 9.4], [18.425, 9.3], [18.925, 9.3], [18.925, 9.4], [19.025, 9.4], [19.425, 9.4], [19.425, 0.0], [10.7, 0.0], [10.7, 9.4], [10.8, 9.4]]];
 for(const points of sidePolys){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth:.1,bevelEnabled:false});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat('#d6d5cd'));m.position.y=-.1;m.receiveShadow=true;ground.add(m);groundFloorMeshes.push(m)}
@@ -73,12 +75,11 @@ const stairHole=new THREE.Path();stairOpening.forEach((p,i)=>i?stairHole.lineTo(
 const upperGeo=new THREE.ExtrudeGeometry(upperShape,{depth:MEZZANINE.finishThickness,bevelEnabled:false});upperGeo.rotateX(-Math.PI/2);const upperSlab=new THREE.Mesh(upperGeo,mat('#c7c3b9'));upperSlab.position.y=-MEZZANINE.finishThickness;upperSlab.receiveShadow=true;upper.add(upperSlab);upperFloorMeshes.push(upperSlab);
 zone(ground,.1,.1,8.95,7.45,'#d6d5cd','进门右侧 · 开放办公预留区','独立矩形开放办公侧；当前不布置工位或会议桌，与老板侧分别从中央通道进入。');
 const corridor=zone(ground,9.15,0,1.55,10.7,'#cbcac3','中间 · 完成面通道','原中间下沉示意取消；一楼全部统一为同一完成面，保持1.55米宽通道。');
-// The former raised sides drop 100mm to meet the original central passage level.
-// Restore the base slab after shifting the whole ground package, so every finished floor ends at the same plane.
-ground.position.y=-.10;floor.position.y+=.10;
+// The plan datum is zero; the continuous finished first floor is 17 mm below it.
+ground.position.y=MEZZANINE.lowerFinish;
 zone(ground,16.7,1.2,2.55,7.9,'#d6d5cd','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
 zone(ground,10.85,.15,2.65,6.9,'#d6d5cd','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
-zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑目标1.50m，31级分18＋13级；两跑等踏高、等踏深，出口贴墙。');
+zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑宽1.50m，共26级，第一跑17级、第二跑9级；两跑等踏高、等踏深，出口贴墙。');
 const furnitureObjects=[],furnitureMovables=[],furnitureAnchoredNotes=[];
 const furnitureStorageKey='1801-furniture-reference-v1';
 function markFurnitureMovable(object,id,name){object.userData.furnitureMovable={id,name,initial:{x:object.position.x,z:object.position.z,scale:object.scale.x,rotation:object.rotation.y}};furnitureMovables.push(object);return object}
@@ -127,26 +128,35 @@ restoreFurnitureLayout();
 const wet=new THREE.Group(),wetWalls=new THREE.Group();ground.add(wet);wet.add(wetWalls);
 const wetFloorFinish=MEZZANINE.wetFloorFinish, wetLocalFloor=wetFloorFinish-MEZZANINE.lowerFinish;
 const wetUnderPlatformBeam=MEZZANINE.wetBeamClearance;
+const {head:headAt,drain:drainAt,basin:basinAt,door:wetDoorAt}=MEZZANINE.wetFixtures;
 box(wet,10.77,.005,6.09,2.16,wetLocalFloor-.005,3.10,mat('#d0cfc7')).name='shower-finished-floor';
 const headBottom=MEZZANINE.wetHeadBottom-MEZZANINE.lowerFinish;
 const showerRiser=box(wet,12.795,1.05,6.46,.055,headBottom+.07-1.05,.045,steel);
 showerRiser.name='shower-wall-riser';
 const showerArm=box(wet,12.54,headBottom+.04,6.46,.255,.03,.045,steel);
 showerArm.name='shower-arm';
-const showerHead=box(wet,12.44,headBottom,6.38,.19,.04,.19,steel);
+const showerHead=box(wet,headAt.x-.095,headBottom,headAt.z-.095,.19,.04,.19,steel);
 showerHead.name='shower-head';
 const showerGlass=mat('#26383f',.78),showerDoorGlass=mat('#365159',.68);
-const glassHeight=2.23;
+const glassHeight=2.20, doorFrameHeight=2.225;
 box(wetWalls,10.77,wetLocalFloor,6.09,.06,glassHeight,3.10,showerGlass);
 for(const z of [6.09,9.13])box(wetWalls,10.83,wetLocalFloor,z,2.02,glassHeight,.06,showerGlass);
 for(const [z,depth] of [[6.09,1.66],[8.75,.44]])box(wetWalls,12.85,wetLocalFloor,z,.06,glassHeight,depth,showerGlass);
 // The closed door fills the opening in the stair-side wall at x=12.88.
 const showerDoor=new THREE.Group();showerDoor.name='shower-closed-door';wetWalls.add(showerDoor);
-box(showerDoor,12.86,wetLocalFloor+.025,7.775,.035,2.18,.95,showerDoorGlass);
-for(const z of [7.75,8.725])box(showerDoor,12.85,wetLocalFloor,z,.055,glassHeight,.025,steel);
-box(showerDoor,12.85,wetLocalFloor+glassHeight-.025,7.775,.055,.025,.95,steel);
+box(showerDoor,wetDoorAt.x-.02,wetLocalFloor+.025,wetDoorAt.z-.475,.035,doorFrameHeight-.05,.95,showerDoorGlass);
+for(const z of [7.75,8.725])box(showerDoor,12.85,wetLocalFloor,z,.055,doorFrameHeight,.025,steel);
+box(showerDoor,12.85,wetLocalFloor+doorFrameHeight-.025,7.775,.055,.025,.95,steel);
 box(showerDoor,12.816,wetLocalFloor+.80,8.60,.11,.42,.035,steel);
-box(wet,10.93,.78,6.42,.48,.10,.36,white);box(wet,11.12,.05,6.56,.08,.73,.08,steel);box(wet,11.11,.91,6.57,.06,.24,.06,steel);
+// Facing inward along −X, lower plan Z is on the left and higher Z is on the right.
+box(wet,basinAt.x-basinAt.width/2,wetLocalFloor+.74,basinAt.z-basinAt.depth/2,basinAt.width,.10,basinAt.depth,white).name='shower-basin';
+box(wet,basinAt.x-.035,wetLocalFloor,basinAt.z-.035,.07,.74,.07,steel).name='shower-basin-waste';
+box(wet,10.88,wetLocalFloor+.84,basinAt.z-.025,.05,.15,.05,steel);
+box(wet,10.93,wetLocalFloor+.965,basinAt.z-.018,.12,.025,.036,steel);
+box(wet,basinAt.x-.015,wetLocalFloor+.84,basinAt.z-.015,.030,.001,.030,steel);
+const grate=box(wet,drainAt.x-drainAt.width/2,wetLocalFloor,drainAt.z-drainAt.depth/2,drainAt.width,.001,drainAt.depth,steel);
+grate.name='shower-floor-drain';
+for(let i=0;i<5;i++)box(wet,drainAt.x-.041,wetLocalFloor+.001,drainAt.z-.039+i*.018,.082,.0008,.006,'#989d9e');
 const wetFloor=zone(ground,10.77,6.09,2.16,3.10,'#d0cfc7','平台下 · 淋浴区','外框2.16×3.10m，含一个花洒、洗手池与封闭玻璃门。');wetFloor.position.y=wetLocalFloor-.005;
 $('#wetWalls').checked=true;wetWalls.visible=true;
 $('#wetWalls').onchange=e=>{wetWalls.visible=e.target.checked};
@@ -214,16 +224,17 @@ platformPart('platform-beam-wall-side',10.75,upperStartX,9.00,9.14,platformBeamU
 platformPart('platform-beam-extension-edge',lowerLandingX,upperStartX,7.65,7.79,platformBeamUnder,deckUnder);
 for(const z of [6.015,7.565])slopeGlassRail(stairs,[lowerStartX,lowerFinish+rise,z],[lowerLandingX,midHeight,z]);
 slopeGlassRail(stairs,[upperStartX,midHeight+rise,7.715],[thresholdX,levelHeight,7.715]);
+const [[openLeft,openFront],[openCorner],[,openStep],,,[,openBack]]=stairOpening;
+const turnWalkX=openLeft+.04;
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);
-rail(midGuard,10.95,5.99,.05,3.25);
-rail(midGuard,11.00,5.99,lowerLandingX-11,.05);
+rail(midGuard,turnWalkX-.05,5.99,.05,3.25);
+rail(midGuard,turnWalkX,5.99,lowerLandingX-turnWalkX,.05);
 rail(midGuard,lowerLandingX,7.64,upperStartX-lowerLandingX,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
-// Follow the exposed faces of the L-shaped void and leave the stair exit open.
-rail(openingRails,10.92,5.88,14.63-10.92,.06);
-rail(openingRails,14.63,5.94,.06,7.60-5.94);
-rail(openingRails,14.69,7.54,thresholdX-14.69,.06);
-rail(openingRails,10.86,5.94,.06,9.30-5.94);
+rail(openingRails,openLeft,openFront-.06,openCorner-openLeft,.06);
+rail(openingRails,openCorner,openFront,.06,openStep-openFront);
+rail(openingRails,openCorner+.06,openStep-.06,thresholdX-openCorner-.06,.06);
+rail(openingRails,openLeft-.06,openFront,.06,openBack-openFront);
 
 // Keep the interior-edge guard only.  The exterior L-shaped daylight glass is already the enclosure and has no added handrail.
 rail(upper,10.7,0,.07,7.44);
@@ -238,8 +249,8 @@ function stairArrow(a,b,color){const from=new THREE.Vector3(...a),delta=new THRE
 stairArrow([lowerStartX-.05,lowerFinish+rise+.22,6.79],[lowerLandingX+.08,midHeight+.18,6.79],0xd28a24);
 stairArrow([11.85,midHeight+.18,6.79],[11.85,midHeight+.18,8.49],0xd28a24);
 stairArrow([upperStartX+.04,midHeight+rise+.18,8.49],[thresholdX-.05,levelHeight+.18,8.49],0x258b9a);
-label(stairs,'第一跑 18级 · 宽1.50m',15.3,1.5,6.0,'#96621e',4.2);
-label(stairs,'第二跑 13级 · 贴墙出口',15.8,levelHeight+.65,9.0,'#287b8b',4.2);
+label(stairs,'第一跑 '+lowerRisers+'级 · 宽1.50m',15.3,1.5,6.0,'#96621e',4.2);
+label(stairs,'第二跑 '+upperRisers+'级 · 贴墙出口',15.8,levelHeight+.65,9.0,'#287b8b',4.2);
 label(stairs,'转身平台顶 +'+midHeight.toFixed(3)+'m',11.75,midHeight+.45,7.6,'#755b3e',3.5);
 // Stop the steel at the inside faces of the two existing window beams. The top
 // contact plane is shared by every steel member and the underside of the finish.
@@ -250,16 +261,17 @@ function frameMember(name,x1,z1,x2,z2,depth=MEZZANINE.primaryDepth){
 }
 const windowX=MEZZANINE.beltInnerX, windowZ=MEZZANINE.beltInnerZ;
 const outerSteelX=windowX-.18;
-frameMember('left-edge',10.70,windowZ,10.88,9.30);
-frameMember('column-side-edge',outerSteelX,1.00,windowX,9.30);
+frameMember('left-edge',10.70,windowZ,10.88,openBack);
+frameMember('column-side-edge',outerSteelX,1.00,windowX,openBack);
 frameMember('glazing-side-span',10.88,windowZ,outerSteelX,windowZ+.18);
-frameMember('platform-opening-front',10.88,5.76,14.77,5.94);
-frameMember('platform-opening-return',14.63,5.94,14.77,7.60);
-frameMember('upper-flight-opening-side',14.77,7.42,outerSteelX,7.60);
-frameMember('back-wall-span',10.70,9.30,18.425,9.40);
-frameMember('opening-threshold',thresholdX,7.60,thresholdX+.14,9.30);
+frameMember('platform-opening-front',10.88,openFront-.18,openCorner+.14,openFront);
+frameMember('platform-helper-edge',openLeft-.14,openFront,openLeft,openBack);
+frameMember('platform-opening-return',openCorner,openFront,openCorner+.14,openStep);
+frameMember('upper-flight-opening-side',openCorner+.14,openStep-.18,outerSteelX,openStep);
+frameMember('back-wall-span',10.70,openBack,18.425,9.40);
+frameMember('opening-threshold',thresholdX,openStep,thresholdX+.14,openBack);
 for(const x of [12.25,13.70,15.15,16.60,18.05]){
- const headerFace=x<14.63?5.76:7.42;
+ const headerFace=x<openCorner+.14?openFront-.18:openStep-.18;
  frameMember('floor-secondary',x,windowZ+.18,x+.14,headerFace,.18);
 }
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a);return a}
@@ -335,7 +347,7 @@ const doorSignCanvas=document.createElement('canvas');doorSignCanvas.width=1600;
 const furniturePlantsStart=furnitureStart();plant(ground,.5,.5);plant(upper,16.3,5.1);furnitureEnd(furniturePlantsStart);
 label(ground,'右侧 · 开放办公预留区',4.5,1.4,2.5);
 label(ground,'左侧老板区 · 平地运动',18,1.4,5,'#8b6343');label(ground,'第一跑下 · 储物',14.975,1,6.7,'#566368');label(ground,'私用休闲',11.9,1.4,1.8,'#677243');
-label(ground,'原入口',9.925,2.9,10.7,'#176a9c');label(ground,'通道 −0.10m',9.925,.5,5,'#8e6340',3.1);
+label(ground,'原入口',9.925,2.9,10.7,'#176a9c');label(ground,'一楼完成面 −0.017m',9.925,.5,5,'#8e6340',3.1);
 label(upper,'主电脑位 · 朝向外侧',18,1.6,2.8);label(upper,'临挑空 · 茶桌',11.9,1.5,2.2,'#677243');label(upper,'直播 / 日常办公',15,2.2,4.0,'#77558b');
 label(labelGroup,'夹层楼面 +'+levelHeight.toFixed(2)+'m',20.5,levelHeight+.18,5.4,'#466e82',4.2);
 line(labelGroup,[[20,0,5.4],[20,levelHeight,5.4]],'#708899');
@@ -352,15 +364,27 @@ steelDatumReference.name='steel-reference-existing-window-beam';
 steelDatumReference.visible=false;
 model.add(steelDatumReference);
 const roofUnderside = siteShell.ceiling.position.y;
-const windowLighting=makeWindowLighting({THREE,box,beltTop:MEZZANINE.steelTop,windowBays:siteShell.windowBays});
+const windowLighting=makeWindowLighting({THREE,box,belt:siteShell.belt,beltTop:MEZZANINE.steelTop,
+ roofBeam:siteShell.roofBeams[0],windowBays:siteShell.windowBays,wallSegments:solidWallSegments});
 model.add(windowLighting.fixtures,windowLighting.circuit);
 windowLighting.circuit.visible=false;
 const circuitBelt=siteShell.belt.clone();
 circuitBelt.material=new THREE.MeshBasicMaterial({color:'#859399',transparent:true,opacity:.17,depthWrite:false});
 circuitBelt.castShadow=circuitBelt.receiveShadow=false;
 windowLighting.circuit.add(circuitBelt);
-const lampTags=windowLighting.lights.map(lamp=>label(windowLighting.circuit,lamp.id,lamp.x,lamp.y+.30,lamp.z,'#74551f',1.18));
+const roofLightReference=siteShell.roofBeams[0].clone();
+roofLightReference.material=circuitBelt.material;roofLightReference.castShadow=roofLightReference.receiveShadow=false;
+windowLighting.circuitGroups.WL2.add(roofLightReference);
+const lampTags=windowLighting.lights.map(lamp=>label(windowLighting.circuitGroups[lamp.circuit],lamp.id,lamp.x,lamp.y+.30,lamp.z,lightingColors[lamp.circuit],1.08));
 const siteServices=addSiteServices({ THREE, group: fieldFrame, box, top: roofUnderside });
+const airLayout=makeAirLayout({THREE,box,datum:MEZZANINE,roofUnderside,existingOutlet:siteServices.outlet});
+fieldFrame.add(airLayout.group);
+const airLabels=new THREE.Group();airLayout.group.add(airLabels);airLabels.visible=false;
+const airTags=airLayout.units.map(({id,description,x,y,z})=>label(airLabels,id+' '+description,x,y-.40,z,'#235f62',2.65));
+const originalSlabFinish=upperSlab.material;
+const airSlabFinish=originalSlabFinish.clone();
+airSlabFinish.transparent=true;airSlabFinish.opacity=.17;airSlabFinish.depthWrite=false;
+$('#steelViewLevels').textContent='模型标高：梁顶 +'+MEZZANINE.steelTop.toFixed(2)+' 米，夹层完成面 +'+levelHeight.toFixed(2)+' 米。连接节点待深化。';
 
 // Probe the geometry in its assembled position, before any cutaway/exploded viewing transforms.
 // Test both sides of every obstruction boundary, every nosing and the continuous pitch line.
@@ -405,27 +429,27 @@ const flightClearances=flights.map(f=>{
  }
  return checkClearance(strips,clearanceMeshes);
 });
-const turnClearance=checkClearance([horizontal(11.00,lowerLandingX,6.04,9.24,midHeight),
+const turnClearance=checkClearance([horizontal(turnWalkX,lowerLandingX,6.04,9.24,midHeight),
  horizontal(lowerLandingX,upperStartX,7.69,9.24,midHeight)],clearanceMeshes);
 const arrivalClearance=checkClearance([horizontal(thresholdX,thresholdX+1.50,7.74,9.24,levelHeight)],clearanceMeshes);
 const wetBounds=[horizontal(10.77,12.93,6.09,9.19,wetFloorFinish)];
 const showerOverhead=checkClearance(wetBounds,[...platformObstacles,...clearanceMeshes,showerHead,showerArm]);
 const stairMinimum=Math.min(...flightClearances.map(v=>v.min));
 $('#showerBeamClearance').textContent='淋浴完成面至边梁 '+wetUnderPlatformBeam.toFixed(3)+' m，至花洒底 '+
- showerOverhead.min.toFixed(3)+' m。第一跑净空 '+flightClearances[0].min.toFixed(2)+' m，第二跑 '+
+ (MEZZANINE.wetHeadBottom-wetFloorFinish).toFixed(3)+' m。第一跑净空 '+flightClearances[0].min.toFixed(2)+' m，第二跑 '+
  flightClearances[1].min.toFixed(2)+' m，中转平台 '+turnClearance.min.toFixed(2)+' m。模型尺寸，现场梁底和管线需复测。';
 
 
 // The final lower window on the short elevation has solid infill above it.
 const endWallBottom = siteShell.endWall.position.y - siteShell.endWall.geometry.parameters.height / 2;
 const upperGlazingLength = siteShell.endWall.position.z - siteShell.endWall.geometry.parameters.depth / 2;
-const daylightSouth = box(facade, 0, -.10, -.05, 19.425, roofUnderside + .10, .05, windowMat);
-const daylightRight = box(facade, 19.425, -.10, 0, .05, endWallBottom + .10, 9.40, windowMat);
-const shortUpperGlass = box(facade, 19.425, endWallBottom, 0, .05, roofUnderside - endWallBottom, upperGlazingLength, windowMat);
-daylightSouth.userData.hoverDimension = {a:[0,-.10,0], b:[19.425,-.10,0], text:'19.425 m'};
-daylightRight.userData.hoverDimension = {a:[19.425,-.10,0], b:[19.425,-.10,9.4], text:'9.400 m'};
-shortUpperGlass.userData.hoverDimension = {a:[19.425,endWallBottom,0], b:[19.425,endWallBottom,upperGlazingLength], text:'约 '+upperGlazingLength.toFixed(2)+' m'};
-line(facade,[[0,-.10,0],[19.425,-.10,0],[19.425,-.10,9.4]],'#4f8eac');
+const daylightSouth=box(facade,0,lowerFinish,-.05,19.425,roofUnderside-lowerFinish,.05,windowMat);
+const daylightRight=box(facade,19.425,lowerFinish,0,.05,endWallBottom-lowerFinish,9.40,windowMat);
+const shortUpperGlass=box(facade,19.425,endWallBottom,0,.05,roofUnderside-endWallBottom,upperGlazingLength,windowMat);
+daylightSouth.userData.hoverDimension={a:[0,lowerFinish,0],b:[19.425,lowerFinish,0],text:'19.425 m'};
+daylightRight.userData.hoverDimension={a:[19.425,lowerFinish,0],b:[19.425,lowerFinish,9.4],text:'9.400 m'};
+shortUpperGlass.userData.hoverDimension={a:[19.425,endWallBottom,0],b:[19.425,endWallBottom,upperGlazingLength],text:'约 '+upperGlazingLength.toFixed(2)+' m'};
+line(facade,[[0,lowerFinish,0],[19.425,lowerFinish,0],[19.425,lowerFinish,9.4]],'#4f8eac');
 label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);label(facade,'原图右侧外窗 · L型采光面',20.0,2.1,6.7,'#357c98',4.7);
 
 // Original floor and recessed entry, visible in the final camera turn.
@@ -434,16 +458,16 @@ existingOnly.name = 'original-floor-and-entry';
 existingOnly.visible = false;
 fieldFrame.add(existingOnly);
 const rawFloor = new THREE.Mesh(fg, mat('#a7a59e'));
-rawFloor.position.y = -.26;
+rawFloor.position.y = lowerFinish-.16;
 rawFloor.receiveShadow = true;
 existingOnly.add(rawFloor);
 const doorwayWall = mat('#acafa9');
 const oldDoorFinish = mat('#717979');
-box(existingOnly, 9.15, 2.15, 10.62, 1.55, roofUnderside - 2.15, .08, doorwayWall);
-box(existingOnly, 9.15, -.10, 10.62, .23, 2.25, .08, doorwayWall);
-box(existingOnly, 10.47, -.10, 10.62, .23, 2.25, .08, doorwayWall);
+box(existingOnly, 9.15, lowerFinish+2.25, 10.62, 1.55, roofUnderside-lowerFinish-2.25, .08, doorwayWall);
+box(existingOnly, 9.15, lowerFinish, 10.62, .23, 2.25, .08, doorwayWall);
+box(existingOnly, 10.47, lowerFinish, 10.62, .23, 2.25, .08, doorwayWall);
 const doorHinge = new THREE.Group();
-doorHinge.position.set(9.38, -.10, 10.63);
+doorHinge.position.set(9.38, lowerFinish, 10.63);
 doorHinge.rotation.y = Math.PI * .35;
 existingOnly.add(doorHinge);
 box(doorHinge, 0, .01, 0, 1.08, 2.23, .04, oldDoorFinish);
@@ -453,6 +477,13 @@ const levelStudy=new THREE.Group();
 model.add(levelStudy);
 levelStudy.visible=false;
 const storeyGap=verified.height.floor18_level_m-verified.height.floor17_level_m;
+const wastewater=makeWastewater({THREE,box,datum:MEZZANINE,storeyGap,wet,wetWalls});
+model.add(wastewater.group);wastewater.group.visible=false;
+const wasteTags=[
+ label(wastewater.group,'18 楼 · 卫浴垫高 100 mm',12.8,MEZZANINE.wetFloorFinish+.24,6.4,'#216a6c',2.45),
+ label(wastewater.group,'17 楼顶内 · 废水接点待核',wastewater.joinX,wastewater.endY-.40,wastewater.joinZ,'#157367',2.85),
+ label(wastewater.group,'17 楼地面投影',11.8,wastewater.floor17+.16,8.3,'#617079',2.25)
+];
 const floor17=buildFloorComparison({THREE,box,openOutline:sidePolys[0],storeyHeight:storeyGap,columnXs:[8.90],upperSlabUnderside:storeyGap-.16});
 floor17.position.y=lowerFinish-storeyGap;
 levelStudy.add(floor17);
@@ -479,6 +510,9 @@ $('#removeSocket').onclick=()=>{if(!selectedSocket)return;selectedSocket.root.vi
 let boardMode='',wetChildSnapshot=null,siteReturnView=null;
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
+ if(boardMode==='water'){wastewater.group.visible=false;pad.visible=true;$('#waterInfo').hidden=true;markBoard('#waterBoard',false);closeSpacePlan();}
+ if(boardMode==='air'){airLabels.visible=false;upperSlab.material=originalSlabFinish;$('#airInfo').hidden=true;markBoard('#airBoard',false);}
+ applyLightFilter('all');$('#lightFilters').hidden=true;
  showerDimension.visible=false;
  upperSlab.visible=true;$('#focusLights').setAttribute('aria-pressed','false');
  if(boardMode==='steel'){
@@ -599,10 +633,23 @@ function focusWindowLights(){
  const focus=$('#focusLights').getAttribute('aria-pressed')!=='true';
  $('#focusLights').setAttribute('aria-pressed',String(focus));
  upperSlab.visible=!focus;
- if(focus){camera.position.set(6.8,13.0,-21.7);controls.target.set(10.15,3.70,-2.8);}
+ $('#lightFilters').hidden=!focus;
+ applyLightFilter('all');
+ if(focus){camera.position.set(4.8,14.0,-23);controls.target.set(9.3,4.58,-4.6);}
  else {camera.position.set(25,20,-24);controls.target.set(9.7,2.5,-4.8);}
  viewportFit=1;fitViewport();
 }
+function applyLightFilter(which){
+ for(const id of Object.keys(windowLighting.fixtureGroups)){
+  const visible=which==='all'||id===which;
+  windowLighting.fixtureGroups[id].visible=visible;windowLighting.circuitGroups[id].visible=visible;
+ }
+ circuitBelt.visible=which==='all'||which==='WL1';
+ for(const b of document.querySelectorAll('[data-light]')){
+  b.setAttribute('aria-pressed',String(b.dataset.light===which));
+ }
+}
+for(const b of document.querySelectorAll('[data-light]'))b.onclick=()=>applyLightFilter(b.dataset.light);
 $('#focusLights').onclick=focusWindowLights;
 $('#openGroundElectric').onclick=()=>$('#electricalGround').click();
 $('#openUpperElectric').onclick=()=>$('#electricalUpper').click();
@@ -624,6 +671,35 @@ function showFloorStack(){
 $('#floorStackBoard').onclick=showFloorStack;
 $('#levelsOverview').onclick=()=>stackView();
 $('#levelsDrain').onclick=()=>stackView(true);
+function startServiceView(kind,button){
+ if(boardMode===kind){restoreFullBoard();return false;}
+ if(boardMode)restoreFullBoard();
+ siteReturnView={eye:camera.position.clone(),target:controls.target.clone(),fit:viewportFit};
+ closeSpacePlan();boardMode=kind;setMode('all');markBoard(button,true);
+ labelGroup.visible=false;$('#labels').checked=false;labels.forEach(tag=>tag.visible=false);
+ return true;
+}
+function airView(which){
+ const views={all:[[6.2,3.2,13.7],[9.75,5.15,-4.0]],cassette:[[6.6,4.85,-11.4],[15.88,5.85,-3.8]],duct:[[8.85,4.2,-.05],[4.5,6.1,-6.6]]};
+ const [eye,target]=views[which];camera.position.set(...eye);controls.target.set(...target);viewportFit=1;fitViewport();
+ airTags.forEach((tag,i)=>tag.visible=which==='all'||(which==='cassette'?i<2:i>=2));
+}
+function showAirLayout(){
+ if(!startServiceView('air','#airBoard'))return;
+ upperSlab.material=airSlabFinish;airLabels.visible=true;fieldFrame.visible=true;
+ $('#airInfo').hidden=false;airView('all');
+}
+$('#airBoard').onclick=showAirLayout;
+$('#airOverall').onclick=()=>airView('all');$('#airCassettes').onclick=()=>airView('cassette');$('#airOutlets').onclick=()=>airView('duct');
+function showWastewater(openSheet=true){
+ if(!startServiceView('water','#waterBoard'))return;
+ ground.visible=upper.visible=stairs.visible=structure.visible=fieldFrame.visible=shell.visible=facade.visible=pad.visible=false;
+ wastewater.group.visible=true;wasteTags.forEach(t=>t.visible=true);$('#waterInfo').hidden=false;
+ camera.position.set(22.4,3.9,-8.3);controls.target.set(11.8,-.7,-7.7);viewportFit=1;fitViewport();
+ if(openSheet)$('#openWaterSheet').click();
+}
+$('#waterBoard').onclick=()=>showWastewater();
+$('#openWaterSheet').onclick=()=>showFlatPlan('1801_淋浴废水排水图.svg','水路参考 · 18 楼废水排至 17 楼');
 $('#steelBoard').onclick=showSteelBoard;$('#wetBoard').onclick=showWetBoard;$('#furnitureBoard').onclick=showFurnitureBoard;$('#siteFrameBoard').onclick=showSiteFrameBoard;
 function reset(){pad.visible=mode!=='upper';facade.visible=$('#daylight').checked&&mode!=='upper';camera.up.set(0,1,0);camera.position.set(25,20,-24);if(mode==='split')camera.position.set(26,25,-28);controls.target.set(9.7,mode==='split'?4:mode==='upper'||mode==='ground'?0:2.5,-4.8);if(mode==='upper'){camera.position.set(26,15,-18);controls.target.set(15,1,-4.4)}controls.update()}$('#reset').onclick=reset;$('#supportView').onclick=()=>{$('#supportReserve').checked=true;$('#frame').checked=true;setMode('ground');reset();structure.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;facade.visible=false;$('#labels').checked=true;labels.forEach(s=>s.visible=supportStudy.labels.includes(s)||s.userData.labelText==='原入口');camera.position.set(26,15,-17);controls.target.set(15,1.2,-4.7);controls.update();$('#modeLabel').textContent='沿楼梯外侧候选柱位＋低柜 · 仅空间预留，未做承载验算';};$('#restFocus').onclick=()=>{setMode('upper');reset();upperOriginalColumn.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#labels').checked=true;labels.forEach(q=>q.visible=q.userData.labelText.includes('并入主办公区')||q.userData.labelText.includes('出口贴墙'));camera.position.set(24,15,-15);controls.target.set(15.2,.4,-5.0);controls.update();};$('#stairView').onclick=()=>{setMode('ground');reset();$('#labels').checked=true;labels.forEach(s=>s.visible=s.parent===stairs||s.userData.labelText==='原入口');$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(16,21,-7.599);controls.target.set(16,0,-7.6);controls.update()};$('#bossFocus').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#daylight').checked=false;setMode('all');upperOriginalColumn.visible=false;reset();camera.position.set(29,18,-20);controls.target.set(15,3,-4.7);controls.update()};$('#heightView').onclick=()=>{$('#labels').checked=false;labels.forEach(s=>s.visible=s.parent===labelGroup);$('#daylight').checked=false;facade.visible=false;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(34,6,-4);controls.target.set(14.7,4.2,-4);controls.update()};$('#entryView').onclick=()=>{camera.position.set(9.925,12,-21);controls.target.set(9.925,1.5,-3);controls.update()};$('#top').onclick=()=>{const cx=mode==='upper'?15.05:9.7;camera.position.set(cx,mode==='upper'?18:24,-4.799);controls.target.set(cx,0,-4.8);controls.update()};$('#zoomIn').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(.8).add(controls.target);controls.update()};$('#zoomOut').onclick=()=>{camera.position.sub(controls.target).multiplyScalar(1.25).add(controls.target);controls.update()};function fullView(on){$('#viewer').classList.toggle('expanded',on);document.body.style.overflow=on?'hidden':'';$('#full').textContent=on?'退出全屏':'全屏'}$('#full').onclick=()=>fullView(!$('#viewer').classList.contains('expanded'));window.addEventListener('keydown',e=>{if(e.key==='Escape')fullView(false)});
 const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let start;
@@ -671,7 +747,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=76';$('#spacePlanTitle').textContent=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=77';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('1801_一楼左侧_软包通道示意.svg','一楼左侧 · 软包吧台 / 健身平面示意');
 $('#electricalGround').onclick=()=>showFlatPlan('1801_一楼插座回路示意.svg','18 楼 · 插座与沿梁照明平面');
@@ -686,7 +762,8 @@ function spaceView(level){
 $('#spaceGround').onclick=()=>spaceView('ground');$('#spaceUpper').onclick=()=>spaceView('upper');$('#space3D').onclick=closeSpacePlan;
 document.querySelectorAll('[data-mode],#bossFocus,#stairView,#wetFocus,#connectionView,#restFocus,#entryView,#heightView,#top,#reset,#supportView').forEach(b=>b.addEventListener('click',closeSpacePlan));
 function updateFurniture(){
- windowLighting.fixtures.visible=mode!=='upper'&&!['siteframe','steel','wet'].includes(boardMode);
+ windowLighting.fixtures.visible=mode!=='upper'&&!['siteframe','steel','wet','air','water'].includes(boardMode);
+ airLayout.group.visible=!['siteframe','steel','wet','circuit','water','furniture'].includes(boardMode);
  const show=$('#furniture').checked;
  for(const o of furnitureObjects)o.visible=show;
  stairStorage.visible=show;
@@ -703,10 +780,10 @@ $('#furniture').onchange=updateFurniture;
 
 new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();fitViewport();renderer.setSize(host.clientWidth,host.clientHeight)}).observe(host);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();$('#loading').remove();renderer.domElement.dataset.ready='true';Object.assign(renderer.domElement.dataset,{
  orientation:'CAD-X_to_X;CAD-Y_to_negative-Z',gymArea:'20.145',zone2Area:MEZZANINE.upperArea.toFixed(3),baseUpperArea:MEZZANINE.upperArea.toFixed(3),
- openingArea:MEZZANINE.openingArea.toFixed(3),landing:'2.2',platformArea:MEZZANINE.platformArea.toFixed(3),
+ openingArea:MEZZANINE.openingArea.toFixed(3),landing:(lowerLandingX-10.75).toFixed(2),platformArea:MEZZANINE.platformArea.toFixed(3),
  upperLevel:levelHeight.toFixed(2),upperNetHeight:(roofUnderside-levelHeight).toFixed(2),lowerBeamHeight:lowerBeamHeight.toFixed(2),
  risers:String(lowerRisers+upperRisers),lowerRisers:String(lowerRisers),upperRisers:String(upperRisers),candidateColumns:'0',
- structuralVerified:'false',stairShift:'0',wetArea:'6.696',wetLevel:'ground-under-turning-platform',wetClearHeightTarget:'2.20',
+ structuralVerified:'false',stairShift:'0',wetFloorFinish:wetFloorFinish.toFixed(3),wetRaise:wetLocalFloor.toFixed(3),wetHeadClearance:(MEZZANINE.wetHeadBottom-wetFloorFinish).toFixed(3),wetArea:'6.696',wetLevel:'ground-under-turning-platform',wetClearHeightTarget:'2.20',
  stairWidth:'1.50',layoutVersion:'raised-turning-platform',wetHeightConflict:String(showerOverhead.min<2.20),
  stairHeadroomCheck:(stairMinimum>=2.20&&turnClearance.min>=2&&arrivalClearance.min>=2)?'model-pass':'model-conflict',
  platformBeamClearance:turnClearance.min.toFixed(3),wetEdgeBeamClearance:wetUnderPlatformBeam.toFixed(3),
@@ -750,6 +827,8 @@ if(location.hash==='#stair-clearance')showStairClearance();
 if(location.hash==='#floors-17-18')showFloorStack();
 if(location.hash==='#site-outlet'){showSiteFrameBoard();$('#siteOutlet').click();}
 if(location.hash==='#window-lights'){showCircuitBoard();focusWindowLights();}
+if(location.hash==='#air-layout')showAirLayout();
+if(location.hash==='#wastewater'||location.hash==='#wastewater-3d')showWastewater(location.hash==='#wastewater');
 if(location.hash==='#guard-return'){
  siteReturnView={eye:camera.position.clone(),target:controls.target.clone(),fit:viewportFit};
  boardMode='guard';fieldFrame.visible=false;
