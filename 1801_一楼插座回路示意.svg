@@ -2,9 +2,13 @@
 <style>
  .t{font:600 30px 'Microsoft YaHei',sans-serif;fill:#142d40}.st{font:15px 'Microsoft YaHei',sans-serif;fill:#587181}.tx{font:16px 'Microsoft YaHei',sans-serif;fill:#1e3d51}.sm{font:13px 'Microsoft YaHei',sans-serif;fill:#4e6677}.wall{fill:#fbfaf6;stroke:#26363e;stroke-width:7;stroke-linejoin:round}.part{fill:#f2f6f5;stroke:#80939d;stroke-width:1.5}.wet{fill:#e4f0ef;stroke:#416b73;stroke-width:2}.void{fill:#e5ecef;stroke:#6c7f8a;stroke-width:2;stroke-dasharray:9 7}.wire{fill:none;stroke:#116eaa;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}.wire2{fill:none;stroke:#734f9e;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9 7}.wire3{fill:none;stroke:#b46821;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2 7}.out{fill:#fff;stroke:#c9312b;stroke-width:2.5}.db{fill:#224b67;stroke:#fff;stroke-width:2}.dim{stroke:#9fb0b8;stroke-width:1.3;fill:none}.dimt{font:13px 'Microsoft YaHei',sans-serif;fill:#778d99}.box{fill:#fffefa;stroke:#cbd8dd;stroke-width:1.5}.drawing{transform:rotate(180deg);transform-origin:362px 540px}.drawing text{transform:rotate(180deg);transform-box:fill-box;transform-origin:center}.entry{font:600 15px 'Microsoft YaHei',sans-serif;fill:#19719e}
 </style>
+<defs>
+  <g id="linear-lamp"><rect x="-10.5" y="-2.9" width="21" height="5.8" rx="1" fill="#59574e"/>
+    <rect x="-8.76" y="-1.8" width="17.52" height="3.6" rx=".7" fill="#ffe2a1" stroke="#96642d" stroke-width=".6"/></g>
+</defs>
 <rect width="1600" height="980" fill="#f2f6f7"/>
-<text class="t" x="70" y="54">1801 · 一楼插座及回路平面图</text>
-<text class="st" x="70" y="82">依据当前 1801 CAD 外轮廓（含门前短入口、上部延伸及墙端折角）绘制；楼梯踏步隐藏，仅保留洞口和平台下卫浴位置。</text>
+<text class="t" x="70" y="54">1801 · 一楼插座与照明平面图</text>
+<text class="st" x="70" y="82">窗腰梁内侧的九盏壁灯共用 WL1 照明支路。下图为全部点位。</text>
 <!-- CAD outer contour, 1:30 schematic scale. Rotated to keep the original entrance at screen bottom. -->
 <g class="drawing">
 <path class="wall" d="M91 470L187 470L224 470L344 470L344 437L344 379L391 379L391 415L391 418L394 418L623 418L623 421L638 421L638 418L641 418L653 418L653 700L74 700L74 697L70 697L70 685L70 670L70 470L72 470L78 470Z"/>
@@ -33,11 +37,39 @@
 <g class="out"><g transform="translate(447 500)"><circle r="9"/><path d="M-4-3V4M4-3V4"/></g></g>
 <path d="M391 398V374M381 387L391 374L401 387" fill="none" stroke="#19719e" stroke-width="2.5"/><text class="entry" x="402" y="390">原正门入口</text>
 </g>
+<g id="lighting-wl1" aria-label="WL1 窗腰梁壁灯与照明干线">
+  <path id="wl1-skirt" d="M406.5 606.65L651.66 606.65L651.66 407.54" fill="none" stroke="#a6530d" stroke-width="2.1" stroke-dasharray="6 3"/>
+  <path id="wl1-belt" d="M651.66 407.54L395.25 407.54L395.25 410.75L378.75 410.75L378.75 407.54L102 407.54L102 410.75L98.79 410.75L98.79 601.5714" fill="none" stroke="#a6530d" stroke-width="2.1" stroke-linejoin="round"/>
+  <circle cx="651.66" cy="407.54" r="4.6" stroke="#a6530d" stroke-width="1.5" fill="#fffbeb"/>
+  <circle cx="651.66" cy="407.54" r="1.5" fill="#a6530d"/>
+  <path d="M655 405L668 374H688" stroke="#946631" fill="none"/>
+  <text x="671" y="363" class="sm" style="fill:#834008">侧墙上引</text>
+  <g id="lamp-L01" data-model-x="1.6188" data-model-z="0.947" aria-label="L01 横向壁装线形灯"><use href="#linear-lamp" transform="translate(605.4375 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="605.4375" y="425.41" text-anchor="middle">L01</text></g>
+  <g id="lamp-L02" data-model-x="4.8563" data-model-z="0.947" aria-label="L02 横向壁装线形灯"><use href="#linear-lamp" transform="translate(508.3125 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="508.3125" y="425.41" text-anchor="middle">L02</text></g>
+  <g id="lamp-L03" data-model-x="8.0938" data-model-z="0.947" aria-label="L03 横向壁装线形灯"><use href="#linear-lamp" transform="translate(411.1875 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="411.1875" y="425.41" text-anchor="middle">L03</text></g>
+  <g id="lamp-L04" data-model-x="11.3312" data-model-z="0.947" aria-label="L04 横向壁装线形灯"><use href="#linear-lamp" transform="translate(314.0625 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="314.0625" y="425.41" text-anchor="middle">L04</text></g>
+  <g id="lamp-L05" data-model-x="14.5688" data-model-z="0.947" aria-label="L05 横向壁装线形灯"><use href="#linear-lamp" transform="translate(216.9375 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="216.9375" y="425.41" text-anchor="middle">L05</text></g>
+  <g id="lamp-L06" data-model-x="17.8063" data-model-z="0.947" aria-label="L06 横向壁装线形灯"><use href="#linear-lamp" transform="translate(119.8125 408.41)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="119.8125" y="425.41" text-anchor="middle">L06</text></g>
+  <g id="lamp-L07" data-model-x="18.478" data-model-z="2.0143" aria-label="L07 横向壁装线形灯"><use href="#linear-lamp" transform="translate(99.66 440.4286) rotate(90)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="87.66" y="443.9286" text-anchor="end">L07</text></g>
+  <g id="lamp-L08" data-model-x="18.478" data-model-z="4.7" aria-label="L08 横向壁装线形灯"><use href="#linear-lamp" transform="translate(99.66 521) rotate(90)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="87.66" y="524.5" text-anchor="end">L08</text></g>
+  <g id="lamp-L09" data-model-x="18.478" data-model-z="7.3857" aria-label="L09 横向壁装线形灯"><use href="#linear-lamp" transform="translate(99.66 601.5714) rotate(90)"/><text class="sm" style="font-weight:600;fill:#68380c;paint-order:stroke;stroke:#fffcf2;stroke-width:3" x="87.66" y="605.0714" text-anchor="end">L09</text></g>
+</g>
 <!-- Circuit schedule -->
-<rect class="box" x="760" y="150" width="760" height="490" rx="10"/><text class="tx" x="790" y="190">插座回路表（平面表达）</text>
-<path d="M780 210H1500M900 210V600M1090 210V600M1270 210V600" stroke="#cbd8dd" stroke-width="1.2"/>
-<text class="sm" x="800" y="238">回路</text><text class="sm" x="930" y="238">服务区域</text><text class="sm" x="1120" y="238">图中线路</text><text class="sm" x="1300" y="238">插座形式 / 安装建议</text>
-<g class="sm"><text x="800" y="280">C1</text><text x="930" y="280">右侧开放办公区</text><text x="1120" y="280">蓝色实线</text><text x="1300" y="280">8个普通五孔：两长墙中段各3个，外侧右墙2个</text><text x="800" y="330">C4</text><text x="930" y="330">平台下卫浴</text><text x="1120" y="330">紫色虚线</text><text x="1300" y="330">仅1个防溅漏保插座，设于洗手干区后墙</text><text x="800" y="380">AL1</text><text x="930" y="380">一楼总配电箱</text><text x="1120" y="380">下引接地面干线</text><text x="1300" y="380">进门右侧开放区，靠入口转角的实体墙内侧</text></g>
-<rect class="box" x="760" y="670" width="760" height="140" rx="10"/><text class="tx" x="790" y="708">图例与施工边界</text><g class="sm"><text x="790" y="740">○=普通插座点　AL1=一楼总配电箱　蓝实线=普通回路　紫虚线=卫浴漏保回路　橙点划线=独立负荷预留</text><text x="790" y="770">本图按当前 CAD 外轮廓及网页已确认平面绘制，不替代强电施工图。线径、回路容量、接地、漏保、空调/健身设备专线须结合设备清单和物业条件确认。</text></g>
+<rect class="box" x="760" y="150" width="760" height="490" rx="10"/><text class="tx" x="790" y="190">插座及照明回路表</text>
+<path d="M780 210H1500M900 210V455M1090 210V455M1270 210V455M780 455H1500" stroke="#cbd8dd" stroke-width="1.2"/>
+<text class="sm" x="800" y="238">回路</text><text class="sm" x="930" y="238">服务区域</text><text class="sm" x="1120" y="238">图中线路</text><text class="sm" x="1300" y="238">器具 / 安装位置</text>
+<g class="sm"><text x="800" y="280">C1</text><text x="930" y="280">右侧开放办公区</text><text x="1120" y="280">蓝色实线</text><text x="1300" y="280">8 个五孔：两长墙各 3 个，右墙 2 个</text><text x="800" y="330">C4</text><text x="930" y="330">平台下卫浴</text><text x="1120" y="330">紫色虚线</text><text x="1300" y="330">仅1个防溅漏保插座，设于洗手干区后墙</text><text x="800" y="380">AL1</text><text x="930" y="380">一楼总配电箱</text><text x="1120" y="380">下引接地面干线</text><text x="1300" y="380">入口右侧开放区，近转角内墙</text></g>
+<g class="sm" id="wl1-schedule">
+  <text x="800" y="430" style="font-weight:600;fill:#854211">WL1</text><text x="930" y="430">L 形窗腰梁</text>
+  <text x="1120" y="430">地面至梁侧</text><text x="1300" y="430">长边 6 盏 ＋ 短边 3 盏，共 9 盏</text>
+  <use href="#linear-lamp" transform="translate(853 496) scale(4)"/>
+  <text x="919" y="496" class="tx">横向壁装线形灯</text>
+  <text x="919" y="521">灯座约 700 mm，深色端盖、连续透光灯罩。灯身沿各自梁面横装。</text>
+  <path d="M800 557H859" stroke="#a6530d" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="875" y="562">WL1 低位干线</text><path d="M1065 557H1124" stroke="#a6530d" stroke-width="2"/>
+  <text x="1140" y="562">梁侧干线</text>
+  <text x="800" y="604">AL1 出线沿地脚敷设，在端部实体墙上引至窗腰梁。灯中心模型标高约 4.15 m。</text>
+</g>
+<rect class="box" x="760" y="670" width="760" height="140" rx="10"/><text class="tx" x="790" y="708">图例与施工边界</text><g class="sm"><text x="790" y="740">○=普通插座点　AL1=一楼总配电箱　蓝实线=普通插座　紫虚线=卫浴插座　棕色=WL1 照明</text><text x="790" y="770">布线按方案示意。线径、保护器与设备专线由电工结合负荷和现场条件确定。</text></g>
 <text class="sm" x="70" y="920">统一阅读方向：屏幕下方 = 原正门入口　｜　版本：插座位置及回路表达优化版 · 一楼</text>
 </svg>

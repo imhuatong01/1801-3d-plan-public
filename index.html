@@ -533,7 +533,7 @@
         padding: 6px;
         box-shadow: 0 3px 16px #28465712;
       }
-      #siteLegend, #floorStackInfo {
+      #siteLegend, #floorStackInfo, #steelDatumTools {
         position: absolute;
         bottom: 14px;
         left: 12px;
@@ -549,10 +549,12 @@
       }
       #siteLegend span { display: inline-flex; align-items: center; margin-right: 12px; gap: 5px; }
       #siteLegend i { width: 9px; height: 9px; border-radius: 2px; background: var(--ink); }
-      #siteLegend small, #floorStackInfo small { display: block; margin-top: 3px; }
-      #siteLegend nav, #floorStackInfo nav { display: flex; gap: 5px; margin-top: 6px; pointer-events: auto; }
-      #siteLegend button, #floorStackInfo button { font-size: 12px; padding: 3px 8px; }
-      .viewport:has(#siteLegend:not([hidden]),#floorStackInfo:not([hidden])) > .hint { display: none; }
+      #siteLegend small, #floorStackInfo small, #steelDatumTools small { display: block; margin-top: 3px; }
+      #siteLegend nav, #floorStackInfo nav, #steelDatumTools nav { display: flex; gap: 5px; margin-top: 6px; pointer-events: auto; }
+      #siteLegend button, #floorStackInfo button, #steelDatumTools button { font-size: 12px; padding: 3px 8px; }
+      .viewport:has(#siteLegend:not([hidden]),#floorStackInfo:not([hidden]),#steelDatumTools:not([hidden])) > .hint { display: none; }
+      .viewer:has(.viewport.plan-open) > #socketTools:not([hidden]) { display: none; }
+      #socketTools .lamp-symbol { display: inline-block; width: 26px; height: 7px; border: 2px solid #655034; border-inline-width: 4px; border-radius: 2px; background: #ffe9a8; margin-right: 5px; }
       #modes {
         top: 10px;
         left: 10px;
@@ -785,6 +787,9 @@
           <span class="muted">电路图：点击五孔插座面板进行选择</span>
           <strong id="socketPicked">未选择插座</strong>
           <button id="removeSocket" disabled>隐藏选中插座</button>
+          <button id="focusLights"><i class="lamp-symbol" aria-hidden="true"></i>WL1 横向条灯</button>
+          <button id="openGroundElectric">18 楼电路平面</button>
+          <button id="openUpperElectric">夹层电路平面</button>
         </div>
         <aside id="furnitureEditor" hidden aria-live="polite">
           <b id="furniturePicked">点选二楼家具</b>
@@ -798,6 +803,12 @@
           <div class="editor-row"><button id="furnitureReset">恢复这一版初始摆放</button></div>
         </aside>
         <div class="viewport" id="viewport">
+          <aside id="steelDatumTools" hidden>
+            <b>原窗腰梁上沿与夹层钢梁顶齐平</b>
+            <small>模型标高：梁顶 +4.53 米，楼板面 +4.57 米。连接节点待深化。</small>
+            <small id="showerBeamClearance"></small>
+            <nav aria-label="钢梁观察角度"><button type="button" id="steelDatumView">看梁顶对齐</button><button type="button" id="steelOverall">钢架全景</button></nav>
+          </aside>
           <aside id="floorStackInfo" hidden>
             <b>17 楼与 18 楼相差 4.20 米</b>
             <small>17 楼仅画进门右侧开放区，梁、柱、窗按 18 楼同位置示意。</small>
@@ -920,7 +931,7 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=74-floor-comparison"
+          src="./3d-assets/office-height-only.js?v=75-window-lights"
     ></script>
   </body>
 </html>

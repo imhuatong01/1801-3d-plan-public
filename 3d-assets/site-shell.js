@@ -1,4 +1,13 @@
-// Original 1801 shell. Plan coordinates are metres in the existing viewer.
+// Plan elevations in metres, relative to the 18F building datum (+72.190 m).
+const beltBase = 3.86, beltHeight = 0.67, steelTop = beltBase + beltHeight;
+const finishThickness = 0.04, floorFinish = steelTop + finishThickness;
+const lowerFinish = -0.10, riser = (floorFinish - lowerFinish) / 34;
+export const MEZZANINE = Object.freeze({
+  steelTop, finishThickness, floorFinish, lowerFinish, riser,
+  roomTop: 8.40, primaryDepth: 0.26, midLanding: lowerFinish + 17 * riser,
+  beltInnerZ: 0.90, beltInnerX: 18.525
+});
+
 export function addSiteShell({ THREE, group, box, shape, top }) {
   const material = color => new THREE.MeshStandardMaterial({ color, roughness: 0.88 });
   const concrete = material('#989893');
@@ -32,12 +41,10 @@ export function addSiteShell({ THREE, group, box, shape, top }) {
 
   // 19F G-LIANG-CUCA outlines 2F71–2F73 registered to the 18F footprint.
   // Both grey columns intersect the long leg. One mesh avoids a seam at the return.
-  const beltBase = 3.86;
-  const beltHeight = 0.67;
-  const beltTop = beltBase + beltHeight;
+  const beltTop = MEZZANINE.steelTop;
   const beltShape = new THREE.Shape();
   const beltCorners = [[0, 0.25], [19.175, 0.25], [19.175, depth],
-    [18.525, depth], [18.525, 0.90], [0, 0.90]];
+    [MEZZANINE.beltInnerX, depth], [MEZZANINE.beltInnerX, MEZZANINE.beltInnerZ], [0, MEZZANINE.beltInnerZ]];
   beltCorners.forEach(([x, z], i) => {
     if (i === 0) beltShape.moveTo(x, -z);
     else beltShape.lineTo(x, -z);
@@ -78,12 +85,13 @@ export function addSiteShell({ THREE, group, box, shape, top }) {
     }
   }
   const shortUpperGlazing = 6.85;
-  windowBand(true, width, 12, -0.1, beltBase);
-  windowBand(true, width, 12, beltTop, soffit);
-  windowBand(false, depth, 7, -0.1, beltBase);
+  const windowBays = {long: 12, short: 7};
+  windowBand(true, width, windowBays.long, -0.1, beltBase);
+  windowBand(true, width, windowBays.long, beltTop, soffit);
+  windowBand(false, depth, windowBays.short, -0.1, beltBase);
   windowBand(false, shortUpperGlazing, 5, beltTop, soffit);
   const endWall = box(group, width - 0.20, beltTop, shortUpperGlazing,
     0.20, soffit - beltTop, depth - shortUpperGlazing, material('#a3a49f'));
   endWall.name = 'site-short-upper-window-end-wall';
-  return { ceiling, roofBeams, belt, frameGroup, endWall };
+  return { ceiling, roofBeams, belt, frameGroup, endWall, windowBays };
 }
