@@ -253,10 +253,12 @@ label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);l
 // It deliberately excludes temporary lights, advertising boxes, scaffolding, rubbish and loose cables.
 const rawConcrete=mat('#a6aaa8'),rawBeam=mat('#7d8585'),siteWindowFrame=mat('#344852'),sitePipe=mat('#788188'),siteDuct=mat('#d5d3ca'),siteFire=mat('#b83e36'),siteCabinet=mat('#a84339');
 function sitePipeRun(a,b,r,m=sitePipe){const from=new THREE.Vector3(...a),to=new THREE.Vector3(...b),axis=to.clone().sub(from),length=axis.length();const pipe=new THREE.Mesh(new THREE.CylinderGeometry(r,r,length,12),m);pipe.position.copy(from).add(to).multiplyScalar(.5);pipe.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),axis.normalize());pipe.castShadow=true;pipe.receiveShadow=true;fieldFrame.add(pipe);return pipe}
-// Open double-height side: the three real concrete cross-beams are continuous full-span members.
-// They connect into the two vertical concrete frame lines; they do not stop at the mezzanine edge.
+// Open double-height side: three primary concrete beams run continuously through the full depth of the room.
+// They are not short half-width members at the mezzanine edge.
 box(fieldFrame,0,8.03,.10,10.70,.37,9.12,rawConcrete);
-for(const z of [1.15,4.20,7.25])box(fieldFrame,0,6.78,z,19.425,.56,.46,rawBeam);
+for(const x of [.22,8.65,18.425])box(fieldFrame,x,6.78,0,.56,.46,9.40,rawBeam);
+// The transverse frame beam visibly ties the two existing vertical concrete columns together.
+box(fieldFrame,8.65,6.78,.50,10.275,.56,.46,rawBeam);
 box(fieldFrame,0,4.02,.10,10.70,.44,.36,rawBeam);
 // Dark aluminium window mullions on the existing L-shaped daylight curtain wall.
 for(const x of [0.55,2.55,4.55,6.55,8.55,10.55,12.55,14.55,16.55,18.55])box(fieldFrame,x,-.10,-.085,.075,8.32,.07,siteWindowFrame);
