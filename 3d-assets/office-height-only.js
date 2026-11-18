@@ -253,9 +253,10 @@ label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);l
 // It deliberately excludes temporary lights, advertising boxes, scaffolding, rubbish and loose cables.
 const rawConcrete=mat('#a6aaa8'),rawBeam=mat('#7d8585'),siteWindowFrame=mat('#344852'),sitePipe=mat('#788188'),siteDuct=mat('#d5d3ca'),siteFire=mat('#b83e36'),siteCabinet=mat('#a84339');
 function sitePipeRun(a,b,r,m=sitePipe){const from=new THREE.Vector3(...a),to=new THREE.Vector3(...b),axis=to.clone().sub(from),length=axis.length();const pipe=new THREE.Mesh(new THREE.CylinderGeometry(r,r,length,12),m);pipe.position.copy(from).add(to).multiplyScalar(.5);pipe.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),axis.normalize());pipe.castShadow=true;pipe.receiveShadow=true;fieldFrame.add(pipe);return pipe}
-// Open double-height side: raw soffit and concrete beams seen on site, kept separate from the proposed steel mezzanine.
+// Open double-height side: the three real concrete cross-beams are continuous full-span members.
+// They connect into the two vertical concrete frame lines; they do not stop at the mezzanine edge.
 box(fieldFrame,0,8.03,.10,10.70,.37,9.12,rawConcrete);
-for(const z of [1.15,4.20,7.25])box(fieldFrame,0,7.38,z,10.70,.56,.46,rawBeam);
+for(const z of [1.15,4.20,7.25])box(fieldFrame,0,6.78,z,19.425,.56,.46,rawBeam);
 box(fieldFrame,0,4.02,.10,10.70,.44,.36,rawBeam);
 // Dark aluminium window mullions on the existing L-shaped daylight curtain wall.
 for(const x of [0.55,2.55,4.55,6.55,8.55,10.55,12.55,14.55,16.55,18.55])box(fieldFrame,x,-.10,-.085,.075,8.32,.07,siteWindowFrame);
@@ -263,8 +264,10 @@ for(const z of [.55,2.45,4.35,6.25,8.15])box(fieldFrame,19.39,-.10,z,.07,8.32,.0
 box(fieldFrame,0,4.04,-.085,19.425,.08,.07,siteWindowFrame);box(fieldFrame,19.39,4.04,0,.07,.08,9.40,siteWindowFrame);
 // Fixed exposed MEP: grey conduits, one permanent red fire riser/cabinet, and the large HVAC trunk in the no-mezzanine side.
 sitePipeRun([.65,7.55,1.05],[9.75,7.55,1.05],.045);sitePipeRun([2.05,7.55,1.05],[2.05,7.08,1.05],.028);sitePipeRun([4.85,7.55,1.05],[4.85,7.08,1.05],.028);sitePipeRun([7.70,7.55,1.05],[7.70,7.08,1.05],.028);
-sitePipeRun([.78,.20,8.70],[.78,7.32,8.70],.055,siteFire);box(fieldFrame,.51,.78,8.58,.54,1.20,.12,siteCabinet);
-box(fieldFrame,1.15,6.36,5.88,3.75,.72,1.02,siteDuct);box(fieldFrame,3.90,6.36,4.12,1.00,.72,1.76,siteDuct);box(fieldFrame,4.02,6.25,3.70,.78,.18,.42,siteWindowFrame);
+// CAD VPIPE cross-check places the room's fire point at the left rear solid-wall side (about x=.08 / z=7.58 in this model).
+// Offset it slightly into the room so it is not drawn inside the wall or outside the building envelope.
+sitePipeRun([.18,.20,7.58],[.18,7.32,7.58],.055,siteFire);box(fieldFrame,.24,.78,7.46,.54,1.20,.12,siteCabinet);
+box(fieldFrame,1.15,5.94,5.88,3.75,.72,1.02,siteDuct);box(fieldFrame,3.90,5.94,4.12,1.00,.72,1.76,siteDuct);box(fieldFrame,4.02,5.83,3.70,.78,.18,.42,siteWindowFrame);
 const siteFrameLabel=label(fieldFrame,'现场框架参考 · 混凝土 / 窗框 / 风管 / 固定消防管线',5.35,7.92,2.55,'#435b62',5.6);
 // Exterior apron deliberately uses a cool blue-grey, distinct from the warm light-grey self-leveling interior.
 const pad=box(model,-2,-.4,-2,23.5,.2,15,'#bcced4');pad.receiveShadow=true;
