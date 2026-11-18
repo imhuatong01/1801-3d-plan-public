@@ -292,7 +292,7 @@ function selectSocket(meta){if(selectedSocket)selectedSocket.rim.material.color.
 function updateCircuitLayer(){const show=$('#circuitLayer').checked;circuitGround.visible=show&&mode!=='upper';circuitUpper.visible=show&&mode!=='ground';$('#socketTools').hidden=!show;if(!show)selectSocket(null);renderer.domElement.dataset.circuitLayerVisible=String(show)}
 $('#circuitLayer').onchange=updateCircuitLayer;
 $('#removeSocket').onclick=()=>{if(!selectedSocket)return;selectedSocket.root.visible=false;for(const lead of circuitDropLines)if(lead.root===selectedSocket.root)lead.segment.visible=false;selectSocket(null)};
-let boardMode='',wetChildSnapshot=null;
+let boardMode='',wetChildSnapshot=null,siteReturnView=null;
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
  if(boardMode==='wet'&&wetChildSnapshot){for(const [child,visible] of wetChildSnapshot)child.visible=visible;wetChildSnapshot=null}
@@ -304,6 +304,10 @@ function restoreFullBoard(){
   controls.maxPolarAngle=Math.PI*.49;
  }
  boardMode='';clearFurnitureSelection();setMode('all');upperOriginalColumn.visible=false;facade.visible=$('#daylight').checked;fieldFrame.visible=true;structure.visible=$('#frame').checked;supportStudy.update('all');markBoard('#circuitBoard',false);markBoard('#steelBoard',false);markBoard('#wetBoard',false);markBoard('#furnitureBoard',false);markBoard('#siteFrameBoard',false)
+ if(siteReturnView){
+  camera.position.copy(siteReturnView.eye);controls.target.copy(siteReturnView.target);
+  viewportFit=siteReturnView.fit;siteReturnView=null;controls.update();
+ }
 }
 function showSteelBoard(){
  if(boardMode==='steel'){restoreFullBoard();return}
@@ -339,10 +343,12 @@ function siteView(eye, target, overview=false){
 }
 $('#siteOverview').onclick=()=>siteView([25,17,-25],[9.7,3.4,-4.8],true);
 $('#siteWindows').onclick=()=>siteView([9.65,1.85,-7.05],[18.30,4.05,-1.25]);
-$('#siteOutlet').onclick=()=>siteView([8.90,1.70,-3.45],[1.75,3.80,-6.10]);
+$('#siteOutlet').onclick=()=>siteView([14.50,2.00,-3.00],[2.50,3.40,-6.80],true);
 function showSiteFrameBoard(){
  if(boardMode==='siteframe'){restoreFullBoard();return}
- if(boardMode)restoreFullBoard();boardMode='siteframe';closeSpacePlan();setMode('all');
+ if(boardMode)restoreFullBoard();
+ siteReturnView={eye:camera.position.clone(),target:controls.target.clone(),fit:viewportFit};
+ boardMode='siteframe';closeSpacePlan();setMode('all');
  $('#furniture').checked=false;updateFurniture();$('#circuitLayer').checked=false;updateCircuitLayer();$('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));
  ground.visible=false;upper.visible=false;stairs.visible=false;structure.visible=false;labelGroup.visible=false;
  shell.visible=true;fieldFrame.visible=true;existingOnly.visible=true;facade.visible=true;supportStudy.reserve.visible=false;
