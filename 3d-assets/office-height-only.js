@@ -792,7 +792,7 @@ new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.
  upperArrivalClearance:arrivalClearance.min.toFixed(3),stairClearanceChecks:JSON.stringify({lower:flightClearances[0],upper:flightClearances[1],turn:turnClearance,arrival:arrivalClearance,wet:showerOverhead}),
  returnFlightDirection:'+X',steelTop:upperDeckUnderside.toFixed(2)
 });
-if(location.hash==='#connection')$('#connectionView').click();if(location.hash==='#left')$('#bossFocus').click();if(location.hash==='#rest')$('#restFocus').click();if(location.hash==='#wet')$('#wetFocus').click();if(location.hash==='#stairs')$('#stairView').click();if(location.hash==='#supports')$('#supportView').click();function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();updateFurnitureAnchoredNotes();updateFurnitureOutline();measurement.update();renderer.render(scene,camera)}animate();
+function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();updateFurnitureAnchoredNotes();updateFurnitureOutline();measurement.update();renderer.render(scene,camera)}animate();
 
 function overallDimensions(){
  closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
@@ -801,7 +801,6 @@ function overallDimensions(){
  camera.position.set(21.94,14.56,-22.56);controls.target.set(9.7,3.2,-4.8);viewportFit=1;fitViewport();controls.update();measurement.update();
 }
 $('#overallDimensions').onclick=overallDimensions;
-if(location.hash==='#ground-space'||location.hash==='#upper-space')spaceView(location.hash==='#upper-space'?'upper':'ground');else overallDimensions();
 
 $('#toolsToggle').onclick=()=>{const on=$('#viewer').classList.toggle('tools-open');$('#toolsToggle').textContent=on?'收起设置':'更多设置';$('#toolsToggle').setAttribute('aria-expanded',String(on));};
 
@@ -815,27 +814,32 @@ $('#barGymView').onclick=()=>{
 };
 $('#circuitView').onclick=showCircuitBoard;
 document.querySelectorAll('[data-mode],#overallDimensions,#reset').forEach(b=>b.addEventListener('click',()=>measurement.focusArea('')));
-if(location.hash==='#bar-gym')$('#barGymView').click();
-
-if(location.hash==='#soft-plan')$('#softPlanView').click();
-if(location.hash==='#electrical-ground'){showCircuitBoard();$('#electricalGround').click();}
-if(location.hash==='#electrical-upper'){showCircuitBoard();$('#electricalUpper').click();}
-
-if(location.hash==='#site-frame')showSiteFrameBoard();
-if(location.hash==='#steel-datum')showSteelDatum();
-if(location.hash==='#stair-clearance')showStairClearance();
-if(location.hash==='#floors-17-18')showFloorStack();
-if(location.hash==='#site-outlet'){showSiteFrameBoard();$('#siteOutlet').click();}
-if(location.hash==='#window-lights'){showCircuitBoard();focusWindowLights();}
-if(location.hash==='#air-layout')showAirLayout();
-if(location.hash==='#wastewater'||location.hash==='#wastewater-3d')showWastewater(location.hash==='#wastewater');
-if(location.hash==='#guard-return'){
+function openSharedView(){
+ if(boardMode)restoreFullBoard();
+ overallDimensions();
+ const key=location.hash.slice(1);
+ const legacyButtons={connection:'#connectionView',left:'#bossFocus',rest:'#restFocus',wet:'#wetFocus',stairs:'#stairView',supports:'#supportView','bar-gym':'#barGymView','soft-plan':'#softPlanView'};
+ if(Object.hasOwn(legacyButtons,key))return $(legacyButtons[key]).click();
+ if(key==='ground-space'||key==='upper-space')return spaceView(key==='upper-space'?'upper':'ground');
+ if(key==='electrical-ground'||key==='electrical-upper'){showCircuitBoard();return $(key==='electrical-ground'?'#electricalGround':'#electricalUpper').click();}
+ if(key==='site-frame')return showSiteFrameBoard();
+ if(key==='steel-datum')return showSteelDatum();
+ if(key==='stair-clearance')return showStairClearance();
+ if(key==='floors-17-18')return showFloorStack();
+ if(key==='site-outlet'){showSiteFrameBoard();return $('#siteOutlet').click();}
+ if(key==='window-lights'){showCircuitBoard();return focusWindowLights();}
+ if(key==='air-layout')return showAirLayout();
+ if(key==='wastewater'||key==='wastewater-3d')return showWastewater(key==='wastewater');
+ if(key==='guard-return'){
  siteReturnView={eye:camera.position.clone(),target:controls.target.clone(),fit:viewportFit};
  boardMode='guard';fieldFrame.visible=false;
  controls.target.set(13.6,4.15,-7.80);camera.position.set(8.1,14.0,-10.25);
  viewportFit=1;fitViewport();
 }
-if(location.hash==='#entry-panel'){
+ if(key==='entry-panel'){
  showCircuitBoard();controls.target.set(8.85,1.15,-7.85);camera.position.set(12.45,3.1,-3.9);
  viewportFit=1;fitViewport();
 }
+}
+window.addEventListener('hashchange',openSharedView);
+openSharedView();
