@@ -533,6 +533,26 @@
         padding: 6px;
         box-shadow: 0 3px 16px #28465712;
       }
+      #siteLegend {
+        position: absolute;
+        bottom: 14px;
+        left: 12px;
+        z-index: 6;
+        max-width: calc(100% - 24px);
+        box-sizing: border-box;
+        padding: 9px 12px;
+        border-radius: 6px;
+        background: #fffffff2;
+        color: #29414a;
+        font-size: 12px;
+        pointer-events: none;
+      }
+      #siteLegend span { display: inline-flex; align-items: center; margin-right: 12px; gap: 5px; }
+      #siteLegend i { width: 9px; height: 9px; border-radius: 2px; background: var(--ink); }
+      #siteLegend small { display: block; margin-top: 3px; }
+      #siteLegend nav { display: flex; gap: 5px; margin-top: 6px; pointer-events: auto; }
+      #siteLegend button { font-size: 12px; padding: 3px 8px; }
+      .viewport:has(#siteLegend:not([hidden])) > .hint { display: none; }
       #modes {
         top: 10px;
         left: 10px;
@@ -777,6 +797,19 @@
           <div class="editor-row"><button id="furnitureReset">恢复这一版初始摆放</button></div>
         </aside>
         <div class="viewport" id="viewport">
+          <aside id="siteLegend" hidden aria-label="现场材质图例">
+            <span><i style="--ink:#989893"></i>混凝土梁柱</span>
+            <span><i style="--ink:#495357"></i>窗框</span>
+            <span><i style="--ink:#cecfc5"></i>风管</span>
+            <span><i style="--ink:#929c9f"></i>吊装管线</span>
+            <span><i style="--ink:#a84039"></i>消防设施</span>
+            <small>原建筑平面按 CAD 对位。顶梁截面、窗格间距与设备标高按影像估计。</small>
+            <nav aria-label="现场观察角度">
+              <button id="siteOverview" type="button">全景</button>
+              <button id="siteWindows" type="button">看梁柱转角</button>
+              <button id="siteOutlet" type="button">看风口与消防箱</button>
+            </nav>
+          </aside>
           <div id="spacePlan" hidden>
             <div class="plan-bar">
               <b id="spacePlanTitle"></b
@@ -879,7 +912,7 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=70-frame-beam-directions"
+          src="./3d-assets/office-height-only.js?v=71-surveyed-site"
     ></script>
   </body>
 </html>

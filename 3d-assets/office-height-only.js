@@ -1,7 +1,9 @@
 import * as THREE from 'three';
+import {addSiteShell} from './site-shell.js?v=71';
+import {addSiteServices} from './site-services.js?v=71';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=18-live-preview-clear';
+import {setupMeasurements} from './measurements-height-only.js?v=19-site-surfaces';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -245,32 +247,42 @@ label(labelGroup,'二楼层高 4.20m',20.5,6.30,5.4,'#466e82',4.2);line(labelGro
 label(labelGroup,'一楼层高 4.20m',20.5,2.10,5.4,'#466e82',4.2);line(labelGroup,[[20,0,5.4],[20,4.20,5.4]],'#708899');
 label(stairs,'平台下模型净高约1.80m · 需调整卫浴',17.9,2.85,6.55,'#8a5c36',4.0);line(stairs,[[17.3,2.10,6.79],[17.3,3.92,6.79]],'#8a5c36');
 const facade=new THREE.Group();model.add(facade);const windowMat=mat('#5b91ad',.055);
-// The two exterior faces are one continuous L-shaped daylight surface, not solid walls.
-const daylightSouth=box(facade,0,-.10,-.05,19.425,8.50,.05,windowMat),daylightRight=box(facade,19.425,-.10,0,.05,8.50,9.4,windowMat);daylightSouth.userData.hoverDimension={a:[0,-.10,0],b:[19.425,-.10,0],text:'19.425 m'};daylightRight.userData.hoverDimension={a:[19.425,-.10,0],b:[19.425,-.10,9.4],text:'9.400 m'};
-line(facade,[[0,-.10,0],[19.425,-.10,0],[19.425,-.10,9.4]],'#4f8eac');line(facade,[[0,8.4,0],[19.425,8.4,0],[19.425,8.4,9.4]],'#4f8eac');
+// Align the existing frame and the proposed fit-out to the same CAD plan coordinates.
+const siteShell = addSiteShell({ THREE, group: fieldFrame, box, shape, top: totalHeight });
+const roofUnderside = siteShell.ceiling.position.y;
+addSiteServices({ THREE, group: fieldFrame, box, top: roofUnderside });
+
+// The final lower window on the short elevation has solid infill above it.
+const endWallBottom = siteShell.endWall.position.y - siteShell.endWall.geometry.parameters.height / 2;
+const upperGlazingLength = siteShell.endWall.position.z - siteShell.endWall.geometry.parameters.depth / 2;
+const daylightSouth = box(facade, 0, -.10, -.05, 19.425, roofUnderside + .10, .05, windowMat);
+const daylightRight = box(facade, 19.425, -.10, 0, .05, endWallBottom + .10, 9.40, windowMat);
+const shortUpperGlass = box(facade, 19.425, endWallBottom, 0, .05, roofUnderside - endWallBottom, upperGlazingLength, windowMat);
+daylightSouth.userData.hoverDimension = {a:[0,-.10,0], b:[19.425,-.10,0], text:'19.425 m'};
+daylightRight.userData.hoverDimension = {a:[19.425,-.10,0], b:[19.425,-.10,9.4], text:'9.400 m'};
+shortUpperGlass.userData.hoverDimension = {a:[19.425,endWallBottom,0], b:[19.425,endWallBottom,upperGlazingLength], text:'约 '+upperGlazingLength.toFixed(2)+' m'};
+line(facade,[[0,-.10,0],[19.425,-.10,0],[19.425,-.10,9.4]],'#4f8eac');
 label(facade,'原图下侧外窗 · L型采光面',8.0,.55,-.55,'#357c98',5.4);label(facade,'原图右侧外窗 · L型采光面',20.0,2.1,6.7,'#357c98',4.7);
-// Field-condition reference: only the permanent bare-shell elements visible in the supplied site photos.
-// It deliberately excludes temporary lights, advertising boxes, scaffolding, rubbish and loose cables.
-const rawConcrete=mat('#a6aaa8'),rawBeam=mat('#7d8585'),siteWindowFrame=mat('#344852'),sitePipe=mat('#788188'),siteDuct=mat('#d5d3ca'),siteFire=mat('#b83e36'),siteCabinet=mat('#a84339');
-function sitePipeRun(a,b,r,m=sitePipe){const from=new THREE.Vector3(...a),to=new THREE.Vector3(...b),axis=to.clone().sub(from),length=axis.length();const pipe=new THREE.Mesh(new THREE.CylinderGeometry(r,r,length,12),m);pipe.position.copy(from).add(to).multiplyScalar(.5);pipe.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),axis.normalize());pipe.castShadow=true;pipe.receiveShadow=true;fieldFrame.add(pipe);return pipe}
-// Open double-height side: three primary concrete beams run continuously through the full depth of the room.
-// They are not short half-width members at the mezzanine edge.
-box(fieldFrame,0,8.03,.10,10.70,.37,9.12,rawConcrete);
-for(const x of [.22,8.65,18.425])box(fieldFrame,x,6.78,0,.56,.46,9.40,rawBeam);
-// The transverse frame beam visibly ties the two existing vertical concrete columns together.
-box(fieldFrame,8.65,6.78,.50,10.275,.56,.46,rawBeam);
-box(fieldFrame,0,4.02,.10,10.70,.44,.36,rawBeam);
-// Dark aluminium window mullions on the existing L-shaped daylight curtain wall.
-for(const x of [0.55,2.55,4.55,6.55,8.55,10.55,12.55,14.55,16.55,18.55])box(fieldFrame,x,-.10,-.085,.075,8.32,.07,siteWindowFrame);
-for(const z of [.55,2.45,4.35,6.25,8.15])box(fieldFrame,19.39,-.10,z,.07,8.32,.075,siteWindowFrame);
-box(fieldFrame,0,4.04,-.085,19.425,.08,.07,siteWindowFrame);box(fieldFrame,19.39,4.04,0,.07,.08,9.40,siteWindowFrame);
-// Fixed exposed MEP: grey conduits, one permanent red fire riser/cabinet, and the large HVAC trunk in the no-mezzanine side.
-sitePipeRun([.65,7.55,1.05],[9.75,7.55,1.05],.045);sitePipeRun([2.05,7.55,1.05],[2.05,7.08,1.05],.028);sitePipeRun([4.85,7.55,1.05],[4.85,7.08,1.05],.028);sitePipeRun([7.70,7.55,1.05],[7.70,7.08,1.05],.028);
-// CAD VPIPE cross-check places the room's fire point at the left rear solid-wall side (about x=.08 / z=7.58 in this model).
-// Offset it slightly into the room so it is not drawn inside the wall or outside the building envelope.
-sitePipeRun([.18,.20,7.58],[.18,7.32,7.58],.055,siteFire);box(fieldFrame,.24,.78,7.46,.54,1.20,.12,siteCabinet);
-box(fieldFrame,1.15,5.94,5.88,3.75,.72,1.02,siteDuct);box(fieldFrame,3.90,5.94,4.12,1.00,.72,1.76,siteDuct);box(fieldFrame,4.02,5.83,3.70,.78,.18,.42,siteWindowFrame);
-const siteFrameLabel=label(fieldFrame,'现场框架参考 · 混凝土 / 窗框 / 风管 / 固定消防管线',5.35,7.92,2.55,'#435b62',5.6);
+
+// Original floor and recessed entry, visible in the final camera turn.
+const existingOnly = new THREE.Group();
+existingOnly.name = 'original-floor-and-entry';
+existingOnly.visible = false;
+fieldFrame.add(existingOnly);
+const rawFloor = new THREE.Mesh(fg, mat('#a7a59e'));
+rawFloor.position.y = -.26;
+rawFloor.receiveShadow = true;
+existingOnly.add(rawFloor);
+const doorwayWall = mat('#acafa9');
+const oldDoorFinish = mat('#717979');
+box(existingOnly, 9.15, 2.15, 10.62, 1.55, roofUnderside - 2.15, .08, doorwayWall);
+box(existingOnly, 9.15, -.10, 10.62, .23, 2.25, .08, doorwayWall);
+box(existingOnly, 10.47, -.10, 10.62, .23, 2.25, .08, doorwayWall);
+const doorHinge = new THREE.Group();
+doorHinge.position.set(9.38, -.10, 10.63);
+doorHinge.rotation.y = Math.PI * .35;
+existingOnly.add(doorHinge);
+box(doorHinge, 0, .01, 0, 1.08, 2.23, .04, oldDoorFinish);
 // Exterior apron deliberately uses a cool blue-grey, distinct from the warm light-grey self-leveling interior.
 const pad=box(model,-2,-.4,-2,23.5,.2,15,'#bcced4');pad.receiveShadow=true;
 const supportStudy=setupSupportStudy({model,ground,box,label,mat,trainingMat,supportHeight:upperDeckUnderside});
@@ -286,7 +298,11 @@ function restoreFullBoard(){
  if(boardMode==='wet'&&wetChildSnapshot){for(const [child,visible] of wetChildSnapshot)child.visible=visible;wetChildSnapshot=null}
  if(boardMode==='furniture'){$('#furniture').checked=false;updateFurniture()}
  if(boardMode==='circuit'){$('#circuitLayer').checked=false;updateCircuitLayer();wet.visible=true;wetFloor.visible=true;stairs.visible=true;stairStorage.visible=true;openingRails.visible=true}
- if(boardMode==='siteframe'){wet.visible=true;wetFloor.visible=true;stairs.visible=true;stairStorage.visible=true;openingRails.visible=true}
+ if(boardMode==='siteframe'){
+  existingOnly.visible=false;
+  $('#siteLegend').hidden=true;
+  controls.maxPolarAngle=Math.PI*.49;
+ }
  boardMode='';clearFurnitureSelection();setMode('all');upperOriginalColumn.visible=false;facade.visible=$('#daylight').checked;fieldFrame.visible=true;structure.visible=$('#frame').checked;supportStudy.update('all');markBoard('#circuitBoard',false);markBoard('#steelBoard',false);markBoard('#wetBoard',false);markBoard('#furnitureBoard',false);markBoard('#siteFrameBoard',false)
 }
 function showSteelBoard(){
@@ -314,12 +330,26 @@ function showFurnitureBoard(){
  $('#furniture').checked=true;updateFurniture();$('#labels').checked=false;labels.forEach(q=>q.visible=!!q.userData.furniture);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));
  structure.visible=false;supportStudy.reserve.visible=false;camera.position.set(25,20,-24);controls.target.set(15.3,2.8,-4.7);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='家具参考 · 点选后可拖动 / 微调 / 缩放（第一版）';updateFurnitureEditor();markBoard('#furnitureBoard',true)
 }
+function siteView(eye, target, overview=false){
+ controls.target.set(...target);
+ camera.position.set(...eye);
+ viewportFit=1;
+ if(overview)fitViewport();
+ controls.update();
+}
+$('#siteOverview').onclick=()=>siteView([25,17,-25],[9.7,3.4,-4.8],true);
+$('#siteWindows').onclick=()=>siteView([9.65,1.85,-7.05],[18.30,4.05,-1.25]);
+$('#siteOutlet').onclick=()=>siteView([8.90,1.70,-3.45],[1.75,3.80,-6.10]);
 function showSiteFrameBoard(){
  if(boardMode==='siteframe'){restoreFullBoard();return}
  if(boardMode)restoreFullBoard();boardMode='siteframe';closeSpacePlan();setMode('all');
- $('#furniture').checked=false;updateFurniture();$('#circuitLayer').checked=false;updateCircuitLayer();$('#labels').checked=false;labels.forEach(q=>q.visible=false);siteFrameLabel.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));
- ground.visible=true;upper.visible=false;stairs.visible=false;stairStorage.visible=false;openingRails.visible=false;shell.visible=true;fieldFrame.visible=true;structure.visible=false;wet.visible=false;wetFloor.visible=false;facade.visible=true;upperOriginalColumn.visible=false;supportStudy.reserve.visible=false;
- camera.position.set(25,19,-24);controls.target.set(9.7,3.4,-4.8);viewportFit=1;fitViewport();controls.update();$('#modeLabel').textContent='现场框架 · 仅固定梁柱、楼板、采光窗、风管与消防/机电管线；不含临时物品';markBoard('#siteFrameBoard',true)
+ $('#furniture').checked=false;updateFurniture();$('#circuitLayer').checked=false;updateCircuitLayer();$('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));
+ ground.visible=false;upper.visible=false;stairs.visible=false;structure.visible=false;labelGroup.visible=false;
+ shell.visible=true;fieldFrame.visible=true;existingOnly.visible=true;facade.visible=true;supportStudy.reserve.visible=false;
+ $('#siteLegend').hidden=false;
+ controls.maxPolarAngle=Math.PI*.83;
+ $('#siteOverview').click();
+ $('#modeLabel').textContent='现场框架';markBoard('#siteFrameBoard',true)
 }
 $('#dimensionBoard').onclick=()=>{if(boardMode)restoreFullBoard();const on=!$('#dimensionBoard').classList.contains('active');$('#allDimensions').checked=on;$('#dimensions').checked=on;$('#allDimensions').dispatchEvent(new Event('change'));$('#dimensions').dispatchEvent(new Event('change'));markBoard('#dimensionBoard',on)};
 $('#circuitBoard').onclick=showCircuitBoard;
@@ -346,7 +376,7 @@ renderer.domElement.addEventListener('pointermove',e=>{if(!furnitureDrag||furnit
 function finishFurnitureDrag(e){if(!furnitureDrag||furnitureDrag.pointerId!==e.pointerId)return;saveFurnitureLayout();furnitureDrag=null;controls.enabled=true;renderer.domElement.style.cursor='grab'}
 renderer.domElement.addEventListener('pointerup',finishFurnitureDrag);renderer.domElement.addEventListener('pointercancel',finishFurnitureDrag);
 renderer.domElement.addEventListener('pointerup',e=>{if(!start||Math.hypot(e.clientX-start[0],e.clientY-start[1])>5)return;if(measurement.isActive())return;const object=furnitureAt(e);if(object){selectFurniture(object);return}const socketHits=ray.intersectObjects(circuitPickables.filter(x=>x.visible&&x.parent.visible),true);if(socketHits[0]?.object.userData.socket){selectSocket(socketHits[0].object.userData.socket);return}const hits=ray.intersectObjects(pickables.filter(x=>x.visible&&x.parent.visible));if(hits[0]){const d=hits[0].object.userData;$('#selected').replaceChildren();const h=document.createElement('b'),p=document.createElement('p');h.textContent=d.name;p.textContent=d.desc;$('#selected').append(h,p)}});
-const measurement=setupMeasurements({scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve:supportStudy.reserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode:()=>mode});
+const measurement=setupMeasurements({scene,camera,renderer,controls,model,ground,upper,stairs,structure,shell,facade,wet,supportReserve:supportStudy.reserve,floor,contour,groundFloorMeshes,upperFloorMeshes,getMode:()=>boardMode==='siteframe'?'siteframe':mode,fieldFrame,rawFloor});
 $('#connectionView').onclick=()=>{setMode('upper');reset();upperOriginalColumn.visible=true;$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));$('#labels').checked=true;labels.forEach(q=>q.visible=q.userData.labelText.includes('侧边连接楼面')||q.userData.labelText.includes('并入主办公区')||q.userData.labelText.includes('出口贴墙')||q.userData.labelText.includes('主电脑位'));camera.position.set(23,15,-13);controls.target.set(16.6,0,-5.3);controls.update();};
 
 $('#wetFocus').onclick=()=>{setMode('ground');reset();$('#labels').checked=true;labels.forEach(q=>q.visible=q.parent===wet||q.userData.labelText==='原入口');$('#dimensions').checked=false;$('#dimensions').dispatchEvent(new Event('change'));camera.position.set(22,5.5,-12);controls.target.set(11.85,1.2,-7.7);controls.update();};
@@ -429,3 +459,5 @@ if(location.hash==='#bar-gym')$('#barGymView').click();
 if(location.hash==='#soft-plan')$('#softPlanView').click();
 if(location.hash==='#electrical-ground')$('#electricalGround').click();
 if(location.hash==='#electrical-upper')$('#electricalUpper').click();
+
+if(location.hash==='#site-frame')showSiteFrameBoard();
