@@ -21,7 +21,7 @@ function fitViewport(){
  camera.fov=43;camera.updateProjectionMatrix();
  const next=Math.max(1,1.4/camera.aspect);camera.position.sub(controls.target).multiplyScalar(next/viewportFit).add(controls.target);viewportFit=next;controls.update();
 }
-const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(9.7,2.5,-4.8);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=65;controls.maxPolarAngle=Math.PI*.49;controls.autoRotateSpeed=.7;
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(9.7,2.5,-4.8);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=65;controls.autoRotateSpeed=.7;
 scene.add(new THREE.HemisphereLight(0xffffff,0x98a9b7,1.8));const sun=new THREE.DirectionalLight(0xfff1dc,2);sun.position.set(5,24,-12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-25;sun.shadow.camera.right=25;sun.shadow.camera.top=25;sun.shadow.camera.bottom=-25;sun.shadow.normalBias=.03;scene.add(sun);
 const totalHeight=MEZZANINE.roomTop, levelHeight=MEZZANINE.floorFinish;
 const upperDeckUnderside=MEZZANINE.steelTop, lowerBeamHeight=upperDeckUnderside-MEZZANINE.primaryDepth;
@@ -529,7 +529,7 @@ function restoreFullBoard(){
   useInteriorFinish(false);
   camera.fov=43;camera.updateProjectionMatrix();
   $('#siteLegend').hidden=true;
-  controls.maxPolarAngle=Math.PI*.49;
+
  }
  boardMode='';clearFurnitureSelection();setMode('all');upperOriginalColumn.visible=false;facade.visible=$('#daylight').checked;fieldFrame.visible=true;structure.visible=$('#frame').checked;supportStudy.update('all');markBoard('#circuitBoard',false);markBoard('#steelBoard',false);markBoard('#wetBoard',false);markBoard('#furnitureBoard',false);markBoard('#siteFrameBoard',false)
  if(siteReturnView){
@@ -623,7 +623,7 @@ function showSiteFrameBoard(){
  ground.visible=false;upper.visible=false;stairs.visible=false;structure.visible=false;labelGroup.visible=false;
  shell.visible=true;fieldFrame.visible=true;existingOnly.visible=true;facade.visible=true;supportStudy.reserve.visible=false;
  $('#siteLegend').hidden=false;
- controls.maxPolarAngle=Math.PI*.83;
+
  $('#siteOverview').click();
  $('#modeLabel').textContent='现场框架';markBoard('#siteFrameBoard',true)
 }
@@ -792,7 +792,19 @@ new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.
  upperArrivalClearance:arrivalClearance.min.toFixed(3),stairClearanceChecks:JSON.stringify({lower:flightClearances[0],upper:flightClearances[1],turn:turnClearance,arrival:arrivalClearance,wet:showerOverhead}),
  returnFlightDirection:'+X',steelTop:upperDeckUnderside.toFixed(2)
 });
-function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();updateFurnitureAnchoredNotes();updateFurnitureOutline();measurement.update();renderer.render(scene,camera)}animate();
+// Remove the presentation base and ground finish from a view taken below 18F.
+const groundSurfaces=[pad,rawFloor,...groundFloorMeshes,...pickables.filter(p=>p.parent===ground)];
+let cutGround=false;
+function updateUnderside(){
+ const below=camera.position.y<lowerFinish&&boardMode!=='floorstack';
+ if(below===cutGround)return;
+ cutGround=below;
+ for(const mesh of groundSurfaces){
+  if(below)mesh.layers.disable(0);
+  else mesh.layers.enable(0);
+ }
+}
+function animate(t){requestAnimationFrame(animate);controls.update();updateFurniture();updateFurnitureAnchoredNotes();updateFurnitureOutline();updateUnderside();measurement.update();renderer.render(scene,camera)}animate();
 
 function overallDimensions(){
  closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
@@ -818,6 +830,10 @@ function openSharedView(){
  if(boardMode)restoreFullBoard();
  overallDimensions();
  const key=location.hash.slice(1);
+ if(key==='underside'){
+  controls.target.set(10,3,-4.8);camera.position.set(16,-13,-16);
+  viewportFit=1;fitViewport();return;
+ }
  const legacyButtons={connection:'#connectionView',left:'#bossFocus',rest:'#restFocus',wet:'#wetFocus',stairs:'#stairView',supports:'#supportView','bar-gym':'#barGymView','soft-plan':'#softPlanView'};
  if(Object.hasOwn(legacyButtons,key))return $(legacyButtons[key]).click();
  if(key==='ground-space'||key==='upper-space')return spaceView(key==='upper-space'?'upper':'ground');
