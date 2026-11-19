@@ -16,11 +16,11 @@ text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#24414a}
 <text x="64" y="97" class="sub">与一楼同向，正门位于图面下方。</text>
 <path d="M64 124H1216M884 155V745M64 776H1216" fill="none" stroke="#cad5d1"/>
 <path fill="#e4ebe4" stroke="#4c666c" stroke-width="2" stroke-linejoin="round" d="M341.95 723.2L341.95 717.4L312.95 717.4L312.95 723.2L283.95 723.2L283.95 178L790 178L790 723.2Z"/>
-<path id="current-stair-opening" fill="url(#void-hatch)" stroke="#63838a" stroke-dasharray="6 4" stroke-width="1.5" d="M735.48 526L546.40 526L546.40 623.44L399.66 623.44L399.66 715.66L735.48 715.66Z"/>
+<path id="current-stair-opening" fill="url(#void-hatch)" stroke="#63838a" stroke-dasharray="6 4" stroke-width="1.5" d="M735.48 526L533.06 526L533.06 623.44L399.66 623.44L399.66 715.66L735.48 715.66Z"/>
 <text x="553.36" y="363.6" text-anchor="middle" class="label">夹层楼面</text>
-<text x="553.36" y="391.44" text-anchor="middle" class="label">67.28 ㎡</text>
+<text x="553.36" y="391.44" text-anchor="middle" class="label">66.90 ㎡</text>
 <text x="674" y="572.98" text-anchor="middle" class="label">L 形挑空</text>
-<text x="603.24" y="670.42" text-anchor="middle" class="label">14.68 ㎡</text>
+<text x="603.24" y="670.42" text-anchor="middle" class="label">15.07 ㎡</text>
 <path fill="none" stroke="#416b79" stroke-width="1.6" marker-end="url(#direction)" d="M424.02 670.42L380.52 670.42"/>
 <text x="355.58" y="659.4" text-anchor="middle" class="small">上楼出口</text>
 <path class="dim" d="M790 159H283.95M790 154v10M283.95 154v10"/><text x="536.975" y="152" class="small" text-anchor="middle">8.725 m</text>
@@ -31,9 +31,9 @@ text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#24414a}
 <text x="914" y="326" class="muted">外轮廓面积（已扣墙角缺口）</text>
 <text x="914" y="353" class="value">81.965 ㎡</text>
 <text x="914" y="398" class="muted">L 形楼梯洞口</text>
-<text x="914" y="425" class="value">14.683 ㎡</text>
+<text x="914" y="425" class="value">15.069 ㎡</text>
 <text x="914" y="470" class="muted">扣洞后的楼面</text>
-<text x="914" y="497" class="value">67.282 ㎡</text>
+<text x="914" y="497" class="value">66.896 ㎡</text>
 <text x="914" y="542" class="muted">上跑出口宽</text>
 <text x="914" y="569" class="value">1.50 m</text>
 <text x="914" y="614" class="muted">夹层完成面标高</text>

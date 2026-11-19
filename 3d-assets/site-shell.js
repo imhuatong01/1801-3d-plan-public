@@ -10,7 +10,7 @@ const lowerStartX = 17.71, thresholdX = 17.43;
 const lowerLandingX = lowerStartX - (lowerRisers - 1) * going;
 const upperStartX = thresholdX - (upperRisers - 1) * going;
 const platformBeamDepth = 0.44, wetFloorFinish = lowerFinish + 0.10;
-const opening = [[11.64,6.00],[14.90,6.00],[14.90,7.68],[thresholdX,7.68],[thresholdX,9.27],[11.64,9.27]];
+const opening = [[11.64,6.00],[15.13,6.00],[15.13,7.68],[thresholdX,7.68],[thresholdX,9.27],[11.64,9.27]];
 const wetFixtures = Object.freeze({door:{x:12.88,z:8.25},head:{x:12.535,z:6.475},
   drain:{x:12.35,z:6.62,width:.10,depth:.10},basin:{x:11.07,z:8.70,width:.48,depth:.36}});
 const midPlatformOutline = [[10.75,6.04],[lowerLandingX,6.04],[lowerLandingX,7.64],
