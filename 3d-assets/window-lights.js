@@ -1,5 +1,5 @@
 // All coordinates are metres in the plan of 18F. Circuit drawings use this same layout.
-import {MEZZANINE} from './site-shell.js?v=77';
+import {MEZZANINE} from './site-shell.js?v=79';
 
 const fixtureWidth = .70;
 const fixtureHalfHeight = .084;
@@ -30,7 +30,9 @@ export function lightingLayout({ beltTop = MEZZANINE.steelTop, windowBays = {lon
   }
   for (const [index,x] of stations.entries()) light(label('L',index),'WL1','long',0,1,x,lowerY,beltLongZ);
   for (let i=0;i<shortCount;i++) light(label('L',longCount+i),'WL1','short',-1,0,beltShortX,lowerY,beltLongZ+(i+.5)*pitch);
-  for (const [index,x] of stations.entries()) light(label('U',index),'WL2','long',0,1,x,roofY,roofZ);
+  for (const [index,x] of stations.entries()) {
+    if(x-fixtureWidth/2>=10.70)light(label('U',index),'WL2','long',0,1,x,roofY,roofZ);
+  }
 
   const wallThickness = .12;
   for (const [index,x] of stations.entries()) {

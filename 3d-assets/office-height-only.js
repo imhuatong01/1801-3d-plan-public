@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import {addSiteShell,MEZZANINE} from './site-shell.js?v=77';
-import {makeWindowLighting,lightingColors} from './window-lights.js?v=77';
+import {addSiteShell,MEZZANINE} from './site-shell.js?v=79';
+import {makeWindowLighting,lightingColors} from './window-lights.js?v=79';
 import {makeAirLayout} from './air-layout.js?v=77';
 import {makeWastewater} from './wastewater.js?v=77';
 import {addSiteServices} from './site-services.js?v=74';
@@ -264,14 +264,22 @@ const outerSteelX=windowX-.18;
 frameMember('left-edge',10.70,windowZ,10.88,openBack);
 frameMember('column-side-edge',outerSteelX,1.00,windowX,openBack);
 frameMember('glazing-side-span',10.88,windowZ,outerSteelX,windowZ+.18);
-frameMember('platform-opening-front',10.88,openFront-.18,openCorner+.14,openFront);
+const headerX=15.13; // Keep the existing full-depth header behind the proposed deck extension.
+const infillMark=box(upper,openCorner,.004,openFront,headerX-openCorner,.006,openStep-openFront,'#dd9a54');
+infillMark.visible=false;
+frameMember('platform-opening-front',10.88,openFront-.18,headerX+.14,openFront);
 frameMember('platform-helper-edge',openLeft-.14,openFront,openLeft,openBack);
-frameMember('platform-opening-return',openCorner,openFront,openCorner+.14,openStep);
-frameMember('upper-flight-opening-side',openCorner+.14,openStep-.18,outerSteelX,openStep);
+frameMember('platform-opening-return',headerX,openFront,headerX+.14,openStep);
+frameMember('upper-flight-opening-side',headerX+.14,openStep-.18,outerSteelX,openStep);
+// Shallow edge and three short returns under the 230 mm deck projection; final sections and rail fixings require design.
+frameMember('infill-edge',openCorner,openFront,openCorner+.06,openStep,.12);
+for(const z of [openFront,(openFront+openStep)/2-.03,openStep-.06]){
+ frameMember('infill-return',openCorner+.06,z,headerX,z+.06,.12);
+}
 frameMember('back-wall-span',10.70,openBack,18.425,9.40);
 frameMember('opening-threshold',thresholdX,openStep,thresholdX+.14,openBack);
 for(const x of [12.25,13.70,15.15,16.60,18.05]){
- const headerFace=x<openCorner+.14?openFront-.18:openStep-.18;
+ const headerFace=x<headerX+.14?openFront-.18:openStep-.18;
  frameMember('floor-secondary',x,windowZ+.18,x+.14,headerFace,.18);
 }
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a);return a}
@@ -510,6 +518,7 @@ $('#removeSocket').onclick=()=>{if(!selectedSocket)return;selectedSocket.root.vi
 let boardMode='',wetChildSnapshot=null,siteReturnView=null;
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
+ infillMark.visible=false;
  if(boardMode==='water'){wastewater.group.visible=false;pad.visible=true;$('#waterInfo').hidden=true;markBoard('#waterBoard',false);closeSpacePlan();}
  if(boardMode==='air'){airLabels.visible=false;upperSlab.material=originalSlabFinish;$('#airInfo').hidden=true;markBoard('#airBoard',false);}
  applyLightFilter('all');$('#lightFilters').hidden=true;
@@ -747,7 +756,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=77';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=79';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('1801_一楼左侧_软包通道示意.svg','一楼左侧 · 软包吧台 / 健身平面示意');
 $('#electricalGround').onclick=()=>showFlatPlan('1801_一楼插座回路示意.svg','18 楼 · 插座与沿梁照明平面');
@@ -830,6 +839,12 @@ function openSharedView(){
  if(boardMode)restoreFullBoard();
  overallDimensions();
  const key=location.hash.slice(1);
+ if(key==='stair-infill'){
+  boardMode='infill';fieldFrame.visible=false;facade.visible=false;shell.visible=false;
+  infillMark.visible=true;
+  controls.target.set(14.7,4.20,-7.35);camera.position.set(15.3,12.1,-9.9);
+  viewportFit=1;fitViewport();return;
+ }
  if(key==='underside'){
   controls.target.set(10,3,-4.8);camera.position.set(16,-13,-16);
   viewportFit=1;fitViewport();return;
