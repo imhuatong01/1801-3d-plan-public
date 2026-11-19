@@ -10,10 +10,10 @@
 <text class="st" x="70" y="82">左图为夹层插座。右图以整间房屋为范围，标出顶梁靠长边采光面的一排灯。</text>
 <!-- Exact current upper floor boundary, derived from upperBoundary in the 3D model. Rotated to keep the original entrance direction at screen bottom. -->
 <g class="drawing">
-<path class="wall" fill-rule="evenodd" d="M625.086 207L625.086 212.457L660.043 212.457L660.043 207L695 207L695 720L85 720L85 207ZM150.719 392.553L394.719 392.553L394.719 300.868L555.521 300.868L555.521 214.095L150.719 214.095Z"/>
-<path id="current-stair-opening" class="void" d="M150.719 392.553L394.719 392.553L394.719 300.868L555.521 300.868L555.521 214.095L150.719 214.095Z"/>
-<text x="231.819" y="336.887" text-anchor="middle" class="sm">L 形楼梯洞口</text>
-<text x="312.221" y="257.754" text-anchor="middle" class="sm">挑空 15.07 ㎡</text>
+<path class="wall" fill-rule="evenodd" d="M625.086 207L625.086 212.457L660.043 212.457L660.043 207L695 207L695 720L85 720L85 207ZM193.367 305.234L549.928 305.234L549.928 212.457L193.367 212.457Z"/>
+<path id="current-stair-opening" class="void" d="M193.367 305.234L549.928 305.234L549.928 212.457L193.367 212.457Z"/>
+<text x="344" y="243" text-anchor="middle" class="sm">矩形楼梯洞口</text>
+<text x="344" y="272" text-anchor="middle" class="sm">挑空 8.67 ㎡</text>
 <rect class="part" x="100" y="425" width="170" height="280"/><text class="tx" x="139" y="540">临挑空茶台</text><text class="sm" x="178" y="563">C6</text>
 <rect class="part" x="285" y="425" width="194" height="280"/><text class="tx" x="325" y="530">直播 / 日常办公</text><text class="sm" x="362" y="553">C7</text>
 <rect class="part" x="494" y="425" width="186" height="280"/><text class="tx" x="535" y="530">主电脑位</text><text class="sm" x="550" y="553">C8 独立回路</text>
@@ -62,6 +62,6 @@
 <rect class="box" x="70" y="784" width="664" height="115" rx="9"/>
 <text x="90" y="816" class="tx" >图例与说明</text>
 <text x="90" y="843" class="sm" >○ 普通插座　 AP 配电箱　 蓝色实线为夹层插座回路</text>
-<text x="90" y="869" class="sm" >夹层楼面 66.90 ㎡，楼梯洞口 15.07 ㎡。保护器与线径由电工复核。</text>
+<text x="90" y="869" class="sm" >夹层楼面 73.30 ㎡，楼梯洞口 8.67 ㎡。保护器与线径由电工复核。</text>
 <text class="sm" x="70" y="920">正门入口位于图面下方　·　夹层插座及上部照明</text>
 </svg>

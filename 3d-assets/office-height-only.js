@@ -1,13 +1,13 @@
 import * as THREE from 'three';
-import {addSiteShell,MEZZANINE} from './site-shell.js?v=77';
-import {makeWindowLighting,lightingColors} from './window-lights.js?v=77';
+import {addSiteShell,MEZZANINE} from './site-shell.js?v=80';
+import {makeWindowLighting,lightingColors} from './window-lights.js?v=80';
 import {makeAirLayout} from './air-layout.js?v=77';
 import {makeWastewater} from './wastewater.js?v=77';
 import {addSiteServices} from './site-services.js?v=74';
 import {buildFloorComparison} from './floor-comparison.js?v=74';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=77';
+import {setupMeasurements} from './measurements-height-only.js?v=80';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -79,7 +79,7 @@ const corridor=zone(ground,9.15,0,1.55,10.7,'#cbcac3','中间 · 完成面通道
 ground.position.y=MEZZANINE.lowerFinish;
 zone(ground,16.7,1.2,2.55,7.9,'#d6d5cd','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
 zone(ground,10.85,.15,2.65,6.9,'#d6d5cd','老板侧 · 休闲茶吧','开放休闲区域，保留入口至楼梯的接近路线。');
-zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑宽1.50m，共26级，第一跑17级、第二跑9级；两跑等踏高、等踏深，出口贴墙。');
+zone(ground,10.65,5.94,6.88,3.30,'#d2d1ca','贴墙U型楼梯','单跑宽1.50m，共34级，两跑各17级；两跑等踏高、等踏深，出口贴墙。');
 const furnitureObjects=[],furnitureMovables=[],furnitureAnchoredNotes=[];
 const furnitureStorageKey='1801-furniture-reference-v1';
 function markFurnitureMovable(object,id,name){object.userData.furnitureMovable={id,name,initial:{x:object.position.x,z:object.position.z,scale:object.scale.x,rotation:object.rotation.y}};furnitureMovables.push(object);return object}
@@ -127,7 +127,7 @@ restoreFurnitureLayout();
 // Ground-group elevations are relative to the finished first-floor surface.
 const wet=new THREE.Group(),wetWalls=new THREE.Group();ground.add(wet);wet.add(wetWalls);
 const wetFloorFinish=MEZZANINE.wetFloorFinish, wetLocalFloor=wetFloorFinish-MEZZANINE.lowerFinish;
-const wetUnderPlatformBeam=MEZZANINE.wetBeamClearance;
+const wetToPlate=MEZZANINE.wetToPlatformSurface;
 const {head:headAt,drain:drainAt,basin:basinAt,door:wetDoorAt}=MEZZANINE.wetFixtures;
 box(wet,10.77,.005,6.09,2.16,wetLocalFloor-.005,3.10,mat('#d0cfc7')).name='shower-finished-floor';
 const headBottom=MEZZANINE.wetHeadBottom-MEZZANINE.lowerFinish;
@@ -138,7 +138,7 @@ showerArm.name='shower-arm';
 const showerHead=box(wet,headAt.x-.095,headBottom,headAt.z-.095,.19,.04,.19,steel);
 showerHead.name='shower-head';
 const showerGlass=mat('#26383f',.78),showerDoorGlass=mat('#365159',.68);
-const glassHeight=2.20, doorFrameHeight=2.225;
+const glassHeight=wetToPlate-.015, doorFrameHeight=glassHeight;
 box(wetWalls,10.77,wetLocalFloor,6.09,.06,glassHeight,3.10,showerGlass);
 for(const z of [6.09,9.13])box(wetWalls,10.83,wetLocalFloor,z,2.02,glassHeight,.06,showerGlass);
 for(const [z,depth] of [[6.09,1.66],[8.75,.44]])box(wetWalls,12.85,wetLocalFloor,z,.06,glassHeight,depth,showerGlass);
@@ -162,15 +162,15 @@ $('#wetWalls').checked=true;wetWalls.visible=true;
 $('#wetWalls').onchange=e=>{wetWalls.visible=e.target.checked};
 
 const {lowerFinish,riser:rise,going,lowerRisers,upperRisers,lowerLandingX,lowerStartX,
- upperStartX,thresholdX,midLanding:midHeight,platformBeamDepth}=MEZZANINE;
+ upperStartX,thresholdX,midLanding:midHeight}=MEZZANINE;
 const stairW=1.50, approachDepth=19.275-lowerStartX;
 const showerDimension=new THREE.Group();
 showerDimension.name='shower-dimension-at-platform-edge';
 model.add(showerDimension);showerDimension.visible=false;
-const dimX=11.28,dimZ=9.43,dimBottom=MEZZANINE.wetFloorFinish,dimTop=midHeight-platformBeamDepth;
+const dimX=11.28,dimZ=9.43,dimBottom=MEZZANINE.wetFloorFinish,dimTop=midHeight;
 line(showerDimension,[[dimX,dimBottom,dimZ],[dimX,dimTop,dimZ]],'#b44f20');
 for(const y of [dimBottom,dimTop])line(showerDimension,[[dimX-.11,y,dimZ],[dimX+.11,y,dimZ],[dimX+.11,y,9.06]],'#b44f20');
-const showerDimTag=label(showerDimension,'梁下净高 '+(dimTop-dimBottom).toFixed(2)+' 米',11.28,(dimTop+dimBottom)/2,dimZ+.03,'#944519',2.22);
+const showerDimTag=label(showerDimension,'至平台面 '+(dimTop-dimBottom).toFixed(3)+' m · 未扣钢板及支撑',11.28,(dimTop+dimBottom)/2,dimZ+.03,'#944519',2.22);
 zone(ground,lowerStartX,6.04,approachDepth,stairW,'#d4c6a4','内侧楼梯起步区','进深约'+approachDepth.toFixed(2)+'m，保留一楼进出通路。');
 const flights=[
  {id:'lower',start:lowerStartX,end:lowerLandingX,direction:-1,z:6.04,base:lowerFinish,count:lowerRisers},
@@ -211,30 +211,22 @@ for(const f of flights){
   }
  }
 }
-const platformObstacles=[];
-function platformPart(name,x1,x2,z1,z2,bottom,top){
- const mesh=box(stairs,x1,bottom,z1,x2-x1,top-bottom,z2-z1,steel);
- mesh.name=name;platformObstacles.push(mesh);
-}
-const deckUnder=midHeight-.30, platformBeamUnder=midHeight-platformBeamDepth;
-platformPart('stair-turning-platform',10.75,lowerLandingX,6.04,9.24,deckUnder,midHeight);
-platformPart('stair-turning-platform-extension',lowerLandingX,upperStartX,7.64,9.24,deckUnder,midHeight);
-platformPart('platform-beam-lower-edge',10.75,lowerLandingX,6.12,6.26,platformBeamUnder,deckUnder);
-platformPart('platform-beam-wall-side',10.75,upperStartX,9.00,9.14,platformBeamUnder,deckUnder);
-platformPart('platform-beam-extension-edge',lowerLandingX,upperStartX,7.65,7.79,platformBeamUnder,deckUnder);
+// A surface indicates the platform position only. Plate thickness and support sections await design.
+const platformMaterial=steel.clone();platformMaterial.side=THREE.DoubleSide;
+const landingPlate=new THREE.Mesh(new THREE.PlaneGeometry(2.20,3.20),platformMaterial);
+landingPlate.rotation.x=-Math.PI/2;landingPlate.position.set((10.75+lowerLandingX)/2,midHeight,7.64);
+landingPlate.name='stair-turning-platform';stairs.add(landingPlate);
+const platformObstacles=[landingPlate];
 for(const z of [6.015,7.565])slopeGlassRail(stairs,[lowerStartX,lowerFinish+rise,z],[lowerLandingX,midHeight,z]);
 slopeGlassRail(stairs,[upperStartX,midHeight+rise,7.715],[thresholdX,levelHeight,7.715]);
-const [[openLeft,openFront],[openCorner],[,openStep],,,[,openBack]]=stairOpening;
-const turnWalkX=openLeft+.04;
+const [[openLeft,openFront],[openRight],[,openBack]]=stairOpening;
+const turnWalkX=10.75;
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);
 rail(midGuard,turnWalkX-.05,5.99,.05,3.25);
 rail(midGuard,turnWalkX,5.99,lowerLandingX-turnWalkX,.05);
-rail(midGuard,lowerLandingX,7.64,upperStartX-lowerLandingX,.05);
 openingRails.scale.x=1;openingRails.position.x=0;
-rail(openingRails,openLeft,openFront-.06,openCorner-openLeft,.06);
-rail(openingRails,openCorner,openFront,.06,openStep-openFront);
-rail(openingRails,openCorner+.06,openStep-.06,thresholdX-openCorner-.06,.06);
-rail(openingRails,openLeft-.06,openFront,.06,openBack-openFront);
+rail(openingRails,openLeft,openFront-.06,openRight-openLeft,.06);
+rail(openingRails,openLeft,openFront,.06,openBack-openFront);
 
 // Keep the interior-edge guard only.  The exterior L-shaped daylight glass is already the enclosure and has no added handrail.
 rail(upper,10.7,0,.07,7.44);
@@ -264,15 +256,12 @@ const outerSteelX=windowX-.18;
 frameMember('left-edge',10.70,windowZ,10.88,openBack);
 frameMember('column-side-edge',outerSteelX,1.00,windowX,openBack);
 frameMember('glazing-side-span',10.88,windowZ,outerSteelX,windowZ+.18);
-frameMember('platform-opening-front',10.88,openFront-.18,openCorner+.14,openFront);
-frameMember('platform-helper-edge',openLeft-.14,openFront,openLeft,openBack);
-frameMember('platform-opening-return',openCorner,openFront,openCorner+.14,openStep);
-frameMember('upper-flight-opening-side',openCorner+.14,openStep-.18,outerSteelX,openStep);
+frameMember('opening-front',10.88,openFront-.18,outerSteelX,openFront);
+frameMember('opening-end',openLeft-.14,openFront,openLeft,openBack);
 frameMember('back-wall-span',10.70,openBack,18.425,9.40);
-frameMember('opening-threshold',thresholdX,openStep,thresholdX+.14,openBack);
+frameMember('opening-threshold',thresholdX,openFront,thresholdX+.14,openBack);
 for(const x of [12.25,13.70,15.15,16.60,18.05]){
- const headerFace=x<openCorner+.14?openFront-.18:openStep-.18;
- frameMember('floor-secondary',x,windowZ+.18,x+.14,headerFace,.18);
+ frameMember('floor-secondary',x,windowZ+.18,x+.14,openFront-.18,.18);
 }
 function line(g,points,c='#546978'){const a=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:c}));g.add(a);return a}
 // 3D electrical overlay mirrors the two circuit drawings. Every socket is a selectable
@@ -353,8 +342,8 @@ label(labelGroup,'夹层楼面 +'+levelHeight.toFixed(2)+'m',20.5,levelHeight+.1
 line(labelGroup,[[20,0,5.4],[20,levelHeight,5.4]],'#708899');
 label(labelGroup,'屋顶结构标高 +'+totalHeight.toFixed(2)+'m',20.5,totalHeight+.18,5.4,'#466e82',4.2);
 line(labelGroup,[[20,levelHeight,5.4],[20,totalHeight,5.4]],'#708899');
-label(stairs,'淋浴边梁下 '+wetUnderPlatformBeam.toFixed(3)+'m',11.75,midHeight+.75,6.55,'#8a5c36',3.2);
-line(stairs,[[11.8,wetFloorFinish,6.19],[11.8,platformBeamUnder,6.19]],'#8a5c36');
+label(stairs,'淋浴地面至平台面 '+wetToPlate.toFixed(3)+'m',11.75,midHeight+.75,6.55,'#8a5c36',3.2);
+line(stairs,[[11.8,wetFloorFinish,6.19],[11.8,midHeight,6.19]],'#8a5c36');
 const facade=new THREE.Group();model.add(facade);const windowMat=mat('#5b91ad',.055);
 // Align the existing frame and the proposed fit-out to the same CAD plan coordinates.
 const siteShell = addSiteShell({ THREE, group: fieldFrame, box, shape, top: totalHeight });
@@ -429,15 +418,14 @@ const flightClearances=flights.map(f=>{
  }
  return checkClearance(strips,clearanceMeshes);
 });
-const turnClearance=checkClearance([horizontal(turnWalkX,lowerLandingX,6.04,9.24,midHeight),
- horizontal(lowerLandingX,upperStartX,7.69,9.24,midHeight)],clearanceMeshes);
+const turnClearance=checkClearance([horizontal(turnWalkX,lowerLandingX,6.04,9.24,midHeight)],clearanceMeshes);
 const arrivalClearance=checkClearance([horizontal(thresholdX,thresholdX+1.50,7.74,9.24,levelHeight)],clearanceMeshes);
 const wetBounds=[horizontal(10.77,12.93,6.09,9.19,wetFloorFinish)];
 const showerOverhead=checkClearance(wetBounds,[...platformObstacles,...clearanceMeshes,showerHead,showerArm]);
 const stairMinimum=Math.min(...flightClearances.map(v=>v.min));
-$('#showerBeamClearance').textContent='淋浴完成面至边梁 '+wetUnderPlatformBeam.toFixed(3)+' m，至花洒底 '+
+$('#showerBeamClearance').textContent='淋浴完成面至平台走面 '+wetToPlate.toFixed(3)+' m（未扣钢板与支撑，2 m 净高待核），至花洒底 '+
  (MEZZANINE.wetHeadBottom-wetFloorFinish).toFixed(3)+' m。第一跑净空 '+flightClearances[0].min.toFixed(2)+' m，第二跑 '+
- flightClearances[1].min.toFixed(2)+' m，中转平台 '+turnClearance.min.toFixed(2)+' m。模型尺寸，现场梁底和管线需复测。';
+ '末级与洞口边缘重叠 '+Math.round((thresholdX-openRight)*100)+' cm，中转平台 '+turnClearance.min.toFixed(2)+' m。模型尺寸，现场梁底和管线需复测。';
 
 
 // The final lower window on the short elevation has solid infill above it.
@@ -546,13 +534,13 @@ function showSteelBoard(){
  showSteelOverview();
 }
 function showSteelOverview(){
- ground.visible=false;upper.visible=false;setStairInspection(false);
+ structure.visible=true;ground.visible=false;upper.visible=false;setStairInspection(false);
  steelDatumReference.visible=false;
  camera.position.set(26,17,-22);controls.target.set(15,2.6,-4.8);viewportFit=1;fitViewport();
 }
 function showSteelDatum(){
  if(boardMode!=='steel')showSteelBoard();
- ground.visible=false;upper.visible=false;setStairInspection(false);
+ structure.visible=true;ground.visible=false;upper.visible=false;setStairInspection(false);
  steelDatumReference.visible=true;
  controls.target.set(14.6,upperDeckUnderside,-1.65);
  camera.position.set(11.0,6.15,-6.80);viewportFit=1;fitViewport();
@@ -567,9 +555,9 @@ function setStairInspection(active){
 }
 function showStairClearance(){
  if(boardMode!=='steel')showSteelBoard();
- steelDatumReference.visible=false;ground.visible=true;upper.visible=true;
+ structure.visible=true;steelDatumReference.visible=false;ground.visible=true;upper.visible=true;
  const info=$('#stairFlightsInfo');
- info.textContent='下跑 '+MEZZANINE.lowerRisers+' 级，上跑 '+MEZZANINE.upperRisers+' 级。每级高 '+(MEZZANINE.riser*1000).toFixed(1)+' 毫米，深 '+Math.round(MEZZANINE.going*1000)+' 毫米。';
+ info.textContent='下跑 '+MEZZANINE.lowerRisers+' 级，上跑 '+MEZZANINE.upperRisers+' 级。每级高 '+(MEZZANINE.riser*1000).toFixed(1)+' 毫米，深 '+Math.round(MEZZANINE.going*1000)+' 毫米。平台上方最低 '+turnClearance.min.toFixed(2)+' 米；浴室至平台面 '+wetToPlate.toFixed(3)+' 米，钢板和支撑待核。';
  setStairInspection(true);
  camera.position.set(14.8,4.35,-18);controls.target.set(14.4,2.58,-7.4);viewportFit=1;fitViewport();
 }
@@ -747,7 +735,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=77';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=80';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('1801_一楼左侧_软包通道示意.svg','一楼左侧 · 软包吧台 / 健身平面示意');
 $('#electricalGround').onclick=()=>showFlatPlan('1801_一楼插座回路示意.svg','18 楼 · 插座与沿梁照明平面');
@@ -783,10 +771,10 @@ new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.
  openingArea:MEZZANINE.openingArea.toFixed(3),landing:(lowerLandingX-10.75).toFixed(2),platformArea:MEZZANINE.platformArea.toFixed(3),
  upperLevel:levelHeight.toFixed(2),upperNetHeight:(roofUnderside-levelHeight).toFixed(2),lowerBeamHeight:lowerBeamHeight.toFixed(2),
  risers:String(lowerRisers+upperRisers),lowerRisers:String(lowerRisers),upperRisers:String(upperRisers),candidateColumns:'0',
- structuralVerified:'false',stairShift:'0',wetFloorFinish:wetFloorFinish.toFixed(3),wetRaise:wetLocalFloor.toFixed(3),wetHeadClearance:(MEZZANINE.wetHeadBottom-wetFloorFinish).toFixed(3),wetArea:'6.696',wetLevel:'ground-under-turning-platform',wetClearHeightTarget:'2.20',
- stairWidth:'1.50',layoutVersion:'raised-turning-platform',wetHeightConflict:String(showerOverhead.min<2.20),
+ structuralVerified:'false',stairShift:'0',wetFloorFinish:wetFloorFinish.toFixed(3),wetRaise:wetLocalFloor.toFixed(3),wetHeadClearance:(MEZZANINE.wetHeadBottom-wetFloorFinish).toFixed(3),wetArea:'6.696',wetLevel:'ground-under-turning-platform',wetClearHeightTarget:'2.00',
+ stairWidth:'1.50',layoutVersion:'classic-rectangular-landing',wetHeightConflict:'unverified',
  stairHeadroomCheck:(stairMinimum>=2.20&&turnClearance.min>=2&&arrivalClearance.min>=2)?'model-pass':'model-conflict',
- platformBeamClearance:turnClearance.min.toFixed(3),wetEdgeBeamClearance:wetUnderPlatformBeam.toFixed(3),
+ platformBeamClearance:turnClearance.min.toFixed(3),wetToPlatformSurface:wetToPlate.toFixed(3),
  wetOverheadClearance:showerOverhead.min.toFixed(3),stairRiser:rise.toFixed(6),stairGoing:going.toFixed(2),
  lowerFlightClearance:flightClearances[0].min.toFixed(3),upperFlightClearance:flightClearances[1].min.toFixed(3),
  upperArrivalClearance:arrivalClearance.min.toFixed(3),stairClearanceChecks:JSON.stringify({lower:flightClearances[0],upper:flightClearances[1],turn:turnClearance,arrival:arrivalClearance,wet:showerOverhead}),
@@ -840,6 +828,11 @@ function openSharedView(){
  if(key==='electrical-ground'||key==='electrical-upper'){showCircuitBoard();return $(key==='electrical-ground'?'#electricalGround':'#electricalUpper').click();}
  if(key==='site-frame')return showSiteFrameBoard();
  if(key==='steel-datum')return showSteelDatum();
+ if(key==='classic-stair'){
+  showStairClearance();
+  ground.visible=false;upper.visible=false;structure.visible=false;showerDimension.visible=false;
+  controls.target.set(14.3,2.0,-7.6);camera.position.set(20,8.1,.7);viewportFit=1;fitViewport();return;
+ }
  if(key==='stair-clearance')return showStairClearance();
  if(key==='floors-17-18')return showFloorStack();
  if(key==='site-outlet'){showSiteFrameBoard();return $('#siteOutlet').click();}

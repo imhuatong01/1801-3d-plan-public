@@ -18,36 +18,44 @@ text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#24414a}
 <path fill="#e4ebe4" stroke="#4c666c" stroke-width="2" stroke-linejoin="round" d="M810.7 503.325L685.9 503.325L637.15 503.325L481.15 503.325L481.15 546.225L481.15 621.3L420.7 621.3L420.7 574.5L420.7 570.6L416.8 570.6L119.425 570.6L119.425 566.7L99.925 566.7L99.925 570.6L96.025 570.6L80.425 570.6L80.425 204L833.125 204L833.125 207.9L838 207.9L838 223.5L838 243L838 503.325L836.05 503.325L828.25 503.325L810.7 503.325Z"/>
 <path fill="#dce5e2" stroke="#92a5a2" stroke-width="1" d="M481.15 204L420.7 204L420.7 621.3L481.15 621.3Z"/>
 <path fill="#e3ece2" stroke="#92a5a2" stroke-width="1" d="M420.7 204L80.425 204L80.425 439.56L420.7 439.56Z"/>
-<path fill="#c8d9d0" stroke="#4c666c" stroke-width="2" stroke-linejoin="round" d="M418.75 439.56L322.03 439.56L322.03 501.96L245.59 501.96L245.59 564.36L418.75 564.36Z"/>
-<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M322.03 439.56L147.31 439.56L147.31 498.06L322.03 498.06Z"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M311.11 439.56L311.11 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M300.19 439.56L300.19 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M289.27 439.56L289.27 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M278.35 439.56L278.35 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M267.43 439.56L267.43 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M256.51 439.56L256.51 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M245.59 439.56L245.59 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M234.67 439.56L234.67 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M223.75 439.56L223.75 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M212.83 439.56L212.83 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M201.91 439.56L201.91 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M190.99 439.56L190.99 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M180.07 439.56L180.07 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M169.15 439.56L169.15 498.06"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M158.23 439.56L158.23 498.06"/>
-<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M245.59 505.86L158.23 505.86L158.23 564.36L245.59 564.36Z"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M234.67 505.86L234.67 564.36"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M223.75 505.86L223.75 564.36"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M212.83 505.86L212.83 564.36"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M201.91 505.86L201.91 564.36"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M190.99 505.86L190.99 564.36"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M180.07 505.86L180.07 564.36"/>
-<path fill="none" stroke="#a9b5b5" stroke-width=".85" d="M169.15 505.86L169.15 564.36"/>
+<path fill="#c8d9d0" stroke="#4c666c" stroke-width="2" d="M418.750 439.560L332.950 439.560L332.950 564.360L418.750 564.360Z"/>
+<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M332.950 439.560L158.230 439.560L158.230 498.060L332.950 498.060Z"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M322.030 439.560L322.030 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M311.110 439.560L311.110 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M300.190 439.560L300.190 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M289.270 439.560L289.270 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M278.350 439.560L278.350 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M267.430 439.560L267.430 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M256.510 439.560L256.510 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M245.590 439.560L245.590 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M234.670 439.560L234.670 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M223.750 439.560L223.750 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M212.830 439.560L212.830 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M201.910 439.560L201.910 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M190.990 439.560L190.990 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M180.070 439.560L180.070 498.060"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M169.150 439.560L169.150 498.060"/>
+<path fill="#e8eeed" stroke="#70858c" stroke-width="1.3" d="M332.950 505.860L158.230 505.860L158.230 564.360L332.950 564.360Z"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M322.030 505.860L322.030 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M311.110 505.860L311.110 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M300.190 505.860L300.190 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M289.270 505.860L289.270 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M278.350 505.860L278.350 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M267.430 505.860L267.430 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M256.510 505.860L256.510 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M245.590 505.860L245.590 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M234.670 505.860L234.670 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M223.750 505.860L223.750 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M212.830 505.860L212.830 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M201.910 505.860L201.910 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M190.990 505.860L190.990 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M180.070 505.860L180.070 564.360"/>
+<path fill="none" stroke="#a9b5b5" stroke-width="0.85" d="M169.150 505.860L169.150 564.360"/>
 <path fill="none" stroke="#387a76" stroke-dasharray="4 3" stroke-width="1.3" d="M417.97 441.51L333.73 441.51L333.73 562.41L417.97 562.41Z"/>
-<path fill="none" stroke="#416b79" stroke-width="1.6" marker-end="url(#direction)" d="M152.77 488.31L316.57 488.31"/>
-<path fill="none" stroke="#416b79" stroke-width="1.6" marker-end="url(#direction)" d="M240.13 554.22L163.69 554.22"/>
-<text x="234.67" y="464.13" text-anchor="middle" class="small">下跑 17 级</text>
-<text x="201.91" y="531.6" text-anchor="middle" class="small">上跑 9 级</text>
+<path fill="none" stroke="#416b79" stroke-width="1.6" marker-end="url(#direction)" d="M163.690 488.310L327.490 488.310"/>
+<path fill="none" stroke="#416b79" stroke-width="1.6" marker-end="url(#direction)" d="M327.490 554.220L163.690 554.220"/>
+<text x="245.59" y="464.13" text-anchor="middle" class="small">下跑 17 级</text>
+<text x="245.59" y="531.6" text-anchor="middle" class="small">上跑 17 级</text>
 <text x="375.85" y="495.72" text-anchor="middle" class="small">中转平台</text>
 <text x="375.85" y="513.72" text-anchor="middle" class="small">下方淋浴</text>
 <text x="251.05" y="310.86" text-anchor="middle" class="label">吧台兼健身预留</text>
@@ -79,18 +87,18 @@ text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#24414a}
 </g>
 <text x="914" y="206" class="sec">楼梯与淋浴</text>
 <text x="914" y="254" class="muted">下跑 / 上跑</text>
-<text x="914" y="281" class="value">4.48 × 1.50 / 2.24 × 1.50 m</text>
+<text x="914" y="281" class="value">两跑各 4.48 × 1.50 m</text>
 <text x="914" y="326" class="muted">单级进深 / 高度</text>
-<text x="914" y="353" class="value">280 mm / 162.2 mm</text>
+<text x="914" y="353" class="value">280 mm / 124.0 mm</text>
 <text x="914" y="398" class="muted">中转平台</text>
-<text x="914" y="425" class="value">下跑侧深 2.48 m · 上跑侧深 4.44 m</text>
+<text x="914" y="425" class="value">2.20 × 3.20 m</text>
 <text x="914" y="470" class="muted">平台宽 / 平面面积</text>
-<text x="914" y="497" class="value">3.20 m / 11.07 ㎡</text>
+<text x="914" y="497" class="value">3.20 m / 7.04 ㎡</text>
 <text x="914" y="542" class="muted">淋浴外框</text>
 <text x="914" y="569" class="value">2.16 × 3.10 m · 6.70 ㎡</text>
-<text x="914" y="614" class="muted">淋浴地面至平台边梁底</text>
-<text x="914" y="641" class="value">2.217 m</text>
+<text x="914" y="614" class="muted">淋浴地面至平台走面（未扣钢板及支撑）</text>
+<text x="914" y="641" class="value">2.009 m</text>
 <text x="914" y="686" class="muted">梯段上方最小模型净空</text>
-<text x="914" y="714" class="value">下跑 2.260 m · 上跑 3.950 m</text>
+<text x="914" y="714" class="value">旧图净空有冲突，见三维复核</text>
 <text x="64" y="809" class="sub">浅绿为吧台健身预留范围，虚线为平台下方淋浴间。区域尺寸按模型轮廓，面积含柱及通行空间。</text>
 </svg>

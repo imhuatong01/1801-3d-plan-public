@@ -3,18 +3,17 @@
 // The window-belt section and its alignment with the steel are design assumptions pending survey.
 const floorFinish = 4.20, finishThickness = 0.04, steelTop = floorFinish - finishThickness;
 const beltHeight = 0.67, beltBase = steelTop - beltHeight;
-const lowerFinish = -0.017, lowerRisers = 17, upperRisers = 9, going = 0.28;
+const lowerFinish = -0.017, lowerRisers = 17, upperRisers = 17, going = 0.28;
 const riser = (floorFinish - lowerFinish) / (lowerRisers + upperRisers);
 const midLanding = lowerFinish + lowerRisers * riser;
-const lowerStartX = 17.71, thresholdX = 17.43;
+const lowerStartX = 17.43, thresholdX = 17.43;
 const lowerLandingX = lowerStartX - (lowerRisers - 1) * going;
 const upperStartX = thresholdX - (upperRisers - 1) * going;
-const platformBeamDepth = 0.44, wetFloorFinish = lowerFinish + 0.10;
-const opening = [[11.64,6.00],[15.13,6.00],[15.13,7.68],[thresholdX,7.68],[thresholdX,9.27],[11.64,9.27]];
+const wetFloorFinish = lowerFinish + 0.10;
+const opening = [[12.25,7.60],[17.35,7.60],[17.35,9.30],[12.25,9.30]];
 const wetFixtures = Object.freeze({door:{x:12.88,z:8.25},head:{x:12.535,z:6.475},
   drain:{x:12.35,z:6.62,width:.10,depth:.10},basin:{x:11.07,z:8.70,width:.48,depth:.36}});
-const midPlatformOutline = [[10.75,6.04],[lowerLandingX,6.04],[lowerLandingX,7.64],
-  [upperStartX,7.64],[upperStartX,9.24],[10.75,9.24]];
+const midPlatformOutline = [[10.75,6.04],[lowerLandingX,6.04],[lowerLandingX,9.24],[10.75,9.24]];
 function planArea(points) {
   return Math.abs(points.reduce((sum,[x,z],i)=>{
     const [nextX,nextZ]=points[(i+1)%points.length];
@@ -25,8 +24,8 @@ export const MEZZANINE = Object.freeze({
   steelTop, beltBase, beltHeight, finishThickness, floorFinish, lowerFinish, riser, lowerRisers, upperRisers,
   going, midLanding, lowerStartX, lowerLandingX, upperStartX, thresholdX, opening, midPlatformOutline,
   openingArea: planArea(opening), upperArea: 81.965 - planArea(opening),
-  platformArea: planArea(midPlatformOutline), platformBeamDepth, wetFloorFinish, wetFixtures, wetHeadBottom: wetFloorFinish+2.22,
-  wetBeamClearance: midLanding-platformBeamDepth-wetFloorFinish,
+  platformArea: planArea(midPlatformOutline), wetFloorFinish, wetFixtures, wetHeadBottom: midLanding-.09,
+  wetToPlatformSurface: midLanding-wetFloorFinish,
   roomTop: 8.40, primaryDepth: 0.26,
   beltInnerZ: 0.90, beltInnerX: 18.525
 });

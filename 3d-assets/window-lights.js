@@ -1,5 +1,5 @@
 // All coordinates are metres in the plan of 18F. Circuit drawings use this same layout.
-import {MEZZANINE} from './site-shell.js?v=77';
+import {MEZZANINE} from './site-shell.js?v=80';
 
 const fixtureWidth = .70;
 const fixtureHalfHeight = .084;
