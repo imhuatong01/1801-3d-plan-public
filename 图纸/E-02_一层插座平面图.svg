@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297" font-family='Microsoft YaHei,PingFang SC,Noto Sans SC,sans-serif'>
+<rect width="420" height="297" fill="#fff"/>
+<defs><pattern id="hatch" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2" stroke="#777" stroke-width=".25"/></pattern><pattern id="dots" width="1.6" height="1.6" patternUnits="userSpaceOnUse"><circle cx=".8" cy=".8" r=".18" fill="#999"/></pattern></defs>
+<rect x="5.00" y="5.00" width="410.00" height="287.00" fill="none" stroke="#000" stroke-width="0.15"/>
+<rect x="10.00" y="10.00" width="400.00" height="277.00" fill="none" stroke="#000" stroke-width="0.60"/>
+<rect x="215.00" y="247.00" width="195.00" height="40.00" fill="none" stroke="#000" stroke-width="0.50"/>
+<line x1="215.00" y1="257.00" x2="410.00" y2="257.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="215.00" y1="267.00" x2="410.00" y2="267.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="215.00" y1="277.00" x2="410.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="243.00" y1="247.00" x2="243.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="313.00" y1="267.00" x2="313.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="358.00" y1="267.00" x2="358.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<text x="217.00" y="254.30" font-size="2.60" text-anchor="start" fill="#000">设计单位</text>
+<text x="245.00" y="254.90" font-size="4.40" text-anchor="start" fill="#000" font-weight="bold">台北市有间设计公司</text>
+<text x="345.00" y="254.30" font-size="2.80" text-anchor="start" fill="#000">工程名称  1801-OPC空间</text>
+<text x="217.00" y="264.30" font-size="2.60" text-anchor="start" fill="#000">图    名</text>
+<text x="245.00" y="264.60" font-size="3.60" text-anchor="start" fill="#000" font-weight="bold">一层插座平面图</text>
+<text x="217.00" y="274.30" font-size="2.60" text-anchor="start" fill="#000">图    号</text>
+<text x="245.00" y="274.60" font-size="3.80" text-anchor="start" fill="#000" font-weight="bold">E-02</text>
+<text x="315.00" y="274.30" font-size="2.80" text-anchor="start" fill="#000">比例 1:100</text>
+<text x="360.00" y="274.30" font-size="2.80" text-anchor="start" fill="#000">日期 2026-11-19</text>
+<text x="312.50" y="284.40" font-size="3.00" text-anchor="middle" fill="#c0392b" font-weight="bold">方案图 非施工图 须由持证电工/给排水工程师深化</text>
+<polygon points="251.00,112.75 219.00,112.75 206.50,112.75 166.50,112.75 166.50,123.75 166.50,143.00 151.00,143.00 151.00,131.00 151.00,130.00 150.00,130.00 73.75,130.00 73.75,129.00 68.75,129.00 68.75,130.00 67.75,130.00 63.75,130.00 63.75,36.00 256.75,36.00 256.75,37.00 258.00,37.00 258.00,41.00 258.00,46.00 258.00,112.75 257.50,112.75 255.50,112.75 251.00,112.75" fill="#fff" stroke="none" stroke-width="0.00" stroke-linejoin="round"/>
+<rect x="258.00" y="36.00" width="2.00" height="78.75" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
+<rect x="166.50" y="112.75" width="93.50" height="2.00" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
+<rect x="166.50" y="112.75" width="2.00" height="30.25" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
+<rect x="149.00" y="130.00" width="2.00" height="13.00" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
+<rect x="61.75" y="130.00" width="89.25" height="2.00" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
+<line x1="256.75" y1="35.40" x2="63.75" y2="35.40" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<line x1="256.75" y1="36.60" x2="63.75" y2="36.60" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<line x1="64.35" y1="36.00" x2="64.35" y2="130.00" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<line x1="63.15" y1="36.00" x2="63.15" y2="130.00" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<text x="108.00" y="34.00" font-size="2.00" text-anchor="middle" fill="#3a7ca5">采光玻璃面</text>
+<text x="61.25" y="83.00" font-size="2.20" text-anchor="middle" fill="#3a7ca5" transform="rotate(90 61.25 83.00)">采光玻璃面</text>
+<line x1="151.00" y1="143.00" x2="166.50" y2="143.00" stroke="#000" stroke-width="0.50" fill="none"/>
+<text x="158.75" y="146.40" font-size="2.20" text-anchor="middle" fill="#000">入口门 1.55 (开启方向待定)</text>
+<rect x="166.50" y="41.00" width="5.00" height="5.00" fill="url(#hatch)" stroke="#000" stroke-width="0.35"/>
+<rect x="68.75" y="41.00" width="5.00" height="5.00" fill="url(#hatch)" stroke="#000" stroke-width="0.35"/>
+<text x="169.00" y="48.60" font-size="1.90" text-anchor="middle" fill="#000">原柱</text>
+<text x="71.25" y="48.60" font-size="1.90" text-anchor="middle" fill="#000">原柱</text>
+<line x1="258.00" y1="28.00" x2="166.50" y2="28.00" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="257.10" y1="28.90" x2="258.90" y2="27.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="258.00" y1="35.00" x2="258.00" y2="26.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="165.60" y1="28.90" x2="167.40" y2="27.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="166.50" y1="35.00" x2="166.50" y2="26.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="212.25" y="27.00" font-size="2.50" text-anchor="middle" fill="#000">9.150</text>
+<line x1="166.50" y1="28.00" x2="151.00" y2="28.00" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="165.60" y1="28.90" x2="167.40" y2="27.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="166.50" y1="35.00" x2="166.50" y2="26.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="150.10" y1="28.90" x2="151.90" y2="27.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="151.00" y1="35.00" x2="151.00" y2="26.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="158.75" y="27.00" font-size="2.50" text-anchor="middle" fill="#000">1.550</text>
+<line x1="151.00" y1="28.00" x2="63.75" y2="28.00" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="150.10" y1="28.90" x2="151.90" y2="27.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="151.00" y1="35.00" x2="151.00" y2="26.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="62.85" y1="28.90" x2="64.65" y2="27.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="63.75" y1="35.00" x2="63.75" y2="26.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="107.38" y="27.00" font-size="2.50" text-anchor="middle" fill="#000">8.725</text>
+<line x1="258.00" y1="21.00" x2="63.75" y2="21.00" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="257.10" y1="21.90" x2="258.90" y2="20.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="258.00" y1="35.00" x2="258.00" y2="19.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="62.85" y1="21.90" x2="64.65" y2="20.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="63.75" y1="35.00" x2="63.75" y2="19.80" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="160.88" y="20.00" font-size="2.50" text-anchor="middle" fill="#000">总宽 19.425</text>
+<line x1="56.75" y1="36.00" x2="56.75" y2="130.00" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="55.85" y1="36.90" x2="57.65" y2="35.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="63.75" y1="36.00" x2="57.95" y2="36.00" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="55.85" y1="130.90" x2="57.65" y2="129.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="63.75" y1="130.00" x2="57.95" y2="130.00" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="55.75" y="83.00" font-size="2.50" text-anchor="middle" fill="#000" transform="rotate(-90 55.75 83.00)">进深 9.400</text>
+<line x1="265.00" y1="36.00" x2="265.00" y2="112.75" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="264.10" y1="36.90" x2="265.90" y2="35.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="258.00" y1="36.00" x2="263.80" y2="36.00" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="264.10" y1="113.65" x2="265.90" y2="111.85" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="258.00" y1="112.75" x2="263.80" y2="112.75" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="264.00" y="74.38" font-size="2.50" text-anchor="middle" fill="#000" transform="rotate(-90 264.00 74.38)">7.675</text>
+<line x1="273.00" y1="36.00" x2="273.00" y2="143.00" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="272.10" y1="36.90" x2="273.90" y2="35.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="258.00" y1="36.00" x2="271.80" y2="36.00" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="272.10" y1="143.90" x2="273.90" y2="142.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="258.00" y1="143.00" x2="271.80" y2="143.00" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="272.00" y="89.50" font-size="2.50" text-anchor="middle" fill="#000" transform="rotate(-90 272.00 89.50)">10.700</text>
+<line x1="166.50" y1="151.00" x2="151.00" y2="151.00" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="165.60" y1="151.90" x2="167.40" y2="150.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="166.50" y1="144.00" x2="166.50" y2="152.20" stroke="#555" stroke-width="0.15" fill="none"/>
+<line x1="150.10" y1="151.90" x2="151.90" y2="150.10" stroke="#000" stroke-width="0.35" fill="none"/>
+<line x1="151.00" y1="144.00" x2="151.00" y2="152.20" stroke="#555" stroke-width="0.15" fill="none"/>
+<text x="158.75" y="150.00" font-size="2.50" text-anchor="middle" fill="#000">通道 1.550</text>
+<line x1="158.75" y1="165.00" x2="158.75" y2="155.50" stroke="#000" stroke-width="0.70" fill="none"/>
+<polygon points="158.75,155.50 159.76,157.89 157.74,157.89" fill="#000" stroke="#000" stroke-width="0.10" stroke-linejoin="round"/>
+<text x="158.75" y="169.50" font-size="3.60" text-anchor="middle" fill="#000" font-weight="bold">正门</text>
+<text x="58.75" y="17.00" font-size="2.40" text-anchor="start" fill="#000">图纸方向：正门在图下方；站在门外向里看，夹层和楼梯在左侧（x 轴反向）。指北方向待现场核实。</text>
+<text x="58.75" y="21.00" font-size="2.40" text-anchor="start" fill="#000" font-weight="bold">空调位置待暖通确定。</text>
+<polygon points="151.00,36.00 63.75,36.00 63.75,130.00 86.50,130.00 86.50,116.40 118.30,116.40 118.30,103.40 151.00,103.40" fill="none" stroke="#666" stroke-width="0.25" stroke-dasharray="2 1" stroke-linejoin="round"/>
+<text x="109.00" y="40.50" font-size="2.20" text-anchor="middle" fill="#555">夹层楼面(+4.100)轮廓</text>
+<rect x="80.90" y="103.40" width="47.60" height="12.00" fill="none" stroke="#000" stroke-width="0.30"/>
+<line x1="125.70" y1="103.40" x2="125.70" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="122.90" y1="103.40" x2="122.90" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="120.10" y1="103.40" x2="120.10" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="117.30" y1="103.40" x2="117.30" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="114.50" y1="103.40" x2="114.50" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="111.70" y1="103.40" x2="111.70" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="108.90" y1="103.40" x2="108.90" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="106.10" y1="103.40" x2="106.10" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="103.30" y1="103.40" x2="103.30" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="100.50" y1="103.40" x2="100.50" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="97.70" y1="103.40" x2="97.70" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="94.90" y1="103.40" x2="94.90" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="92.10" y1="103.40" x2="92.10" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="89.30" y1="103.40" x2="89.30" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="86.50" y1="103.40" x2="86.50" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="83.70" y1="103.40" x2="83.70" y2="115.40" stroke="#000" stroke-width="0.15" fill="none"/>
+<rect x="86.50" y="116.40" width="42.00" height="12.00" fill="none" stroke="#888" stroke-width="0.30" stroke-dasharray="1.6 1"/>
+<line x1="125.70" y1="116.40" x2="125.70" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="122.90" y1="116.40" x2="122.90" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="120.10" y1="116.40" x2="120.10" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="117.30" y1="116.40" x2="117.30" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="114.50" y1="116.40" x2="114.50" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="111.70" y1="116.40" x2="111.70" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="108.90" y1="116.40" x2="108.90" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="106.10" y1="116.40" x2="106.10" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="103.30" y1="116.40" x2="103.30" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="100.50" y1="116.40" x2="100.50" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="97.70" y1="116.40" x2="97.70" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="94.90" y1="116.40" x2="94.90" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="92.10" y1="116.40" x2="92.10" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<line x1="89.30" y1="116.40" x2="89.30" y2="128.40" stroke="#888" stroke-width="0.15" stroke-dasharray="1.6 1" fill="none"/>
+<rect x="128.50" y="103.40" width="22.00" height="25.00" fill="none" stroke="#000" stroke-width="0.30"/>
+<text x="139.50" y="107.50" font-size="2.00" text-anchor="middle" fill="#555">中转平台 +2.100</text>
+<line x1="83.00" y1="109.40" x2="126.00" y2="109.40" stroke="#000" stroke-width="0.50" fill="none"/>
+<polygon points="126.00,109.40 124.16,110.18 124.16,108.62" fill="#000" stroke="#000" stroke-width="0.10" stroke-linejoin="round"/>
+<text x="104.50" y="107.20" font-size="2.20" text-anchor="middle" fill="#000">上(第一跑 18 级)</text>
+<text x="108.00" y="123.40" font-size="2.00" text-anchor="middle" fill="#888">第二跑(上方)</text>
+<rect x="128.70" y="103.90" width="21.60" height="24.00" fill="url(#dots)" stroke="#000" stroke-width="0.40"/>
+<rect x="129.50" y="104.70" width="20.00" height="22.40" fill="none" stroke="#000" stroke-width="0.20"/>
+<line x1="128.70" y1="117.50" x2="128.70" y2="126.30" stroke="#fff" stroke-width="1.00" fill="none"/>
+<line x1="128.70" y1="117.40" x2="119.70" y2="117.40" stroke="#000" stroke-width="0.30" stroke-dasharray="0.8 0.6" fill="none"/>
+<path d="M119.70,117.40 A9.00,9.00 0 0 0 128.70,126.40" fill="none" stroke="#000" stroke-width="0.20" stroke-dasharray="0.8 0.6"/>
+<polygon points="256.00,76.50 209.00,76.50 206.37,76.76 203.83,77.53 201.50,78.78 199.45,80.45 197.78,82.50 196.53,84.83 195.76,87.37 195.50,90.00 195.50,111.70 204.00,111.70 204.00,90.00 204.10,89.02 204.38,88.09 204.84,87.22 205.46,86.46 206.22,85.84 207.09,85.38 208.02,85.10 209.00,85.00 256.00,85.00" fill="none" stroke="#9aa" stroke-width="0.25" stroke-dasharray="2 1" stroke-linejoin="round"/>
+<rect x="201.70" y="96.40" width="13.10" height="13.80" fill="none" stroke="#9aa" stroke-width="0.20" stroke-dasharray="1 .8"/>
+<text x="232.00" y="80.50" font-size="2.00" text-anchor="middle" fill="#789">既有风管(底约 +5.95，吊高)</text>
+<rect x="255.38" y="103.25" width="2.00" height="7.50" fill="#e8c9c6" stroke="#a84039" stroke-width="0.30"/>
+<text x="249.00" y="107.80" font-size="2.00" text-anchor="end" fill="#a84039">既有消火栓箱</text>
+<rect x="94.85" y="62.15" width="8.70" height="8.70" fill="#fff" stroke="#000" stroke-width="0.30"/>
+<line x1="94.85" y1="62.15" x2="103.55" y2="70.85" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="94.85" y1="70.85" x2="103.55" y2="62.15" stroke="#000" stroke-width="0.25" fill="none"/>
+<circle cx="99.20" cy="66.50" r="1.91" fill="#fff" stroke="#000" stroke-width="0.25"/>
+<text x="99.20" y="72.90" font-size="2.00" text-anchor="middle" fill="#000">AC01 电源预留(WK1)</text>
+<polyline points="172.60,112.00 165.60,112.00 165.60,142.00 151.80,142.00 151.80,129.30 117.50,129.30" fill="none" stroke="#333" stroke-width="0.70" stroke-linejoin="round"/>
+<polyline points="175.50,110.95 175.50,110.00 255.00,110.00 255.00,47.00 172.00,47.00" fill="none" stroke="#1f6fb5" stroke-width="0.35" stroke-dasharray="2.2 1" stroke-linejoin="round"/>
+<line x1="254.13" y1="79.90" x2="255.87" y2="78.90" stroke="#1f6fb5" stroke-width="0.30" fill="none"/>
+<line x1="254.13" y1="79.00" x2="255.87" y2="78.00" stroke="#1f6fb5" stroke-width="0.30" fill="none"/>
+<line x1="254.13" y1="78.10" x2="255.87" y2="77.10" stroke="#1f6fb5" stroke-width="0.30" fill="none"/>
+<polyline points="244.00,110.00 244.00,111.00" fill="none" stroke="#1f6fb5" stroke-width="0.30" stroke-linejoin="round"/>
+<polyline points="218.00,110.00 218.00,111.00" fill="none" stroke="#1f6fb5" stroke-width="0.30" stroke-linejoin="round"/>
+<polyline points="192.00,110.00 192.00,111.00" fill="none" stroke="#1f6fb5" stroke-width="0.30" stroke-linejoin="round"/>
+<polyline points="255.00,67.50 256.50,67.50" fill="none" stroke="#1f6fb5" stroke-width="0.30" stroke-linejoin="round"/>
+<polyline points="255.00,90.00 256.50,90.00" fill="none" stroke="#1f6fb5" stroke-width="0.30" stroke-linejoin="round"/>
+<polyline points="149.50,129.30 149.50,48.00 75.00,48.00 75.00,44.00" fill="none" stroke="#17868a" stroke-width="0.35" stroke-dasharray="2.2 1" stroke-linejoin="round"/>
+<line x1="113.65" y1="48.87" x2="112.65" y2="47.13" stroke="#17868a" stroke-width="0.30" fill="none"/>
+<line x1="112.75" y1="48.87" x2="111.75" y2="47.13" stroke="#17868a" stroke-width="0.30" fill="none"/>
+<line x1="111.85" y1="48.87" x2="110.85" y2="47.13" stroke="#17868a" stroke-width="0.30" fill="none"/>
+<circle cx="149.50" cy="129.30" r="1.30" fill="#fff" stroke="#000" stroke-width="0.40"/>
+<line x1="148.50" y1="128.30" x2="150.50" y2="130.30" stroke="#000" stroke-width="0.30" fill="none"/>
+<text x="149.50" y="138.50" font-size="1.90" text-anchor="middle" fill="#000">↑上引夹层：WL4、WX3、WX4、WK2</text>
+<rect x="116.20" y="128.00" width="2.60" height="2.60" fill="#fff" stroke="#000" stroke-width="0.40"/>
+<line x1="116.20" y1="128.00" x2="118.80" y2="130.60" stroke="#000" stroke-width="0.25" fill="none"/>
+<text x="117.50" y="134.80" font-size="1.90" text-anchor="middle" fill="#000">LEB</text>
+<text x="164.00" y="127.00" font-size="1.90" text-anchor="middle" fill="#333" transform="rotate(-90 164.00 127.00)">高位主线槽</text>
+<rect x="172.60" y="110.75" width="5.80" height="1.60" fill="#1f3b57" stroke="#000" stroke-width="0.30"/>
+<text x="180.30" y="110.35" font-size="2.80" text-anchor="start" fill="#000" font-weight="bold">AL1</text>
+<path d="M245.50,111.30 A1.50,1.50 0 0 0 242.50,111.30 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="246.30" y1="111.30" x2="241.70" y2="111.30" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="244.00" y="106.50" font-size="2.10" text-anchor="middle" fill="#000">S01</text>
+<path d="M219.50,111.30 A1.50,1.50 0 0 0 216.50,111.30 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="220.30" y1="111.30" x2="215.70" y2="111.30" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="218.00" y="106.50" font-size="2.10" text-anchor="middle" fill="#000">S02</text>
+<path d="M193.50,111.30 A1.50,1.50 0 0 0 190.50,111.30 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="194.30" y1="111.30" x2="189.70" y2="111.30" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="192.00" y="106.50" font-size="2.10" text-anchor="middle" fill="#000">S03</text>
+<path d="M171.50,45.00 A1.50,1.50 0 0 0 171.50,42.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="171.50" y1="45.80" x2="171.50" y2="41.20" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="177.10" y="44.30" font-size="2.10" text-anchor="middle" fill="#000">S04</text>
+<path d="M167.50,46.00 A1.50,1.50 0 0 0 170.50,46.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="166.70" y1="46.00" x2="171.30" y2="46.00" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="169.00" y="52.40" font-size="2.10" text-anchor="middle" fill="#000">S05</text>
+<path d="M166.50,42.00 A1.50,1.50 0 0 0 166.50,45.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="166.50" y1="41.20" x2="166.50" y2="45.80" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="160.90" y="44.30" font-size="2.10" text-anchor="middle" fill="#000">S06</text>
+<path d="M256.80,66.00 A1.50,1.50 0 0 0 256.80,69.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="256.80" y1="65.20" x2="256.80" y2="69.80" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="251.20" y="68.30" font-size="2.10" text-anchor="middle" fill="#000">S07</text>
+<path d="M256.80,88.50 A1.50,1.50 0 0 0 256.80,91.50 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="256.80" y1="87.70" x2="256.80" y2="92.30" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="251.20" y="90.80" font-size="2.10" text-anchor="middle" fill="#000">S08</text>
+<path d="M73.75,45.00 A1.50,1.50 0 0 0 73.75,42.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="73.75" y1="45.80" x2="73.75" y2="41.20" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="79.35" y="44.30" font-size="2.10" text-anchor="middle" fill="#000">S09</text>
+<path d="M69.75,46.00 A1.50,1.50 0 0 0 72.75,46.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="68.95" y1="46.00" x2="73.55" y2="46.00" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="71.25" y="52.40" font-size="2.10" text-anchor="middle" fill="#000">S10</text>
+<text x="296.00" y="20.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">图 例</text>
+<line x1="296.00" y1="21.50" x2="408.00" y2="21.50" stroke="#000" stroke-width="0.40" fill="none"/>
+<path d="M302.50,23.87 A1.50,1.50 0 0 0 305.50,23.87 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="301.70" y1="23.87" x2="306.30" y2="23.87" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="314.00" y="25.47" font-size="2.40" text-anchor="start" fill="#000">单相五孔插座（半圆，底线靠墙），距地 0.38 m；墙面暗装，柱面用明装线盒</text>
+<rect x="301.10" y="30.07" width="5.80" height="1.60" fill="#1f3b57" stroke="#000" stroke-width="0.30"/>
+<text x="314.00" y="31.87" font-size="2.40" text-anchor="start" fill="#000">配电箱 AL1（全户只设这一个，在一楼）</text>
+<line x1="298.00" y1="37.27" x2="310.00" y2="37.27" stroke="#1f6fb5" stroke-width="0.45" stroke-dasharray="2.2 1" fill="none"/>
+<line x1="302.60" y1="36.40" x2="303.60" y2="38.13" stroke="#1f6fb5" stroke-width="0.30" fill="none"/>
+<line x1="303.50" y1="36.40" x2="304.50" y2="38.13" stroke="#1f6fb5" stroke-width="0.30" fill="none"/>
+<line x1="304.40" y1="36.40" x2="305.40" y2="38.13" stroke="#1f6fb5" stroke-width="0.30" fill="none"/>
+<text x="314.00" y="38.27" font-size="2.40" text-anchor="start" fill="#000">插座回路(各用颜色)：沿实墙踢脚线明装线槽或梁下敷设，不埋地</text>
+<line x1="298.00" y1="43.67" x2="310.00" y2="43.67" stroke="#333" stroke-width="0.70" fill="none"/>
+<text x="314.00" y="44.67" font-size="2.40" text-anchor="start" fill="#000">主线槽：多回路同槽，各回路独立回配电箱，不得在插座处并接</text>
+<rect x="302.70" y="48.77" width="2.60" height="2.60" fill="#fff" stroke="#000" stroke-width="0.40"/>
+<line x1="302.70" y1="48.77" x2="305.30" y2="51.37" stroke="#000" stroke-width="0.25" fill="none"/>
+<text x="314.00" y="51.07" font-size="2.40" text-anchor="start" fill="#000">LEB 局部等电位端子箱（接地联结，不是电源）</text>
+<circle cx="304.00" cy="56.47" r="1.30" fill="#fff" stroke="#000" stroke-width="0.40"/>
+<text x="314.00" y="57.47" font-size="2.40" text-anchor="start" fill="#000">竖向上引点（一楼总箱 AL1 至夹层的回路）</text>
+<rect x="301.50" y="60.37" width="5.00" height="5.00" fill="#fff" stroke="#000" stroke-width="0.30"/>
+<line x1="301.50" y1="60.37" x2="306.50" y2="65.37" stroke="#000" stroke-width="0.25" fill="none"/>
+<line x1="301.50" y1="65.37" x2="306.50" y2="60.37" stroke="#000" stroke-width="0.25" fill="none"/>
+<circle cx="304.00" cy="62.87" r="1.10" fill="#fff" stroke="#000" stroke-width="0.25"/>
+<text x="314.00" y="63.87" font-size="2.40" text-anchor="start" fill="#000">空调电源预留点（一层 WK1、夹层 WK2，位置待暖通确定）</text>
+<rect x="299.00" y="67.77" width="10.00" height="3.00" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
+<text x="314.00" y="70.27" font-size="2.40" text-anchor="start" fill="#000">实墙(灰色填充)</text>
+<line x1="299.00" y1="75.07" x2="309.00" y2="75.07" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<line x1="299.00" y1="76.27" x2="309.00" y2="76.27" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<text x="314.00" y="76.67" font-size="2.40" text-anchor="start" fill="#000">采光玻璃面(细双线)</text>
+<text x="296.00" y="86.07" font-size="3.00" text-anchor="start" fill="#000" font-weight="bold">插座回路表</text>
+<line x1="296.00" y1="87.47" x2="408.00" y2="87.47" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="296.00" y="91.57" font-size="2.40" text-anchor="start" fill="#1f6fb5" font-weight="bold">WX1</text>
+<text x="308.00" y="91.57" font-size="2.30" text-anchor="start" fill="#000">一楼开放办公区普通插座</text>
+<text x="308.00" y="94.97" font-size="2.20" text-anchor="start" fill="#000">点位：S01、S02、S03、S04、S05、S06、S07、S08</text>
+<text x="296.00" y="99.17" font-size="2.40" text-anchor="start" fill="#17868a" font-weight="bold">WX2</text>
+<text x="308.00" y="99.17" font-size="2.30" text-anchor="start" fill="#000">一楼夹层下沿窗插座</text>
+<text x="308.00" y="102.57" font-size="2.20" text-anchor="start" fill="#000">点位：S09、S10</text>
+<text x="12.00" y="180.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">说 明</text>
+<line x1="12.00" y1="181.40" x2="212.00" y2="181.40" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="12.00" y="185.20" font-size="2.40" text-anchor="start" fill="#000">1.</text>
+<text x="17.00" y="185.20" font-size="2.40" text-anchor="start" fill="#000">插座连续编号 S01~S14：一楼 S01~S10，夹层 S11~S14。一楼 10 个：WX1 八个（开放区后墙 S01~S03、主过道旁原柱三个柱面 S04~S06、端墙 S07、S08）、WX2 两个（另一根</text>
+<text x="17.00" y="188.77" font-size="2.40" text-anchor="start" fill="#000">原柱相邻两个柱面 S09、S10）。全部为五孔插座（两孔加三孔），距地 0.38 m。</text>
+<text x="12.00" y="192.84" font-size="2.40" text-anchor="start" fill="#000">2.</text>
+<text x="17.00" y="192.84" font-size="2.40" text-anchor="start" fill="#000">全户不设地面插座，线路不埋地（一楼完成面即结构板面，不得开槽）。WX1 沿开放区后墙、端墙的踢脚线明装线槽，再沿窗腰梁到原柱后贴柱下引；WX2 自 AL1 进高位主线槽，过</text>
+<text x="17.00" y="196.41" font-size="2.40" text-anchor="start" fill="#000">入户门门头到夹层后墙，再沿夹层边梁和窗腰梁到原柱下引。</text>
+<text x="12.00" y="200.48" font-size="2.40" text-anchor="start" fill="#000">3.</text>
+<text x="17.00" y="200.48" font-size="2.40" text-anchor="start" fill="#000">每个回路各自独立回 AL1，同槽不并接。插座不设开关，由 AL1 内各回路的断路器控制。柱面插座用明装线盒，不得剔凿柱身。</text>
+<text x="12.00" y="204.55" font-size="2.40" text-anchor="start" fill="#000">4.</text>
+<text x="17.00" y="204.55" font-size="2.40" text-anchor="start" fill="#000">淋浴间不接任何电源：不设灯、插座、热水器和排风扇，淋浴间内和地面内不得有电线管。只在夏季使用，用冷水。</text>
+<text x="12.00" y="208.62" font-size="2.40" text-anchor="start" fill="#000">5.</text>
+<text x="17.00" y="208.62" font-size="2.40" text-anchor="start" fill="#000">LEB：淋浴间做局部等电位联结，端子箱装在门外后墙，联结金属给水管、地漏、淋浴间金属门框、上方钢平台和钢楼梯。</text>
+<text x="12.00" y="212.69" font-size="2.40" text-anchor="start" fill="#000">6.</text>
+<text x="17.00" y="212.69" font-size="2.40" text-anchor="start" fill="#000">线径、断路器、漏电保护规格由持证电工确定。</text>
+</svg>

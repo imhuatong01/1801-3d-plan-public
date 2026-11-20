@@ -97,7 +97,7 @@ export function setupMeasurements(ctx){
   flight2:{title:'第二跑楼梯',metric:flightMetric(upperRun)+' · '+areaLabel(upperRun*1.5),note:datum.upperRisers+' 级，从平台折返至靠墙出口。',color:'#dfbe81'},
   landing:{title:'中转平台',metric:areaLabel(datum.platformArea),note:'平台面标高 +'+datum.midLanding.toFixed(3)+' m，矩形平台 2.20 × 3.20 m。',color:'#d5ba86'},
   approach:{title:'一楼上楼接近区',metric:flightMetric(approachRun)+' · '+areaLabel(approachRun*1.5),note:'进门侧第一踏步前的通行空间。',color:'#b8b08b'},
-  upper:{title:'二楼钢结构楼面',metric:areaLabel(datum.upperArea),note:'已扣除平台和梯段上方的 矩形洞口 '+areaLabel(datum.openingArea)+'。',color:'#c4b197'},
+  upper:{title:'二楼钢结构楼面',metric:areaLabel(datum.upperArea),note:'已扣除第二跑上方的洞口 '+areaLabel(datum.openingArea)+'。',color:'#c4b197'},
   owner:{title:'一楼私用侧整体',metric:'外框8.725 × 9.400 m · 约81.97㎡',note:'包含吧台健身区、楼梯、平台下卫浴及侧边通路，是整侧合计，不能与子区域相加。',color:'#b6c7b6'},
   frame:{title:'钢架示意',metric:'尺寸显示为柱轴距',note:'轴距不等于柱间净宽；结构位置及尺寸为方案示意，未验算。',color:'#91afb8'},
   corner:{title:'轮廓与柱位细节',metric:'小凹口、入口短段与柱截面',note:'对应数字直接沿边线显示；不单独作为房间面积。',color:'#91afb8'}
@@ -162,7 +162,7 @@ export function setupMeasurements(ctx){
  qdim(upperDims,[10.7,.08,-.4],[19.425,.08,-.4],'8.725 m',2.0);
  qdim(upperDims,[19.75,.08,0],[19.75,.08,9.4],'9.400 m',2.0);
  quietText(upperDims,'二楼钢结构楼面 '+areaLabel(datum.upperArea),[15.1,.17,2.55],3.3);
- quietText(upperDims,'矩形洞口 '+areaLabel(datum.openingArea),[14.8,.35,8.5],2.8);
+ quietText(upperDims,'楼梯洞口 '+areaLabel(datum.openingArea),[15.2,.35,8.5],2.8);
  scopeOverride='corridor';quietText(dims,'16.59 ㎡',[9.925,.1,4.1],1.9);scopeOverride=null;
  scopeOverride='bath';quietText(dims,'6.70 ㎡',[11.85,1.05,8.8],1.9);scopeOverride=null;
  scopeOverride='landing';quietText(stairDims,areaLabel(datum.platformArea),[11.85,platformLocal+.35,8.3],1.9);scopeOverride=null;
@@ -170,7 +170,7 @@ export function setupMeasurements(ctx){
  scopeOverride='flight2';quietText(stairDims,areaLabel(upperRun*1.5),[15.5,4.5,8.3],1.9);scopeOverride=null;
  scopeOverride='approach';quietText(dims,flightMetric(approachRun),[18.35,.2,6.85],2.8);quietText(dims,areaLabel(approachRun*1.5),[18.35,.2,7.35],1.9);scopeOverride=null;
  scopeOverride='arrival';quietText(upperDims,'2.25 ㎡',[18.28,.35,8.1],1.9);scopeOverride=null;
- scopeOverride='upper-side';quietText(upperDims,'1.895 × 1.800 m',[18.48,.35,7.65],2.7);quietText(upperDims,'3.41 ㎡',[18.48,.35,8.3],1.9);scopeOverride=null;
+ scopeOverride='upper-side';quietText(upperDims,(19.325-datum.thresholdX).toFixed(3)+' × 1.800 m',[18.48,.35,7.65],2.7);quietText(upperDims,((19.325-datum.thresholdX)*1.8).toFixed(2)+' ㎡',[18.48,.35,8.3],1.9);scopeOverride=null;
  scopeOverride='upper-edge';quietText(upperDims,'0.160 m · 1.35 ㎡',[14.7,.4,9.32],2.8);scopeOverride=null;
  // Proposed steel frame: centre-to-centre, not clear distance or verified structural spans.
  const xs=[10.82,11.70,17.70,19.29];

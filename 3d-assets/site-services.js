@@ -29,26 +29,34 @@ export function addSiteServices({ THREE, group, box, top }) {
     return mesh;
   }
 
-  // Looking toward the x=0 end wall, the trunk runs along the open bay and turns toward the solid wall on the right.
-  const ductBottom = 6.17;
-  const ductHeight = 0.62;
+  // ---- 既有大风管（现场02 照片校正，2026-11-19）-----------------------------------------
+  // 站在夹层边缘（约 x=11.6, z=4.8）朝 x=0 端墙看：左手玻璃（z=0），右手实墙（z≈7.675），正对端墙有消火栓箱。
+  // 白色保温大风管从端墙附近沿 x 方向走到 x≈4.9，圆角转 90 度，再沿 z 方向走到右侧实墙端头封口。
+  // 圆角内侧挂着一只带百叶的送风箱，百叶朝下；箱体底面比风管底面低一截（照片里能看见箱体的正立面）。
+  // 端墙脚下另有一段更低的白色短风管（沿 z）和镀锌设备风管。
+  // 以下尺寸均为照片估计，待现场核尺。
+  // 校正前：风管底 6.17、高 0.62（顶 6.79），百叶口与风管底齐平且被风管盖住，在 3D 里几乎看不见。
+  // 校正后：风管底 5.95、高 0.55（顶 6.50）。照片里风管顶并没有贴着屋顶梁底（梁底 7.73），中间还有约 1.2 m 空隙，
+  // 之前把它画高了约 0.27 m。送风箱底面比风管底再低约 0.45 m。
+  const ductBottom = 5.95;
+  const ductHeight = 0.55;
+  const ductTop = ductBottom + ductHeight;
+  const boxDrop = 0.45;                       // 送风箱底面比风管底低
+  const boxBottom = ductBottom - boxDrop;
+  const boxTop = ductBottom + 0.30;
+  const innerEdge = 5.40;                     // 沿 z 走向那一段风管的内侧面（x）
   const ductPlan = new THREE.Shape();
   ductPlan.moveTo(0.20, 4.05);
   ductPlan.lineTo(4.90, 4.05);
   ductPlan.absarc(4.90, 5.40, 1.35, -Math.PI / 2, 0, false);
   ductPlan.lineTo(6.25, 7.57);
-  const innerEdge = 5.40, branchNear = 5.97, branchFar = 7.49, branchLeft = 4.26;
-  const branchHeight = 0.40;
   ductPlan.lineTo(innerEdge, 7.57);
-  ductPlan.lineTo(innerEdge, branchFar);
-  ductPlan.lineTo(innerEdge, branchNear);
   ductPlan.lineTo(innerEdge, 5.40);
   ductPlan.absarc(4.90, 5.40, 0.50, 0, -Math.PI / 2, true);
   ductPlan.lineTo(0.20, 4.90);
   ductPlan.closePath();
 
-  const branchFinish = material('#acb5b5');
-  for (const finish of [aluminum, branchFinish, grilleDark]) finish.side = THREE.DoubleSide;
+  for (const finish of [aluminum, grilleDark]) finish.side = THREE.DoubleSide;
   const trunk = new THREE.Group();
   trunk.name = 'site-duct-rounded-elbow';
   hvac.add(trunk);
@@ -79,60 +87,50 @@ export function addSiteServices({ THREE, group, box, top }) {
     return mesh;
   }
 
-  // The terminal connects through an open side of the main duct. Its sheet-metal top
-  // is lower than the trunk top; both undersides meet the same finished elevation.
-  horizontalSheet(trunk, ductPlan, ductBottom + ductHeight, aluminum);
+  horizontalSheet(trunk, ductPlan, ductTop, aluminum);
+  horizontalSheet(trunk, ductPlan, ductBottom, aluminum);
   const outline = ductPlan.getPoints(12);
   const trunkSides = [];
-  const outerBottom = new THREE.Shape();
-  outerBottom.moveTo(outline[0].x, outline[0].y);
   for (let i = 1; i < outline.length; i++) {
     const a = outline[i - 1], b = outline[i];
-    const branchMouth = a.x === innerEdge && b.x === innerEdge && a.y === branchFar && b.y === branchNear;
-    if (branchMouth) {
-      outerBottom.lineTo(branchLeft, branchFar);
-      outerBottom.lineTo(branchLeft, branchNear);
-    }
-    outerBottom.lineTo(b.x, b.y);
-    sidePanel(trunkSides, a.x, a.y, b.x, b.y,
-      ductBottom + (branchMouth ? branchHeight : 0), ductBottom + ductHeight);
+    sidePanel(trunkSides, a.x, a.y, b.x, b.y, ductBottom, ductTop);
   }
-  outerBottom.closePath();
+  const last = outline[outline.length - 1], first = outline[0];
+  if (last.x !== first.x || last.y !== first.y) sidePanel(trunkSides, last.x, last.y, first.x, first.y, ductBottom, ductTop);
   casing(trunk, trunkSides, aluminum);
 
+  // 圆角内侧的送风箱（既有预留出风口）。箱体贴着风管内侧面，顶部藏在风管高度范围内，底面下垂 boxDrop。
+  const boxLeft = 4.35, boxNear = 5.45, boxFar = 7.50;
   const branch = new THREE.Group();
   branch.name = 'site-outlet-casing';
   hvac.add(branch);
-  horizontalSheet(branch, rectangle(branchLeft, branchNear, innerEdge, branchFar),
-    ductBottom + branchHeight, branchFinish);
-  const branchSides = [];
-  sidePanel(branchSides, innerEdge, branchFar, branchLeft, branchFar, ductBottom, ductBottom + branchHeight);
-  sidePanel(branchSides, branchLeft, branchFar, branchLeft, branchNear, ductBottom, ductBottom + branchHeight);
-  sidePanel(branchSides, branchLeft, branchNear, innerEdge, branchNear, ductBottom, ductBottom + branchHeight);
-  casing(branch, branchSides, branchFinish);
-
-  // A genuine opening crosses the junction. The rim and louvers sit flush; there is
-  // no overlapping duct bottom or solid backing plate across the grille.
-  const left = 4.32, right = 5.63, near = 6.04, far = 7.42, rim = 0.035;
+  const outletBox = box(branch, boxLeft, boxBottom, boxNear, innerEdge - boxLeft, boxTop - boxBottom, boxFar - boxNear, aluminum);
+  outletBox.name = 'site-outlet-box';
+  // 百叶口：长边沿 z（跟风管同向），朝下，嵌在箱体底面。
+  const left = 4.48, right = 5.27, near = 5.62, far = 7.33, rim = 0.035;
   const rimProfile = rectangle(left - rim, near - rim, right + rim, far + rim);
-  outerBottom.holes.push(rimProfile.clone());
-  horizontalSheet(trunk, outerBottom, ductBottom, aluminum);
   rimProfile.holes.push(rectangle(left, near, right, far));
-  const outlet = horizontalSheet(branch, rimProfile, ductBottom, grilleDark);
+  const outlet = horizontalSheet(branch, rimProfile, boxBottom - 0.004, grilleDark);
   outlet.name = 'site-supply-outlet';
-  const louverHeight = 0.012;
-  const louver = new THREE.BoxGeometry(right - left, louverHeight, 0.019);
-  const slats = new THREE.InstancedMesh(louver, galvanized, 15);
+  const slatCount = 9, slatWidth = 0.022, slatHeight = 0.012;
+  const slat = new THREE.BoxGeometry(slatWidth, slatHeight, far - near);
+  const slats = new THREE.InstancedMesh(slat, galvanized, slatCount);
   slats.name = 'site-supply-louvers';
   const matrix = new THREE.Matrix4();
-  for (let i = 0; i < slats.count; i++) {
-    slats.setMatrixAt(i, matrix.makeTranslation((left + right) / 2, ductBottom + louverHeight / 2,
-      near + (i + 0.5) * (far - near) / slats.count));
+  for (let i = 0; i < slatCount; i++) {
+    slats.setMatrixAt(i, matrix.makeTranslation(left + (i + 0.5) * (right - left) / slatCount,
+      boxBottom - slatHeight / 2 - 0.004, (near + far) / 2));
   }
   branch.add(slats);
-  box(hvac, 0.68, 6.23, 4.89, 0.68, 0.43, 2.63, aluminum);
-  box(hvac, 1.35, 6.30, 6.64, 1.68, 0.32, 0.42, galvanized);
-  box(hvac, 2.66, 6.30, 7.05, 0.37, 0.32, 0.49, galvanized);
+  // 供新增支管读取接口位置（air-layout.js 用）。
+  outlet.userData.duct = { ductBottom, ductHeight, ductTop, boxDrop, boxBottom, boxTop, boxLeft, boxNear, boxFar,
+    innerEdge, runEndX: 6.25, wallZ: 7.57, photoEstimate: true };
+
+  // 端墙脚下更低的一段白色风管（沿 z，约 x 0.68~1.36），以及镀锌设备风管。照片里这段底面比大风管底再低约 0.3 m。
+  const lowerRun = box(hvac, 0.68, ductBottom - 0.30, 4.89, 0.68, 0.60, 2.63, aluminum);
+  lowerRun.name = 'site-duct-back-run';
+  box(hvac, 1.35, ductBottom + 0.05, 6.64, 1.68, 0.32, 0.42, galvanized).name = 'site-duct-galvanized-1';
+  box(hvac, 2.66, ductBottom + 0.05, 7.05, 0.37, 0.32, 0.49, galvanized).name = 'site-duct-galvanized-2';
 
   // CAD locates the fire cabinet on the x=0 end wall. Its doors face +x, toward the room.
   const cabinet = box(fire, 0.062, 0.04, 6.725, 0.20, 1.62, 0.75, cabinetEdge);

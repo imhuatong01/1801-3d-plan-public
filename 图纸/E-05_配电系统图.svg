@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297" font-family='Microsoft YaHei,PingFang SC,Noto Sans SC,sans-serif'>
+<rect width="420" height="297" fill="#fff"/>
+<defs><pattern id="hatch" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2" stroke="#777" stroke-width=".25"/></pattern><pattern id="dots" width="1.6" height="1.6" patternUnits="userSpaceOnUse"><circle cx=".8" cy=".8" r=".18" fill="#999"/></pattern></defs>
+<rect x="5.00" y="5.00" width="410.00" height="287.00" fill="none" stroke="#000" stroke-width="0.15"/>
+<rect x="10.00" y="10.00" width="400.00" height="277.00" fill="none" stroke="#000" stroke-width="0.60"/>
+<rect x="215.00" y="247.00" width="195.00" height="40.00" fill="none" stroke="#000" stroke-width="0.50"/>
+<line x1="215.00" y1="257.00" x2="410.00" y2="257.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="215.00" y1="267.00" x2="410.00" y2="267.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="215.00" y1="277.00" x2="410.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="243.00" y1="247.00" x2="243.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="313.00" y1="267.00" x2="313.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<line x1="358.00" y1="267.00" x2="358.00" y2="277.00" stroke="#000" stroke-width="0.30" fill="none"/>
+<text x="217.00" y="254.30" font-size="2.60" text-anchor="start" fill="#000">设计单位</text>
+<text x="245.00" y="254.90" font-size="4.40" text-anchor="start" fill="#000" font-weight="bold">台北市有间设计公司</text>
+<text x="345.00" y="254.30" font-size="2.80" text-anchor="start" fill="#000">工程名称  1801-OPC空间</text>
+<text x="217.00" y="264.30" font-size="2.60" text-anchor="start" fill="#000">图    名</text>
+<text x="245.00" y="264.60" font-size="3.60" text-anchor="start" fill="#000" font-weight="bold">配电系统图</text>
+<text x="217.00" y="274.30" font-size="2.60" text-anchor="start" fill="#000">图    号</text>
+<text x="245.00" y="274.60" font-size="3.80" text-anchor="start" fill="#000" font-weight="bold">E-05</text>
+<text x="315.00" y="274.30" font-size="2.80" text-anchor="start" fill="#000">比例 无比例（单线示意）</text>
+<text x="360.00" y="274.30" font-size="2.80" text-anchor="start" fill="#000">日期 2026-11-19</text>
+<text x="312.50" y="284.40" font-size="3.00" text-anchor="middle" fill="#c0392b" font-weight="bold">方案图 非施工图 须由持证电工/给排水工程师深化</text>
+<text x="14.00" y="19.00" font-size="3.60" text-anchor="start" fill="#000" font-weight="bold">配电系统图（单线图）— 断路器规格、线径由持证电工确定</text>
+<text x="14.00" y="24.00" font-size="2.40" text-anchor="start" fill="#555">本图只表达"箱—回路—负荷"的关系，不是施工图。</text>
+<line x1="52.00" y1="30.00" x2="52.00" y2="46.00" stroke="#000" stroke-width="0.60" fill="none"/>
+<text x="55.00" y="33.00" font-size="2.40" text-anchor="start" fill="#000">电源进线：由物业/楼层电表箱引入，接入点待核</text>
+<text x="55.00" y="37.00" font-size="2.40" text-anchor="start" fill="#000">进线规格、总开关、电能计量：由持证电工确定</text>
+<line x1="50.40" y1="39.40" x2="53.60" y2="42.60" stroke="#000" stroke-width="0.50" fill="none"/>
+<line x1="50.40" y1="42.60" x2="53.60" y2="39.40" stroke="#000" stroke-width="0.50" fill="none"/>
+<rect x="14.00" y="46.00" width="262.00" height="7.00" fill="#1f3b57" stroke="#000" stroke-width="0.25"/>
+<text x="18.00" y="51.00" font-size="3.00" text-anchor="start" fill="#fff" font-weight="bold">AL1 总配电箱（全户唯一配电箱；一楼，进门右手墙内侧，挂高 1.15~1.87）</text>
+<text x="285.00" y="51.00" font-size="2.00" text-anchor="start" fill="#000"></text>
+<text x="60.00" y="59.00" font-size="2.60" text-anchor="start" fill="#000" font-weight="bold">回路号</text>
+<text x="80.00" y="59.00" font-size="2.60" text-anchor="start" fill="#000" font-weight="bold">断路器</text>
+<text x="108.00" y="59.00" font-size="2.60" text-anchor="start" fill="#000" font-weight="bold">线径</text>
+<text x="130.00" y="59.00" font-size="2.60" text-anchor="start" fill="#000" font-weight="bold">保护</text>
+<text x="156.00" y="59.00" font-size="2.60" text-anchor="start" fill="#000" font-weight="bold">用途</text>
+<text x="205.00" y="59.00" font-size="2.60" text-anchor="start" fill="#000" font-weight="bold">负荷点 / 控制</text>
+<line x1="14.00" y1="60.50" x2="290.00" y2="60.50" stroke="#000" stroke-width="0.40" fill="none"/>
+<line x1="52.00" y1="66.00" x2="59.00" y2="66.00" stroke="#1f6fb5" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="64.80" x2="55.70" y2="67.20" stroke="#1f6fb5" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="67.20" x2="55.70" y2="64.80" stroke="#1f6fb5" stroke-width="0.40" fill="none"/>
+<text x="60.00" y="67.00" font-size="2.70" text-anchor="start" fill="#1f6fb5" font-weight="bold">WL1</text>
+<text x="80.00" y="67.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="67.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="67.00" font-size="2.10" text-anchor="start" fill="#000">电工定</text>
+<text x="156.00" y="67.00" font-size="2.20" text-anchor="start" fill="#000">一楼开放办公区照明</text>
+<text x="205.00" y="67.00" font-size="2.10" text-anchor="start" fill="#000">L01、L02、L03、L04、L05、L06  控制：K1a~K1f（每盏一联）</text>
+<line x1="52.00" y1="76.00" x2="59.00" y2="76.00" stroke="#c07a10" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="74.80" x2="55.70" y2="77.20" stroke="#c07a10" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="77.20" x2="55.70" y2="74.80" stroke="#c07a10" stroke-width="0.40" fill="none"/>
+<text x="60.00" y="77.00" font-size="2.70" text-anchor="start" fill="#c07a10" font-weight="bold">WL2</text>
+<text x="80.00" y="77.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="77.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="77.00" font-size="2.10" text-anchor="start" fill="#000">电工定</text>
+<text x="156.00" y="77.00" font-size="2.20" text-anchor="start" fill="#000">一楼夹层下(健身区)照明</text>
+<text x="205.00" y="77.00" font-size="2.10" text-anchor="start" fill="#000">L07、L08、L09、L10、L11、L12  控制：K3a</text>
+<line x1="52.00" y1="86.00" x2="59.00" y2="86.00" stroke="#17868a" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="84.80" x2="55.70" y2="87.20" stroke="#17868a" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="87.20" x2="55.70" y2="84.80" stroke="#17868a" stroke-width="0.40" fill="none"/>
+<text x="60.00" y="87.00" font-size="2.70" text-anchor="start" fill="#17868a" font-weight="bold">WL3</text>
+<text x="80.00" y="87.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="87.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="87.00" font-size="2.10" text-anchor="start" fill="#000">电工定</text>
+<text x="156.00" y="87.00" font-size="2.20" text-anchor="start" fill="#000">楼梯通道照明(3 盏，双控)</text>
+<text x="205.00" y="87.00" font-size="2.10" text-anchor="start" fill="#000">L13、L14、L15  控制：K2a、K4b</text>
+<line x1="52.00" y1="96.00" x2="59.00" y2="96.00" stroke="#7a56a4" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="94.80" x2="55.70" y2="97.20" stroke="#7a56a4" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="97.20" x2="55.70" y2="94.80" stroke="#7a56a4" stroke-width="0.40" fill="none"/>
+<text x="60.00" y="97.00" font-size="2.70" text-anchor="start" fill="#7a56a4" font-weight="bold">WL4</text>
+<text x="80.00" y="97.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="97.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="97.00" font-size="2.10" text-anchor="start" fill="#000">电工定</text>
+<text x="156.00" y="97.00" font-size="2.20" text-anchor="start" fill="#000">二楼办公区照明</text>
+<text x="205.00" y="97.00" font-size="2.10" text-anchor="start" fill="#000">L16、L17、L18  控制：K4a</text>
+<line x1="52.00" y1="106.00" x2="59.00" y2="106.00" stroke="#1f6fb5" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="104.80" x2="55.70" y2="107.20" stroke="#1f6fb5" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="107.20" x2="55.70" y2="104.80" stroke="#1f6fb5" stroke-width="0.40" fill="none"/>
+<circle cx="54.50" cy="106.00" r="2.00" fill="none" stroke="#1f6fb5" stroke-width="0.35"/>
+<text x="60.00" y="107.00" font-size="2.70" text-anchor="start" fill="#1f6fb5" font-weight="bold">WX1</text>
+<text x="80.00" y="107.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="107.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="107.00" font-size="2.10" text-anchor="start" fill="#000">漏电保护</text>
+<text x="156.00" y="107.00" font-size="2.20" text-anchor="start" fill="#000">一楼开放办公区普通插座</text>
+<text x="205.00" y="107.00" font-size="2.10" text-anchor="start" fill="#000">S01、S02、S03、S04、S05、S06、S07、S08</text>
+<line x1="52.00" y1="116.00" x2="59.00" y2="116.00" stroke="#17868a" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="114.80" x2="55.70" y2="117.20" stroke="#17868a" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="117.20" x2="55.70" y2="114.80" stroke="#17868a" stroke-width="0.40" fill="none"/>
+<circle cx="54.50" cy="116.00" r="2.00" fill="none" stroke="#17868a" stroke-width="0.35"/>
+<text x="60.00" y="117.00" font-size="2.70" text-anchor="start" fill="#17868a" font-weight="bold">WX2</text>
+<text x="80.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">漏电保护</text>
+<text x="156.00" y="117.00" font-size="2.20" text-anchor="start" fill="#000">一楼夹层下沿窗插座</text>
+<text x="205.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">S09、S10</text>
+<line x1="52.00" y1="126.00" x2="59.00" y2="126.00" stroke="#c07a10" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="124.80" x2="55.70" y2="127.20" stroke="#c07a10" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="127.20" x2="55.70" y2="124.80" stroke="#c07a10" stroke-width="0.40" fill="none"/>
+<circle cx="54.50" cy="126.00" r="2.00" fill="none" stroke="#c07a10" stroke-width="0.35"/>
+<text x="60.00" y="127.00" font-size="2.70" text-anchor="start" fill="#c07a10" font-weight="bold">WX3</text>
+<text x="80.00" y="127.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="127.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="127.00" font-size="2.10" text-anchor="start" fill="#000">漏电保护</text>
+<text x="156.00" y="127.00" font-size="2.20" text-anchor="start" fill="#000">夹层柱面及后墙插座</text>
+<text x="205.00" y="127.00" font-size="2.10" text-anchor="start" fill="#000">S11、S12、S13</text>
+<line x1="52.00" y1="136.00" x2="59.00" y2="136.00" stroke="#7a56a4" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="134.80" x2="55.70" y2="137.20" stroke="#7a56a4" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="137.20" x2="55.70" y2="134.80" stroke="#7a56a4" stroke-width="0.40" fill="none"/>
+<circle cx="54.50" cy="136.00" r="2.00" fill="none" stroke="#7a56a4" stroke-width="0.35"/>
+<text x="60.00" y="137.00" font-size="2.70" text-anchor="start" fill="#7a56a4" font-weight="bold">WX4</text>
+<text x="80.00" y="137.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="137.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="137.00" font-size="2.10" text-anchor="start" fill="#000">漏电保护</text>
+<text x="156.00" y="137.00" font-size="2.20" text-anchor="start" fill="#000">夹层端墙插座</text>
+<text x="205.00" y="137.00" font-size="2.10" text-anchor="start" fill="#000">S14</text>
+<line x1="52.00" y1="146.00" x2="59.00" y2="146.00" stroke="#000" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="144.80" x2="55.70" y2="147.20" stroke="#000" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="147.20" x2="55.70" y2="144.80" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="60.00" y="147.00" font-size="2.70" text-anchor="start" fill="#000" font-weight="bold">WK1</text>
+<text x="80.00" y="147.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="147.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="147.00" font-size="2.10" text-anchor="start" fill="#000">电工定</text>
+<text x="156.00" y="147.00" font-size="2.20" text-anchor="start" fill="#000">空调电源 AC01(预留，设备待定)</text>
+<text x="205.00" y="147.00" font-size="2.10" text-anchor="start" fill="#000">AC01</text>
+<line x1="52.00" y1="156.00" x2="59.00" y2="156.00" stroke="#000" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="154.80" x2="55.70" y2="157.20" stroke="#000" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="157.20" x2="55.70" y2="154.80" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="60.00" y="157.00" font-size="2.70" text-anchor="start" fill="#000" font-weight="bold">WK2</text>
+<text x="80.00" y="157.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="157.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="157.00" font-size="2.10" text-anchor="start" fill="#000">电工定</text>
+<text x="156.00" y="157.00" font-size="2.20" text-anchor="start" fill="#000">空调电源 AC02(预留，设备待定)</text>
+<text x="205.00" y="157.00" font-size="2.10" text-anchor="start" fill="#000">AC02</text>
+<line x1="52.00" y1="166.00" x2="59.00" y2="166.00" stroke="#000" stroke-width="0.50" fill="none"/>
+<line x1="53.30" y1="164.80" x2="55.70" y2="167.20" stroke="#000" stroke-width="0.40" fill="none"/>
+<line x1="53.30" y1="167.20" x2="55.70" y2="164.80" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="60.00" y="167.00" font-size="2.70" text-anchor="start" fill="#000" font-weight="bold">WE1</text>
+<text x="80.00" y="167.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="108.00" y="167.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
+<text x="130.00" y="167.00" font-size="2.10" text-anchor="start" fill="#000">电工定</text>
+<text x="156.00" y="167.00" font-size="2.20" text-anchor="start" fill="#000">应急照明与疏散指示(不经开关)</text>
+<text x="205.00" y="167.00" font-size="2.10" text-anchor="start" fill="#000">位置见 A-01</text>
+<line x1="52.00" y1="53.00" x2="52.00" y2="170.00" stroke="#000" stroke-width="0.60" fill="none"/>
+<text x="296.00" y="20.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">图 例</text>
+<line x1="296.00" y1="21.50" x2="408.00" y2="21.50" stroke="#000" stroke-width="0.40" fill="none"/>
+<line x1="301.00" y1="22.47" x2="307.00" y2="26.47" stroke="#000" stroke-width="0.40" fill="none"/>
+<line x1="301.00" y1="26.47" x2="307.00" y2="22.47" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="314.00" y="25.47" font-size="2.40" text-anchor="start" fill="#000">断路器（线上画×）</text>
+<line x1="301.00" y1="28.87" x2="307.00" y2="32.87" stroke="#000" stroke-width="0.40" fill="none"/>
+<line x1="301.00" y1="32.87" x2="307.00" y2="28.87" stroke="#000" stroke-width="0.40" fill="none"/>
+<circle cx="304.00" cy="30.87" r="3.20" fill="none" stroke="#000" stroke-width="0.35"/>
+<text x="314.00" y="31.87" font-size="2.40" text-anchor="start" fill="#000">漏电断路器（×外加圆）</text>
+<rect x="301.10" y="36.47" width="5.80" height="1.60" fill="#1f3b57" stroke="#000" stroke-width="0.30"/>
+<text x="314.00" y="38.27" font-size="2.40" text-anchor="start" fill="#000">配电箱</text>
+<line x1="298.00" y1="43.67" x2="310.00" y2="43.67" stroke="#1f6fb5" stroke-width="0.45" fill="none"/>
+<text x="314.00" y="44.67" font-size="2.40" text-anchor="start" fill="#000">回路线（各回路用颜色区分）</text>
+<text x="296.00" y="62.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">说 明</text>
+<line x1="296.00" y1="63.40" x2="408.00" y2="63.40" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="296.00" y="67.20" font-size="2.40" text-anchor="start" fill="#000">1.</text>
+<text x="301.00" y="67.20" font-size="2.40" text-anchor="start" fill="#000">断路器规格、导线截面、漏电保护动作电流、进线容量全部留空，由持证电工按实际负荷计算确定。</text>
+<text x="296.00" y="71.27" font-size="2.40" text-anchor="start" fill="#000">2.</text>
+<text x="301.00" y="71.27" font-size="2.40" text-anchor="start" fill="#000">WL1~WL4 照明；WX1~WX4 插座；WK1、WK2 空调预留，每台一个回路。</text>
+<text x="296.00" y="75.34" font-size="2.40" text-anchor="start" fill="#000">3.</text>
+<text x="301.00" y="75.34" font-size="2.40" text-anchor="start" fill="#000">WE1 应急照明与疏散指示，不经开关。淋浴间不接任何电源（不设灯、插座、热水器和排风扇）。</text>
+<text x="296.00" y="79.41" font-size="2.40" text-anchor="start" fill="#000">4.</text>
+<text x="301.00" y="79.41" font-size="2.40" text-anchor="start" fill="#000">全户只设 AL1 一个配电箱，夹层不设分箱；夹层回路 WL4、WX3、WX4、WK2 由 AL1 经高位主线</text>
+<text x="301.00" y="82.98" font-size="2.40" text-anchor="start" fill="#000">槽上引。灯由墙上开关控制，插座不设开关，由箱内各回路断路器控制。</text>
+<text x="296.00" y="87.05" font-size="2.40" text-anchor="start" fill="#000">5.</text>
+<text x="301.00" y="87.05" font-size="2.40" text-anchor="start" fill="#000">所有插座回路带漏电保护。各回路独立回箱，同槽不并接。</text>
+<text x="296.00" y="91.12" font-size="2.40" text-anchor="start" fill="#000">6.</text>
+<text x="301.00" y="91.12" font-size="2.40" text-anchor="start" fill="#000">楼梯灯回路 WL3 三盏(L13、L14、L15)：一楼 K2 与二楼 K4b 双控；开放办公区 L01~L06 由 K</text>
+<text x="301.00" y="94.69" font-size="2.40" text-anchor="start" fill="#000">1 六联分别控制；二楼办公区 L16~L18 为 WL4，由 K4a 控制。</text>
+<text x="296.00" y="98.76" font-size="2.40" text-anchor="start" fill="#000">7.</text>
+<text x="301.00" y="98.76" font-size="2.40" text-anchor="start" fill="#000">淋浴间做局部等电位联结(LEB)，位置见 E-02。</text>
+<text x="296.00" y="102.83" font-size="2.40" text-anchor="start" fill="#000">8.</text>
+<text x="301.00" y="102.83" font-size="2.40" text-anchor="start" fill="#000">空调的型号和功率待定，确定后核定 AL1 进线容量；V01 是接自预留送风箱的送风口，无电气负荷</text>
+<text x="301.00" y="106.40" font-size="2.40" text-anchor="start" fill="#000">。</text>
+<text x="296.00" y="110.47" font-size="2.40" text-anchor="start" fill="#000">9.</text>
+<text x="301.00" y="110.47" font-size="2.40" text-anchor="start" fill="#000">AL1 电源接入点待核。</text>
+</svg>

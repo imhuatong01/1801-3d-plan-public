@@ -1,5 +1,5 @@
 // All coordinates are metres in the plan of 18F. Circuit drawings use this same layout.
-import {MEZZANINE} from './site-shell.js?v=80';
+import {MEZZANINE} from './site-shell.js?v=105';
 
 const fixtureWidth = .70;
 const fixtureHalfHeight = .084;
@@ -30,7 +30,8 @@ export function lightingLayout({ beltTop = MEZZANINE.steelTop, windowBays = {lon
   }
   for (const [index,x] of stations.entries()) light(label('L',index),'WL1','long',0,1,x,lowerY,beltLongZ);
   for (let i=0;i<shortCount;i++) light(label('L',longCount+i),'WL1','short',-1,0,beltShortX,lowerY,beltLongZ+(i+.5)*pitch);
-  for (const [index,x] of stations.entries()) light(label('U',index),'WL2','long',0,1,x,roofY,roofZ);
+  // Top-beam lamps only over the mezzanine: the open double-height side has none (owner, 2026-11-20).
+  for (const [index,x] of stations.entries()) if (x > 10.70) light(label('U',index),'WL2','long',0,1,x,roofY,roofZ);
 
   const wallThickness = .12;
   for (const [index,x] of stations.entries()) {
@@ -45,7 +46,8 @@ export function lightingLayout({ beltTop = MEZZANINE.steelTop, windowBays = {lon
         Math.floor((x+fixtureWidth/2-MEZZANINE.upperStartX)/MEZZANINE.going)+1)*MEZZANINE.riser;
       if(top >= lowerY-fixtureHalfHeight){omitted.push({peer,x,reason:'末段踏步遮挡同高墙灯'});continue;}
     }
-    light(label('W',index),'WL3','long',0,-1,x,lowerY,wall.a[1]-wallThickness/2);
+    // Over the stair there is no floor, so the two back-wall lamps there sit higher, clear of people on the stair.
+    light(label('W',index),'WL3','long',0,-1,x,x>10.70?5.00:lowerY,wall.a[1]-wallThickness/2);
   }
 
   function route(circuit,kind,id,points){
@@ -104,7 +106,7 @@ export function makeWindowLighting({THREE,box,...options}) {
   const fixtureGroups={},circuitGroups={};
   const finished=(color,roughness)=>new THREE.MeshStandardMaterial({color,roughness});
   const plate=finished('#46535b',.64), casework=finished('#716b60',.48);
-  const lens=new THREE.MeshStandardMaterial({color:'#fff2ce',emissive:'#ffdb92',emissiveIntensity:.74,roughness:.68});
+  const lens=new THREE.MeshStandardMaterial({color:'#ffb31a',emissive:'#ff9d00',emissiveIntensity:.9,roughness:.6});lens.userData.keepLook=true;
   const wireMaterials={};
   for(const [id,group] of Object.entries(groups)){
     const fa=new THREE.Group(),ca=new THREE.Group();
