@@ -7,10 +7,10 @@ import {addSiteServices} from './site-services.js?v=104';
 import {buildFloorComparison} from './floor-comparison.js?v=74';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=157';
+import {setupMeasurements} from './measurements-height-only.js?v=160';
 import {setupLook} from './look.js?v=118';
 import {setupDimensions} from './dimensions.js?v=85';
-import {addProjectDimensions} from './dimension-data.js?v=157';
+import {addProjectDimensions} from './dimension-data.js?v=160';
 import {FURNITURE_KIT,defaultFurnitureLayout} from './furniture-kit.js?v=125';
 import {setupRoles} from './roles.js?v=153';
 const $=s=>document.querySelector(s), host=$('#viewport');
@@ -129,10 +129,12 @@ function furnitureEnd(previous){for(const o of [...ground.children,...upper.chil
 const FINISH={floor18:'#cbd0cc',aisle:'#b4b8b0',floorMezz:'#cbd0cc',wall:'#f1f0ea',mat:'#3c4347'};
 const finishMat=c=>{const m=mat(c);m.userData.keepLook=true;return m};
 for(const m of groundFloorMeshes)m.material=finishMat(FINISH.floor18);upperSlab.material=finishMat(FINISH.floorMezz);
-const aisleW=1.55, stairAisleZ=6.04-aisleW;
+// The stair aisle runs right along the front of the first flight (owner, 2026-11-23): no strip is left between.
+const aisleW=1.55, stairAisleZ=MEZZANINE.platformZ0-aisleW;
 corridor.material=finishMat(FINISH.aisle);
 const stairAisle=zone(ground,10.70,stairAisleZ,19.275-10.70,aisleW,FINISH.aisle,'楼梯过道 · 宽'+aisleW.toFixed(2)+'m','进门沿主过道前行后左转，沿此过道走到楼梯起步；与主过道同宽。');stairAisle.material.userData.keepLook=true;
-const matX=14.75,matZ=.30,matW=4.45,matD=stairAisleZ-.30-matZ;
+// The mat keeps 1.00 m clear in front of the aisle, as on the floor-finish sheet.
+const matX=14.75,matZ=.30,matW=4.45,matD=stairAisleZ-1.00-matZ;
 const trainingMat=box(ground,matX,0,matZ,matW,.10,matD,FINISH.mat);trainingMat.name='boxing-mat';trainingMat.material.userData.keepLook=true;
 const bagGroup=new THREE.Group();bagGroup.name='hanging-bag';bagGroup.position.set(matX+matW/2,0,matZ+matD/2);ground.add(bagGroup);
 const bagHang=upperDeckUnderside-MEZZANINE.joistDepth-MEZZANINE.lowerFinish, bagMid=.10+.80+.60;
@@ -876,7 +878,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=158';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=160';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('图纸/F-01_地面与墙面做法图.svg','地面与墙面做法图');
 $('#electricalGround').onclick=()=>showFlatPlan('图纸/E-01_一层照明平面图.svg','一层照明平面图');

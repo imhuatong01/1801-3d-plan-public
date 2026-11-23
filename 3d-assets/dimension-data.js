@@ -37,7 +37,7 @@ export function addProjectDimensions(D, {ground, upper, stairs, structure, field
   // Interior height as the owner states it: 4.2 + 4.2 + the drop, up to the roof structural level.
   D.dim(fieldFrame, [-.9, F1, 0], [-.9, M.roomTop, 0], [0, 0, 0], '室内总高 ' + f3(M.roomTop - F1) + '（4.2 + 4.2 + ' + f2(-F1) + '）', cad(1));
   D.dim(fieldFrame, [-.9, F1, 2.2], [-.9, soffit, 2.2], [0, 0, 0], '到屋顶板底约 ' + f3(soffit - F1) + '（板厚按 250 估）', est(3));
-  D.note(ground, [15.0, F1, 3.0], '吧台 / 健身 8.725 × 6.040 · 52.7 ㎡', plan(2));
+  D.note(ground, [15.0, F1, 3.0], '吧台 / 健身 8.725 × ' + f3(M.platformZ0 - 1.55) + ' · ' + (8.725 * (M.platformZ0 - 1.55)).toFixed(1) + ' ㎡', plan(2));
 
   // ---------- storey levels: CAD level schedule ----------
   const hx = W, hz = DEPTH;

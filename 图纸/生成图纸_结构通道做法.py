@@ -29,6 +29,8 @@ LAND_BOT = LAND_TOP - 0.12              # 平台底 +1.980
 FL1 = math.hypot(17 * GOING, 17 * RISER)   # 第一跑斜长 5.213
 FL2 = math.hypot(15 * GOING, 15 * RISER)   # 第二跑斜长 4.600
 Z_F1 = (6.90, 8.10)                     # 第一跑 z 范围（楼梯贴后墙，第二跑 z 到 9.40，无缝）
+AISLE0 = Z_F1[0] - 1.55                 # 楼梯过道贴第一跑前沿，宽 1.55
+MAT_Z1 = AISLE0 - 1.00                  # 拳击垫离过道留 1.00
 Z_F2 = (8.20, 9.40)                     # 第二跑 z 范围
 PLAT = (10.75, Z_F1[0], 12.95, Z_F2[1]) # 中转平台 2.20 × 2.50
 SHOWER = (10.77, Z_F1[0] + .05, 12.93, Z_F2[1] - .05)   # 淋浴间外框 2.16 × 2.40
@@ -249,12 +251,12 @@ HOLE_AREA = sum((c[2] - c[0]) * (c[3] - c[1]) for c in COLS)
 # 一层做法分区（优先级从高到低）
 ZONES_1F = [
     ('shower', [SHOWER]),
-    ('aisle_stair', [(10.70, 5.19, 19.275, 6.74), (START1, 6.74, 19.275, Z_F1[1])]),
+    ('aisle_stair', [(10.70, AISLE0, 19.275, Z_F1[0]), (START1, Z_F1[0], 19.275, Z_F1[1])]),
     ('entry', [(9.15, 7.675, 10.70, 10.70)]),
     ('aisle_main', [(9.15, 0.0, 10.70, 7.675)]),
-    ('mat', [(14.75, 0.30, 19.20, 4.19)]),
-    ('stairzone', [(12.95, 6.74, START1, Z_F2[0]), (12.95, Z_F2[0], ARR2, Z_F2[1]), (10.70, 6.74, 12.95, 9.40)]),
-    ('tea', [(10.70, 0.0, 14.75, 5.19)]),
+    ('mat', [(14.75, 0.30, 19.20, MAT_Z1)]),
+    ('stairzone', [(12.95, Z_F1[0], START1, Z_F2[0]), (12.95, Z_F2[0], ARR2, Z_F2[1]), (10.70, Z_F1[0], 12.95, 9.40)]),
+    ('tea', [(10.70, 0.0, 14.75, AISLE0)]),
     ('open', [(0.0, 0.0, 9.15, 7.675)]),
 ]
 AREA1 = zone_areas(ZONES_1F, POLY, COLS)
@@ -266,7 +268,7 @@ STAIR_RECT = {'flight1': (START1 - 12.95) * 1.2, 'landing': 2.2 * 2.5, 'flight2'
 # ---------------------------------------------------------------- 疏散路线（模型坐标，m）
 DOOR = (9.925, 10.70)
 def plen(pts): return sum(math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]) for i in range(len(pts) - 1))
-AISLE_Z = 5.965                                                            # 楼梯过道中线（z 5.19~6.74）
+AISLE_Z = AISLE0 + 1.55 / 2                                                # 楼梯过道中线（贴第一跑前沿）
 ZC1 = (Z_F1[0] + Z_F1[1]) / 2; ZC2 = (Z_F2[0] + Z_F2[1]) / 2               # 两跑中线 z = 7.50 / 8.80
 R1 = [(0.35, 0.35), (9.40, 7.85), DOOR]                                   # 一层开放办公区最远点
 R2 = [(19.10, 0.45), (18.00, AISLE_Z), (10.30, AISLE_Z), DOOR]            # 一层夹层下东端最远点（沿楼梯过道）
@@ -683,12 +685,12 @@ def sheet_A01():
     sh.text(14, 13.5, '一层平面（户内完成面 −0.150，入口短廊垫高后 ±0.000）', 3.2, bold=True)
     base_plan(sh, v1, '1F')
     R(sh, v1, 9.15, 0.12, 10.70, 10.70, fill=yel, c='none', sw=0)
-    R(sh, v1, 10.70, 5.19, 19.275, 6.74, fill=yel, c='none', sw=0)
-    R(sh, v1, START1, 6.74, 19.275, Z_F1[1], fill=yel, c='none', sw=0)
+    R(sh, v1, 10.70, AISLE0, 19.275, Z_F1[0], fill=yel, c='none', sw=0)
+    R(sh, v1, START1, Z_F1[0], 19.275, Z_F1[1], fill=yel, c='none', sw=0)
     R(sh, v1, 10.70, 0, 19.425, 9.40, c='#666', sw=.3, dash='2 1')
     for c in COLS: R(sh, v1, *c, fill='url(#hatch)', c='#000', sw=.35)
     furniture(sh, v1, '1F')
-    R(sh, v1, 14.75, 0.30, 19.20, 4.19, fill='none', c='#888', sw=.25, dash='1 1')
+    R(sh, v1, 14.75, 0.30, 19.20, MAT_Z1, fill='none', c='#888', sw=.25, dash='1 1')
     a = v1.P(16.97, 2.9); sh.text(a[0], a[1], '拳击垫区（垫高 100）', 2.1, anchor='middle', fill='#666')
     a = v1.P(4.0, 6.0); sh.text(a[0], a[1], '开放办公区（通高，无夹层）', 2.8, anchor='middle', fill='#555')
     stairs_outline(sh, v1, '1F')
@@ -699,9 +701,9 @@ def sheet_A01():
     # 过道标注
     a = v1.P(9.925, 2.9); sh.text(a[0] + 0.8, a[1], '主过道 宽 1.55', 2.2, anchor='middle', bold=True, rot=-90)
     a = v1.P(16.2, 5.50); sh.text(a[0], a[1], '楼梯过道 宽 1.55', 2.2, anchor='middle', bold=True)
-    dim_v(sh, v1, 5.19, 6.74, v1.P(19.425, 0)[0] - 3.4, '1.55', v1.P(19.275, 0)[0])
+    dim_v(sh, v1, AISLE0, Z_F1[0], v1.P(19.425, 0)[0] - 3.4, '1.55', v1.P(19.275, 0)[0])
     a = v1.P(18.55, 7.18); sh.text(a[0], a[1], '起步前区', 1.8, anchor='middle', fill='#555')
-    sh.text(a[0], a[1] + 2.6, '%.2f×%.2f' % (19.275 - START1, Z_F1[1] - 6.74), 1.8, anchor='middle', fill='#555')
+    sh.text(a[0], a[1] + 2.6, '%.2f×%.2f' % (19.275 - START1, Z_F1[1] - Z_F1[0]), 1.8, anchor='middle', fill='#555')
     # 台阶
     for k in range(3): LN(sh, v1, 9.15, 7.675 + k * .07, 10.70, 7.675 + k * .07, w=.45 if k == 0 else .2, c='#000')
     st = v1.P(8.55, 9.7)
@@ -834,9 +836,9 @@ def sheet_F01():
     R(sh, v1, 9.15, 0.1, 10.70, 7.675, fill=C7038, c='none', sw=0)
     R(sh, v1, 9.15, 7.675, 10.70, 10.70, fill=C7038, c='none', sw=0)
     R(sh, v1, 9.15, 7.675, 10.70, 10.70, fill='url(#dots)', c='none', sw=0)
-    R(sh, v1, 10.70, 5.19, 19.275, 6.74, fill=C7038, c='none', sw=0)
-    R(sh, v1, START1, 6.74, 19.275, Z_F1[1], fill=C7038, c='none', sw=0)
-    R(sh, v1, 14.75, 0.30, 19.20, 4.19, fill='url(#mat)', c='#444', sw=.4)
+    R(sh, v1, 10.70, AISLE0, 19.275, Z_F1[0], fill=C7038, c='none', sw=0)
+    R(sh, v1, START1, Z_F1[0], 19.275, Z_F1[1], fill=C7038, c='none', sw=0)
+    R(sh, v1, 14.75, 0.30, 19.20, MAT_Z1, fill='url(#mat)', c='#444', sw=.4)
     R(sh, v1, *SHOWER, fill='url(#tile)', c='#2c6275', sw=.5)
     for r in [(-.2, 0, 0, 7.875), (-.2, 7.675, 9.15, 7.875), (8.95, 7.675, 9.15, 10.70), (10.70, 9.40, 10.90, 10.70), (10.70, 9.40, 19.625, 9.60)]:
         R(sh, v1, *r, fill='#c9c9c9', c='#555', sw=.2)

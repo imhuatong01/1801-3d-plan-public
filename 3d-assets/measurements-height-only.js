@@ -83,16 +83,17 @@ export function setupMeasurements(ctx){
  qdim(dims,[22,0,4.8],[22,fullHeight,4.8],'含下沉 '+fullHeight.toFixed(3)+' m',2.55);
  // Proposed bar + gym: full rectangle before the stair, including candidate posts.
  scopeOverride='bar-gym';
- outline(dims,10.7,0,8.725,6.04,.09);
- qdim(dims,[10.7,.09,6.04],[19.425,.09,6.04],'8.725 m',2.0);
- qdim(dims,[19.425,.09,0],[19.425,.09,6.04],'6.040 m',2.0);
- quietText(dims,'8.725 × 6.040 m',[15.0625,.18,2.5],3.4);
- quietText(dims,'52.70 ㎡',[15.0625,.18,3.5],2.5);
+ const barD=datum.platformZ0-1.55,barA=8.725*barD;
+ outline(dims,10.7,0,8.725,barD,.09);
+ qdim(dims,[10.7,.09,barD],[19.425,.09,barD],'8.725 m',2.0);
+ qdim(dims,[19.425,.09,0],[19.425,.09,barD],barD.toFixed(3)+' m',2.0);
+ quietText(dims,'8.725 × '+barD.toFixed(3)+' m',[15.0625,.18,2.5],3.4);
+ quietText(dims,barA.toFixed(2)+' ㎡',[15.0625,.18,3.5],2.5);
  scopeOverride=null;
  const areaOverlays=[];
  const areaInfo={
   office:{title:'一楼整块办公空间',metric:'9.150 × 7.675 m · 约70.21㎡',note:'按原轮廓扣除小凹口；含柱与内部通行空间。',color:'#82b6cf'},
-  'bar-gym':{title:'吧台兼健身预留',metric:'8.725 × 6.040 m · 约52.70㎡',note:'含柱和备用柱位；不含楼梯、卫浴及旁侧上楼通路，未扣吧台与器械。',color:'#79bcb0'},
+  'bar-gym':{title:'吧台兼健身预留',metric:'8.725 × '+(datum.platformZ0-1.55).toFixed(3)+' m · 约'+(8.725*(datum.platformZ0-1.55)).toFixed(2)+'㎡',note:'含柱和备用柱位；不含楼梯、卫浴及旁侧上楼通路，未扣吧台与器械。',color:'#79bcb0'},
   corridor:{title:'中央通道',metric:'1.550 × 10.700 m · 约16.59㎡',note:'包含入口短段，与两侧地面齐平。',color:'#8caabd'},
   bath:{title:'平台下卫浴',metric:WW.toFixed(3)+' × '+WD.toFixed(3)+' m · 外框'+areaLabel(WW*WD),note:'墙内'+(WW-.16).toFixed(3)+' × '+(WD-.16).toFixed(3)+' m、约'+((WW-.16)*(WD-.16)).toFixed(2)+'㎡，未扣洁具；与中转平台同宽，外框已包含在平台投影中。',color:'#9bbfa8'},
   flight1:{title:'第一跑楼梯',metric:flightMetric(lowerRun)+' · '+areaLabel(lowerRun*SW),note:datum.lowerRisers+' 级，从一楼上至转身平台。',color:'#dfbe81'},
@@ -117,7 +118,7 @@ export function setupMeasurements(ctx){
  }
  function areaRect(key,g,x,z,w,d,y){areaPoly(key,g,[[x,z],[x+w,z],[x+w,z+d],[x,z+d]],y)}
  areaPoly('office',ground,[[.125,0],[9.15,0],[9.15,7.675],[0,7.675],[0,.1],[.125,.1]],.035);
- areaRect('bar-gym',ground,10.7,0,8.725,6.04,.035);
+ areaRect('bar-gym',ground,10.7,0,8.725,barD,.035);
  areaRect('corridor',ground,9.15,0,1.55,10.7,.035);
  areaRect('bath',ground,10.77,datum.platformZ0+.05,WW,WD,.075);
  areaPoly('landing',ground,datum.midPlatformOutline,platformLocal+.025);
@@ -207,7 +208,7 @@ export function setupMeasurements(ctx){
    }}
    if(best){occupied.push(best.rect);const moved=new THREE.Vector3(best.x/ww*2-1,1-best.y/hh*2,ndc.z).unproject(camera);q.position.copy(q.parent.worldToLocal(moved));if(Math.hypot(best.x-ox,best.y-oy)>16){const line=q.userData.leader;line.visible=true;const at=line.geometry.attributes.position;at.setXYZ(1,q.position.x,q.position.y,q.position.z);at.needsUpdate=true;line.geometry.computeBoundingSphere();}}
   }
-  canvas.dataset.barGymArea='52.699';canvas.dataset.barGymBounds='10.700,0.000,19.425,6.040';
+  canvas.dataset.barGymArea=barA.toFixed(3);canvas.dataset.barGymBounds='10.700,0.000,19.425,'+barD.toFixed(3);
   canvas.dataset.visibleDimensionLabels=String(quietLabels.filter(q=>q.visible&&visible(q)).length);
   const on=$('#dimensions').checked;
   dims.visible=upperDims.visible=stairDims.visible=false;
