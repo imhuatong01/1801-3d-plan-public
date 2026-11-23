@@ -1,19 +1,49 @@
-// Plan elevations in metres, relative to the 18F building datum (+72.190 m).
-// The 18F/19F datum difference is 4.20 m. The 40 mm deck sits directly on steel.
-// The window-belt section and its alignment with the steel are design assumptions pending survey.
-const floorFinish = 4.20, finishThickness = 0.04, steelTop = floorFinish - finishThickness;
-const beltHeight = 0.67, beltBase = steelTop - beltHeight;
-const lowerFinish = -0.017, lowerRisers = 17, upperRisers = 17, going = 0.28;
+// Plan elevations in metres, relative to the outside / public corridor datum (±0.000).
+// Site figures from the owner (2026-11-20): the interior floor is 150 mm below the datum; from that floor to the
+// top of the existing concrete beam is 4.250 m, and the finished mezzanine floor is flush with that beam top.
+// The mezzanine build-up is 250 mm of steel under a 140 mm poured slab.
+const lowerFinish = -0.150;
+const floorFinish = lowerFinish + 4.250, finishThickness = 0.14, steelTop = floorFinish - finishThickness;
+const beltHeight = 0.67, beltBase = floorFinish - beltHeight;
+// With only 4.25 m in total there is no room for a floor over the landing: bathroom + landing + 2.00 m headroom
+// + 390 mm floor does not fit. So the floor is left open over the landing and the top of the first flight.
+// The landing can then sit one riser higher (18 + 16 risers), which gives the bathroom 1.98 m clear.
+const lowerRisers = 18, upperRisers = 16, going = 0.28;
 const riser = (floorFinish - lowerFinish) / (lowerRisers + upperRisers);
 const midLanding = lowerFinish + lowerRisers * riser;
-const lowerStartX = 17.43, thresholdX = 17.43;
-const lowerLandingX = lowerStartX - (lowerRisers - 1) * going;
-const upperStartX = thresholdX - (upperRisers - 1) * going;
-const wetFloorFinish = lowerFinish + 0.10;
-const opening = [[12.25,7.60],[17.35,7.60],[17.35,9.30],[12.25,9.30]];
-const wetFixtures = Object.freeze({door:{x:12.88,z:8.25},head:{x:12.535,z:6.475},
-  drain:{x:12.35,z:6.62,width:.10,depth:.10},basin:{x:11.07,z:8.70,width:.48,depth:.36}});
-const midPlatformOutline = [[10.75,6.04],[lowerLandingX,6.04],[lowerLandingX,9.24],[10.75,9.24]];
+// The approved landing keeps its 2.20 m depth: both flights meet it at x = 12.95.
+const lowerLandingX = 12.95, upperStartX = 12.95;
+const lowerStartX = lowerLandingX + (lowerRisers - 1) * going;
+const thresholdX = upperStartX + (upperRisers - 1) * going;
+// Bathroom floor and entry strip are built up 150 mm to the outside datum, so the waste pipe can fall inside.
+const wetRaise = 0.15;
+const wetFloorFinish = lowerFinish + wetRaise;
+// Steel zone is 250 mm deep: HN250x125 edge beams and trimmers, HM244x175 main beams, 120 x 60 joists.
+const primaryDepth = 0.25, mainBeamDepth = 0.244, joistDepth = 0.12;
+const headroomLimit = 2.00;
+// Flights are 1.20 m wide with a 100 mm gap between them (owner, 2026-11-20). The upper flight keeps its
+// place against the back wall; the lower flight moves in beside it.
+const stairWidth = 1.20, flightGap = 0.10, upperFlightZ = 9.24 - stairWidth, lowerFlightZ = upperFlightZ - flightGap - stairWidth;
+const flightGapZ = lowerFlightZ + stairWidth, openingFrontZ = upperFlightZ;
+// Rectangle over the second flight (kept for the stair and steel set-out).
+const opening = [[upperStartX,openingFrontZ],[thresholdX,openingFrontZ],[thresholdX,9.30],[upperStartX,9.30]];
+// A 250 mm beam may cross the first flight only where the pitch line is 2.00 m or more below its soffit:
+// pitch(x) = lowerFinish + (1 + (lowerStartX - x) / going) * riser.
+const deepBeamMinX = lowerStartX - ((steelTop - primaryDepth - headroomLimit - lowerFinish) / riser - 1) * going;
+// Eight beams run from the glazed side to the back (owner's framing sketch), about 1.09 m apart, with one
+// cross beam along the stair-aisle side. Beam 4 is the edge of the open area: nothing deep is over the top of
+// the first flight. Beam 7 is on the arrival line of the second flight.
+const beamXs = [10.70, 11.79, 12.88, 13.97, 15.03, 16.09, thresholdX, 18.31];
+const mainBeam2X = beamXs[3];
+// The landing, and the bathroom under it, are as wide as the two flights together (1.20 + 0.10 + 1.20 = 2.50).
+const platformZ0 = lowerFlightZ, platformZ1 = 9.24;
+const mezzanineEdgeX = 10.70, voidFrontZ = platformZ0;
+// Open area: over the landing and the last treads of the first flight, plus the second flight.
+const voidOutline = [[mezzanineEdgeX,voidFrontZ],[mainBeam2X,voidFrontZ],[mainBeam2X,openingFrontZ],
+  [thresholdX,openingFrontZ],[thresholdX,9.40],[mezzanineEdgeX,9.40]];
+const wetFixtures = Object.freeze({door:{x:12.88,z:8.615},head:{x:11.00,z:7.25},
+  drain:{x:11.10,z:7.95,width:.10,depth:.10},basin:{x:11.07,z:8.70,width:.48,depth:.36}});
+const midPlatformOutline = [[10.75,platformZ0],[lowerLandingX,platformZ0],[lowerLandingX,platformZ1],[10.75,platformZ1]];
 function planArea(points) {
   return Math.abs(points.reduce((sum,[x,z],i)=>{
     const [nextX,nextZ]=points[(i+1)%points.length];
@@ -23,10 +53,11 @@ function planArea(points) {
 export const MEZZANINE = Object.freeze({
   steelTop, beltBase, beltHeight, finishThickness, floorFinish, lowerFinish, riser, lowerRisers, upperRisers,
   going, midLanding, lowerStartX, lowerLandingX, upperStartX, thresholdX, opening, midPlatformOutline,
-  openingArea: planArea(opening), upperArea: 81.965 - planArea(opening),
-  platformArea: planArea(midPlatformOutline), wetFloorFinish, wetFixtures, wetHeadBottom: midLanding-.09,
+  voidOutline, voidFrontZ, platformZ0, platformZ1, mezzanineEdgeX, beamXs, stairWidth, flightGap, upperFlightZ, lowerFlightZ, joistDepth, mainBeamDepth, headroomLimit, flightGapZ, openingFrontZ, mainBeam2X, deepBeamMinX,
+  openingArea: planArea(voidOutline), upperArea: 81.965 - planArea(voidOutline),
+  platformArea: planArea(midPlatformOutline), wetRaise, wetFloorFinish, wetFixtures, wetHeadBottom: midLanding-.09,
   wetToPlatformSurface: midLanding-wetFloorFinish,
-  roomTop: 8.40, primaryDepth: 0.26,
+  roomTop: 8.40, primaryDepth,
   beltInnerZ: 0.90, beltInnerX: 18.525
 });
 
@@ -68,7 +99,7 @@ export function addSiteShell({ THREE, group, box, shape, top }) {
 
   // 19F G-LIANG-CUCA outlines 2F71–2F73 registered to the 18F footprint.
   // Both grey columns intersect the long leg. One mesh avoids a seam at the return.
-  const beltTop = MEZZANINE.steelTop;
+  const beltTop = MEZZANINE.floorFinish;
   const beltShape = new THREE.Shape();
   const beltCorners = [[0, 0.25], [19.175, 0.25], [19.175, depth],
     [MEZZANINE.beltInnerX, depth], [MEZZANINE.beltInnerX, MEZZANINE.beltInnerZ], [0, MEZZANINE.beltInnerZ]];

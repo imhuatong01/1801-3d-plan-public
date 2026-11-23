@@ -767,6 +767,7 @@
           ><button id="dimensionBoard">综合版</button
           ><button id="circuitBoard">电路参考</button
           ><button id="steelBoard">钢架参考</button
+          ><button id="glassBoard">玻璃扶手</button
           ><button id="wetBoard">淋浴参考</button
           ><button id="waterBoard">水路参考</button
           ><button id="airBoard">空调参考</button
@@ -774,13 +775,13 @@
           ><button id="siteFrameBoard">现场框架</button
           ><button id="floorStackBoard" aria-pressed="false">17楼 / 18楼</button
           ><button id="measureToggle" aria-pressed="false">量尺寸</button
-          ><button id="measureClear">清除测量</button
+          ><button id="dimToggle" class="active" aria-pressed="true">尺寸：开</button><button id="dimDetail" aria-pressed="false">细部尺寸：走近显示</button><button id="measureClear">清除测量</button
           ><span class="muted" style="white-space: nowrap">采光面 · 默认显示</span>
         </div>
         <div id="legacyControls" hidden aria-hidden="true">
           <input type="checkbox" id="allDimensions" />
           <input type="checkbox" id="circuitLayer" />
-          <input type="checkbox" id="furniture" />
+          <input type="checkbox" id="furniture" checked />
           <input type="checkbox" id="labels" />
           <input type="checkbox" id="frame" checked />
           <input type="checkbox" id="wetWalls" checked />
@@ -803,28 +804,36 @@
           <button id="openUpperElectric">夹层电路平面</button>
         </div>
         <aside id="furnitureEditor" hidden aria-live="polite">
-          <b id="furniturePicked">点选二楼家具</b>
-          <span class="editor-tip">可直接拖动；也可用下面按钮微调。摆放会在本机浏览器自动保留。</span>
+          <b id="furniturePicked">点选一件家具；或用下面按钮添加</b>
+          <span class="editor-tip">可直接拖动。摆放会在本机浏览器自动保留。</span>
+          <div class="editor-row"><label>添加到 <select id="furnitureFloor"><option value="ground">一楼</option><option value="upper">二楼</option></select></label></div>
+          <div class="editor-row"><button data-add-furniture="teaChair">＋茶椅</button><button data-add-furniture="officeChair">＋办公椅</button><button data-add-furniture="squareTable">＋方桌</button></div>
+          <div class="editor-row"><button data-add-furniture="barCounter">＋吧台</button></div>
+          <div class="editor-row"><button id="furnitureCopy" disabled>复制一个</button><button id="furnitureDelete" disabled>删除</button></div>
           <div class="editor-row"><button id="furnitureUp">↑ 前移</button></div>
           <div class="editor-row"><button id="furnitureLeft">← 左移</button><button id="furnitureRight">右移 →</button></div>
           <div class="editor-row"><button id="furnitureDown">↓ 后移</button></div>
-          <div class="editor-row"><button id="furnitureSmaller">－ 缩小</button><button id="furnitureLarger">＋ 放大</button></div>
-          <div class="editor-row"><button id="furnitureTurnLeft">↶ 左转15°</button><button id="furnitureTurnRight">右转15° ↷</button></div>
+          <div class="editor-row"><button id="furnitureSmaller">－ 整体缩小</button><button id="furnitureLarger">＋ 整体放大</button></div>
+          <div class="editor-row"><button id="furnitureNarrower">宽 －</button><button id="furnitureWider">宽 ＋</button><button id="furnitureShallower">深 －</button><button id="furnitureDeeper">深 ＋</button></div>
+          <div class="editor-row"><button id="furnitureTurnLeft">↶ 左转90°</button><button id="furnitureTurnRight">右转90° ↷</button></div>
           <div class="editor-row"><button id="furnitureDeselect">取消选择</button></div>
-          <div class="editor-row"><button id="furnitureReset">恢复这一版初始摆放</button></div>
+          <div class="editor-row"><button id="furnitureReset">恢复默认摆放</button></div>
         </aside>
         <div class="viewport" id="viewport">
           <aside class="service-info" id="waterInfo" hidden>
-            <b>18 楼淋浴废水 → 17 楼</b>
-            <p>淋浴地漏和洗手池支管在垫层内汇合，由一处穿板进入 17 楼顶内。绿色圆环是建议位置，生活废水接点待现场核实。</p>
+            <b>淋浴间排水</b>
+            <p>淋浴地漏和洗手盆的废水汇合后，埋在 150 mm 垫高层内，沿入口短廊走向入户门，接公共管井，接点位置待核实。穿板排至 17 楼顶为备选。</p>
             <button id="openWaterSheet">看排水平面和剖面</button>
           </aside>
           <aside class="service-info" id="airInfo" hidden>
-            <b>空调与送风布置</b><p>夹层上下各一台吸顶机。挑空侧的两个条形风口接自原风口，沿实体墙分布。</p>
+            <b>空调与送风布置</b><p>分三个区，可单独开：开放办公区用原有风管和预留送风箱，另接一路支管带风阀；夹层上、夹层下各一台吸顶机，各自独立控制。原有风管和设备高度不动。</p>
             <button id="airOverall">四处全景</button><button id="airCassettes">夹层上下</button><button id="airOutlets">看风管分支</button>
           </aside>
+          <aside class="service-info" id="glassInfo" hidden>
+            <b>玻璃与扶手（独立施工项，不含钢结构）</b><p id="glassInfoText"></p>
+          </aside>
           <aside id="steelDatumTools" hidden>
-            <b id="steelViewTitle">原窗腰梁上沿与夹层钢梁顶齐平</b>
+            <b id="steelViewTitle">夹层楼面与既有梁面齐平</b>
             <small id="steelViewLevels"></small>
             <small id="showerBeamClearance"></small>
             <small id="stairFlightsInfo" hidden></small>
@@ -911,16 +920,16 @@
             <div class="fallback-card">
               <h2>三维视窗暂未启动</h2>
               <p id="fallbackReason">当前浏览器没有成功启用三维加速；可先查看平面图，或重新载入三维模型。</p>
-              <img src="./1801_一楼插座回路示意.svg" alt="1801 一楼电路平面示意图" />
+              <img src="./图纸/E-01_一层照明平面图.svg" alt="一层照明平面图" />
               <div class="fallback-actions">
                 <button type="button" id="retry3d">重新载入三维</button>
-                <a href="./1801_一楼插座回路示意.svg" target="_blank" rel="noopener">打开一楼平面大图</a>
-                <a href="./1801_二楼插座回路示意.svg" target="_blank" rel="noopener">打开二楼平面大图</a>
+                <a href="./图纸/E-01_一层照明平面图.svg" target="_blank" rel="noopener">打开一层照明平面图</a>
+                <a href="./图纸/E-03_夹层照明平面图.svg" target="_blank" rel="noopener">打开夹层照明平面图</a>
               </div>
             </div>
           </div>
           <div class="hint">
-            鼠标指向区域显示范围、长宽和面积，移开隐藏；勾选“全部尺寸”可固定显示。单位：米。钢架数字为柱轴距，非净空；面积含柱与通行空间，子区域不可相加。模型尺寸供布局比较，结构未验算。
+            拖动旋转，滚轮或双指缩放，右键或双指拖动平移。尺寸单位：米；拉近可见细部尺寸。本模型为方案示意，施工以深化图纸和现场核实为准。
           </div>
         </div>
       </section>
@@ -952,7 +961,7 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=80-classic-stair"
+          src="./3d-assets/office-height-only.js?v=154-release"
     ></script>
   </body>
 </html>

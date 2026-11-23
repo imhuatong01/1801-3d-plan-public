@@ -6,7 +6,9 @@ export function setupMeasurements(ctx){
  const lowerRun=datum.lowerStartX-datum.lowerLandingX,upperRun=datum.thresholdX-datum.upperStartX;
  const approachEnd=19.275,approachRun=approachEnd-datum.lowerStartX;
  const platformLocal=datum.midLanding-datum.lowerFinish;
- const flightMetric=run=>run.toFixed(2)+' × 1.50 m';
+ const SW=datum.stairWidth, PD=datum.platformZ1-datum.platformZ0, PW=datum.lowerLandingX-10.75;
+ const WD=PD-.10, WW=2.16;   // bathroom outside frame, under the landing
+ const flightMetric=run=>run.toFixed(2)+' × '+SW.toFixed(2)+' m';
  const areaLabel=a=>a.toFixed(2)+' ㎡';
  const dims=new THREE.Group(),upperDims=new THREE.Group(),stairDims=new THREE.Group();ground.add(dims);upper.add(upperDims);stairs.add(stairDims);
  function text(g,str,p,color='#9c542d',size=3.4){const c=document.createElement('canvas');c.width=1024;c.height=128;const a=c.getContext('2d');a.fillStyle='#ffffffef';a.fillRect(0,0,1024,128);a.fillStyle=color;a.font='bold 48px Microsoft YaHei';a.textAlign='center';a.textBaseline='middle';a.fillText(str,512,64,1000);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,toneMapped:false}));s.position.copy(p);s.scale.set(size,size/8,1);s.renderOrder=110;g.add(s);return s}
@@ -92,12 +94,12 @@ export function setupMeasurements(ctx){
   office:{title:'一楼整块办公空间',metric:'9.150 × 7.675 m · 约70.21㎡',note:'按原轮廓扣除小凹口；含柱与内部通行空间。',color:'#82b6cf'},
   'bar-gym':{title:'吧台兼健身预留',metric:'8.725 × 6.040 m · 约52.70㎡',note:'含柱和备用柱位；不含楼梯、卫浴及旁侧上楼通路，未扣吧台与器械。',color:'#79bcb0'},
   corridor:{title:'中央通道',metric:'1.550 × 10.700 m · 约16.59㎡',note:'包含入口短段，与两侧地面齐平。',color:'#8caabd'},
-  bath:{title:'平台下卫浴',metric:'2.160 × 3.100 m · 外框约6.70㎡',note:'墙内2.000 × 2.940m、约5.88㎡，未扣洁具；外框已包含在平台投影中。',color:'#9bbfa8'},
-  flight1:{title:'第一跑楼梯',metric:flightMetric(lowerRun)+' · '+areaLabel(lowerRun*1.5),note:datum.lowerRisers+' 级，从一楼上至转身平台。',color:'#dfbe81'},
-  flight2:{title:'第二跑楼梯',metric:flightMetric(upperRun)+' · '+areaLabel(upperRun*1.5),note:datum.upperRisers+' 级，从平台折返至靠墙出口。',color:'#dfbe81'},
-  landing:{title:'中转平台',metric:areaLabel(datum.platformArea),note:'平台面标高 +'+datum.midLanding.toFixed(3)+' m，矩形平台 2.20 × 3.20 m。',color:'#d5ba86'},
-  approach:{title:'一楼上楼接近区',metric:flightMetric(approachRun)+' · '+areaLabel(approachRun*1.5),note:'进门侧第一踏步前的通行空间。',color:'#b8b08b'},
-  upper:{title:'二楼钢结构楼面',metric:areaLabel(datum.upperArea),note:'已扣除平台和梯段上方的 矩形洞口 '+areaLabel(datum.openingArea)+'。',color:'#c4b197'},
+  bath:{title:'平台下卫浴',metric:WW.toFixed(3)+' × '+WD.toFixed(3)+' m · 外框'+areaLabel(WW*WD),note:'墙内'+(WW-.16).toFixed(3)+' × '+(WD-.16).toFixed(3)+' m、约'+((WW-.16)*(WD-.16)).toFixed(2)+'㎡，未扣洁具；与中转平台同宽，外框已包含在平台投影中。',color:'#9bbfa8'},
+  flight1:{title:'第一跑楼梯',metric:flightMetric(lowerRun)+' · '+areaLabel(lowerRun*SW),note:datum.lowerRisers+' 级，从一楼上至转身平台。',color:'#dfbe81'},
+  flight2:{title:'第二跑楼梯',metric:flightMetric(upperRun)+' · '+areaLabel(upperRun*SW),note:datum.upperRisers+' 级，从平台折返至靠墙出口。',color:'#dfbe81'},
+  landing:{title:'中转平台',metric:areaLabel(datum.platformArea),note:'平台面标高 +'+datum.midLanding.toFixed(3)+' m，矩形平台 '+PW.toFixed(2)+' × '+PD.toFixed(2)+' m，与两跑楼梯总宽一致。',color:'#d5ba86'},
+  approach:{title:'一楼上楼接近区',metric:flightMetric(approachRun)+' · '+areaLabel(approachRun*SW),note:'进门侧第一踏步前的通行空间。',color:'#b8b08b'},
+  upper:{title:'二楼钢结构楼面',metric:areaLabel(datum.upperArea),note:'已扣除楼梯上方的留空 '+areaLabel(datum.openingArea)+'（平台、第一跑顶部和第二跑的上方均不做楼板）。',color:'#c4b197'},
   owner:{title:'一楼私用侧整体',metric:'外框8.725 × 9.400 m · 约81.97㎡',note:'包含吧台健身区、楼梯、平台下卫浴及侧边通路，是整侧合计，不能与子区域相加。',color:'#b6c7b6'},
   frame:{title:'钢架示意',metric:'尺寸显示为柱轴距',note:'轴距不等于柱间净宽；结构位置及尺寸为方案示意，未验算。',color:'#91afb8'},
   corner:{title:'轮廓与柱位细节',metric:'小凹口、入口短段与柱截面',note:'对应数字直接沿边线显示；不单独作为房间面积。',color:'#91afb8'}
@@ -117,19 +119,19 @@ export function setupMeasurements(ctx){
  areaPoly('office',ground,[[.125,0],[9.15,0],[9.15,7.675],[0,7.675],[0,.1],[.125,.1]],.035);
  areaRect('bar-gym',ground,10.7,0,8.725,6.04,.035);
  areaRect('corridor',ground,9.15,0,1.55,10.7,.035);
- areaRect('bath',ground,10.77,6.09,2.16,3.1,.075);
+ areaRect('bath',ground,10.77,datum.platformZ0+.05,WW,WD,.075);
  areaPoly('landing',ground,datum.midPlatformOutline,platformLocal+.025);
- areaRect('approach',ground,datum.lowerStartX,6.04,approachRun,1.5,.035);
- areaPoly('upper',upper,[[10.7,0],[19.425,0],[19.425,9.4],[18.925,9.4],[18.925,9.3],[18.425,9.3],[18.425,9.4],[10.7,9.4]],.035,[datum.opening]);
+ areaRect('approach',ground,datum.lowerStartX,datum.lowerFlightZ,approachRun,SW,.035);
+ areaPoly('upper',upper,[[10.7,0],[19.425,0],[19.425,9.4],[18.925,9.4],[18.925,9.3],[18.425,9.3],[18.425,9.4],[10.7,9.4]],.035,[datum.voidOutline]);
  areaPoly('owner',ground,[[10.7,0],[19.425,0],[19.425,9.4],[18.925,9.4],[18.925,9.3],[18.425,9.3],[18.425,9.4],[10.7,9.4]],.025);
  function flightOverlay(key,x1,x2,z,y1,y2){
-  const ps=[[x1,y1,z],[x2,y2,z],[x2,y2,z+1.5],[x1,y1,z+1.5]],geo=new THREE.BufferGeometry();
+  const ps=[[x1,y1,z],[x2,y2,z],[x2,y2,z+SW],[x1,y1,z+SW]],geo=new THREE.BufferGeometry();
   geo.setAttribute('position',new THREE.Float32BufferAttribute([0,1,2,0,2,3].flatMap(i=>ps[i]),3));geo.computeVertexNormals();
   const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:areaInfo[key].color,transparent:true,opacity:.23,depthWrite:false,side:THREE.DoubleSide}));mesh.userData.areaOverlay=true;ground.add(mesh);
   const border=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(ps.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:areaInfo[key].color,transparent:true,opacity:.85}));ground.add(border);areaOverlays.push({key,mesh,border});
  }
- flightOverlay('flight1',datum.lowerLandingX,datum.lowerStartX,6.04,platformLocal+.025,datum.riser+.025);
- flightOverlay('flight2',datum.upperStartX,datum.thresholdX,7.74,platformLocal+datum.riser+.025,datum.floorFinish-datum.lowerFinish+.025);
+ flightOverlay('flight1',datum.lowerLandingX,datum.lowerStartX,datum.lowerFlightZ,platformLocal+.025,datum.riser+.025);
+ flightOverlay('flight2',datum.upperStartX,datum.thresholdX,datum.upperFlightZ,platformLocal+datum.riser+.025,datum.floorFinish-datum.lowerFinish+.025);
  const gymInfo=$('#barGymInfo');let lastAreaKey=null;
  function updateArea(key,enabled){
   const item=areaInfo[key],canShow=enabled&&!!item;
@@ -156,21 +158,21 @@ export function setupMeasurements(ctx){
  scopeOverride='landing';
  datum.midPlatformOutline.forEach(([x,z],i,pts)=>{const [xx,zz]=pts[(i+1)%pts.length];quietLine(stairDims,[x,platformLocal+.025,z],[xx,platformLocal+.025,zz]);});
  scopeOverride=null;
- quietText(dims,'2.160 × 3.100 m',[11.85,1.35,8.8],2.8);
+ quietText(dims,WW.toFixed(3)+' × '+WD.toFixed(3)+' m',[11.85,1.35,8.6],2.8);
  scopeOverride='approach';qdim(stairDims,[datum.lowerStartX,.05,6.55],[approachEnd,.05,6.55],approachRun.toFixed(3)+' m',1.8);scopeOverride=null;
  // Complete upper steel deck and only the compact second-flight opening.
  qdim(upperDims,[10.7,.08,-.4],[19.425,.08,-.4],'8.725 m',2.0);
  qdim(upperDims,[19.75,.08,0],[19.75,.08,9.4],'9.400 m',2.0);
  quietText(upperDims,'二楼钢结构楼面 '+areaLabel(datum.upperArea),[15.1,.17,2.55],3.3);
- quietText(upperDims,'矩形洞口 '+areaLabel(datum.openingArea),[14.8,.35,8.5],2.8);
+ quietText(upperDims,'楼梯上方留空 '+areaLabel(datum.openingArea),[14.0,.35,8.7],2.8);
  scopeOverride='corridor';quietText(dims,'16.59 ㎡',[9.925,.1,4.1],1.9);scopeOverride=null;
- scopeOverride='bath';quietText(dims,'6.70 ㎡',[11.85,1.05,8.8],1.9);scopeOverride=null;
+ scopeOverride='bath';quietText(dims,areaLabel(WW*WD),[11.85,1.05,8.6],1.9);scopeOverride=null;
  scopeOverride='landing';quietText(stairDims,areaLabel(datum.platformArea),[11.85,platformLocal+.35,8.3],1.9);scopeOverride=null;
- scopeOverride='flight1';quietText(stairDims,areaLabel(lowerRun*1.5),[15.5,1.6,6.85],1.9);scopeOverride=null;
- scopeOverride='flight2';quietText(stairDims,areaLabel(upperRun*1.5),[15.5,4.5,8.3],1.9);scopeOverride=null;
- scopeOverride='approach';quietText(dims,flightMetric(approachRun),[18.35,.2,6.85],2.8);quietText(dims,areaLabel(approachRun*1.5),[18.35,.2,7.35],1.9);scopeOverride=null;
- scopeOverride='arrival';quietText(upperDims,'2.25 ㎡',[18.28,.35,8.1],1.9);scopeOverride=null;
- scopeOverride='upper-side';quietText(upperDims,'1.895 × 1.800 m',[18.48,.35,7.65],2.7);quietText(upperDims,'3.41 ㎡',[18.48,.35,8.3],1.9);scopeOverride=null;
+ scopeOverride='flight1';quietText(stairDims,areaLabel(lowerRun*SW),[15.5,1.6,6.85],1.9);scopeOverride=null;
+ scopeOverride='flight2';quietText(stairDims,areaLabel(upperRun*SW),[15.5,4.5,8.3],1.9);scopeOverride=null;
+ scopeOverride='approach';quietText(dims,flightMetric(approachRun),[18.35,.2,6.85],2.8);quietText(dims,areaLabel(approachRun*SW),[18.35,.2,7.35],1.9);scopeOverride=null;
+ scopeOverride='arrival';quietText(upperDims,areaLabel(1.50*SW),[18.28,.35,datum.upperFlightZ+SW/2],1.9);scopeOverride=null;
+ scopeOverride='upper-side';quietText(upperDims,(19.325-datum.thresholdX).toFixed(3)+' × 1.800 m',[18.48,.35,7.65],2.7);quietText(upperDims,((19.325-datum.thresholdX)*1.8).toFixed(2)+' ㎡',[18.48,.35,8.3],1.9);scopeOverride=null;
  scopeOverride='upper-edge';quietText(upperDims,'0.160 m · 1.35 ㎡',[14.7,.4,9.32],2.8);scopeOverride=null;
  // Proposed steel frame: centre-to-centre, not clear distance or verified structural spans.
  const xs=[10.82,11.70,17.70,19.29];

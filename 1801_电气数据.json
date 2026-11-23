@@ -1,0 +1,970 @@
+{
+ "meta": {
+  "project": "1801-OPC空间",
+  "date": "2026-11-19",
+  "stage": "方案图，非施工图，须由持证电工/给排水工程师深化",
+  "coordinate": "坐标：x 向右 0~19.425，z 0~9.40(入口短廊到 10.70)，单位米；图纸画法 x 轴反向、正门在图下方",
+  "levels": {
+   "outdoorAndCorridor": 0.0,
+   "floor1Finish": -0.15,
+   "floor1WetFinish": 0.0,
+   "entryCorridorFinish": 0.0,
+   "floor1Finish_note": "一楼户内 -0.150；入口短廊和淋浴间垫高 150，完成面 ±0.000",
+   "mezzanineFinish": 4.1,
+   "roofStructure": 8.4
+  },
+  "heightConvention": "elevationM=标高(±0.000 起算)；heightAboveFloorM=距所在楼层完成面",
+  "fieldNote": "lights.modelGroup 为灯具分组，lights.circuit 为回路号",
+  "acNote": "空调位置待暖通确定"
+ },
+ "distributionBoards": [
+  {
+   "id": "AL1",
+   "name": "总配电箱",
+   "floor": "一楼",
+   "x": 8.25,
+   "z": 7.555,
+   "widthM": 0.58,
+   "heightM": 0.72,
+   "depthM": 0.12,
+   "bottomHeightM": 1.15,
+   "mount": "进门右手实体墙(z=7.675)内侧，明装",
+   "feed": "电源进线：由物业/楼层电表箱引入，接入点待核",
+   "status": "existing",
+   "circuits": [
+    "WL1",
+    "WL2",
+    "WL3",
+    "WL4",
+    "WX1",
+    "WX2",
+    "WX3",
+    "WX4",
+    "WK1",
+    "WK2",
+    "WE1"
+   ]
+  }
+ ],
+ "lights": [
+  {
+   "id": "L01",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 2.3,
+   "z": 0.947,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝+z，装在窗腰梁室内侧面",
+   "circuit": "WL1",
+   "switchId": "K1",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "窗腰梁灯"
+  },
+  {
+   "id": "L02",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 5.25,
+   "z": 0.947,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝+z，装在窗腰梁室内侧面",
+   "circuit": "WL1",
+   "switchId": "K1",
+   "switchGang": "b",
+   "status": "existing",
+   "note": "窗腰梁灯"
+  },
+  {
+   "id": "L03",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 8.2,
+   "z": 0.947,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝+z，装在窗腰梁室内侧面",
+   "circuit": "WL1",
+   "switchId": "K1",
+   "switchGang": "c",
+   "status": "existing",
+   "note": "窗腰梁灯"
+  },
+  {
+   "id": "L04",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL3",
+   "floor": "一楼",
+   "x": 2.3,
+   "z": 7.568,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝-z，装在开放区后墙(z=7.675)室内侧",
+   "circuit": "WL1",
+   "switchId": "K1",
+   "switchGang": "d",
+   "status": "existing",
+   "note": "开放区后墙灯"
+  },
+  {
+   "id": "L05",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL3",
+   "floor": "一楼",
+   "x": 5.25,
+   "z": 7.568,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝-z，装在开放区后墙(z=7.675)室内侧",
+   "circuit": "WL1",
+   "switchId": "K1",
+   "switchGang": "e",
+   "status": "existing",
+   "note": "开放区后墙灯"
+  },
+  {
+   "id": "L06",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL3",
+   "floor": "一楼",
+   "x": 8.2,
+   "z": 7.568,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝-z，装在开放区后墙(z=7.675)室内侧",
+   "circuit": "WL1",
+   "switchId": "K1",
+   "switchGang": "f",
+   "status": "existing",
+   "note": "开放区后墙灯；L06 平面上与 AL1 箱位重叠（AL1 高 1.15~1.87，灯高 3.57，竖向不冲突）"
+  },
+  {
+   "id": "L07",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 11.15,
+   "z": 0.947,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝+z，装在窗腰梁室内侧面（夹层楼板之下）",
+   "circuit": "WL2",
+   "switchId": "K3",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "窗腰梁灯，在夹层楼板下方"
+  },
+  {
+   "id": "L08",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 14.1,
+   "z": 0.947,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝+z，装在窗腰梁室内侧面（夹层楼板之下）",
+   "circuit": "WL2",
+   "switchId": "K3",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "窗腰梁灯，在夹层楼板下方"
+  },
+  {
+   "id": "L09",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 17.05,
+   "z": 0.947,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝+z，装在窗腰梁室内侧面（夹层楼板之下）",
+   "circuit": "WL2",
+   "switchId": "K3",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "窗腰梁灯，在夹层楼板下方"
+  },
+  {
+   "id": "L10",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 18.478,
+   "z": 2.375,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝-x，装在短边窗腰梁室内侧面（夹层楼板之下）",
+   "circuit": "WL2",
+   "switchId": "K3",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "窗腰梁灯，在夹层楼板下方"
+  },
+  {
+   "id": "L11",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 18.478,
+   "z": 5.325,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝-x，装在短边窗腰梁室内侧面（夹层楼板之下）",
+   "circuit": "WL2",
+   "switchId": "K3",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "窗腰梁灯，在夹层楼板下方"
+  },
+  {
+   "id": "L12",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL1",
+   "floor": "一楼",
+   "x": 18.478,
+   "z": 8.275,
+   "elevationM": 3.57,
+   "heightAboveFloorM": 3.72,
+   "mountFace": "朝-x，装在短边窗腰梁室内侧面（夹层楼板之下）",
+   "circuit": "WL2",
+   "switchId": "K3",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "窗腰梁灯，在夹层楼板下方"
+  },
+  {
+   "id": "L13",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL3",
+   "floor": "一楼",
+   "x": 11.15,
+   "z": 9.293,
+   "elevationM": 5.0,
+   "heightAboveFloorM": 5.15,
+   "mountFace": "朝-z，装在后墙(z=9.40)室内侧",
+   "circuit": "WL3",
+   "switchId": "K2",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "楼梯通道灯（平台上方）；与 K4b 双控"
+  },
+  {
+   "id": "L14",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL3",
+   "floor": "一楼",
+   "x": 14.1,
+   "z": 9.293,
+   "elevationM": 5.0,
+   "heightAboveFloorM": 5.15,
+   "mountFace": "朝-z，装在后墙(z=9.40)室内侧",
+   "circuit": "WL3",
+   "switchId": "K2",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "楼梯通道灯（第二跑旁）；与 K4b 双控"
+  },
+  {
+   "id": "L15",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL3",
+   "floor": "二楼",
+   "x": 19.178,
+   "z": 8.64,
+   "elevationM": 7.94,
+   "heightAboveFloorM": 3.84,
+   "mountFace": "朝-x，装在短边上层端墙(x=19.225)室内侧，正对楼梯出口中线",
+   "circuit": "WL3",
+   "switchId": "K2",
+   "switchGang": "a",
+   "status": "proposed",
+   "note": "楼梯出口灯。装在走出楼梯正对的端墙上，位于楼梯出口宽度的正中(z=8.64，出口 z 8.04~9.24)，高度与二楼顶梁灯相同(7.94)；与 K4b 双控"
+  },
+  {
+   "id": "L16",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL2",
+   "floor": "二楼",
+   "x": 11.15,
+   "z": 0.972,
+   "elevationM": 7.94,
+   "heightAboveFloorM": 3.84,
+   "mountFace": "朝+z，装在顶梁室内侧面",
+   "circuit": "WL4",
+   "switchId": "K4",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "顶梁灯，在夹层楼面之上；三盏共用一联"
+  },
+  {
+   "id": "L17",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL2",
+   "floor": "二楼",
+   "x": 14.1,
+   "z": 0.972,
+   "elevationM": 7.94,
+   "heightAboveFloorM": 3.84,
+   "mountFace": "朝+z，装在顶梁室内侧面",
+   "circuit": "WL4",
+   "switchId": "K4",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "顶梁灯，在夹层楼面之上；三盏共用一联"
+  },
+  {
+   "id": "L18",
+   "type": "linear",
+   "typeName": "线形灯",
+   "modelGroup": "WL2",
+   "floor": "二楼",
+   "x": 17.05,
+   "z": 0.972,
+   "elevationM": 7.94,
+   "heightAboveFloorM": 3.84,
+   "mountFace": "朝+z，装在顶梁室内侧面",
+   "circuit": "WL4",
+   "switchId": "K4",
+   "switchGang": "a",
+   "status": "existing",
+   "note": "顶梁灯，在夹层楼面之上；三盏共用一联"
+  }
+ ],
+ "omittedLights": [],
+ "switches": [
+  {
+   "id": "K1",
+   "name": "一楼入口开关组（六联，两块三联面板并排）",
+   "floor": "一楼",
+   "x": 10.7,
+   "z": 10.45,
+   "wallNormal": [
+    -1,
+    0
+   ],
+   "heightAboveFloorM": 1.3,
+   "gangCount": 6,
+   "gangs": [
+    {
+     "gang": "a",
+     "controls": [
+      "L01"
+     ],
+     "circuit": "WL1",
+     "control": "单控",
+     "note": "开放办公区第 1 盏，独立一联"
+    },
+    {
+     "gang": "b",
+     "controls": [
+      "L02"
+     ],
+     "circuit": "WL1",
+     "control": "单控",
+     "note": "开放办公区第 2 盏，独立一联"
+    },
+    {
+     "gang": "c",
+     "controls": [
+      "L03"
+     ],
+     "circuit": "WL1",
+     "control": "单控",
+     "note": "开放办公区第 3 盏，独立一联"
+    },
+    {
+     "gang": "d",
+     "controls": [
+      "L04"
+     ],
+     "circuit": "WL1",
+     "control": "单控",
+     "note": "开放办公区第 4 盏，独立一联"
+    },
+    {
+     "gang": "e",
+     "controls": [
+      "L05"
+     ],
+     "circuit": "WL1",
+     "control": "单控",
+     "note": "开放办公区第 5 盏，独立一联"
+    },
+    {
+     "gang": "f",
+     "controls": [
+      "L06"
+     ],
+     "circuit": "WL1",
+     "control": "单控",
+     "note": "开放办公区第 6 盏，独立一联"
+    }
+   ],
+   "reason": "进门左手侧墙(x=10.70)通道面，距门洞边 0.25 m，距地 1.3 m。开放办公区 6 盏灯每盏一联，集中在这一处。",
+   "status": "proposed",
+   "distanceToDoorFrameM": 0.25
+  },
+  {
+   "id": "K2",
+   "name": "一楼入口楼梯灯开关（单联双控）",
+   "floor": "一楼",
+   "x": 10.7,
+   "z": 10.15,
+   "wallNormal": [
+    -1,
+    0
+   ],
+   "heightAboveFloorM": 1.3,
+   "gangCount": 1,
+   "gangs": [
+    {
+     "gang": "a",
+     "controls": [
+      "L13",
+      "L14",
+      "L15"
+     ],
+     "circuit": "WL3",
+     "control": "双控",
+     "dualWith": "K4 第 b 联",
+     "note": "楼梯通道 3 盏；与二楼楼梯出口开关双控"
+    }
+   ],
+   "reason": "与 K1 同一位置并排安装，靠里一块。",
+   "status": "proposed"
+  },
+  {
+   "id": "K3",
+   "name": "一楼柱上开关（单联）",
+   "floor": "一楼",
+   "x": 9.15,
+   "z": 0.75,
+   "wallNormal": [
+    1,
+    0
+   ],
+   "heightAboveFloorM": 1.3,
+   "gangCount": 1,
+   "gangs": [
+    {
+     "gang": "a",
+     "controls": [
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+     ],
+     "circuit": "WL2",
+     "control": "单控",
+     "note": "夹层下方健身区灯 6 盏"
+    }
+   ],
+   "reason": "主过道旁 500×500 既有柱朝通道的柱面，距地 1.3 m。明装线盒，不得剔凿柱身，须结构/物业同意。",
+   "status": "ownerSpecified"
+  },
+  {
+   "id": "K4",
+   "name": "二楼楼梯出口综合开关（二联）",
+   "floor": "二楼",
+   "x": 17.57,
+   "z": 9.34,
+   "wallNormal": [
+    0,
+    -1
+   ],
+   "heightAboveFloorM": 1.3,
+   "gangCount": 2,
+   "gangs": [
+    {
+     "gang": "a",
+     "controls": [
+      "L16",
+      "L17",
+      "L18"
+     ],
+     "circuit": "WL4",
+     "control": "单控",
+     "note": "二楼办公区顶梁灯三盏共用"
+    },
+    {
+     "gang": "b",
+     "controls": [
+      "L13",
+      "L14",
+      "L15"
+     ],
+     "circuit": "WL3",
+     "control": "双控",
+     "dualWith": "K2",
+     "note": "楼梯灯双控：与一楼 K2 配对"
+    }
+   ],
+   "reason": "二楼楼梯出口外 0.42 m 的后墙(z=9.40)上，距地 1.3 m(标高 5.40)，上楼就能摸到。",
+   "status": "proposed"
+  }
+ ],
+ "sockets": [
+  {
+   "id": "S01",
+   "floor": "一楼",
+   "x": 1.4,
+   "z": 7.53,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    0,
+    -1
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S02",
+   "floor": "一楼",
+   "x": 4.0,
+   "z": 7.53,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    0,
+    -1
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S03",
+   "floor": "一楼",
+   "x": 6.6,
+   "z": 7.53,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    0,
+    -1
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S04",
+   "floor": "一楼",
+   "x": 8.65,
+   "z": 0.75,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    -1,
+    0
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S05",
+   "floor": "一楼",
+   "x": 8.9,
+   "z": 1.0,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    0,
+    1
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S06",
+   "floor": "一楼",
+   "x": 9.15,
+   "z": 0.75,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    1,
+    0
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S07",
+   "floor": "一楼",
+   "x": 0.12,
+   "z": 3.15,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    1,
+    0
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S08",
+   "floor": "一楼",
+   "x": 0.12,
+   "z": 5.4,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX1",
+   "model3dCircuit": "C1",
+   "wallNormal": [
+    1,
+    0
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S09",
+   "floor": "一楼",
+   "x": 18.425,
+   "z": 0.75,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX2",
+   "model3dCircuit": "C3",
+   "wallNormal": [
+    -1,
+    0
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S10",
+   "floor": "一楼",
+   "x": 18.675,
+   "z": 1.0,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX2",
+   "model3dCircuit": "C3",
+   "wallNormal": [
+    0,
+    1
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S11",
+   "floor": "二楼",
+   "x": 18.425,
+   "z": 0.75,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX3",
+   "model3dCircuit": "C7",
+   "wallNormal": [
+    -1,
+    0
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S12",
+   "floor": "二楼",
+   "x": 18.675,
+   "z": 1.0,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX3",
+   "model3dCircuit": "C7",
+   "wallNormal": [
+    0,
+    1
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S13",
+   "floor": "二楼",
+   "x": 18.1,
+   "z": 9.34,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX3",
+   "model3dCircuit": "C7",
+   "wallNormal": [
+    0,
+    -1
+   ],
+   "status": "existing",
+   "note": ""
+  },
+  {
+   "id": "S14",
+   "floor": "二楼",
+   "x": 19.2,
+   "z": 7.2,
+   "heightAboveFloorM": 0.38,
+   "type": "单相五孔插座",
+   "circuit": "WX4",
+   "model3dCircuit": "C8",
+   "wallNormal": [
+    -1,
+    0
+   ],
+   "status": "existing",
+   "note": ""
+  }
+ ],
+ "circuits": [
+  {
+   "id": "WL1",
+   "name": "一楼开放办公区照明",
+   "type": "照明",
+   "board": "AL1",
+   "loads": [
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L05",
+    "L06"
+   ],
+   "controlledBy": [
+    "K1a~K1f（每盏一联）"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "由持证电工确定"
+  },
+  {
+   "id": "WL2",
+   "name": "一楼夹层下(健身区)照明",
+   "type": "照明",
+   "board": "AL1",
+   "loads": [
+    "L07",
+    "L08",
+    "L09",
+    "L10",
+    "L11",
+    "L12"
+   ],
+   "controlledBy": [
+    "K3a"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "由持证电工确定"
+  },
+  {
+   "id": "WL3",
+   "name": "楼梯通道照明(3 盏，双控)",
+   "type": "照明",
+   "board": "AL1",
+   "loads": [
+    "L13",
+    "L14",
+    "L15"
+   ],
+   "controlledBy": [
+    "K2a",
+    "K4b"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "由持证电工确定"
+  },
+  {
+   "id": "WL4",
+   "name": "二楼办公区照明",
+   "type": "照明",
+   "board": "AL1",
+   "loads": [
+    "L16",
+    "L17",
+    "L18"
+   ],
+   "controlledBy": [
+    "K4a"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "由持证电工确定"
+  },
+  {
+   "id": "WX1",
+   "name": "一楼开放办公区普通插座",
+   "type": "插座",
+   "board": "AL1",
+   "model3dCircuit": "C1",
+   "loads": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "须带漏电保护"
+  },
+  {
+   "id": "WX2",
+   "name": "一楼夹层下沿窗插座",
+   "type": "插座",
+   "board": "AL1",
+   "model3dCircuit": "C3",
+   "loads": [
+    "S09",
+    "S10"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "须带漏电保护"
+  },
+  {
+   "id": "WX3",
+   "name": "夹层柱面及后墙插座",
+   "type": "插座",
+   "board": "AL1",
+   "model3dCircuit": "C7",
+   "loads": [
+    "S11",
+    "S12",
+    "S13"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "须带漏电保护"
+  },
+  {
+   "id": "WX4",
+   "name": "夹层端墙插座",
+   "type": "插座",
+   "board": "AL1",
+   "model3dCircuit": "C8",
+   "loads": [
+    "S14"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "须带漏电保护"
+  },
+  {
+   "id": "WK1",
+   "name": "空调电源 AC01(预留，设备待定)",
+   "type": "空调",
+   "board": "AL1",
+   "loads": [
+    "AC01"
+   ],
+   "note": "每台空调独立回路",
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "由持证电工确定"
+  },
+  {
+   "id": "WK2",
+   "name": "空调电源 AC02(预留，设备待定)",
+   "type": "空调",
+   "board": "AL1",
+   "loads": [
+    "AC02"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "由持证电工确定"
+  },
+  {
+   "id": "WE1",
+   "name": "应急照明与疏散指示(不经开关)",
+   "type": "预留",
+   "board": "AL1",
+   "loads": [
+    "位置见 A-01"
+   ],
+   "breaker": "由持证电工确定",
+   "cable": "由持证电工确定",
+   "rcd": "由持证电工确定"
+  }
+ ],
+ "hvac": [
+  {
+   "id": "AC01",
+   "name": "夹层下吸顶机",
+   "x": 15.88,
+   "z": 3.05,
+   "floor": "一楼",
+   "elevationM": 3.45,
+   "power": "WK1 预留"
+  },
+  {
+   "id": "AC02",
+   "name": "夹层上吸顶机",
+   "x": 15.88,
+   "z": 4.4,
+   "floor": "二楼",
+   "elevationM": 7.81,
+   "power": "WK2 预留"
+  },
+  {
+   "id": "V01",
+   "name": "开放区后半区送风口",
+   "x": 2.45,
+   "z": 6.05,
+   "floor": "一楼",
+   "elevationM": 5.95,
+   "power": "无"
+  }
+ ],
+ "pendingItems": [
+  "电源进线接入点、总负荷、断路器/线径全部由持证电工确定",
+  "K3 开在既有柱上，须结构/物业同意",
+  "淋浴间不接任何电源：不设灯、插座、热水器、排风扇（只在夏季使用，冷水）",
+  "淋浴间须做局部等电位联结(LEB)",
+  "全户只设一个配电箱 AL1，夹层回路由 AL1 沿主线槽上引"
+ ]
+}
