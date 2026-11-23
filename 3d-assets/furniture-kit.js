@@ -459,8 +459,6 @@ export function defaultFurnitureLayout() {
     ['teaChair', TEA_X, 4.32, 2, .82],
     ['teaCabinet', 13.82, .58, 0, .50],   // 0.80 wide, x 13.42~14.22, inside the meeting room by the gym-side glass
     ['trashBin', 13.75, 4.95, 0],         // inside the meeting room, clear of the door
-    ['plantTall', 11.00, .45, 0],
-    ['plantLow', 14.05, 4.95, 0],
     ['gymBench', 18.85, 2.90, 1],
     // Open office (owner brief 2026-11-23): 20 workstations in two back-to-back rows of ten, laid at right angles to
     // the glazing so every desk takes daylight from the side: nobody faces the glass or has it behind the screen.
@@ -468,8 +466,7 @@ export function defaultFurnitureLayout() {
     // Desks 1.20 x 0.70; 2.35 m between the two groups so both rows can push back and someone can still walk by.
     ...[.80, 2.00, 3.20, 4.40, 5.60].flatMap(z => [1.80, 5.55].flatMap(cx => [
       ['workDesk', cx - .35, z, 3], ['officeChair', cx - .95, z, 1],
-      ['workDesk', cx + .35, z, 1], ['officeChair', cx + .95, z, 3]])),
-    ['plantLow', 18.95, 4.85, 0]
+      ['workDesk', cx + .35, z, 1], ['officeChair', cx + .95, z, 3]]))
   ];
   // Mezzanine (owner brief 2026-11-23): a casual tea corner for four on the open-office side, and the owner's
   // corner at the L of the glazing: an L desk (main + return) that ends on the existing column, the column wrapped
@@ -482,13 +479,11 @@ export function defaultFurnitureLayout() {
     ['smartTeaTable', 12.40, 1.10, 1],
     ['modernChair', 11.73, .80, 1], ['modernChair', 11.73, 1.50, 1],
     ['modernChair', 13.07, .80, 3], ['modernChair', 13.07, 1.50, 3],
-    ['plantTall', 11.10, 3.90, 0],
     // Single-person U desk, x 16.20~19.20, z 0.25~2.95 (clear of the blinds), opening towards the tea corner. The owner
     // sits with his back to the long glazing, facing the big top and the stair exit; the column is in the closed corner.
     ['uDeskOwner', 17.70, 1.60, 0],
     ['officeChair', 17.55, 1.30, 0],                   // the one seat, facing the stair exit
-    ['columnCladding', 18.675, .75, 0],
-    ['plantLow', 16.30, 4.40, 0]
+    ['columnCladding', 18.675, .75, 0]
   ];
   return [
     ...rows.map(([type, x, z, rot, sx = 1], i) => ({id: 'd' + i, type, floor: 'ground', x, z, rot, sx, sy: 1, sz: 1})),

@@ -110,7 +110,7 @@
 <line x1="30.65" y1="44.10" x2="30.65" y2="82.35" stroke="#444" stroke-width="0.35" stroke-dasharray="4 1.5" fill="none"/>
 <text x="155.50" y="65.70" font-size="2.50" text-anchor="middle" fill="#000" font-weight="bold" stroke="#fff" stroke-width="0.75" paint-order="stroke" stroke-linejoin="round">A  开放办公区  69.96 m²</text>
 <text x="155.50" y="69.20" font-size="2.30" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.69" paint-order="stroke" stroke-linejoin="round">环氧自流平 RAL 7035 · 完成面 −0.150</text>
-<text x="81.70" y="48.60" font-size="2.30" text-anchor="middle" fill="#000" font-weight="bold" stroke="#fff" stroke-width="0.69" paint-order="stroke" stroke-linejoin="round">D  茶桌区</text>
+<text x="81.70" y="48.60" font-size="2.30" text-anchor="middle" fill="#000" font-weight="bold" stroke="#fff" stroke-width="0.69" paint-order="stroke" stroke-linejoin="round">D  茶桌兼会议区</text>
 <text x="81.70" y="51.82" font-size="2.10" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.63" paint-order="stroke" stroke-linejoin="round">18.99 m²</text>
 <text x="81.70" y="55.04" font-size="2.10" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.63" paint-order="stroke" stroke-linejoin="round">环氧 RAL 7035 · −0.150</text>
 <text x="49.75" y="45.00" font-size="2.30" text-anchor="middle" fill="#000" font-weight="bold" stroke="#fff" stroke-width="0.69" paint-order="stroke" stroke-linejoin="round">E  拳击垫区</text>
@@ -123,7 +123,7 @@
 <text x="89.35" y="103.59" font-size="2.00" text-anchor="middle" fill="#000" font-weight="bold" stroke="#fff" stroke-width="0.60" paint-order="stroke" stroke-linejoin="round">G 淋浴间</text>
 <text x="89.35" y="106.39" font-size="1.80" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.54" paint-order="stroke" stroke-linejoin="round">5.18 m²</text>
 <text x="89.35" y="109.19" font-size="1.80" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.54" paint-order="stroke" stroke-linejoin="round">垫高 150 · ±0.000</text>
-<text x="89.35" y="114.39" font-size="1.60" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.48" paint-order="stroke" stroke-linejoin="round">防滑砖/环氧(待定)</text>
+<text x="89.35" y="114.39" font-size="1.60" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.48" paint-order="stroke" stroke-linejoin="round">防滑地砖 + 涂膜防水</text>
 <text x="59.20" y="110.79" font-size="2.10" text-anchor="middle" fill="#000" font-weight="bold" stroke="#fff" stroke-width="0.63" paint-order="stroke" stroke-linejoin="round">H  楼梯投影下 11.67 m²</text>
 <text x="59.20" y="113.73" font-size="1.90" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.57" paint-order="stroke" stroke-linejoin="round">环氧 RAL 7035 · −0.150</text>
 <text x="59.20" y="116.67" font-size="1.90" text-anchor="middle" fill="#000" stroke="#fff" stroke-width="0.57" paint-order="stroke" stroke-linejoin="round">（梯下储物，仍按地坪做）</text>
@@ -265,7 +265,7 @@
 <rect x="219.00" y="22.10" width="10.00" height="4.00" fill="url(#dots)" stroke="none" stroke-width="0.00"/>
 <text x="231.00" y="25.10" font-size="2.40" text-anchor="start" fill="#000">入口垫高段：同过道色，加点 = 垫高 150</text>
 <rect x="314.00" y="22.10" width="10.00" height="4.00" fill="url(#tile)" stroke="#2c6275" stroke-width="0.30"/>
-<text x="326.00" y="25.10" font-size="2.40" text-anchor="start" fill="#000">淋浴间：防水+防滑砖/环氧防滑，垫高 150（待定）</text>
+<text x="326.00" y="25.10" font-size="2.40" text-anchor="start" fill="#000">淋浴间：涂膜防水 + 哑光防滑地砖，垫高 150</text>
 <rect x="219.00" y="28.10" width="10.00" height="4.00" fill="url(#mat)" stroke="#444" stroke-width="0.30"/>
 <text x="231.00" y="31.10" font-size="2.40" text-anchor="start" fill="#000">拳击垫区：高密度软垫（深灰），厚 40，可赤脚训练</text>
 <rect x="314.00" y="28.10" width="10.00" height="4.00" fill="#cbd0cc" stroke="#555" stroke-width="0.30"/>
@@ -303,7 +303,7 @@
 <text x="281.00" y="68.20" font-size="2.20" text-anchor="start" fill="#000">环氧 RAL 7038</text>
 <line x1="218.00" y1="72.50" x2="313.00" y2="72.50" stroke="#bbb" stroke-width="0.08" fill="none"/>
 <text x="219.00" y="72.20" font-size="2.20" text-anchor="start" fill="#000">D</text>
-<text x="225.00" y="72.20" font-size="2.20" text-anchor="start" fill="#000">茶桌区</text>
+<text x="225.00" y="72.20" font-size="2.20" text-anchor="start" fill="#000">茶桌兼会议区</text>
 <text x="266.00" y="72.20" font-size="2.20" text-anchor="end" fill="#000">18.99</text>
 <text x="279.00" y="72.20" font-size="2.20" text-anchor="end" fill="#000">−0.150</text>
 <text x="281.00" y="72.20" font-size="2.20" text-anchor="start" fill="#000">环氧 RAL 7035</text>
@@ -324,7 +324,7 @@
 <text x="225.00" y="84.20" font-size="2.20" text-anchor="start" fill="#000">淋浴间</text>
 <text x="266.00" y="84.20" font-size="2.20" text-anchor="end" fill="#000">5.18</text>
 <text x="279.00" y="84.20" font-size="2.20" text-anchor="end" fill="#000">±0.000</text>
-<text x="281.00" y="84.20" font-size="2.20" text-anchor="start" fill="#000">防滑砖/环氧(待定)</text>
+<text x="281.00" y="84.20" font-size="2.20" text-anchor="start" fill="#000">防滑地砖+涂膜防水</text>
 <line x1="218.00" y1="88.50" x2="313.00" y2="88.50" stroke="#bbb" stroke-width="0.08" fill="none"/>
 <text x="219.00" y="88.20" font-size="2.20" text-anchor="start" fill="#000">H</text>
 <text x="225.00" y="88.20" font-size="2.20" text-anchor="start" fill="#000">楼梯投影下</text>
@@ -475,8 +475,10 @@
 <text x="218.00" y="147.54" font-size="2.70" text-anchor="start" fill="#000">4.</text>
 <text x="223.00" y="147.54" font-size="2.70" text-anchor="start" fill="#000">过道 B、C、F 用 RAL 7038 与大面 RAL 7035 区分，起指路作用；入口垫高段边缘的台阶线（z=7.675）拟定用深色或警示色。</text>
 <text x="218.00" y="151.95" font-size="2.70" text-anchor="start" fill="#000">5.</text>
-<text x="223.00" y="151.95" font-size="2.70" text-anchor="start" fill="#000">墙面面积为刷漆毛面积，未扣箱体（消火栓箱凸出 0.20、配电箱等），也未计踢脚线；备料时另按 5%~8% 损耗加量。</text>
-<text x="218.00" y="156.36" font-size="2.70" text-anchor="start" fill="#000">6.</text>
-<text x="223.00" y="156.36" font-size="2.70" text-anchor="start" fill="#000">玻璃幕墙及其窗腰梁（既有混凝土腰梁）不在本图刷涂范围；既有柱面是否刷、刷什么色，待业主确认。钢结构面漆须在防火涂料之后涂装，做法见 S-01</text>
-<text x="223.00" y="160.27" font-size="2.70" text-anchor="start" fill="#000">。</text>
+<text x="223.00" y="151.95" font-size="2.70" text-anchor="start" fill="#000">淋浴间地面拟定 300×300 哑光防滑地砖（浅灰），其下做聚氨酯涂膜防水两遍，沿玻璃隔断翻边 300、实墙一侧翻至 1.80 m，闭水试验 48 h；地面坡</text>
+<text x="223.00" y="155.86" font-size="2.70" text-anchor="start" fill="#000">向地漏约 1%。</text>
+<text x="218.00" y="160.27" font-size="2.70" text-anchor="start" fill="#000">6.</text>
+<text x="223.00" y="160.27" font-size="2.70" text-anchor="start" fill="#000">墙面面积为刷漆毛面积，未扣箱体（消火栓箱凸出 0.20、配电箱等），也未计踢脚线；备料时另按 5%~8% 损耗加量。</text>
+<text x="218.00" y="164.68" font-size="2.70" text-anchor="start" fill="#000">7.</text>
+<text x="223.00" y="164.68" font-size="2.70" text-anchor="start" fill="#000">玻璃幕墙及其窗腰梁（既有混凝土腰梁）不在本图刷涂范围；既有柱面与实墙同刷乳胶漆 RAL 9016。钢结构面漆须在防火涂料之后涂装，做法见 S-01。</text>
 </svg>
