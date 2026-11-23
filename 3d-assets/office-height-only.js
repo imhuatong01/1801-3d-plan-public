@@ -12,7 +12,7 @@ import {setupLook} from './look.js?v=118';
 import {setupDimensions} from './dimensions.js?v=85';
 import {addProjectDimensions} from './dimension-data.js?v=194';
 import {FURNITURE_KIT,defaultFurnitureLayout} from './furniture-kit.js?v=194';
-import {setupRoles} from './roles.js?v=194';
+import {setupRoles} from './roles.js?v=195';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -202,7 +202,8 @@ const siliconeJoint=mat('#e8eef0',.9),pane=(x,z,w,d)=>box(wetWalls,x,wetLocalFlo
 for(const z of [WZ,WZ1-.06]){const h=(2.02-.006)/2;pane(10.83,z,h,.06);pane(10.83+h+.006,z,h,.06);box(wetWalls,10.83+h,wetLocalFloor,z+.015,.006,glassHeight,.03,siliconeJoint).name='shower-glass-joint';}
 for(const [x,z,w,d] of [[10.77,WZ,.06,WD],[10.83,WZ,2.02,.06],[10.83,WZ1-.06,2.02,.06]])for(const y of [wetLocalFloor-.005,wetLocalFloor+glassHeight-.02])box(wetWalls,x-.005,y,z-.005,w+.01,.025,d+.01,steel).name='shower-u-channel';
 // The door is under the second flight, clear of the 100 mm stair well.
-for(const [z,depth] of [[WZ,doorZ-WZ],[doorZ+1.0,WZ1-doorZ-1.0]])box(wetWalls,12.85,wetLocalFloor,z,.06,glassHeight,depth,showerGlass);
+{const h=(doorZ-WZ-.006)/2;pane(12.85,WZ,.06,h);pane(12.85,WZ+h+.006,.06,h);box(wetWalls,12.865,wetLocalFloor,WZ+h,.03,glassHeight,.006,siliconeJoint).name='shower-glass-joint';}
+box(wetWalls,12.85,wetLocalFloor,doorZ+1.0,.06,glassHeight,WZ1-doorZ-1.0,showerGlass);
 // The closed door fills the opening in the stair-side wall at x=12.88.
 const showerDoor=new THREE.Group();showerDoor.name='shower-closed-door';wetWalls.add(showerDoor);
 box(showerDoor,wetDoorAt.x-.02,wetLocalFloor+.025,wetDoorAt.z-.475,.035,doorFrameHeight-.05,.95,showerDoorGlass);
@@ -732,8 +733,7 @@ function showGlassBoard(){
  const slope=n=>Math.hypot((n-1)*going,(n-1)*rise),m=v=>v.toFixed(2);
  const edge=voidZ,around=(voidX-10.70)+(openFront-voidZ)+(thresholdX-voidX),landing=PD+.05+(lowerLandingX-10.75);
  const wetH=midHeight-.12-wetFloorFinish,wetArea=2*(2.16+WD)*wetH;
- $('#glassInfoText').textContent='夹层临空边护栏 '+m(edge)+' m；楼梯留空一圈护栏 '+m(around)+' m；中转平台护栏 '+m(landing)+' m；第一跑 '+m(slope(lowerRisers))+' m：临空一侧玻璃护栏，梯井一侧只做扶手；第二跑 '+m(slope(upperRisers))+' m：下段 '+m(slope((voidX-upperStartX)/going))+' m 玻璃护栏，上段与靠墙一侧只做扶手。两跑之间 100 mm 梯井内不得安装任何护栏构件。护栏高 1.10 m，玻璃分格约 1.2 m，每个转角和端头设立柱。淋浴间四面玻璃隔断，外框 2.16 × '+m(WD)+' m（与楼梯总宽对齐），高约 '+m(wetH)+' m，含门约 '+wetArea.toFixed(1)+' ㎡；10 厚钢化玻璃（深色或磨砂），每面实墙拆成两块、每块宽不超过 1.2 m，拼缝 6 mm 打透明玻璃胶，上下 U 槽固定；门为 0.95 m 单扇。尺寸为方案值，下料前现场复尺。';
- buildGlassDims(2.16,WD,wetH);glassDims.visible=true;for(const q of glassDims.children)q.visible=true;
+ $('#glassInfoText').textContent='夹层临空边护栏 '+m(edge)+' m；楼梯留空一圈护栏 '+m(around)+' m；中转平台护栏 '+m(landing)+' m；第一跑 '+m(slope(lowerRisers))+' m：临空一侧玻璃护栏，梯井一侧只做扶手；第二跑 '+m(slope(upperRisers))+' m：下段 '+m(Math.hypot(voidX-upperStartX,(voidX-upperStartX)/going*rise))+' m 玻璃护栏，上段与靠墙一侧只做扶手。两跑之间 100 mm 梯井内不得安装任何护栏构件。护栏高 1.10 m，玻璃分格约 1.2 m，每个转角和端头设立柱。淋浴间四面玻璃隔断，外框 2.16 × '+m(WD)+' m（与楼梯总宽对齐），高约 '+m(wetH)+' m，含门约 '+wetArea.toFixed(1)+' ㎡；10 厚钢化玻璃（深色或磨砂），每面实墙拆成两块、每块宽不超过 1.2 m，拼缝 6 mm 打透明玻璃胶，上下 U 槽固定；门为 0.95 m 单扇。尺寸为方案值，下料前现场复尺。';
  $('#glassInfo').hidden=false;markBoard('#glassBoard',true);
  camera.position.set(5.5,10.5,-15.5);controls.target.set(13.6,2.6,-6.9);viewportFit=1;fitViewport();
 }
@@ -955,7 +955,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=194';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=195';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('图纸/F-01_地面与墙面做法图.svg','地面与墙面做法图');
 $('#electricalGround').onclick=()=>showFlatPlan('图纸/E-01_一层照明平面图.svg','一层照明平面图');

@@ -984,6 +984,141 @@ def sheet_F01():
     sh.save('F-01_地面与墙面做法图.svg')
     return W, tot, wall_tot
 
+# ---------------------------------------------------------------- G-01 玻璃与扶手平面图
+GL_C = '#1b8fb8'; HR_C = '#333b42'; LAND_C = '#b36b00'
+SLOPE = math.sqrt(1 + (RISER / GOING) ** 2)
+def panes(L, maxw=1.2): return max(1, math.ceil(L / maxw - 1e-9))
+
+def glass_run(sh, v, a, b, c=GL_C, n=None, w=.9):
+    """平面上一段玻璃护栏：粗线 + 立柱位置圆点"""
+    LN(sh, v, a[0], a[1], b[0], b[1], w=w, c=c)
+    L = math.hypot(b[0] - a[0], b[1] - a[1]); n = n or panes(L)
+    for i in range(n + 1):
+        k = i / n; x = a[0] + (b[0] - a[0]) * k; z = a[1] + (b[1] - a[1]) * k
+        p = v.P(x, z); sh.circle(p[0], p[1], .55, '#fff', c, .3)
+
+def rail_run(sh, v, a, b, c=HR_C):
+    LN(sh, v, a[0], a[1], b[0], b[1], w=.45, c=c, dash='2.4 .8 .5 .8')
+
+def sheet_G01():
+    sh = Sheet(); frame(sh, '玻璃护栏与淋浴间玻璃平面图', 'G-01', '1:50 / 1:25')
+    v = View(415, 32, 20.0)                                  # 1:50，只画夹层留空与楼梯一带
+    # 底图：夹层楼面、墙、采光面、柱
+    PL(sh, v, [(10.70, 0), (19.425, 0), (19.425, 9.40), (17.15, 9.40), (17.15, ZV2), (13.97, ZV2), (13.97, ZV1), (10.70, ZV1)], fill='#f4f4f1', c='#999', sw=.25)
+    a = v.P(16.4, 4.2); sh.text(a[0], a[1], '夹层楼面 +4.100', 2.6, anchor='middle', fill='#777')
+    R(sh, v, 10.70, 9.40, 19.425 + .2, 9.60, fill='#c9c9c9', c='#555', sw=.2)
+    for dz in (-.06, .06): LN(sh, v, 10.70, dz, 19.425, dz, w=.25, c=BLUEG)
+    for dx in (-.06, .06): LN(sh, v, 19.425 + dx, 0, 19.425 + dx, 9.40, w=.25, c=BLUEG)
+    a = v.P(15.0, 0); sh.text(a[0], a[1] - 1.8, '采光玻璃面（既有，不在本图范围）', 2.0, anchor='middle', fill=BLUEG)
+    for c in COLS:
+        if c[0] > 10.4: R(sh, v, *c, fill='url(#hatch)', c='#000', sw=.3)
+    for c in GZ2 + [GZ1]: R(sh, v, *c, fill='#666', c='#000', sw=.2)
+    # 楼梯与平台（细灰线）
+    g = '#9a9a9a'
+    R(sh, v, 12.95, Z_F1[0], START1, Z_F1[1], c=g, sw=.25); R(sh, v, 12.95, Z_F2[0], ARR2, Z_F2[1], c=g, sw=.25)
+    for k in range(1, 17):
+        x = START1 - k * GOING; LN(sh, v, x, Z_F1[0], x, Z_F1[1], w=.1, c=g)
+    for k in range(1, 15):
+        x = ARR2 - k * GOING; LN(sh, v, x, Z_F2[0], x, Z_F2[1], w=.1, c=g)
+    R(sh, v, *PLAT, fill='#fbf3e6', c=g, sw=.25)
+    a = v.P(11.85, 8.15); sh.text(a[0], a[1], '中转平台 +2.100', 2.3, anchor='middle', fill='#8a5c00')
+    sh.text(a[0], a[1] + 3.0, '（其下为淋浴间，见右图）', 2.0, anchor='middle', fill='#8a5c00')
+    a = v.P(15.3, 7.55); sh.text(a[0], a[1] + .8, '第一跑 17 级  上', 2.2, anchor='middle', fill='#666')
+    a = v.P(15.0, 8.85); sh.text(a[0], a[1] + .8, '第二跑 15 级  上', 2.2, anchor='middle', fill='#666')
+    # ---- 护栏与扶手
+    glass_run(sh, v, (10.70, 0), (10.70, ZV1))                                         # G1
+    glass_run(sh, v, (10.70, ZV1 - .06), (13.97, ZV1 - .06))                            # G2
+    glass_run(sh, v, (13.97, ZV1), (13.97, ZV2))
+    glass_run(sh, v, (13.97, ZV2 - .06), (17.15, ZV2 - .06))
+    glass_run(sh, v, (10.75, ZV1 + .08), (10.75, 9.40), c=LAND_C)                       # G3（平台标高）
+    glass_run(sh, v, (10.75, ZV1 + .08), (12.95, ZV1 + .08), c=LAND_C)
+    glass_run(sh, v, (12.95, ZV1 + .03), (START1, ZV1 + .03), n=4)                      # G4
+    rail_run(sh, v, (12.95, Z_F1[1] - .06), (START1, Z_F1[1] - .06))                    # H1
+    glass_run(sh, v, (12.95, Z_F2[0] + .04), (13.97, Z_F2[0] + .04), n=1)               # G5
+    rail_run(sh, v, (13.97, Z_F2[0] + .04), (17.15, Z_F2[0] + .04))                     # H2
+    rail_run(sh, v, (12.95, 9.34), (17.15, 9.34))                                       # H3
+    def T(x, z, s, tgt): tag(sh, *v.P(x, z), s, v.P(*tgt), size=2.1, bold=True)
+    T(10.25, 3.4, 'G1', (10.70, 3.4)); T(12.2, 6.25, 'G2', (12.2, ZV1 - .06)); T(14.45, 7.05, 'G2', (13.97, 7.3)); T(18.3, ZV2 - .35, 'G2', (17.0, ZV2 - .06))
+    T(11.25, 9.05, 'G3', (10.75, 9.05)); T(11.9, 7.35, 'G3', (11.9, ZV1 + .08)); T(16.6, 6.45, 'G4', (16.6, ZV1 + .03))
+    T(16.2, Z_F1[1] - .4, 'H1', (16.2, Z_F1[1] - .06)); T(13.4, Z_F2[0] + .45, 'G5', (13.4, Z_F2[0] + .04)); T(16.6, Z_F2[0] + .42, 'H2', (16.6, Z_F2[0] + .04)); T(13.9, 9.05, 'H3', (13.9, 9.34))
+    # ---- 尺寸（平面长度；斜段的斜长见表）
+    y0 = v.P(0, 0)[1]
+    dim_h(sh, v, 10.70, 13.97, y0 - 6, '3.270', y0 - 1)
+    dim_h(sh, v, 13.97, 17.15, y0 - 6, '3.180', y0 - 1)
+    dim_h(sh, v, 17.15, START1, y0 - 6, '0.560', y0 - 1, size=2.0)
+    dim_h(sh, v, 10.70, 19.425, y0 - 12, '8.725（夹层东西宽）', y0 - 1)
+    yb = v.P(0, 9.60)[1]
+    dim_h(sh, v, 10.75, 12.95, yb + 7, '2.200 平台', yb + 1)
+    dim_h(sh, v, 12.95, 13.97, yb + 7, '1.020', yb + 1, size=2.0)
+    dim_h(sh, v, 13.97, 17.15, yb + 7, '3.180', yb + 1)
+    dim_h(sh, v, 12.95, START1, yb + 13, '4.760 第一跑水平长', yb + 1)
+    dim_h(sh, v, 12.95, ARR2, yb + 19, '4.200 第二跑水平长', yb + 1)
+    xr = v.P(10.70, 0)[0] + 6
+    dim_v(sh, v, 0, ZV1, xr, '6.900', v.P(10.70, 0)[0])
+    dim_v(sh, v, ZV1, 9.40, xr, '2.500', v.P(10.75, 0)[0])
+    dim_v(sh, v, ZV1, ZV2, xr + 7, '1.300', v.P(13.97, 0)[0])
+
+    # ---- 右上：淋浴间玻璃 1:25
+    sx0, sz0, sx1, sz1 = SHOWER
+    u = View(370 + sx0 * 40 - 0, 40 - sz0 * 40 + 0, 40.0)
+    u = View(352 + sx1 * 40 - 40 * (sx1 - sx0), 42 - sz0 * 40, 40.0)
+    c0 = u.P(sx1, sz0)
+    sh.text(c0[0] - 8, c0[1] - 14, '淋浴间玻璃隔断 1:25（一层，平台正下方）', 3.0, bold=True)
+    R(sh, u, sx0, sz0, sx1, sz1, fill='#eef4f6', c='none')
+    def sglass(a, b, n):
+        LN(sh, u, a[0], a[1], b[0], b[1], w=1.4, c='#2b4650')
+        for i in range(1, n):
+            k = i / n; p = u.P(a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k); sh.circle(p[0], p[1], .9, '#fff', RED, .35)
+    sglass((sx0, sz0), (sx0, sz1), 2)
+    sglass((sx0, sz0), (sx1, sz0), 2); sglass((sx0, sz1), (sx1, sz1), 2)
+    DZ0, DZ1 = Z_F2[0] + .10, Z_F2[0] + 1.10                 # 门洞 8.30~9.30
+    sglass((sx1, sz0), (sx1, DZ0), 2)
+    LN(sh, u, sx1, DZ1, sx1, sz1, w=1.4, c='#2b4650')
+    d0 = u.P(sx1, DZ0); r = .95 * 40
+    sh.line(d0[0], d0[1], d0[0] - r, d0[1], .5, '#2b4650')
+    d1 = u.P(sx1, DZ0 + .95)
+    sh.add('<path d="M %.2f %.2f A %.2f %.2f 0 0 0 %.2f %.2f" fill="none" stroke="#2b4650" stroke-width=".25" stroke-dasharray="1.2 .8"/>' % (d0[0] - r, d0[1], r, r, d1[0], d1[1]))
+    cc = u.P((sx0 + sx1) / 2, (sz0 + sz1) / 2)
+    sh.text(cc[0], cc[1] - 3, '淋浴间', 3.0, anchor='middle', bold=True); sh.text(cc[0], cc[1] + 1, '完成面 ±0.000', 2.2, anchor='middle')
+    sh.text(cc[0], cc[1] + 5, '玻璃高 1.980', 2.2, anchor='middle')
+    q = u.P(sx1, DZ0 + .48); sh.text(q[0] - 22, q[1] + 1, '门 0.95 外开', 2.2, anchor='middle', bold=True)
+    ya = u.P(0, sz0)[1] - 4
+    hw = (sx1 - sx0) / 2
+    for a_, b_ in [(sx0, sx0 + hw), (sx0 + hw, sx1)]: dim_h(sh, u, a_, b_, ya, '%.3f' % hw, ya + 3, size=2.1)
+    dim_h(sh, u, sx0, sx1, ya - 6, '%.3f 外框' % (sx1 - sx0), ya + 3, size=2.2)
+    xl = u.P(sx1, 0)[0] - 5
+    fz = (DZ0 - sz0) / 2
+    for a_, b_, t in [(sz0, sz0 + fz, '%.3f' % fz), (sz0 + fz, DZ0, '%.3f' % fz), (DZ0, DZ1, '1.000 门洞')]:
+        dim_v(sh, u, a_, b_, xl, t, u.P(sx1, 0)[0], size=2.0)
+    xr2 = u.P(sx0, 0)[0] + 5
+    hz = (sz1 - sz0) / 2
+    for a_, b_ in [(sz0, sz0 + hz), (sz0 + hz, sz1)]: dim_v(sh, u, a_, b_, xr2, '%.3f' % hz, u.P(sx0, 0)[0], size=2.1)
+    dim_v(sh, u, sz0, sz1, xr2 + 7, '%.3f 外框' % (sz1 - sz0), u.P(sx0, 0)[0], size=2.2)
+
+    # ---- 右下：护栏表 + 说明
+    X = 222; Y = 150
+    rows = [
+        ('G1', '夹层临空边（靠主过道）', '+4.100', '6.90', '—', panes(6.90)),
+        ('G2', '楼梯留空一圈（三段）', '+4.100', '3.27 + 1.30 + 3.18 = 7.75', '—', '%d+%d+%d' % (panes(3.27), panes(1.30), panes(3.18))),
+        ('G3', '中转平台两边', '+2.100', '2.55 + 2.20 = 4.75', '—', '%d+%d' % (panes(2.55), panes(2.20))),
+        ('G4', '第一跑临空一侧（斜）', '随踏步', '4.76', '%.2f' % (4.76 * SLOPE), 4),
+        ('G5', '第二跑下段临空一侧（斜）', '随踏步', '1.02', '%.2f' % (1.02 * SLOPE), 1),
+        ('H1', '第一跑梯井一侧，只做扶手', '随踏步', '4.76', '%.2f' % (4.76 * SLOPE), '—'),
+        ('H2', '第二跑上段梯井一侧，只做扶手', '随踏步', '3.18', '%.2f' % (3.18 * SLOPE), '—'),
+        ('H3', '第二跑靠后墙，墙装扶手', '随踏步', '4.20', '%.2f' % (4.20 * SLOPE), '—'),
+    ]
+    cols = [('编号', 12, 'm'), ('位置', 56, 'l'), ('标高', 16, 'm'), ('平面长 m', 46, 'l'), ('斜长 m', 16, 'm'), ('玻璃块数', 20, 'm')]
+    ye = table(sh, X, Y, cols, rows, size=2.05, title='护栏与扶手表（尺寸为方案值，下料前现场复尺）')
+    notes = [
+        '玻璃护栏 G：高 1.10（自楼面或踏步前缘量起），玻璃拟定 8+8 夹胶钢化，每块宽不超过 1.20，块间设立柱；厚度由玻璃供应商按规范复核。',
+        '扶手 H：只做扶手不装玻璃，高 0.90；H1、H2 在两跑之间 0.10 梯井一侧，H3 用托架固定在后墙上，离墙 60。梯井内不装任何护栏构件。',
+        '淋浴间：10 厚钢化玻璃（深色或磨砂），每面拆成两块，块宽不超过 1.20；拼缝 6 打透明玻璃胶，上下 U 槽固定；门 0.95 单扇外开。',
+        '图中蓝色圆点为护栏立柱位置，红点为淋浴间玻璃拼缝；橙色为中转平台标高 +2.100 的护栏，与上方夹层护栏在平面上重叠。',
+    ]
+    ye = notes_block(sh, X, ye + 3, 186, notes, size=2.2, gap=.3)
+    assert ye < 246, ye
+    sh.save('G-01_玻璃护栏与淋浴间玻璃平面图.svg')
+
 STEEL_PAINT = 0.0
 
 if __name__ == '__main__':
@@ -992,6 +1127,7 @@ if __name__ == '__main__':
     sheet_S01()
     sheet_A01()
     W, tot, wall_tot = sheet_F01()
+    sheet_G01()
     print('POLY_AREA %.3f HOLES %.3f NET %.3f (CAD 168.264)' % (POLY_AREA, HOLE_AREA, POLY_AREA - HOLE_AREA))
     for k, v in AREA1.items(): print('  1F', k, '%.3f' % v)
     print('  1F rest %.3f' % AREA_REST, 'sum %.3f' % (sum(AREA1.values()) + AREA_REST))
