@@ -21,12 +21,14 @@ const wetFloorFinish = lowerFinish + wetRaise;
 // Steel zone is 250 mm deep: HN250x125 edge beams and trimmers, HM244x175 main beams, 120 x 60 joists.
 const primaryDepth = 0.25, mainBeamDepth = 0.244, joistDepth = 0.12;
 const headroomLimit = 2.00;
-// Flights are 1.20 m wide with a 100 mm gap between them (owner, 2026-11-20). The upper flight keeps its
-// place against the back wall; the lower flight moves in beside it.
-const stairWidth = 1.20, flightGap = 0.10, upperFlightZ = 9.24 - stairWidth, lowerFlightZ = upperFlightZ - flightGap - stairWidth;
+// Flights are 1.20 m wide with a 100 mm gap between them (owner, 2026-11-20). The whole stair stands against
+// the back wall at z = 9.40 (owner, 2026-11-23): the 160 mm gap behind the second flight is gone, and the
+// landing and the bathroom under it moved back with the stair.
+const backWallZ = 9.40;
+const stairWidth = 1.20, flightGap = 0.10, upperFlightZ = backWallZ - stairWidth, lowerFlightZ = upperFlightZ - flightGap - stairWidth;
 const flightGapZ = lowerFlightZ + stairWidth, openingFrontZ = upperFlightZ;
 // Rectangle over the second flight (kept for the stair and steel set-out).
-const opening = [[upperStartX,openingFrontZ],[thresholdX,openingFrontZ],[thresholdX,9.30],[upperStartX,9.30]];
+const opening = [[upperStartX,openingFrontZ],[thresholdX,openingFrontZ],[thresholdX,backWallZ],[upperStartX,backWallZ]];
 // A 250 mm beam may cross the first flight only where the pitch line is 2.00 m or more below its soffit:
 // pitch(x) = lowerFinish + (1 + (lowerStartX - x) / going) * riser.
 const deepBeamMinX = lowerStartX - ((steelTop - primaryDepth - headroomLimit - lowerFinish) / riser - 1) * going;
@@ -36,13 +38,14 @@ const deepBeamMinX = lowerStartX - ((steelTop - primaryDepth - headroomLimit - l
 const beamXs = [10.70, 11.79, 12.88, 13.97, 15.03, 16.09, thresholdX, 18.31];
 const mainBeam2X = beamXs[3];
 // The landing, and the bathroom under it, are as wide as the two flights together (1.20 + 0.10 + 1.20 = 2.50).
-const platformZ0 = lowerFlightZ, platformZ1 = 9.24;
+const platformZ0 = lowerFlightZ, platformZ1 = upperFlightZ + stairWidth;
 const mezzanineEdgeX = 10.70, voidFrontZ = platformZ0;
 // Open area: over the landing and the last treads of the first flight, plus the second flight.
 const voidOutline = [[mezzanineEdgeX,voidFrontZ],[mainBeam2X,voidFrontZ],[mainBeam2X,openingFrontZ],
-  [thresholdX,openingFrontZ],[thresholdX,9.40],[mezzanineEdgeX,9.40]];
-const wetFixtures = Object.freeze({door:{x:12.88,z:8.615},head:{x:11.00,z:7.25},
-  drain:{x:11.10,z:7.95,width:.10,depth:.10},basin:{x:11.07,z:8.70,width:.48,depth:.36}});
+  [thresholdX,openingFrontZ],[thresholdX,backWallZ],[mezzanineEdgeX,backWallZ]];
+// Shower fixtures keep their places inside the bathroom, measured from its front edge.
+const wetFixtures = Object.freeze({door:{x:12.88,z:platformZ0+1.875},head:{x:11.00,z:platformZ0+.51},
+  drain:{x:11.10,z:platformZ0+1.21,width:.10,depth:.10},basin:{x:11.07,z:platformZ0+1.96,width:.48,depth:.36}});
 const midPlatformOutline = [[10.75,platformZ0],[lowerLandingX,platformZ0],[lowerLandingX,platformZ1],[10.75,platformZ1]];
 function planArea(points) {
   return Math.abs(points.reduce((sum,[x,z],i)=>{
@@ -53,7 +56,7 @@ function planArea(points) {
 export const MEZZANINE = Object.freeze({
   steelTop, beltBase, beltHeight, finishThickness, floorFinish, lowerFinish, riser, lowerRisers, upperRisers,
   going, midLanding, lowerStartX, lowerLandingX, upperStartX, thresholdX, opening, midPlatformOutline,
-  voidOutline, voidFrontZ, platformZ0, platformZ1, mezzanineEdgeX, beamXs, stairWidth, flightGap, upperFlightZ, lowerFlightZ, joistDepth, mainBeamDepth, headroomLimit, flightGapZ, openingFrontZ, mainBeam2X, deepBeamMinX,
+  voidOutline, voidFrontZ, platformZ0, platformZ1, backWallZ, mezzanineEdgeX, beamXs, stairWidth, flightGap, upperFlightZ, lowerFlightZ, joistDepth, mainBeamDepth, headroomLimit, flightGapZ, openingFrontZ, mainBeam2X, deepBeamMinX,
   openingArea: planArea(voidOutline), upperArea: 81.965 - planArea(voidOutline),
   platformArea: planArea(midPlatformOutline), wetRaise, wetFloorFinish, wetFixtures, wetHeadBottom: midLanding-.09,
   wetToPlatformSurface: midLanding-wetFloorFinish,

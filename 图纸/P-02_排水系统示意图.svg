@@ -23,36 +23,36 @@
 <text x="312.50" y="284.40" font-size="3.00" text-anchor="middle" fill="#c0392b" font-weight="bold">方案图 非施工图 须由持证电工/给排水工程师深化</text>
 <text x="14.00" y="19.00" font-size="3.60" text-anchor="start" fill="#000" font-weight="bold">排水系统示意图（沿管线展开的剖面，纵向放大）</text>
 <text x="14.00" y="24.00" font-size="2.30" text-anchor="start" fill="#555">横向：沿管线长度(m)；纵向：高度放大(垫高层 150 mm 画成约 38 mm)；仅示意关系，不能量尺寸。</text>
-<rect x="16.00" y="95.50" width="224.57" height="12.00" fill="url(#hatch)" stroke="#000" stroke-width="0.30"/>
+<rect x="16.00" y="95.50" width="215.18" height="12.00" fill="url(#hatch)" stroke="#000" stroke-width="0.30"/>
 <text x="18.00" y="103.50" font-size="2.20" text-anchor="start" fill="#000">楼板结构面 -0.150（以下为结构楼板，厚度待核）</text>
-<rect x="16.00" y="58.00" width="224.57" height="37.50" fill="#f6f6f0" stroke="#000" stroke-width="0.30"/>
-<line x1="16.00" y1="58.00" x2="240.57" y2="58.00" stroke="#000" stroke-width="0.80" fill="none"/>
-<text x="240.57" y="57.00" font-size="2.20" text-anchor="end" fill="#000">完成面 ±0.000</text>
+<rect x="16.00" y="58.00" width="215.18" height="37.50" fill="#f6f6f0" stroke="#000" stroke-width="0.30"/>
+<line x1="16.00" y1="58.00" x2="231.18" y2="58.00" stroke="#000" stroke-width="0.80" fill="none"/>
+<text x="231.18" y="57.00" font-size="2.20" text-anchor="end" fill="#000">完成面 ±0.000</text>
 <text x="36.00" y="62.20" font-size="2.20" text-anchor="start" fill="#000">垫高层 150（入口短廊+淋浴间，排水管埋在这里）</text>
-<polygon points="24.00,65.50 228.57,75.73 228.57,88.23 24.00,78.00" fill="#e8dccb" stroke="#5a3d1a" stroke-width="0.50" stroke-linejoin="round"/>
-<text x="84.00" y="92.50" font-size="2.20" text-anchor="start" fill="#5a3d1a">De50 废水横管（外径 50），按最小坡度 1.2% 画；起点管底 -0.080 → 终点管底 -0.121</text>
-<line x1="24.00" y1="65.50" x2="228.57" y2="65.50" stroke="#999" stroke-width="0.20" stroke-dasharray="1 1" fill="none"/>
-<text x="229.57" y="66.30" font-size="1.90" text-anchor="start" fill="#777">管顶最高 -0.030（留面层/防水/找平 30）</text>
+<polygon points="24.00,65.50 219.18,75.26 219.18,87.76 24.00,78.00" fill="#e8dccb" stroke="#5a3d1a" stroke-width="0.50" stroke-linejoin="round"/>
+<text x="84.00" y="92.50" font-size="2.20" text-anchor="start" fill="#5a3d1a">De50 废水横管（外径 50），按最小坡度 1.2% 画；起点管底 -0.080 → 终点管底 -0.119</text>
+<line x1="24.00" y1="65.50" x2="219.18" y2="65.50" stroke="#999" stroke-width="0.20" stroke-dasharray="1 1" fill="none"/>
+<text x="220.18" y="66.30" font-size="1.90" text-anchor="start" fill="#777">管顶最高 -0.030（留面层/防水/找平 30）</text>
 <rect x="20.00" y="57.00" width="8.00" height="24.00" fill="#fff" stroke="#000" stroke-width="0.40"/>
 <line x1="20.00" y1="57.00" x2="28.00" y2="57.00" stroke="#000" stroke-width="0.90" fill="none"/>
 <text x="24.00" y="55.00" font-size="2.40" text-anchor="middle" fill="#000" font-weight="bold">地漏</text>
-<text x="30.00" y="55.00" font-size="1.90" text-anchor="start" fill="#000">(11.10, 7.95) 起点 0.0 m；薄型侧排，水封≥50 mm，本体高度以厂家样本为准</text>
-<line x1="124.37" y1="36.00" x2="124.37" y2="73.00" stroke="#5a3d1a" stroke-width="0.60" fill="none"/>
-<rect x="112.37" y="32.00" width="12.00" height="3.20" fill="#fff" stroke="#000" stroke-width="0.35"/>
-<text x="118.37" y="30.00" font-size="2.20" text-anchor="middle" fill="#000">洗手盆</text>
-<line x1="118.37" y1="35.20" x2="118.37" y2="38.00" stroke="#000" stroke-width="0.40" fill="none"/>
-<path d="M118.37,38.00 v4 a3,3 0 0 0 6,0 v-4" fill="none" stroke="#000" stroke-width="0.45"/>
-<line x1="124.37" y1="38.00" x2="124.37" y2="38.00" stroke="#000" stroke-width="0.40" fill="none"/>
-<text x="110.37" y="41.00" font-size="2.00" text-anchor="end" fill="#000">P 形存水弯(水封≥50)</text>
-<line x1="118.37" y1="38.00" x2="118.37" y2="38.00" stroke="#000" stroke-width="0.10" fill="none"/>
-<text x="125.87" y="44.00" font-size="2.00" text-anchor="start" fill="#000">洗手盆支管 De50 (约 0.9 m)</text>
-<text x="125.87" y="47.00" font-size="2.00" text-anchor="start" fill="#000">顺水斜三通汇合点 = 1.67 m 处</text>
+<text x="30.00" y="55.00" font-size="1.90" text-anchor="start" fill="#000">(11.10, 8.11) 起点 0.0 m；薄型侧排，水封≥50 mm，本体高度以厂家样本为准</text>
+<line x1="124.53" y1="36.00" x2="124.53" y2="73.00" stroke="#5a3d1a" stroke-width="0.60" fill="none"/>
+<rect x="112.53" y="32.00" width="12.00" height="3.20" fill="#fff" stroke="#000" stroke-width="0.35"/>
+<text x="118.53" y="30.00" font-size="2.20" text-anchor="middle" fill="#000">洗手盆</text>
+<line x1="118.53" y1="35.20" x2="118.53" y2="38.00" stroke="#000" stroke-width="0.40" fill="none"/>
+<path d="M118.53,38.00 v4 a3,3 0 0 0 6,0 v-4" fill="none" stroke="#000" stroke-width="0.45"/>
+<line x1="124.53" y1="38.00" x2="124.53" y2="38.00" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="110.53" y="41.00" font-size="2.00" text-anchor="end" fill="#000">P 形存水弯(水封≥50)</text>
+<line x1="118.53" y1="38.00" x2="118.53" y2="38.00" stroke="#000" stroke-width="0.10" fill="none"/>
+<text x="126.03" y="44.00" font-size="2.00" text-anchor="start" fill="#000">洗手盆支管 De50 (约 0.9 m)</text>
+<text x="126.03" y="47.00" font-size="2.00" text-anchor="start" fill="#000">顺水斜三通汇合点 = 1.68 m 处</text>
 <line x1="60.00" y1="50.00" x2="60.00" y2="58.00" stroke="#555" stroke-width="0.30" stroke-dasharray="1 1" fill="none"/>
 <text x="60.00" y="49.00" font-size="2.00" text-anchor="middle" fill="#000">清扫口 · 转向入户门 0.60 m</text>
-<line x1="228.57" y1="55.03" x2="243.57" y2="55.03" stroke="#5a3d1a" stroke-width="0.80" fill="none"/>
-<polygon points="243.57,55.03 241.36,55.96 241.36,54.10" fill="#5a3d1a" stroke="#5a3d1a" stroke-width="0.10" stroke-linejoin="round"/>
-<text x="230.57" y="53.03" font-size="2.20" text-anchor="start" fill="#000" font-weight="bold">入户门口 3.41 m →</text>
-<text x="190.57" y="73.03" font-size="2.20" text-anchor="start" fill="#000" font-weight="bold">接公共管井(位置待物业/现场核实)</text>
+<line x1="219.18" y1="55.03" x2="234.18" y2="55.03" stroke="#5a3d1a" stroke-width="0.80" fill="none"/>
+<polygon points="234.18,55.03 231.97,55.96 231.97,54.10" fill="#5a3d1a" stroke="#5a3d1a" stroke-width="0.10" stroke-linejoin="round"/>
+<text x="221.18" y="53.03" font-size="2.20" text-anchor="start" fill="#000" font-weight="bold">入户门口 3.25 m →</text>
+<text x="181.18" y="73.03" font-size="2.20" text-anchor="start" fill="#000" font-weight="bold">接公共管井(位置待物业/现场核实)</text>
 <line x1="36.00" y1="88.00" x2="36.00" y2="107.50" stroke="#888" stroke-width="0.80" stroke-dasharray="2 1.2" fill="none"/>
 <line x1="36.00" y1="101.50" x2="36.00" y2="107.50" stroke="#888" stroke-width="0.60" fill="none"/>
 <polygon points="36.00,107.50 35.22,105.66 36.78,105.66" fill="#888" stroke="#888" stroke-width="0.10" stroke-linejoin="round"/>
@@ -71,31 +71,31 @@
 <line x1="14.00" y1="139.40" x2="290.00" y2="139.40" stroke="#000" stroke-width="0.30" fill="none"/>
 <text x="14.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000" font-weight="bold">De50，起点管底 -0.080</text>
 <text x="74.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">De50</text>
-<text x="86.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">3.41 m</text>
-<text x="100.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">41</text>
-<text x="120.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">85</text>
+<text x="86.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">3.25 m</text>
+<text x="100.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">39</text>
+<text x="120.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">81</text>
 <text x="140.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">70</text>
 <text x="158.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">-0.080</text>
-<text x="176.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">-0.121</text>
-<text x="206.00" y="144.00" font-size="2.20" text-anchor="start" fill="#1b7a2b" font-weight="bold">1.2% 余 29；2.5% 缺 15</text>
+<text x="176.00" y="144.00" font-size="2.20" text-anchor="start" fill="#000">-0.119</text>
+<text x="206.00" y="144.00" font-size="2.20" text-anchor="start" fill="#1b7a2b" font-weight="bold">1.2% 余 31；2.5% 缺 11</text>
 <text x="14.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">De50，另计地漏本体 20</text>
 <text x="74.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">De50</text>
-<text x="86.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">3.41 m</text>
-<text x="100.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">41</text>
-<text x="120.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">85</text>
+<text x="86.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">3.25 m</text>
+<text x="100.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">39</text>
+<text x="120.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">81</text>
 <text x="140.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">50</text>
 <text x="158.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">-0.100</text>
-<text x="176.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">-0.141</text>
-<text x="206.00" y="149.20" font-size="2.20" text-anchor="start" fill="#1b7a2b" font-weight="bold">1.2% 余 9；2.5% 缺 35</text>
+<text x="176.00" y="149.20" font-size="2.20" text-anchor="start" fill="#000">-0.139</text>
+<text x="206.00" y="149.20" font-size="2.20" text-anchor="start" fill="#1b7a2b" font-weight="bold">1.2% 余 11；2.5% 缺 31</text>
 <text x="14.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">改用 De75</text>
 <text x="74.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">De75</text>
-<text x="86.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">3.41 m</text>
-<text x="100.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">41</text>
-<text x="120.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">85</text>
+<text x="86.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">3.25 m</text>
+<text x="100.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">39</text>
+<text x="120.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">81</text>
 <text x="140.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">45</text>
 <text x="158.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">-0.105</text>
-<text x="176.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">-0.146</text>
-<text x="206.00" y="154.40" font-size="2.20" text-anchor="start" fill="#1b7a2b" font-weight="bold">1.2% 余 4；2.5% 缺 40</text>
+<text x="176.00" y="154.40" font-size="2.20" text-anchor="start" fill="#000">-0.144</text>
+<text x="206.00" y="154.40" font-size="2.20" text-anchor="start" fill="#1b7a2b" font-weight="bold">1.2% 余 6；2.5% 缺 36</text>
 <text x="14.00" y="161.10" font-size="2.10" text-anchor="start" fill="#000">取值：管顶以上留面层/防水/找平 30；De50 外径 50，De75 外径 75；终点管底不得低于结构面 -0.150；可用落差 = 起点管底 - (-150)。本表算到入户门；门外至公共管井每延长 1 m 按 1.2% 另需 12 mm，管井接点确定后复算。地漏本体高度以所选样本为准，第二行按多占 20 估</text>
 <text x="14.00" y="164.32" font-size="2.10" text-anchor="start" fill="#000">算。</text>
 <text x="296.00" y="20.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">图 例</text>
@@ -118,16 +118,16 @@
 <line x1="296.00" y1="63.40" x2="408.00" y2="63.40" stroke="#000" stroke-width="0.40" fill="none"/>
 <text x="296.00" y="67.20" font-size="2.25" text-anchor="start" fill="#000">1.</text>
 <text x="301.00" y="67.20" font-size="2.25" text-anchor="start" fill="#000">排水管埋深：De50 圆管外径 50，管顶以上留 30 的面层、防水和找平，不算坡度最少要 80 mm 埋深。</text>
-<text x="301.00" y="70.58" font-size="2.25" text-anchor="start" fill="#000">地漏和花洒设在靠入口短廊一侧后，地漏到入户门约 3.4 m，按 1.2% 只需再降 41 mm，150 的垫高层可</text>
-<text x="301.00" y="73.95" font-size="2.25" text-anchor="start" fill="#000">以满足，余量不大。</text>
+<text x="301.00" y="70.58" font-size="2.25" text-anchor="start" fill="#000">地漏和花洒设在靠入口短廊一侧后，地漏到入户门约 3.25 m，按 1.2% 只需再降 39 mm，150 的垫高层</text>
+<text x="301.00" y="73.95" font-size="2.25" text-anchor="start" fill="#000">可以满足，余量不大。</text>
 <text x="296.00" y="77.83" font-size="2.25" text-anchor="start" fill="#000">2.</text>
-<text x="301.00" y="77.83" font-size="2.25" text-anchor="start" fill="#000">坡度：最小 1.2%，宜取 2.5%。De50 按起点管底 -0.080 可做到约 2.1%；计入地漏本体多占 20 后约</text>
+<text x="301.00" y="77.83" font-size="2.25" text-anchor="start" fill="#000">坡度：最小 1.2%，宜取 2.5%。De50 按起点管底 -0.080 可做到约 2.2%；计入地漏本体多占 20 后约</text>
 <text x="301.00" y="81.20" font-size="2.25" text-anchor="start" fill="#000"> 1.5%。施工按能做到的最大坡度做，不小于 1.2%。</text>
 <text x="296.00" y="85.08" font-size="2.25" text-anchor="start" fill="#000">3.</text>
 <text x="301.00" y="85.08" font-size="2.25" text-anchor="start" fill="#000">薄型配件：同层排水有专用的薄型侧排地漏和浅水封存水弯，可比普通件少占 10~20 mm 高度；规格、本</text>
 <text x="301.00" y="88.45" font-size="2.25" text-anchor="start" fill="#000">体高度、水封深度以厂家样本为准，选型后按样本数据复算本表。地漏选深水封、防返溢型。</text>
 <text x="296.00" y="92.33" font-size="2.25" text-anchor="start" fill="#000">4.</text>
-<text x="301.00" y="92.33" font-size="2.25" text-anchor="start" fill="#000">De75：可用落差 45 mm，按 1.2% 需 41 mm，可行但余量小；淋浴加洗手盆用 De50 即可，是否加大由</text>
+<text x="301.00" y="92.33" font-size="2.25" text-anchor="start" fill="#000">De75：可用落差 45 mm，按 1.2% 需 39 mm，可行但余量小；淋浴加洗手盆用 De50 即可，是否加大由</text>
 <text x="301.00" y="95.70" font-size="2.25" text-anchor="start" fill="#000">给排水工程师定。</text>
 <text x="296.00" y="99.58" font-size="2.25" text-anchor="start" fill="#000">5.</text>
 <text x="301.00" y="99.58" font-size="2.25" text-anchor="start" fill="#000">门外段：本表只算到入户门。公共管井位置由物业确定后，按门外实际管长复算；门外公共走廊无垫层时，</text>

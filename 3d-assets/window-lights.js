@@ -1,5 +1,5 @@
 // All coordinates are metres in the plan of 18F. Circuit drawings use this same layout.
-import {MEZZANINE} from './site-shell.js?v=105';
+import {MEZZANINE} from './site-shell.js?v=157';
 
 const fixtureWidth = .70;
 const fixtureHalfHeight = .084;
@@ -45,7 +45,8 @@ export function lightingLayout({ beltTop = MEZZANINE.steelTop, windowBays = {lon
     // The station nearest the arrival threshold is left out: the end-wall lamp at the exit lights that spot.
     if (x > MEZZANINE.thresholdX - 1.5) { omitted.push({peer, x, reason: '楼梯出口由端墙灯照明'}); continue; }
     // Over the stair there is no floor, so the two back-wall lamps there sit higher, clear of people on the stair.
-    light(label('W',index),'WL3','long',0,-1,x,x>10.70?5.00:lowerY,wall.a[1]-wallThickness/2);
+    // With the stair against the wall they are directly over the second flight: +5.20 keeps 2.20 m under them.
+    light(label('W',index),'WL3','long',0,-1,x,x>10.70?5.20:lowerY,wall.a[1]-wallThickness/2);
   }
 
   function route(circuit,kind,id,points){
@@ -57,7 +58,7 @@ export function lightingLayout({ beltTop = MEZZANINE.steelTop, windowBays = {lon
   const last=lights.filter(l=>l.circuit==='WL1').at(-1);
   const branch=(l,busY)=>{
     const [mx,my,mz]=l.mount, [nx,nz]=l.normal, x=mx+nx*.018,z=mz+nz*.018;
-    route(l.circuit,'tap',l.circuit+'-'+l.id,[[x,busY,z],[x,my-.073,z]]);
+    route(l.circuit,'tap',l.circuit+'-'+l.id,[[x,busY,z],[x,busY>my?my+.073:my-.073,z]]);
   };
   // Pass below the floor across the footprint of the fire cabinet, keeping its
   // door and the clear access strip in front of it available at finished level.
@@ -84,17 +85,19 @@ export function lightingLayout({ beltTop = MEZZANINE.steelTop, windowBays = {lon
   route('WL3','floor','WL3-skirt',[[wallRiserX,panelBottom,7.555],[wallRiserX,panelBottom,dryZ],wallFoot]);
   route('WL3','rise','WL3-office-rise',[wallFoot,[wallRiserX,lowBusY,dryZ]]);
   route('WL3','wall','WL3-office-wall',[[wallRiserX,lowBusY,dryZ],[office[0].x,lowBusY,dryZ]]);
+  // The stair stands against the back wall (2026-11-23), so nothing may run along that wall below the stair
+  // headroom line, and nothing may rise through the shower or the landing. The stair lamps are fed from the
+  // east end: along the high trunk to the riser at (18.20, 9.30) beside the arrival, up the wall to +6.40
+  // (2.30 m over the top tread at +4.10), then west along the wall and down to each lamp.
+  const stairBusY=6.40, stairRiseX=18.20;
   if(stairWall.length){
-    // Cross the open, dry corridor below the floor. Rise beyond the shower's back
-    // enclosure. No line crosses the glass door or the wet floor.
-    const buriedY=MEZZANINE.lowerFinish-.055, rearZ=stairWall[0].mount[2]-.018, leftX=stairWall[0].x;
-    const pass=[wallFoot,[wallRiserX,buriedY,dryZ],[wallRiserX,buriedY,7.49],[10.59,buriedY,7.49],
-      [10.59,buriedY,rearZ],[leftX,buriedY,rearZ]];
-    route('WL3','floor','WL3-underpass',pass);
-    route('WL3','rise','WL3-stair-rise',[pass.at(-1),[leftX,lowBusY,rearZ]]);
-    if(stairWall.length>1)route('WL3','wall','WL3-stair-wall',[[leftX,lowBusY,rearZ],[stairWall.at(-1).x,lowBusY,rearZ]]);
+    const rearZ=stairWall[0].mount[2]-.018, trunkY=lowBusY;
+    route('WL3','wall','WL3-stair-trunk',[[wallRiserX,lowBusY,dryZ],[9.24,trunkY,dryZ],[9.24,trunkY,10.60],
+      [10.62,trunkY,10.60],[10.62,trunkY,6.70],[10.85,trunkY,6.70],[10.85,trunkY,1.20],[stairRiseX,trunkY,1.20],[stairRiseX,trunkY,rearZ]]);
+    route('WL3','rise','WL3-stair-rise',[[stairRiseX,trunkY,rearZ],[stairRiseX,stairBusY,rearZ]]);
+    route('WL3','wall','WL3-stair-wall',[[stairRiseX,stairBusY,rearZ],[Math.min(...stairWall.map(l=>l.x)),stairBusY,rearZ]]);
   }
-  for(const l of lights)branch(l,l.group==='roof'?upBusY:lowBusY);
+  for(const l of lights)branch(l,l.group==='roof'?upBusY:stairWall.includes(l)?stairBusY:lowBusY);
   return {lights,routes,omitted,pitch};
 }
 

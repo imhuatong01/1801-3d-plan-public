@@ -152,28 +152,27 @@ export function setupMeasurements(ctx){
  quietText(cornerDims,'0.500 × 0.500 m',[18.65,.65,.75],2.5);
  // Stair footprint, both flights, landing, bathroom and arrival.
  qdim(stairDims,[10.75,.09,5.75],[datum.lowerStartX,.09,5.75],(datum.lowerStartX-10.75).toFixed(3)+' m',2.0);
- qdim(stairDims,[10.47,.1,6.04],[10.47,.1,9.24],'3.200 m',1.9);
- scopeOverride='flight1';quietText(stairDims,flightMetric(lowerRun),[15.5,1.6,6.25],3.0);
- scopeOverride='flight2';quietText(stairDims,flightMetric(upperRun),[15.5,4.5,8.9],3.0);
+ qdim(stairDims,[10.47,.1,datum.platformZ0],[10.47,.1,datum.platformZ1],PD.toFixed(3)+' m',1.9);
+ scopeOverride='flight1';quietText(stairDims,flightMetric(lowerRun),[15.5,1.6,datum.lowerFlightZ-.49],3.0);
+ scopeOverride='flight2';quietText(stairDims,flightMetric(upperRun),[15.5,4.5,datum.upperFlightZ+.86],3.0);
  scopeOverride='landing';
  datum.midPlatformOutline.forEach(([x,z],i,pts)=>{const [xx,zz]=pts[(i+1)%pts.length];quietLine(stairDims,[x,platformLocal+.025,z],[xx,platformLocal+.025,zz]);});
  scopeOverride=null;
- quietText(dims,WW.toFixed(3)+' × '+WD.toFixed(3)+' m',[11.85,1.35,8.6],2.8);
- scopeOverride='approach';qdim(stairDims,[datum.lowerStartX,.05,6.55],[approachEnd,.05,6.55],approachRun.toFixed(3)+' m',1.8);scopeOverride=null;
+ quietText(dims,WW.toFixed(3)+' × '+WD.toFixed(3)+' m',[11.85,1.35,datum.platformZ0+1.86],2.8);
+ scopeOverride='approach';qdim(stairDims,[datum.lowerStartX,.05,datum.lowerFlightZ-.19],[approachEnd,.05,datum.lowerFlightZ-.19],approachRun.toFixed(3)+' m',1.8);scopeOverride=null;
  // Complete upper steel deck and only the compact second-flight opening.
  qdim(upperDims,[10.7,.08,-.4],[19.425,.08,-.4],'8.725 m',2.0);
  qdim(upperDims,[19.75,.08,0],[19.75,.08,9.4],'9.400 m',2.0);
  quietText(upperDims,'二楼钢结构楼面 '+areaLabel(datum.upperArea),[15.1,.17,2.55],3.3);
- quietText(upperDims,'楼梯上方留空 '+areaLabel(datum.openingArea),[14.0,.35,8.7],2.8);
+ quietText(upperDims,'楼梯上方留空 '+areaLabel(datum.openingArea),[14.0,.35,datum.upperFlightZ+.66],2.8);
  scopeOverride='corridor';quietText(dims,'16.59 ㎡',[9.925,.1,4.1],1.9);scopeOverride=null;
- scopeOverride='bath';quietText(dims,areaLabel(WW*WD),[11.85,1.05,8.6],1.9);scopeOverride=null;
- scopeOverride='landing';quietText(stairDims,areaLabel(datum.platformArea),[11.85,platformLocal+.35,8.3],1.9);scopeOverride=null;
- scopeOverride='flight1';quietText(stairDims,areaLabel(lowerRun*SW),[15.5,1.6,6.85],1.9);scopeOverride=null;
- scopeOverride='flight2';quietText(stairDims,areaLabel(upperRun*SW),[15.5,4.5,8.3],1.9);scopeOverride=null;
- scopeOverride='approach';quietText(dims,flightMetric(approachRun),[18.35,.2,6.85],2.8);quietText(dims,areaLabel(approachRun*SW),[18.35,.2,7.35],1.9);scopeOverride=null;
+ scopeOverride='bath';quietText(dims,areaLabel(WW*WD),[11.85,1.05,datum.platformZ0+1.86],1.9);scopeOverride=null;
+ scopeOverride='landing';quietText(stairDims,areaLabel(datum.platformArea),[11.85,platformLocal+.35,datum.platformZ0+1.56],1.9);scopeOverride=null;
+ scopeOverride='flight1';quietText(stairDims,areaLabel(lowerRun*SW),[15.5,1.6,datum.lowerFlightZ+.11],1.9);scopeOverride=null;
+ scopeOverride='flight2';quietText(stairDims,areaLabel(upperRun*SW),[15.5,4.5,datum.upperFlightZ+.26],1.9);scopeOverride=null;
+ scopeOverride='approach';quietText(dims,flightMetric(approachRun),[18.35,.2,datum.lowerFlightZ+.11],2.8);quietText(dims,areaLabel(approachRun*SW),[18.35,.2,datum.lowerFlightZ+.61],1.9);scopeOverride=null;
  scopeOverride='arrival';quietText(upperDims,areaLabel(1.50*SW),[18.28,.35,datum.upperFlightZ+SW/2],1.9);scopeOverride=null;
  scopeOverride='upper-side';quietText(upperDims,(19.325-datum.thresholdX).toFixed(3)+' × 1.800 m',[18.48,.35,7.65],2.7);quietText(upperDims,((19.325-datum.thresholdX)*1.8).toFixed(2)+' ㎡',[18.48,.35,8.3],1.9);scopeOverride=null;
- scopeOverride='upper-edge';quietText(upperDims,'0.160 m · 1.35 ㎡',[14.7,.4,9.32],2.8);scopeOverride=null;
  // Proposed steel frame: centre-to-centre, not clear distance or verified structural spans.
  const xs=[10.82,11.70,17.70,19.29];
  for(let i=0;i<3;i++)qdim(frameDims,[xs[i],datum.steelTop-.12,-.7],[xs[i+1],datum.steelTop-.12,-.7],(xs[i+1]-xs[i]).toFixed(2)+' m',1.5);

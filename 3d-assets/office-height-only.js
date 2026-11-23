@@ -1,16 +1,16 @@
 import * as THREE from 'three';
-import {addSiteShell,MEZZANINE} from './site-shell.js?v=150';
-import {makeWindowLighting,lightingColors} from './window-lights.js?v=152';
+import {addSiteShell,MEZZANINE} from './site-shell.js?v=157';
+import {makeWindowLighting,lightingColors} from './window-lights.js?v=157';
 import {makeAirLayout} from './air-layout.js?v=120';
-import {makeWastewater} from './wastewater.js?v=150';
+import {makeWastewater} from './wastewater.js?v=157';
 import {addSiteServices} from './site-services.js?v=104';
 import {buildFloorComparison} from './floor-comparison.js?v=74';
 import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
 import {OrbitControls} from './OrbitControls.js';
-import {setupMeasurements} from './measurements-height-only.js?v=154';
+import {setupMeasurements} from './measurements-height-only.js?v=157';
 import {setupLook} from './look.js?v=118';
 import {setupDimensions} from './dimensions.js?v=85';
-import {addProjectDimensions} from './dimension-data.js?v=150';
+import {addProjectDimensions} from './dimension-data.js?v=157';
 import {FURNITURE_KIT,defaultFurnitureLayout} from './furniture-kit.js?v=125';
 import {setupRoles} from './roles.js?v=153';
 const $=s=>document.querySelector(s), host=$('#viewport');
@@ -144,7 +144,7 @@ label(ground,'楼梯过道 '+aisleW.toFixed(2)+' m',15.2,.35,stairAisleZ+aisleW/
 label(ground,'拳击垫 '+matW.toFixed(2)+' × '+matD.toFixed(2)+' m · 垫高 0.10 · 上吊沙袋',matX+matW/2,.55,matZ+.55,'#3d5a60',3.2).userData.furniture=true;
 // Upper arrival stays clear of furniture.
 const arrivalZone=zone(upper,MEZZANINE.thresholdX+.10,MEZZANINE.upperFlightZ,1.50,MEZZANINE.stairWidth,'#d5c9a4','二楼 · 贴墙出口','第二跑沿实体墙折返上楼；到达区1.50×1.20m，保持无家具，通过入口侧楼面连接办公区。');arrivalZone.visible=false;
-label(upper,'贴墙出口 · 上跑到达',MEZZANINE.thresholdX+.85,.55,8.45,'#966b30',3.5);
+label(upper,'贴墙出口 · 上跑到达',MEZZANINE.thresholdX+.85,.55,MEZZANINE.upperFlightZ+.41,'#966b30',3.5);
 // Entry strip from the door to the L-shaped wall corner (z = 7.675) is built up 170 mm, level with the
 // outside datum. Pipes from the bathroom can run inside this build-up; the step down is at the corner line.
 const entryRaise=box(ground,9.15,0,7.675,1.55,-MEZZANINE.lowerFinish,10.70-7.675,FINISH.aisle);entryRaise.name='entry-raised-floor';entryRaise.material.userData.keepLook=true;
@@ -156,21 +156,23 @@ const wetFloorFinish=MEZZANINE.wetFloorFinish, wetLocalFloor=wetFloorFinish-MEZZ
 const wetToPlate=MEZZANINE.wetToPlatformSurface;
 const {head:headAt,drain:drainAt,basin:basinAt,door:wetDoorAt}=MEZZANINE.wetFixtures;
 // The bathroom sits under the landing and is as wide as the two flights together.
-const PZ=MEZZANINE.platformZ0, PD=MEZZANINE.platformZ1-PZ, WZ=PZ+.05, WD=PD-.10, doorZ=8.14;
+// The door opening starts 100 mm past the stair well, under the second flight.
+const PZ=MEZZANINE.platformZ0, PD=MEZZANINE.platformZ1-PZ, WZ=PZ+.05, WD=PD-.10, WZ1=WZ+WD, doorZ=MEZZANINE.upperFlightZ+.10;
 box(wet,10.77,.005,WZ,2.16,wetLocalFloor-.005,WD,mat('#d0cfc7')).name='shower-finished-floor';
 const headBottom=MEZZANINE.wetHeadBottom-MEZZANINE.lowerFinish;
-const showerRiser=box(wet,12.795,1.05,6.46,.055,headBottom+.07-1.05,.045,steel);
+// The cold supply rises inside the aisle-side glass at x = 10.90 (see the plumbing plan) and reaches the head.
+const showerRiser=box(wet,10.86,1.05,headAt.z-.0225,.045,headBottom+.07-1.05,.045,steel);
 showerRiser.name='shower-wall-riser';
-const showerArm=box(wet,12.54,headBottom+.04,6.46,.255,.03,.045,steel);
+const showerArm=box(wet,10.86,headBottom+.04,headAt.z-.0225,headAt.x-10.86,.03,.045,steel);
 showerArm.name='shower-arm';
 const showerHead=box(wet,headAt.x-.095,headBottom,headAt.z-.095,.19,.04,.19,steel);
 showerHead.name='shower-head';
 const showerGlass=mat('#26383f',.78),showerDoorGlass=mat('#365159',.68);
 const glassHeight=wetToPlate-.015, doorFrameHeight=glassHeight;
 box(wetWalls,10.77,wetLocalFloor,WZ,.06,glassHeight,WD,showerGlass);
-for(const z of [WZ,9.13])box(wetWalls,10.83,wetLocalFloor,z,2.02,glassHeight,.06,showerGlass);
+for(const z of [WZ,WZ1-.06])box(wetWalls,10.83,wetLocalFloor,z,2.02,glassHeight,.06,showerGlass);
 // The door is under the second flight, clear of the 100 mm stair well.
-for(const [z,depth] of [[WZ,doorZ-WZ],[doorZ+1.0,9.19-doorZ-1.0]])box(wetWalls,12.85,wetLocalFloor,z,.06,glassHeight,depth,showerGlass);
+for(const [z,depth] of [[WZ,doorZ-WZ],[doorZ+1.0,WZ1-doorZ-1.0]])box(wetWalls,12.85,wetLocalFloor,z,.06,glassHeight,depth,showerGlass);
 // The closed door fills the opening in the stair-side wall at x=12.88.
 const showerDoor=new THREE.Group();showerDoor.name='shower-closed-door';wetWalls.add(showerDoor);
 box(showerDoor,wetDoorAt.x-.02,wetLocalFloor+.025,wetDoorAt.z-.475,.035,doorFrameHeight-.05,.95,showerDoorGlass);
@@ -196,9 +198,10 @@ const stairW=MEZZANINE.stairWidth, lowerZ=MEZZANINE.lowerFlightZ, upperZ=MEZZANI
 const showerDimension=new THREE.Group();
 showerDimension.name='shower-dimension-at-platform-edge';
 model.add(showerDimension);showerDimension.visible=false;
-const dimX=11.28,dimZ=9.43,dimBottom=MEZZANINE.wetFloorFinish,dimTop=midHeight;
+// The landing now runs to the back wall, so this dimension stands at its front edge.
+const dimX=11.28,dimZ=PZ-.19,dimBottom=MEZZANINE.wetFloorFinish,dimTop=midHeight;
 line(showerDimension,[[dimX,dimBottom,dimZ],[dimX,dimTop,dimZ]],'#b44f20');
-for(const y of [dimBottom,dimTop])line(showerDimension,[[dimX-.11,y,dimZ],[dimX+.11,y,dimZ],[dimX+.11,y,9.06]],'#b44f20');
+for(const y of [dimBottom,dimTop])line(showerDimension,[[dimX-.11,y,dimZ],[dimX+.11,y,dimZ],[dimX+.11,y,PZ+.18]],'#b44f20');
 const showerDimTag=label(showerDimension,'至平台面 '+(dimTop-dimBottom).toFixed(3)+' m · 未扣钢板及支撑',11.28,(dimTop+dimBottom)/2,dimZ+.03,'#944519',2.22);
 zone(ground,lowerStartX,lowerZ,approachDepth,stairW,'#d4c6a4','内侧楼梯起步区','进深约'+approachDepth.toFixed(2)+'m，保留一楼进出通路。');
 const flights=[
@@ -257,9 +260,10 @@ postedHandrail(stairs,[lowerStartX,lowerFinish+rise,wellLowZ],[lowerLandingX,mid
 // floor the edge guard on the mezzanine is the barrier, so the stair only needs a handrail.
 slopeGlassRail(stairs,[upperStartX,pitchUp(upperStartX),wellUpZ],[voidX,pitchUp(voidX),wellUpZ]);
 postedHandrail(stairs,[voidX,pitchUp(voidX),wellUpZ],[thresholdX,levelHeight,wellUpZ]);
-// Back-wall side of the second flight: the flight stops 160 mm clear of the wall, so the handrail stands on
-// its own posts on the treads rather than on wall brackets.
-postedHandrail(stairs,[upperStartX,pitchUp(upperStartX),upperZ+stairW-.06],[thresholdX,levelHeight,upperZ+stairW-.06]);
+// Back-wall side of the second flight: the flight now stands against the wall, so the handrail is fixed to
+// the wall on brackets, 60 mm clear of the wall face.
+const wallRailZ=MEZZANINE.backWallZ-.06;
+postedHandrail(stairs,[upperStartX,pitchUp(upperStartX),wallRailZ],[thresholdX,levelHeight,wallRailZ],.90,false);
 const [[openLeft,openFront],[openRight],[,openBack]]=stairOpening;
 const turnWalkX=10.75;
 const midGuard=new THREE.Group();midGuard.position.y=midHeight;stairs.add(midGuard);
@@ -281,8 +285,8 @@ stairArrow([lowerStartX-.05,lowerFinish+rise+.22,lowerZ+stairW/2],[lowerLandingX
 stairArrow([11.85,midHeight+.18,lowerZ+stairW/2],[11.85,midHeight+.18,upperZ+stairW/2],0xd28a24);
 stairArrow([upperStartX+.04,midHeight+rise+.18,upperZ+stairW/2],[thresholdX-.05,levelHeight+.18,upperZ+stairW/2],0x258b9a);
 label(stairs,'第一跑 '+lowerRisers+'级 · 宽1.20m',15.3,1.5,lowerZ,'#96621e',4.2);
-label(stairs,'第二跑 '+upperRisers+'级 · 贴墙出口',15.8,levelHeight+.65,9.0,'#287b8b',4.2);
-label(stairs,'转身平台顶 +'+midHeight.toFixed(3)+'m',11.75,midHeight+.45,7.6,'#755b3e',3.5);
+label(stairs,'第二跑 '+upperRisers+'级 · 贴墙出口',15.8,levelHeight+.65,upperZ+.96,'#287b8b',4.2);
+label(stairs,'转身平台顶 +'+midHeight.toFixed(3)+'m',11.75,midHeight+.45,PZ+.86,'#755b3e',3.5);
 // Stop the steel at the inside faces of the two existing window beams. The top
 // contact plane is shared by every steel member and the underside of the finish.
 const frameBeam=mat('#27313a'),joistMat=mat('#5b6770'),columnMat=mat('#1f2830'),plateMat=mat('#8a949b');
@@ -345,11 +349,12 @@ column('column-arrival-well',beamXs[6]-.04,gapZ,.20,soffitHN,.10);
 // Nothing hangs from the mezzanine any more: the landing stands on its own posts.
 const platT=.12,platY=midHeight-platT;
 for(const x of [10.80,11.33,11.87,12.40]){const f=box(stairs,x,platY+.014,PZ+.10,.05,.10,PD-.20,frameBeam);f.name='landing-joist';}
-for(const [x1,z1,x2,z2] of [[10.75,PZ,lowerLandingX,PZ+.10],[10.75,9.14,lowerLandingX,9.24],[lowerLandingX-.10,PZ+.10,lowerLandingX,9.14]]){
+const PZ1=PZ+PD;
+for(const [x1,z1,x2,z2] of [[10.75,PZ,lowerLandingX,PZ+.10],[10.75,PZ1-.10,lowerLandingX,PZ1],[lowerLandingX-.10,PZ+.10,lowerLandingX,PZ1-.10]]){
  const f=box(stairs,x1,platY,z1,x2-x1,platT-.006,z2-z1,frameBeam);f.name='landing-edge-beam';}
 // Three posts: one at the stair-side front corner and two against the back wall; the fourth corner hangs on
 // the aisle-side column. The 2.5 m edge beam carries both flights without a middle post.
-for(const [x,z,top] of [[lowerLandingX-.12,PZ+.02,platY],[10.77,9.12,platY],[lowerLandingX-.12,9.12,platY]]){
+for(const [x,z,top] of [[lowerLandingX-.12,PZ+.02,platY],[10.77,PZ1-.12,platY],[lowerLandingX-.12,PZ1-.12,platY]]){
  const post=box(stairs,x,lowerFinish,z,.10,top-lowerFinish,.10,columnMat);post.name=top>platY+.5?'landing-post-to-trimmer':'landing-post';
  box(stairs,x-.04,lowerFinish,z-.04,.18,.012,.18,plateMat).name='landing-post-base';}
 box(stairs,10.85,platY,PZ,.10,platT-.006,.10,plateMat).name='landing-bracket-on-column';
@@ -393,24 +398,30 @@ for(const x of [1.40,4.00,6.60])drop(circuitGround,x,7.53,circuitBlue);
 for(const z of [3.15,5.40])drop(circuitGround,.12,z,circuitBlue);
 // C2 · 吧台/设备预留回路（琥珀）。
 // C3 · 右侧开放区回路（青绿）。
-// High-level trunk: board, round the wall corner, over the entrance door head, then along the back wall under the mezzanine.
-const trunk=[[8.25,1.87,7.60],[8.25,highTrayY,7.60],[9.24,highTrayY,7.60],[9.24,highTrayY,10.60],[10.62,highTrayY,10.60],[10.62,highTrayY,9.33]];
-wire(circuitGround,[...trunk,[10.85,highTrayY,9.33],[10.85,highTrayY,1.20],[18.30,highTrayY,1.20],[18.30,.38,1.03]],circuitTeal);
+// High-level trunk: board, round the wall corner, over the entrance door head, then down the aisle side of the
+// landing (outside its guard, never over the landing or the second flight, which now stand against the back
+// wall) and under the mezzanine. The turn at z 6.70 stays clear of the corner column of the open area.
+const trunkTurnZ=6.70, upRiseX=18.20, upRiseZ=9.30;
+const trunk=[[8.25,1.87,7.60],[8.25,highTrayY,7.60],[9.24,highTrayY,7.60],[9.24,highTrayY,10.60],[10.62,highTrayY,10.60],[10.62,highTrayY,trunkTurnZ]];
+wire(circuitGround,[...trunk,[10.85,highTrayY,trunkTurnZ],[10.85,highTrayY,1.20],[18.30,highTrayY,1.20],[18.30,.38,1.03]],circuitTeal);
 
 // 二楼 C5-C8：按当前 L 形夹层楼面及洞口边界布点，独立竖向干线从一楼配电箱上引。
-for(const x of [11.2,12.8,14.4,16.0,17.6])outlet(circuitUpper,x,9.24,'z',c1Mat,'C5','二楼');outlet(circuitUpper,19.25,8.0,'x',c1Mat,'C5','二楼');for(const z of [1.2,3.0,5.0])outlet(circuitUpper,10.8,z,'x',c2Mat,'C6','二楼');for(const [x,z,side] of [[18.395,.75,'-x'],[18.675,1.03,'z'],[18.10,9.31,'-z']])outlet(circuitUpper,x,z,side,c2Mat,'C7','二楼');
+for(const x of [11.2,12.8,14.4,16.0,17.6])outlet(circuitUpper,x,9.34,'z',c1Mat,'C5','二楼');outlet(circuitUpper,19.25,8.0,'x',c1Mat,'C5','二楼');for(const z of [1.2,3.0,5.0])outlet(circuitUpper,10.8,z,'x',c2Mat,'C6','二楼');for(const [x,z,side] of [[18.395,.75,'-x'],[18.675,1.03,'z'],[17.90,9.31,'-z']])outlet(circuitUpper,x,z,side,c2Mat,'C7','二楼');
 for(const [x,z,s] of [[11.25,1.3,'z'],[13.7,1.3,'z'],[16.0,1.3,'z']])outlet(circuitUpper,x,z,s,c2Mat,'C7','二楼');for(const [x,z,s] of [[19.2,7.2,'-x'],[18.9,5.4,'x'],[18.9,7.0,'x'],[16.2,7.25,'z'],[13.8,7.25,'z']])outlet(circuitUpper,x,z,s,c3Mat,'C8','二楼');
 // These four points retain their established positions and IDs after the user removed the other legacy points.
 for(const z of [3.15,5.40])outlet(circuitGround,.12,z,'x',c1Mat,'C1','一楼');for(const [x,z,side] of [[18.395,.75,'-x'],[18.675,1.03,'z']])outlet(circuitGround,x,z,side,c3Mat,'C3','一楼');
 
-// 上楼竖向干线：仅在入口侧墙内由一楼地脚线位置上引，二楼继续贴地脚线分回路。
-wire(circuitGround,[[10.62,highTrayY+.06,9.33],[10.85,highTrayY+.06,9.30],[10.85,levelHeight,9.30]],circuitBlue);const upperTrayY=.10;wire(circuitUpper,[[10.85,0,9.30],[10.85,upperTrayY,9.30],[11.30,upperTrayY,9.30]]);
+// 上楼竖向干线：随高位主线槽到后墙东端 (18.20, 9.30)，在第 7、8 根梁之间穿夹层楼板上引；二楼继续贴地脚线分回路。
+// 楼梯贴墙后，后墙 x 10.62~17.15 一段被平台和第二跑占住，线路不再沿这段后墙走。
+wire(circuitGround,[[10.85,highTrayY+.06,1.20],[upRiseX,highTrayY+.06,1.20],[upRiseX,highTrayY+.06,upRiseZ],[upRiseX,levelHeight,upRiseZ]],circuitBlue);const upperTrayY=.10;wire(circuitUpper,[[upRiseX,0,upRiseZ],[upRiseX,upperTrayY,upRiseZ]]);
 // C5 · 二楼周边普通插座回路（蓝）。
-for(const x of [11.20,12.80,14.40,16.00,17.60])drop(circuitUpper,x,9.24,circuitBlue,upperTrayY);drop(circuitUpper,19.25,8.00,circuitBlue,upperTrayY);
+for(const x of [11.20,12.80,14.40,16.00,17.60])drop(circuitUpper,x,9.34,circuitBlue,upperTrayY);drop(circuitUpper,19.25,8.00,circuitBlue,upperTrayY);
 // C6/C7 · 茶台及日常办公回路（琥珀）。
-tray(circuitUpper,[[10.85,9.30],[19.15,9.30],[19.15,1.03],[18.93,1.03]],circuitAmber,upperTrayY);for(const z of [1.20,3.00,5.00])drop(circuitUpper,10.80,z,circuitAmber,upperTrayY);for(const x of [12.80,15.00,17.20])drop(circuitUpper,x,.12,circuitAmber,upperTrayY);for(const x of [11.25,13.70,16.00])drop(circuitUpper,x,1.30,circuitAmber,upperTrayY);
+// S13 sits 300 mm west of the riser, clear of the slab sleeve; its lead runs back along the skirting.
+tray(circuitUpper,[[upRiseX,upRiseZ],[17.90,upRiseZ]],circuitAmber,upperTrayY);drop(circuitUpper,17.90,9.31,circuitAmber,upperTrayY);
+tray(circuitUpper,[[upRiseX,upRiseZ],[19.15,upRiseZ],[19.15,1.03],[18.93,1.03]],circuitAmber,upperTrayY);for(const z of [1.20,3.00,5.00])drop(circuitUpper,10.80,z,circuitAmber,upperTrayY);for(const x of [12.80,15.00,17.20])drop(circuitUpper,x,.12,circuitAmber,upperTrayY);for(const x of [11.25,13.70,16.00])drop(circuitUpper,x,1.30,circuitAmber,upperTrayY);
 // C8 · 二楼右侧设备/扩展回路（青绿）。
-tray(circuitUpper,[[10.85,9.22],[19.07,9.22],[19.07,7.20]],circuitTeal,upperTrayY);drop(circuitUpper,19.20,7.20,circuitTeal,upperTrayY);for(const x of [16.20,13.80])drop(circuitUpper,x,7.25,circuitTeal,upperTrayY);
+tray(circuitUpper,[[upRiseX,upRiseZ],[upRiseX,9.22],[19.07,9.22],[19.07,7.20]],circuitTeal,upperTrayY);drop(circuitUpper,19.20,7.20,circuitTeal,upperTrayY);for(const x of [16.20,13.80])drop(circuitUpper,x,7.25,circuitTeal,upperTrayY);
 // Draw only leads whose socket panel remains in the current layout.  A deleted panel never leaves a floating vertical line behind.
 drawSocketDrops();
 // Existing 500mm columns remain at the CAD positions; no implied permission to alter them.
@@ -474,7 +485,9 @@ $('#steelViewLevels').textContent='模型标高：钢结构顶 +'+MEZZANINE.stee
 // Probe the geometry in its assembled position, before any cutaway/exploded viewing transforms.
 // Test both sides of every obstruction boundary, every nosing and the continuous pitch line.
 const clearanceMeshes=[upperSlab,...structure.children,...siteShell.roofBeams,siteShell.belt,siteShell.ceiling];
-for(const group of [siteServices.ceilingPipes,siteServices.hvac,siteServices.fire]){
+// Lamps and their conduits count too: with the stair against the back wall, the wall lamps and any wall
+// conduit are directly over the treads.
+for(const group of [siteServices.ceilingPipes,siteServices.hvac,siteServices.fire,windowLighting.fixtures,windowLighting.circuit]){
  group.traverse(object=>{if(object.isMesh)clearanceMeshes.push(object)});
 }
 model.updateWorldMatrix(true,true);
@@ -514,9 +527,9 @@ const flightClearances=flights.map(f=>{
  }
  return checkClearance(strips,clearanceMeshes);
 });
-const turnClearance=checkClearance([horizontal(turnWalkX,lowerLandingX,PZ,9.24,midHeight)],clearanceMeshes);
-const arrivalClearance=checkClearance([horizontal(thresholdX,thresholdX+1.50,upperZ,9.24,levelHeight)],clearanceMeshes);
-const wetBounds=[horizontal(10.77,12.93,WZ,9.19,wetFloorFinish)];
+const turnClearance=checkClearance([horizontal(turnWalkX,lowerLandingX,PZ,PZ1,midHeight)],clearanceMeshes);
+const arrivalClearance=checkClearance([horizontal(thresholdX,thresholdX+1.50,upperZ,MEZZANINE.backWallZ,levelHeight)],clearanceMeshes);
+const wetBounds=[horizontal(10.77,12.93,WZ,WZ1,wetFloorFinish)];
 const showerOverhead=checkClearance(wetBounds,[...platformObstacles,...clearanceMeshes,showerHead,showerArm]);
 const stairMinimum=Math.min(...flightClearances.map(v=>v.min));
 $('#showerBeamClearance').textContent='淋浴完成面至平台走面 '+wetToPlate.toFixed(3)+' m，扣假定平台结构 0.12 m 后 '+(wetToPlate-.12).toFixed(3)+' m（板厚待结构确定），至花洒底 '+
@@ -863,7 +876,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=150';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=158';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('图纸/F-01_地面与墙面做法图.svg','地面与墙面做法图');
 $('#electricalGround').onclick=()=>showFlatPlan('图纸/E-01_一层照明平面图.svg','一层照明平面图');
@@ -921,16 +934,23 @@ function updateUnderside(){
  }
 }
 // Switch plates and the added lights, read from the same data file as the electrical sheets (E-01..E-05).
-const electrical=await fetch('./1801_电气数据.json?v=152').then(r=>r.ok?r.json():null).catch(()=>null);
+const electrical=await fetch('./1801_电气数据.json?v=157').then(r=>r.ok?r.json():null).catch(()=>null);
 if(electrical){
  // One colour per kind so they read apart at a glance: lights amber, switches red, sockets blue.
  const switchPlate=mat('#c62828');switchPlate.userData.keepLook=true;
  const addedLens=new THREE.MeshStandardMaterial({color:'#ffb31a',emissive:'#ff9d00',emissiveIntensity:.9,roughness:.6});addedLens.userData.keepLook=true;
  for(const sw of electrical.switches||[]){
-  const g=sw.floor==='二楼'?circuitUpper:circuitGround,n=sw.wallNormal||[1,0],onX=Math.abs(n[0])>0,w=.086*sw.gangCount+.02,t=.014,y=sw.heightAboveFloorM-.045;
-  const plate=onX?box(g,sw.x+(n[0]>0?0:-t),y,sw.z-w/2,t,.09,w,switchPlate):box(g,sw.x-w/2,y,sw.z+(n[1]>0?0:-t),w,.09,t,switchPlate);plate.name='switch-'+sw.id;
+  const g=sw.floor==='二楼'?circuitUpper:circuitGround,n=sw.wallNormal||[1,0],onX=Math.abs(n[0])>0,w=.086*sw.gangCount+.02,t=.014;
+  // The drawings give the wall face; the model draws each wall 120 mm thick centred on the outline, so a
+  // switch on an outline wall is brought out to the model's wall face (otherwise it is buried in the wall).
+  const onOutline=solidWallSegments.some(({a,b})=>{const dx=b[0]-a[0],dz=b[1]-a[1],L=dx*dx+dz*dz;if(!L)return false;const k=Math.max(0,Math.min(1,((sw.x-a[0])*dx+(sw.z-a[1])*dz)/L));return Math.hypot(a[0]+k*dx-sw.x,a[1]+k*dz-sw.z)<.02});
+  const sx=sw.x+(onOutline?n[0]*.06:0),sz=sw.z+(onOutline?n[1]*.06:0);
+  // Height is from the floor the user stands on: the entrance strip is raised to the outside datum.
+  const onEntryRaise=sw.floor!=='二楼'&&sw.x>=9.15-.01&&sw.x<=10.70+.01&&sw.z>=7.675&&sw.z<=10.70;
+  const standY=onEntryRaise?-MEZZANINE.lowerFinish:0,y=standY+sw.heightAboveFloorM-.045;
+  const plate=onX?box(g,sx+(n[0]>0?0:-t),y,sz-w/2,t,.09,w,switchPlate):box(g,sx-w/2,y,sz+(n[1]>0?0:-t),w,.09,t,switchPlate);plate.name='switch-'+sw.id;
   const text=sw.id+' · '+sw.gangCount+' 联：'+sw.gangs.map(x=>x.controls.length?x.controls.length+' 盏'+(x.control==='双控'?'（上下双控）':''):'预留').join(' / ');
-  lampTags.push(label(g,text,sw.x+n[0]*.3,sw.heightAboveFloorM+.3,sw.z+n[1]*.3,'#b3261e',3.0));
+  lampTags.push(label(g,text,sx+n[0]*.3,standY+sw.heightAboveFloorM+.3,sz+n[1]*.3,'#b3261e',3.0));
  }
  for(const lt of (electrical.lights||[]).filter(l=>l.status!=='existing')){
   const alongZ=/朝[-+]x/.test(lt.mountFace||'');

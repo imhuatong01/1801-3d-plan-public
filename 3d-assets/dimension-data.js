@@ -64,22 +64,22 @@ export function addProjectDimensions(D, {ground, upper, stairs, structure, field
 
   // ---------- stair + bathroom: scheme A ----------
   D.dim(stairs, [M.lowerLandingX, F1, M.lowerFlightZ], [M.lowerStartX, F1, M.lowerFlightZ], [0, 0, -.6], '第一跑 ' + M.lowerRisers + ' 级 · ' + f3((M.lowerRisers - 1) * go), plan(2));
-  D.dim(stairs, [M.upperStartX, F2, 9.24], [th, F2, 9.24], [0, 1.5, 0], '第二跑 ' + M.upperRisers + ' 级 · ' + f3((M.upperRisers - 1) * go), plan(2));
-  D.dim(stairs, [10.75, mid, 9.24], [M.lowerLandingX, mid, 9.24], [0, .5, 0], '平台 ' + f3(M.lowerLandingX - 10.75), plan(2));
+  D.dim(stairs, [M.upperStartX, F2, M.platformZ1], [th, F2, M.platformZ1], [0, 1.5, 0], '第二跑 ' + M.upperRisers + ' 级 · ' + f3((M.upperRisers - 1) * go), plan(2));
+  D.dim(stairs, [10.75, mid, M.platformZ1], [M.lowerLandingX, mid, M.platformZ1], [0, .5, 0], '平台 ' + f3(M.lowerLandingX - 10.75), plan(2));
   D.dim(stairs, [10.75, mid, M.platformZ0], [10.75, mid, M.platformZ1], [-.7, 0, 0], '平台宽 ' + f3(M.platformZ1 - M.platformZ0) + '（= 两跑 + 缝）', plan(2));
   D.dim(stairs, [M.lowerStartX, F1, M.lowerFlightZ], [M.lowerStartX, F1, M.lowerFlightZ + M.stairWidth], [.5, 0, 0], '梯宽 ' + f3(M.stairWidth), plan(2));
   D.note(stairs, [15.3, 1.3, M.flightGapZ + M.flightGap / 2], '两跑之间留缝 ' + Math.round(M.flightGap * 1000), plan(2));
-  D.dim(stairs, [M.lowerStartX, F1, 7.9], [19.275, F1, 7.9], [0, 0, 0], '起步前 ' + f3(19.275 - M.lowerStartX), plan(3));
-  D.dim(stairs, [18.6, F1, 9.3], [18.6, F2, 9.3], [0, 0, 0], '楼梯总高 ' + f3(F2 - F1), plan(2));
+  D.dim(stairs, [M.lowerStartX, F1, M.lowerFlightZ + 1.16], [19.275, F1, M.lowerFlightZ + 1.16], [0, 0, 0], '起步前 ' + f3(19.275 - M.lowerStartX), plan(3));
+  D.dim(stairs, [18.6, F1, M.backWallZ - .10], [18.6, F2, M.backWallZ - .10], [0, 0, 0], '楼梯总高 ' + f3(F2 - F1), plan(2));
   D.note(stairs, [15.3, 1.15, 5.95], '每级 高 ' + (M.riser * 1000).toFixed(1) + ' × 深 ' + Math.round(go * 1000), plan(3));
-  D.level(stairs, [11.85, mid, 7.6], '平台 +' + f3(mid), plan(2));
+  D.level(stairs, [11.85, mid, M.platformZ0 + .86], '平台 +' + f3(mid), plan(2));
   D.dim(stairs, [11.3, wet, M.platformZ0 + .05], [11.3, mid - T, M.platformZ0 + .05], [0, 0, -.03], '浴室净高 ' + f3(mid - T - wet), plan(2));
-  D.note(stairs, [11.85, 1.0, 8.0], '淋浴间 2.160 × ' + f3(M.platformZ1 - M.platformZ0 - .10), plan(2));
-  D.level(stairs, [11.85, wet, 8.5], '淋浴完成面 ' + (Math.abs(wet) < .0005 ? '±' : wet < 0 ? '−' : '+') + f3(Math.abs(wet)), plan(3));
-  D.note(stairs, [11.85, mid - .06, 9.3], '平台总厚不得超过 120 · 须结构确认', est(3));
+  D.note(stairs, [11.85, 1.0, M.platformZ0 + 1.26], '淋浴间 2.160 × ' + f3(M.platformZ1 - M.platformZ0 - .10), plan(2));
+  D.level(stairs, [11.85, wet, M.platformZ0 + 1.76], '淋浴完成面 ' + (Math.abs(wet) < .0005 ? '±' : wet < 0 ? '−' : '+') + f3(Math.abs(wet)), plan(3));
+  D.note(stairs, [11.85, mid - .06, M.platformZ1 - .10], '平台总厚不得超过 120 · 须结构确认', est(3));
   const pitch = x => F1 + (1 + (M.lowerStartX - x) / go) * M.riser;
   // Headroom: under the joists over the landing and the top of the first flight, and under the main beam crossing it.
-  D.note(stairs, [11.85, mid + 1.2, 7.6], '平台上方留空 · 不做楼板', plan(1));
+  D.note(stairs, [11.85, mid + 1.2, M.platformZ0 + .86], '平台上方留空 · 不做楼板', plan(1));
   D.dim(stairs, [b2 + .06, pitch(b2), M.lowerFlightZ], [b2 + .06, M.steelTop - M.primaryDepth, M.lowerFlightZ], [0, 0, -.03],
     '洞边梁下梯段净空 ' + f3(M.steelTop - M.primaryDepth - pitch(b2)), plan(1));
   D.note(stairs, [15.2, 3.2, 6.6], '楼梯上方净高均不小于 2.00', est(2));
@@ -89,12 +89,12 @@ export function addProjectDimensions(D, {ground, upper, stairs, structure, field
   D.dim(upper, [10.7, F2, 0], [W, F2, 0], [0, 0, -.55], '夹层 ' + f3(W - 10.7), cad(2));
   D.dim(upper, [10.7, F2, 0], [10.7, F2, M.voidFrontZ], [-.55, 0, 0], '临空边 ' + f3(M.voidFrontZ), plan(3));
   D.dim(upper, [10.7, F2, M.voidFrontZ], [b2, F2, M.voidFrontZ], [0, 0, -.5], '留空 ' + f3(b2 - 10.7), plan(2));
-  D.dim(upper, [10.7, F2, M.voidFrontZ], [10.7, F2, 9.4], [-.55, 0, 0], f3(9.4 - M.voidFrontZ), plan(2));
-  D.dim(upper, [b2, F2, 9.30], [th, F2, 9.30], [0, .85, 0], '第二跑上方 ' + f3(th - b2), plan(2));
-  D.dim(upper, [th, F2, oF], [th, F2, 9.40], [.5, 0, 0], f3(9.40 - oF), plan(3));
-  D.dim(upper, [th, F2, 8.45], [19.325, F2, 8.45], [0, 0, 0], '到达区 ' + f3(19.325 - th), plan(3));
+  D.dim(upper, [10.7, F2, M.voidFrontZ], [10.7, F2, M.backWallZ], [-.55, 0, 0], f3(M.backWallZ - M.voidFrontZ), plan(2));
+  D.dim(upper, [b2, F2, M.backWallZ - .10], [th, F2, M.backWallZ - .10], [0, .85, 0], '第二跑上方 ' + f3(th - b2), plan(2));
+  D.dim(upper, [th, F2, oF], [th, F2, M.backWallZ], [.5, 0, 0], f3(M.backWallZ - oF), plan(3));
+  D.dim(upper, [th, F2, M.upperFlightZ + .41], [19.325, F2, M.upperFlightZ + .41], [0, 0, 0], '到达区 ' + f3(19.325 - th), plan(3));
   D.dim(upper, [b2 + .5, F2, oF - .03], [b2 + .5, F2 + 1.08, oF - .03], [0, 0, 0], '护栏 1.080', plan(3));
-  D.note(upper, [15.2, F2, 8.5], '楼梯留空 ' + M.openingArea.toFixed(2) + ' ㎡（平台、第一跑顶部和第二跑的上方）', plan(2));
+  D.note(upper, [15.2, F2, M.upperFlightZ + .46], '楼梯留空 ' + M.openingArea.toFixed(2) + ' ㎡（平台、第一跑顶部和第二跑的上方）', plan(2));
   D.level(upper, [17.6, F2, 4.9], '夹层完成面 +' + f3(F2), cad(2));
 
   // ---------- steel: preliminary member sizes by common practice (engineer to verify) ----------

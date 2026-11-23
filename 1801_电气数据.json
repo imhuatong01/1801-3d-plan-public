@@ -259,8 +259,8 @@
    "floor": "一楼",
    "x": 11.15,
    "z": 9.293,
-   "elevationM": 5.0,
-   "heightAboveFloorM": 5.15,
+   "elevationM": 5.2,
+   "heightAboveFloorM": 5.35,
    "mountFace": "朝-z，装在后墙(z=9.40)室内侧",
    "circuit": "WL3",
    "switchId": "K2",
@@ -276,8 +276,8 @@
    "floor": "一楼",
    "x": 14.1,
    "z": 9.293,
-   "elevationM": 5.0,
-   "heightAboveFloorM": 5.15,
+   "elevationM": 5.2,
+   "heightAboveFloorM": 5.35,
    "mountFace": "朝-z，装在后墙(z=9.40)室内侧",
    "circuit": "WL3",
    "switchId": "K2",
@@ -292,7 +292,7 @@
    "modelGroup": "WL3",
    "floor": "二楼",
    "x": 19.178,
-   "z": 8.64,
+   "z": 8.8,
    "elevationM": 7.94,
    "heightAboveFloorM": 3.84,
    "mountFace": "朝-x，装在短边上层端墙(x=19.225)室内侧，正对楼梯出口中线",
@@ -300,7 +300,7 @@
    "switchId": "K2",
    "switchGang": "a",
    "status": "proposed",
-   "note": "楼梯出口灯。装在走出楼梯正对的端墙上，位于楼梯出口宽度的正中(z=8.64，出口 z 8.04~9.24)，高度与二楼顶梁灯相同(7.94)；与 K4b 双控"
+   "note": "楼梯出口灯。装在走出楼梯正对的端墙上，位于楼梯出口宽度的正中(z=8.80，出口 z 8.20~9.40)，高度与二楼顶梁灯相同(7.94)；与 K4b 双控"
   },
   {
    "id": "L16",
@@ -725,7 +725,7 @@
   {
    "id": "S13",
    "floor": "二楼",
-   "x": 18.1,
+   "x": 17.9,
    "z": 9.34,
    "heightAboveFloorM": 0.38,
    "type": "单相五孔插座",
