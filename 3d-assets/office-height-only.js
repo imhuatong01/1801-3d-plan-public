@@ -393,7 +393,7 @@ const circuitBlue='#1683c2',circuitAmber='#c98926',circuitTeal='#187a80',circuit
 let socketSeq=0,selectedSocket=null;
 const permanentlyDeletedSocketIds=new Set(['S04','S05','S06','S07','S11','S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','S22','S23','S24','S25','S26','S27','S28','S29','S30','S34','S35','S36','S38','S39','S40','S41']);
 // Sockets are numbered in one continuous run: S01-S10 on the lower floor, S11-S14 on the mezzanine. The shower room has no socket.
-const socketNumber={'S08':'S04','S09':'S05','S10':'S06','S42':'S07','S43':'S08','S44':'S09','S45':'S10','S31':'S11','S32':'S12','S33':'S13','S37':'S14','S46':'S15'};
+const socketNumber={'S08':'S04','S09':'S05','S10':'S06','S42':'S07','S43':'S08','S44':'S09','S45':'S10','S31':'S11','S32':'S12','S33':'S13','S37':'S14','S46':'S15','S47':'S16','S48':'S17'};
 function roundHole(g,x,y){const h=new THREE.Mesh(new THREE.CircleGeometry(.024,12),socketHole);h.position.set(x,y,.031);g.add(h)}
 function outlet(g,x,z,side='z',color=c1Mat,circuit='C1',floor='一楼',height=.38){const o=new THREE.Group(),rawId=`S${String(++socketSeq).padStart(2,'0')}`,rimMaterial=mat('#1565c0');rimMaterial.userData.keepLook=true;o.position.set(x,height,z);/* side = the direction the plate faces */o.rotation.y=({x:Math.PI/2,'-x':-Math.PI/2,z:0,'-z':Math.PI})[side]??0;g.add(o);if(permanentlyDeletedSocketIds.has(rawId)){g.remove(o);return null}const id=socketNumber[rawId]||rawId;// Standard square five-hole plate, drawn larger than life so it reads in the model: a two-pin outlet on top, a three-pin outlet below.
 const rim=box(o,-.16,-.16,-.035,.32,.32,.025,rimMaterial),plate=box(o,-.14,-.14,-.02,.28,.28,.05,socketFace);const slot=(x,y,w,h,turn=0)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,.004),socketHole);m.position.set(x,y,.032);m.rotation.z=turn;o.add(m)};slot(-.04,.07,.017,.052);slot(.04,.07,.017,.052);slot(0,-.02,.017,.048);slot(-.052,-.082,.017,.052,-.52);slot(.052,-.082,.017,.052,.52);const meta={id,circuit,floor,root:o,rim,plate,baseColor:rimMaterial.color.clone()};o.userData.socket=meta;plate.userData.socket=meta;circuitPickables.push(plate);socketItems.push(meta);return o}
@@ -440,6 +440,10 @@ for(const z of [3.15,5.40])outlet(circuitGround,.12,z,'x',c1Mat,'C1','一楼');f
 // Mobile-TV corner (2026-11-23): power socket S15 and network outlet N5 share one box on the window mullion behind
 // the TV (x 12.95), fed down the mullion from the high trunk, so no cable shows.
 outlet(circuitGround,12.95,.10,'z',c3Mat,'C3','一楼',.60);
+// Desk power (owner 2026-11-23): each group of ten desks has its own circuit and a combined power + data box on the
+// glazing-foot trunk at the window end, under the desks; nothing crosses the aisle behind them.
+outlet(circuitGround,1.62,.06,'z',c1Mat,'C9','一楼',.18);outlet(circuitGround,5.37,.06,'z',c1Mat,'C10','一楼',.18);
+wire(circuitGround,[[8.25,1.15,7.60],[8.25,.10,7.55],[8.80,.10,7.55],[8.80,.10,1.14],[8.52,.10,1.14],[8.52,.10,.14],[1.62,.10,.14]],circuitBlue);
 wire(circuitGround,[[10.85,highTrayY,1.20],[12.95,highTrayY,1.20],[12.95,highTrayY,.10],[12.95,.76,.10]],circuitTeal);
 const netTags=[];
 // Network (owner confirmed 2026-11-23): two broadband lines into a weak-current box RD beside AL1; Cat6 to N1~N5.
@@ -448,7 +452,9 @@ const netTags=[];
  netTags.push(label(circuitGround,'RD 弱电箱（双宽带）',6.90,2.05,7.40,'#1565c0',2.6));
  const plate=(g,id,x,z,h,nx,nz)=>{const p=new THREE.Group();p.position.set(x,h,z);p.rotation.y=Math.atan2(nx,nz);g.add(p);
   box(p,-.043,-.043,0,.086,.086,.012,plateM);box(p,-.016,-.012,.012,.032,.024,.004,netMat);netTags.push(label(g,id+' 网络口',x+nx*.25,h+.25,z+nz*.25,'#1565c0',2.4));};
- plate(circuitGround,'N1',1.80,7.615,.30,0,-1);plate(circuitGround,'N2',5.55,7.615,.30,0,-1);plate(circuitGround,'N5',13.05,.10,.60,0,1);
+ plate(circuitGround,'N1',1.80,.06,.10,0,1);plate(circuitGround,'N2',5.55,.06,.10,0,1);
+ // N1/N2 fed from the glazing end (owner 2026-11-23): back wall, east wall, round the column, then the glazing-foot trunk, so no cable crosses the aisle behind the desks.
+ wire(circuitGround,[[7.10,.06,7.55],[8.88,.06,7.55],[8.88,.06,1.08],[8.58,.06,1.08],[8.58,.06,.06],[1.80,.06,.06]],'#1565c0');plate(circuitGround,'N5',13.05,.10,.60,0,1);
  plate(circuitUpper,'N3',18.395,.62,.30,-1,0);plate(circuitUpper,'N4',18.395,.88,.30,-1,0);}
 // 上楼竖向干线：随高位主线槽到后墙东端 (18.20, 9.30)，在第 7、8 根梁之间穿夹层楼板上引；二楼继续贴地脚线分回路。
 // 楼梯贴墙后，后墙 x 10.62~17.15 一段被平台和第二跑占住，线路不再沿这段后墙走。
@@ -939,7 +945,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=191';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=193';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('图纸/F-01_地面与墙面做法图.svg','地面与墙面做法图');
 $('#electricalGround').onclick=()=>showFlatPlan('图纸/E-01_一层照明平面图.svg','一层照明平面图');
@@ -997,7 +1003,7 @@ function updateUnderside(){
  }
 }
 // Switch plates and the added lights, read from the same data file as the electrical sheets (E-01..E-05).
-const electrical=await fetch('./1801_电气数据.json?v=191').then(r=>r.ok?r.json():null).catch(()=>null);
+const electrical=await fetch('./1801_电气数据.json?v=193').then(r=>r.ok?r.json():null).catch(()=>null);
 if(electrical){
  // One colour per kind so they read apart at a glance: lights amber, switches red, sockets blue.
  const switchPlate=mat('#c62828');switchPlate.userData.keepLook=true;
