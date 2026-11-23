@@ -93,7 +93,7 @@
 <text x="108.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">由持证电工确定</text>
 <text x="130.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">漏电保护</text>
 <text x="156.00" y="117.00" font-size="2.20" text-anchor="start" fill="#000">一楼夹层下沿窗插座</text>
-<text x="205.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">S09、S10</text>
+<text x="205.00" y="117.00" font-size="2.10" text-anchor="start" fill="#000">S09、S10、S15</text>
 <line x1="52.00" y1="126.00" x2="59.00" y2="126.00" stroke="#c07a10" stroke-width="0.50" fill="none"/>
 <line x1="53.30" y1="124.80" x2="55.70" y2="127.20" stroke="#c07a10" stroke-width="0.40" fill="none"/>
 <line x1="53.30" y1="127.20" x2="55.70" y2="124.80" stroke="#c07a10" stroke-width="0.40" fill="none"/>

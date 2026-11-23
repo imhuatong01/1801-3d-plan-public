@@ -753,6 +753,22 @@
    ],
    "status": "existing",
    "note": ""
+  },
+  {
+   "id": "S15",
+   "floor": "一楼",
+   "x": 12.95,
+   "z": 0.1,
+   "heightAboveFloorM": 0.6,
+   "type": "单相五孔插座",
+   "circuit": "WX2",
+   "model3dCircuit": "C3",
+   "wallNormal": [
+    0,
+    1
+   ],
+   "status": "existing",
+   "note": "移动电视电源：会议桌靠窗一端，窗框竖梃上与网络口 N5 共用组合盒，线自高位主线槽沿竖梃下引，藏在电视背后"
   }
  ],
  "circuits": [
@@ -859,7 +875,8 @@
    "model3dCircuit": "C3",
    "loads": [
     "S09",
-    "S10"
+    "S10",
+    "S15"
    ],
    "breaker": "由持证电工确定",
    "cable": "由持证电工确定",
@@ -931,6 +948,63 @@
    "rcd": "由持证电工确定"
   }
  ],
+ "network": {
+  "box": {
+   "id": "RD",
+   "name": "弱电箱（光猫×2、双宽带口路由器、16 口交换机、PoE 录像机）",
+   "floor": "一楼",
+   "x": 6.9,
+   "z": 7.555,
+   "heightAboveFloorM": 1.15,
+   "widthM": 0.5,
+   "heightM": 0.6,
+   "mount": "开放区后墙(z=7.675)内侧，AL1 左侧，明装",
+   "feed": "两条宽带自入户门引入，入户位置待物业确认"
+  },
+  "outlets": [
+   {
+    "id": "N1",
+    "floor": "一楼",
+    "x": 1.8,
+    "z": 7.615,
+    "heightAboveFloorM": 0.3,
+    "note": "一楼西组工位靠后墙一端墙面，地面压线槽进桌子中缝走线槽"
+   },
+   {
+    "id": "N2",
+    "floor": "一楼",
+    "x": 5.55,
+    "z": 7.615,
+    "heightAboveFloorM": 0.3,
+    "note": "一楼东组工位靠后墙一端墙面，地面压线槽进桌子中缝走线槽"
+   },
+   {
+    "id": "N3",
+    "floor": "二楼",
+    "x": 18.395,
+    "z": 0.62,
+    "heightAboveFloorM": 0.3,
+    "note": "二楼 U 型主办公桌包住的原柱西面，桌面下"
+   },
+   {
+    "id": "N4",
+    "floor": "二楼",
+    "x": 18.395,
+    "z": 0.88,
+    "heightAboveFloorM": 0.3,
+    "note": "同上，第二个口"
+   },
+   {
+    "id": "N5",
+    "floor": "一楼",
+    "x": 12.95,
+    "z": 0.1,
+    "heightAboveFloorM": 0.6,
+    "note": "移动电视背后窗框竖梃组合盒，与插座 S15 同盒"
+   }
+  ],
+  "cameras": "C1、C2、C4、C5、C6 为 PoE 摄像机，网线直接回 RD 内录像机"
+ },
  "hvac": [
   {
    "id": "AC01",

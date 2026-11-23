@@ -283,45 +283,51 @@
 <line x1="301.50" y1="66.97" x2="306.50" y2="61.97" stroke="#000" stroke-width="0.25" fill="none"/>
 <circle cx="304.00" cy="64.47" r="1.10" fill="#fff" stroke="#000" stroke-width="0.25"/>
 <text x="314.00" y="65.47" font-size="2.40" text-anchor="start" fill="#000">吸顶式空调(电源预留，位置待暖通确定)</text>
-<rect x="300.50" y="69.77" width="7.00" height="2.20" fill="#fff" stroke="#000" stroke-width="0.30"/>
-<line x1="301.38" y1="69.77" x2="301.38" y2="71.97" stroke="#000" stroke-width="0.15" fill="none"/>
-<line x1="302.25" y1="69.77" x2="302.25" y2="71.97" stroke="#000" stroke-width="0.15" fill="none"/>
-<line x1="303.12" y1="69.77" x2="303.12" y2="71.97" stroke="#000" stroke-width="0.15" fill="none"/>
-<line x1="304.00" y1="69.77" x2="304.00" y2="71.97" stroke="#000" stroke-width="0.15" fill="none"/>
-<line x1="304.88" y1="69.77" x2="304.88" y2="71.97" stroke="#000" stroke-width="0.15" fill="none"/>
-<line x1="305.75" y1="69.77" x2="305.75" y2="71.97" stroke="#000" stroke-width="0.15" fill="none"/>
-<line x1="306.62" y1="69.77" x2="306.62" y2="71.97" stroke="#000" stroke-width="0.15" fill="none"/>
-<text x="314.00" y="71.87" font-size="2.40" text-anchor="start" fill="#000">送风口(V01，无电气负荷)</text>
-<rect x="299.00" y="75.77" width="10.00" height="3.00" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
-<text x="314.00" y="78.27" font-size="2.40" text-anchor="start" fill="#000">实墙(灰色填充)</text>
-<line x1="299.00" y1="83.07" x2="309.00" y2="83.07" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
-<line x1="299.00" y1="84.27" x2="309.00" y2="84.27" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
-<text x="314.00" y="84.67" font-size="2.40" text-anchor="start" fill="#000">采光玻璃面(细双线)</text>
-<rect x="300.00" y="88.07" width="8.00" height="4.00" fill="none" stroke="#666" stroke-width="0.25" stroke-dasharray="2 1"/>
-<text x="314.00" y="91.07" font-size="2.40" text-anchor="start" fill="#000">夹层轮廓(下层图中的虚线)</text>
-<text x="296.00" y="100.47" font-size="3.00" text-anchor="start" fill="#000" font-weight="bold">灯具与开关对应表</text>
-<line x1="296.00" y1="101.87" x2="408.00" y2="101.87" stroke="#000" stroke-width="0.40" fill="none"/>
-<text x="296.00" y="105.47" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">灯号</text>
-<text x="316.00" y="105.47" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">标高</text>
-<text x="330.00" y="105.47" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">回路</text>
-<text x="344.00" y="105.47" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">开关联</text>
-<line x1="296.00" y1="106.47" x2="408.00" y2="106.47" stroke="#000" stroke-width="0.20" fill="none"/>
-<text x="296.00" y="109.47" font-size="2.20" text-anchor="start" fill="#000">L01~L03</text>
-<text x="316.00" y="109.47" font-size="2.20" text-anchor="start" fill="#000">3.57</text>
-<text x="330.00" y="109.47" font-size="2.20" text-anchor="start" fill="#000">WL1</text>
-<text x="344.00" y="109.47" font-size="2.20" text-anchor="start" fill="#000">K1a/b/c 各一联</text>
-<text x="296.00" y="112.87" font-size="2.20" text-anchor="start" fill="#000">L04~L06</text>
-<text x="316.00" y="112.87" font-size="2.20" text-anchor="start" fill="#000">3.57</text>
-<text x="330.00" y="112.87" font-size="2.20" text-anchor="start" fill="#000">WL1</text>
-<text x="344.00" y="112.87" font-size="2.20" text-anchor="start" fill="#000">K1d/e/f 各一联</text>
-<text x="296.00" y="116.27" font-size="2.20" text-anchor="start" fill="#000">L07~L12</text>
-<text x="316.00" y="116.27" font-size="2.20" text-anchor="start" fill="#000">3.57</text>
-<text x="330.00" y="116.27" font-size="2.20" text-anchor="start" fill="#000">WL2</text>
-<text x="344.00" y="116.27" font-size="2.20" text-anchor="start" fill="#000">K3a</text>
-<text x="296.00" y="119.67" font-size="2.20" text-anchor="start" fill="#000">L13,L14</text>
-<text x="316.00" y="119.67" font-size="2.20" text-anchor="start" fill="#000">5.20</text>
-<text x="330.00" y="119.67" font-size="2.20" text-anchor="start" fill="#000">WL3</text>
-<text x="344.00" y="119.67" font-size="2.20" text-anchor="start" fill="#000">K2a 双控</text>
+<circle cx="304.00" cy="70.87" r="1.60" fill="#fff" stroke="#c0392b" stroke-width="0.45"/>
+<text x="304.00" y="71.62" font-size="1.70" text-anchor="middle" fill="#c0392b" font-weight="bold">C</text>
+<text x="314.00" y="71.87" font-size="2.40" text-anchor="start" fill="#000">监控摄像机（PoE，网线供电，点划线为网线走向，汇至 AL1 旁 NVR）</text>
+<rect x="302.60" y="75.87" width="2.80" height="2.80" fill="#fff" stroke="#1565c0" stroke-width="0.45"/>
+<text x="304.00" y="77.97" font-size="1.60" text-anchor="middle" fill="#1565c0" font-weight="bold">N</text>
+<text x="314.00" y="78.27" font-size="2.40" text-anchor="start" fill="#000">网络信息口（六类，RJ45），点划线为网线走向，汇至弱电箱 RD</text>
+<rect x="300.50" y="82.57" width="7.00" height="2.20" fill="#fff" stroke="#000" stroke-width="0.30"/>
+<line x1="301.38" y1="82.57" x2="301.38" y2="84.77" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="302.25" y1="82.57" x2="302.25" y2="84.77" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="303.12" y1="82.57" x2="303.12" y2="84.77" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="304.00" y1="82.57" x2="304.00" y2="84.77" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="304.88" y1="82.57" x2="304.88" y2="84.77" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="305.75" y1="82.57" x2="305.75" y2="84.77" stroke="#000" stroke-width="0.15" fill="none"/>
+<line x1="306.62" y1="82.57" x2="306.62" y2="84.77" stroke="#000" stroke-width="0.15" fill="none"/>
+<text x="314.00" y="84.67" font-size="2.40" text-anchor="start" fill="#000">送风口(V01，无电气负荷)</text>
+<rect x="299.00" y="88.57" width="10.00" height="3.00" fill="#c9c9c9" stroke="#555" stroke-width="0.20"/>
+<text x="314.00" y="91.07" font-size="2.40" text-anchor="start" fill="#000">实墙(灰色填充)</text>
+<line x1="299.00" y1="95.87" x2="309.00" y2="95.87" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<line x1="299.00" y1="97.07" x2="309.00" y2="97.07" stroke="#3a7ca5" stroke-width="0.25" fill="none"/>
+<text x="314.00" y="97.47" font-size="2.40" text-anchor="start" fill="#000">采光玻璃面(细双线)</text>
+<rect x="300.00" y="100.87" width="8.00" height="4.00" fill="none" stroke="#666" stroke-width="0.25" stroke-dasharray="2 1"/>
+<text x="314.00" y="103.87" font-size="2.40" text-anchor="start" fill="#000">夹层轮廓(下层图中的虚线)</text>
+<text x="296.00" y="113.27" font-size="3.00" text-anchor="start" fill="#000" font-weight="bold">灯具与开关对应表</text>
+<line x1="296.00" y1="114.67" x2="408.00" y2="114.67" stroke="#000" stroke-width="0.40" fill="none"/>
+<text x="296.00" y="118.27" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">灯号</text>
+<text x="316.00" y="118.27" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">标高</text>
+<text x="330.00" y="118.27" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">回路</text>
+<text x="344.00" y="118.27" font-size="2.30" text-anchor="start" fill="#000" font-weight="bold">开关联</text>
+<line x1="296.00" y1="119.27" x2="408.00" y2="119.27" stroke="#000" stroke-width="0.20" fill="none"/>
+<text x="296.00" y="122.27" font-size="2.20" text-anchor="start" fill="#000">L01~L03</text>
+<text x="316.00" y="122.27" font-size="2.20" text-anchor="start" fill="#000">3.57</text>
+<text x="330.00" y="122.27" font-size="2.20" text-anchor="start" fill="#000">WL1</text>
+<text x="344.00" y="122.27" font-size="2.20" text-anchor="start" fill="#000">K1a/b/c 各一联</text>
+<text x="296.00" y="125.67" font-size="2.20" text-anchor="start" fill="#000">L04~L06</text>
+<text x="316.00" y="125.67" font-size="2.20" text-anchor="start" fill="#000">3.57</text>
+<text x="330.00" y="125.67" font-size="2.20" text-anchor="start" fill="#000">WL1</text>
+<text x="344.00" y="125.67" font-size="2.20" text-anchor="start" fill="#000">K1d/e/f 各一联</text>
+<text x="296.00" y="129.07" font-size="2.20" text-anchor="start" fill="#000">L07~L12</text>
+<text x="316.00" y="129.07" font-size="2.20" text-anchor="start" fill="#000">3.57</text>
+<text x="330.00" y="129.07" font-size="2.20" text-anchor="start" fill="#000">WL2</text>
+<text x="344.00" y="129.07" font-size="2.20" text-anchor="start" fill="#000">K3a</text>
+<text x="296.00" y="132.47" font-size="2.20" text-anchor="start" fill="#000">L13,L14</text>
+<text x="316.00" y="132.47" font-size="2.20" text-anchor="start" fill="#000">5.20</text>
+<text x="330.00" y="132.47" font-size="2.20" text-anchor="start" fill="#000">WL3</text>
+<text x="344.00" y="132.47" font-size="2.20" text-anchor="start" fill="#000">K2a 双控</text>
 <text x="12.00" y="180.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">说 明</text>
 <line x1="12.00" y1="181.40" x2="212.00" y2="181.40" stroke="#000" stroke-width="0.40" fill="none"/>
 <text x="12.00" y="185.20" font-size="2.40" text-anchor="start" fill="#000">1.</text>

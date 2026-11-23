@@ -172,6 +172,49 @@
 <text x="164.00" y="127.00" font-size="1.90" text-anchor="middle" fill="#333" transform="rotate(-90 164.00 127.00)">高位主线槽</text>
 <rect x="172.60" y="110.75" width="5.80" height="1.60" fill="#1f3b57" stroke="#000" stroke-width="0.30"/>
 <text x="180.30" y="110.35" font-size="2.80" text-anchor="start" fill="#000" font-weight="bold">AL1</text>
+<rect x="178.80" y="110.15" width="4.40" height="2.80" fill="#fff" stroke="#c0392b" stroke-width="0.40"/>
+<text x="181.00" y="116.95" font-size="1.80" text-anchor="middle" fill="#c0392b" font-weight="bold">NVR</text>
+<polyline points="181.00,111.55 172.60,112.20 165.60,112.20 165.60,142.20 151.80,142.20 151.80,103.00 149.50,103.00 150.20,103.20" fill="none" stroke="#c0392b" stroke-width="0.30" stroke-dasharray=".8 .6" stroke-linejoin="round"/>
+<polyline points="149.50,103.00 149.50,48.20 166.00,48.20 166.00,43.50" fill="none" stroke="#c0392b" stroke-width="0.30" stroke-dasharray=".8 .6" stroke-linejoin="round"/>
+<polyline points="166.00,48.20 172.00,48.20 172.00,43.50" fill="none" stroke="#c0392b" stroke-width="0.30" stroke-dasharray=".8 .6" stroke-linejoin="round"/>
+<polyline points="149.50,48.20 74.00,48.20 74.00,43.50" fill="none" stroke="#c0392b" stroke-width="0.30" stroke-dasharray=".8 .6" stroke-linejoin="round"/>
+<polyline points="76.00,48.20 75.80,129.00" fill="none" stroke="#c0392b" stroke-width="0.30" stroke-dasharray=".8 .6" stroke-linejoin="round"/>
+<line x1="166.00" y1="43.50" x2="161.82" y2="50.32" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="166.00" y1="43.50" x2="170.18" y2="50.32" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="166.00" y1="43.50" x2="166.00" y2="54.50" stroke="#c0392b" stroke-width="0.25" stroke-dasharray="1 .6" fill="none"/>
+<circle cx="166.00" cy="43.50" r="1.60" fill="#fff" stroke="#c0392b" stroke-width="0.45"/>
+<text x="166.00" y="44.25" font-size="1.70" text-anchor="middle" fill="#c0392b" font-weight="bold">C1</text>
+<line x1="172.00" y1="43.50" x2="175.19" y2="50.84" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="172.00" y1="43.50" x2="179.99" y2="43.99" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="172.00" y1="43.50" x2="181.01" y2="49.81" stroke="#c0392b" stroke-width="0.25" stroke-dasharray="1 .6" fill="none"/>
+<circle cx="172.00" cy="43.50" r="1.60" fill="#fff" stroke="#c0392b" stroke-width="0.45"/>
+<text x="172.00" y="44.25" font-size="1.70" text-anchor="middle" fill="#c0392b" font-weight="bold">C2</text>
+<line x1="74.00" y1="43.50" x2="80.82" y2="47.68" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="74.00" y1="43.50" x2="80.82" y2="39.32" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="74.00" y1="43.50" x2="85.00" y2="43.50" stroke="#c0392b" stroke-width="0.25" stroke-dasharray="1 .6" fill="none"/>
+<circle cx="74.00" cy="43.50" r="1.60" fill="#fff" stroke="#c0392b" stroke-width="0.45"/>
+<text x="74.00" y="44.25" font-size="1.70" text-anchor="middle" fill="#c0392b" font-weight="bold">C4</text>
+<line x1="150.20" y1="103.20" x2="143.38" y2="99.02" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="150.20" y1="103.20" x2="143.38" y2="107.38" stroke="#c0392b" stroke-width="0.30" fill="none"/>
+<line x1="150.20" y1="103.20" x2="139.20" y2="103.20" stroke="#c0392b" stroke-width="0.25" stroke-dasharray="1 .6" fill="none"/>
+<circle cx="150.20" cy="103.20" r="1.60" fill="#fff" stroke="#c0392b" stroke-width="0.45"/>
+<text x="150.20" y="103.95" font-size="1.70" text-anchor="middle" fill="#c0392b" font-weight="bold">C5</text>
+<rect x="186.20" y="109.95" width="5.60" height="3.20" fill="#e8f0fb" stroke="#1565c0" stroke-width="0.50"/>
+<text x="189.00" y="112.25" font-size="1.70" text-anchor="middle" fill="#1565c0" font-weight="bold">RD</text>
+<text x="189.00" y="108.35" font-size="1.70" text-anchor="middle" fill="#1565c0">弱电箱 RD（两条宽带进线）</text>
+<polyline points="192.00,111.00 240.00,111.00 240.00,112.15" fill="none" stroke="#1565c0" stroke-width="0.30" stroke-dasharray="1.6 .6 .4 .6" stroke-linejoin="round"/>
+<polyline points="202.50,111.00 202.50,112.15" fill="none" stroke="#1565c0" stroke-width="0.30" stroke-dasharray="1.6 .6 .4 .6" stroke-linejoin="round"/>
+<polyline points="186.00,111.00 172.60,111.60 165.60,111.60 165.60,141.60 151.80,141.60 151.80,102.60 150.00,102.60 150.00,47.60 128.50,47.60 128.50,37.00" fill="none" stroke="#1565c0" stroke-width="0.30" stroke-dasharray="1.6 .6 .4 .6" stroke-linejoin="round"/>
+<polyline points="129.00,48.00 129.00,37.00" fill="none" stroke="#17868a" stroke-width="0.35" stroke-dasharray="2.2 1" stroke-linejoin="round"/>
+<rect x="238.60" y="110.75" width="2.80" height="2.80" fill="#fff" stroke="#1565c0" stroke-width="0.45"/>
+<text x="240.00" y="112.85" font-size="1.60" text-anchor="middle" fill="#1565c0" font-weight="bold">N</text>
+<text x="240.00" y="116.75" font-size="1.70" text-anchor="middle" fill="#1565c0">N1</text>
+<rect x="201.10" y="110.75" width="2.80" height="2.80" fill="#fff" stroke="#1565c0" stroke-width="0.45"/>
+<text x="202.50" y="112.85" font-size="1.60" text-anchor="middle" fill="#1565c0" font-weight="bold">N</text>
+<text x="202.50" y="116.75" font-size="1.70" text-anchor="middle" fill="#1565c0">N2</text>
+<rect x="127.10" y="35.60" width="2.80" height="2.80" fill="#fff" stroke="#1565c0" stroke-width="0.45"/>
+<text x="128.50" y="37.70" font-size="1.60" text-anchor="middle" fill="#1565c0" font-weight="bold">N</text>
+<text x="128.50" y="41.60" font-size="1.70" text-anchor="middle" fill="#1565c0">N5</text>
 <path d="M245.50,111.30 A1.50,1.50 0 0 0 242.50,111.30 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
 <line x1="246.30" y1="111.30" x2="241.70" y2="111.30" stroke="#1565c0" stroke-width="0.30" fill="none"/>
 <text x="244.00" y="106.50" font-size="2.10" text-anchor="middle" fill="#000">S01</text>
@@ -202,6 +245,9 @@
 <path d="M69.75,46.00 A1.50,1.50 0 0 0 72.75,46.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
 <line x1="68.95" y1="46.00" x2="73.55" y2="46.00" stroke="#1565c0" stroke-width="0.30" fill="none"/>
 <text x="71.25" y="52.40" font-size="2.10" text-anchor="middle" fill="#000">S10</text>
+<path d="M127.00,37.00 A1.50,1.50 0 0 0 130.00,37.00 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
+<line x1="126.20" y1="37.00" x2="130.80" y2="37.00" stroke="#1565c0" stroke-width="0.30" fill="none"/>
+<text x="128.50" y="43.40" font-size="2.10" text-anchor="middle" fill="#000">S15</text>
 <text x="296.00" y="20.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">图 例</text>
 <line x1="296.00" y1="21.50" x2="408.00" y2="21.50" stroke="#000" stroke-width="0.40" fill="none"/>
 <path d="M302.50,23.87 A1.50,1.50 0 0 0 305.50,23.87 Z" fill="#1565c0" stroke="#1565c0" stroke-width="0.30"/>
@@ -238,22 +284,28 @@
 <text x="308.00" y="94.97" font-size="2.20" text-anchor="start" fill="#000">点位：S01、S02、S03、S04、S05、S06、S07、S08</text>
 <text x="296.00" y="99.17" font-size="2.40" text-anchor="start" fill="#17868a" font-weight="bold">WX2</text>
 <text x="308.00" y="99.17" font-size="2.30" text-anchor="start" fill="#000">一楼夹层下沿窗插座</text>
-<text x="308.00" y="102.57" font-size="2.20" text-anchor="start" fill="#000">点位：S09、S10</text>
+<text x="308.00" y="102.57" font-size="2.20" text-anchor="start" fill="#000">点位：S09、S10、S15</text>
 <text x="12.00" y="180.00" font-size="3.20" text-anchor="start" fill="#000" font-weight="bold">说 明</text>
 <line x1="12.00" y1="181.40" x2="212.00" y2="181.40" stroke="#000" stroke-width="0.40" fill="none"/>
 <text x="12.00" y="185.20" font-size="2.40" text-anchor="start" fill="#000">1.</text>
-<text x="17.00" y="185.20" font-size="2.40" text-anchor="start" fill="#000">插座连续编号 S01~S14：一楼 S01~S10，夹层 S11~S14。一楼 10 个：WX1 八个（开放区后墙 S01~S03、主过道旁原柱三个柱面 S04~S06、端墙 S07、S08）、WX2 两个（另一根</text>
-<text x="17.00" y="188.77" font-size="2.40" text-anchor="start" fill="#000">原柱相邻两个柱面 S09、S10）。全部为五孔插座（两孔加三孔），距地 0.38 m。</text>
+<text x="17.00" y="185.20" font-size="2.40" text-anchor="start" fill="#000">网络：两条宽带进线入弱电箱 RD（AL1 左侧，内装光猫、双宽带口路由器、16 口交换机、PoE 录像机），入户位置待物业确认；一楼网络口 N1、N2 在两组工位靠后墙一端墙面，</text>
+<text x="17.00" y="188.77" font-size="2.40" text-anchor="start" fill="#000">桌下用地面压线槽进桌子中缝走线槽；N5 与电视电源插座 S15 共用组合盒，装在会议桌靠窗一端的窗框竖梃上，线自高位主线槽沿竖梃下引，藏在电视背后。</text>
 <text x="12.00" y="192.84" font-size="2.40" text-anchor="start" fill="#000">2.</text>
-<text x="17.00" y="192.84" font-size="2.40" text-anchor="start" fill="#000">全户不设地面插座，线路不埋地（一楼完成面即结构板面，不得开槽）。WX1 沿开放区后墙、端墙的踢脚线明装线槽，再沿窗腰梁到原柱后贴柱下引；WX2 自 AL1 进高位主线槽，过</text>
-<text x="17.00" y="196.41" font-size="2.40" text-anchor="start" fill="#000">入户门门头后在 (10.85, 6.70) 出槽，沿夹层边梁和窗腰梁到原柱下引。</text>
+<text x="17.00" y="192.84" font-size="2.40" text-anchor="start" fill="#000">监控：共 5 个，一层 C1、C2、C4、C5，夹层 C6，均为 PoE 网络摄像机，柱面或墙面明装，离地约 3.0 m（C6 离夹层楼面 2.8 m，只拍楼梯），广角 2.8 mm；每点一根六类网</text>
+<text x="17.00" y="196.41" font-size="2.40" text-anchor="start" fill="#000">线，随高位主线槽和墙面线槽敷设，汇至 AL1 旁 8 路 PoE 录像机（NVR），摄像机处不设插座，NVR 用 AL1 旁插座；淋浴间内不设摄像机。</text>
 <text x="12.00" y="200.48" font-size="2.40" text-anchor="start" fill="#000">3.</text>
-<text x="17.00" y="200.48" font-size="2.40" text-anchor="start" fill="#000">每个回路各自独立回 AL1，同槽不并接。插座不设开关，由 AL1 内各回路的断路器控制。柱面插座用明装线盒，不得剔凿柱身。</text>
-<text x="12.00" y="204.55" font-size="2.40" text-anchor="start" fill="#000">4.</text>
-<text x="17.00" y="204.55" font-size="2.40" text-anchor="start" fill="#000">淋浴间不接任何电源：不设灯、插座、热水器和排风扇，淋浴间内和地面内不得有电线管。只在夏季使用，用冷水。</text>
-<text x="12.00" y="208.62" font-size="2.40" text-anchor="start" fill="#000">5.</text>
-<text x="17.00" y="208.62" font-size="2.40" text-anchor="start" fill="#000">LEB：淋浴间做局部等电位联结，端子箱装在淋浴门外、第二跑下方的后墙上 (13.10, 9.34)，一楼地面能够到；联结导线自淋浴间一侧低位敷设，不沿后墙高位走；联结金属给水管</text>
-<text x="17.00" y="212.19" font-size="2.40" text-anchor="start" fill="#000">、地漏、淋浴间金属门框、上方钢平台和钢楼梯。</text>
-<text x="12.00" y="216.26" font-size="2.40" text-anchor="start" fill="#000">6.</text>
-<text x="17.00" y="216.26" font-size="2.40" text-anchor="start" fill="#000">线径、断路器、漏电保护规格由持证电工确定。</text>
+<text x="17.00" y="200.48" font-size="2.40" text-anchor="start" fill="#000">插座编号 S01~S15：一楼 S01~S10 及 S15，夹层 S11~S14。一楼 11 个：WX1 八个（开放区后墙 S01~S03、主过道旁原柱三个柱面 S04~S06、端墙 S07、S08）、WX2 三个（另</text>
+<text x="17.00" y="204.05" font-size="2.40" text-anchor="start" fill="#000">一根原柱相邻两个柱面 S09、S10，电视背后窗框竖梃 S15）。全部为五孔插座（两孔加三孔），距地 0.38 m。</text>
+<text x="12.00" y="208.12" font-size="2.40" text-anchor="start" fill="#000">4.</text>
+<text x="17.00" y="208.12" font-size="2.40" text-anchor="start" fill="#000">全户不设地面插座，线路不埋地（一楼完成面即结构板面，不得开槽）。WX1 沿开放区后墙、端墙的踢脚线明装线槽，再沿窗腰梁到原柱后贴柱下引；WX2 自 AL1 进高位主线槽，过</text>
+<text x="17.00" y="211.69" font-size="2.40" text-anchor="start" fill="#000">入户门门头后在 (10.85, 6.70) 出槽，沿夹层边梁和窗腰梁到原柱下引。</text>
+<text x="12.00" y="215.76" font-size="2.40" text-anchor="start" fill="#000">5.</text>
+<text x="17.00" y="215.76" font-size="2.40" text-anchor="start" fill="#000">每个回路各自独立回 AL1，同槽不并接。插座不设开关，由 AL1 内各回路的断路器控制。柱面插座用明装线盒，不得剔凿柱身。</text>
+<text x="12.00" y="219.83" font-size="2.40" text-anchor="start" fill="#000">6.</text>
+<text x="17.00" y="219.83" font-size="2.40" text-anchor="start" fill="#000">淋浴间不接任何电源：不设灯、插座、热水器和排风扇，淋浴间内和地面内不得有电线管。只在夏季使用，用冷水。</text>
+<text x="12.00" y="223.90" font-size="2.40" text-anchor="start" fill="#000">7.</text>
+<text x="17.00" y="223.90" font-size="2.40" text-anchor="start" fill="#000">LEB：淋浴间做局部等电位联结，端子箱装在淋浴门外、第二跑下方的后墙上 (13.10, 9.34)，一楼地面能够到；联结导线自淋浴间一侧低位敷设，不沿后墙高位走；联结金属给水管</text>
+<text x="17.00" y="227.47" font-size="2.40" text-anchor="start" fill="#000">、地漏、淋浴间金属门框、上方钢平台和钢楼梯。</text>
+<text x="12.00" y="231.54" font-size="2.40" text-anchor="start" fill="#000">8.</text>
+<text x="17.00" y="231.54" font-size="2.40" text-anchor="start" fill="#000">线径、断路器、漏电保护规格由持证电工确定。</text>
 </svg>

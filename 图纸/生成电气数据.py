@@ -89,11 +89,13 @@ for x, z, s in [[19.2, 7.2, 'x'], [18.9, 5.4, 'x'], [18.9, 7.0, 'x'], [16.2, 7.2
 for z in [3.15, 5.40]: o('一楼', .12, z, 'x', 'C1')
 for x, z, sd in [[18.425, .75, 'x'], [18.675, 1.00, 'z']]: o('一楼', x, z, sd, 'C3')
 o('一楼', 13.25, 9.34, 'z', 'C4', 1.10)
+# 2026-11-23：一楼会议桌移动电视背后，窗框竖梃上的电源 + 网络组合盒（线自高位主线槽沿竖梃下引，藏在电视后）
+o('一楼', 12.95, 0.10, 'z', 'C3', 0.60)
 deleted = ['S46', 'S04', 'S05', 'S06', 'S07', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'S22', 'S23', 'S24', 'S25', 'S26', 'S27', 'S28', 'S29', 'S30', 'S34', 'S35', 'S36', 'S38', 'S39', 'S40', 'S41']
 cmap = {('一楼', 'C1'): 'WX1', ('一楼', 'C3'): 'WX2', ('一楼', 'C4'): '-', ('二楼', 'C7'): 'WX3', ('二楼', 'C8'): 'WX4'}
 wallN = {'S01': [0, -1], 'S02': [0, -1], 'S03': [0, -1], 'S08': [-1, 0], 'S09': [0, 1], 'S10': [1, 0], 'S42': [1, 0], 'S43': [1, 0],
-         'S44': [-1, 0], 'S45': [0, 1], 'S46': [0, -1], 'S31': [-1, 0], 'S32': [0, 1], 'S33': [0, -1], 'S37': [-1, 0]}
-NEWNO = {'S08': 'S04', 'S09': 'S05', 'S10': 'S06', 'S42': 'S07', 'S43': 'S08', 'S44': 'S09', 'S45': 'S10', 'S31': 'S11', 'S32': 'S12', 'S33': 'S13', 'S37': 'S14'}
+         'S44': [-1, 0], 'S45': [0, 1], 'S46': [0, -1], 'S31': [-1, 0], 'S32': [0, 1], 'S33': [0, -1], 'S37': [-1, 0], 'S47': [0, 1]}
+NEWNO = {'S08': 'S04', 'S09': 'S05', 'S10': 'S06', 'S42': 'S07', 'S43': 'S08', 'S44': 'S09', 'S45': 'S10', 'S31': 'S11', 'S32': 'S12', 'S33': 'S13', 'S37': 'S14', 'S47': 'S15'}
 no = lambda i: NEWNO.get(i, i)
 sockets = []
 for id, fl, x, z, side, c, h in calls:
@@ -102,8 +104,19 @@ for id, fl, x, z, side, c, h in calls:
     splash = (id == 'S46')   # 改号前的内部序号
     sockets.append(dict(id=no(id), floor=fl, x=x, z=z, heightAboveFloorM=h, type='防溅五孔插座' if splash else ('地面插座' if h == 0 else '单相五孔插座'),
         circuit=wx, model3dCircuit=c, wallNormal=wallN[id], status='existing',
-        note='淋浴间门外后墙（梯下），不在淋浴间内；防溅面板 + 独立漏电保护' if splash else ('地面插座，带翻盖；靠玻璃一侧无墙可装，故设在地面' if h == 0 else '')))
-assert len(sockets) == 14, len(sockets)
+        note='淋浴间门外后墙（梯下），不在淋浴间内；防溅面板 + 独立漏电保护' if splash else ('地面插座，带翻盖；靠玻璃一侧无墙可装，故设在地面' if h == 0 else ('移动电视电源：会议桌靠窗一端，窗框竖梃上与网络口 N5 共用组合盒，线自高位主线槽沿竖梃下引，藏在电视背后' if id == 'S47' else ''))))
+assert len(sockets) == 15, len(sockets)
+# 网络（2026-11-23 业主确认）：两条宽带进线，弱电箱 RD 设在 AL1 旁；六类网线，信息面板 RJ45
+network = dict(
+ box=dict(id='RD', name='弱电箱（光猫×2、双宽带口路由器、16 口交换机、PoE 录像机）', floor='一楼', x=6.90, z=7.555, heightAboveFloorM=1.15,
+          widthM=0.50, heightM=0.60, mount='开放区后墙(z=7.675)内侧，AL1 左侧，明装', feed='两条宽带自入户门引入，入户位置待物业确认'),
+ outlets=[dict(id='N1', floor='一楼', x=1.80, z=7.615, heightAboveFloorM=0.30, note='一楼西组工位靠后墙一端墙面，地面压线槽进桌子中缝走线槽'),
+          dict(id='N2', floor='一楼', x=5.55, z=7.615, heightAboveFloorM=0.30, note='一楼东组工位靠后墙一端墙面，地面压线槽进桌子中缝走线槽'),
+          dict(id='N3', floor='二楼', x=18.395, z=0.62, heightAboveFloorM=0.30, note='二楼 U 型主办公桌包住的原柱西面，桌面下'),
+          dict(id='N4', floor='二楼', x=18.395, z=0.88, heightAboveFloorM=0.30, note='同上，第二个口'),
+          dict(id='N5', floor='一楼', x=12.95, z=0.10, heightAboveFloorM=0.60, note='移动电视背后窗框竖梃组合盒，与插座 S15 同盒')],
+ cameras='C1、C2、C4、C5、C6 为 PoE 摄像机，网线直接回 RD 内录像机')
+
 
 boards = [
  dict(id='AL1', name='总配电箱', floor='一楼', x=8.25, z=7.555, widthM=0.58, heightM=0.72, depthM=0.12, bottomHeightM=1.15,
@@ -117,7 +130,7 @@ circuits = [
  dict(id='WL3', name='楼梯通道照明(3 盏，双控)', type='照明', board='AL1', loads=['L13', 'L14', 'L15'], controlledBy=['K2a', 'K4b']),
  dict(id='WL4', name='二楼办公区照明', type='照明', board='AL1', loads=['L16', 'L17', 'L18'], controlledBy=['K4a']),
  dict(id='WX1', name='一楼开放办公区普通插座', type='插座', board='AL1', model3dCircuit='C1', loads=['S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08']),
- dict(id='WX2', name='一楼夹层下沿窗插座', type='插座', board='AL1', model3dCircuit='C3', loads=['S09', 'S10']),
+ dict(id='WX2', name='一楼夹层下沿窗插座', type='插座', board='AL1', model3dCircuit='C3', loads=['S09', 'S10', 'S15']),
  dict(id='WX3', name='夹层柱面及后墙插座', type='插座', board='AL1', model3dCircuit='C7', loads=['S11', 'S12', 'S13']),
  dict(id='WX4', name='夹层端墙插座', type='插座', board='AL1', model3dCircuit='C8', loads=['S14']),
  dict(id='WK1', name='空调电源 AC01(预留，设备待定)', type='空调', board='AL1', loads=['AC01'], note='每台空调独立回路'),
@@ -137,6 +150,7 @@ data = dict(
   acNote='空调位置待暖通确定'),
  distributionBoards=boards, lights=lights, omittedLights=omitted, switches=switches,
  sockets=sorted(sockets, key=lambda d: d['id']), circuits=sorted(circuits, key=lambda c: ['WL1', 'WL2', 'WL3', 'WL4', 'WX1', 'WX2', 'WX3', 'WX4', 'WK1', 'WK2', 'WE1'].index(c['id'])),
+ network=network,
  hvac=[dict(id='AC01', name='夹层下吸顶机', x=15.88, z=3.05, floor='一楼', elevationM=3.45, power='WK1 预留'),
        dict(id='AC02', name='夹层上吸顶机', x=15.88, z=4.40, floor='二楼', elevationM=7.81, power='WK2 预留'),
        dict(id='V01', name='开放区后半区送风口', x=2.45, z=6.05, floor='一楼', elevationM=5.95, power='无')],

@@ -1,17 +1,17 @@
 import * as THREE from 'three';
 import {addSiteShell,MEZZANINE} from './site-shell.js?v=157';
 import {makeWindowLighting,lightingColors} from './window-lights.js?v=157';
-import {makeAirLayout} from './air-layout.js?v=120';
+import {makeAirLayout} from './air-layout.js?v=177';
 import {makeWastewater} from './wastewater.js?v=157';
 import {addSiteServices} from './site-services.js?v=104';
 import {buildFloorComparison} from './floor-comparison.js?v=74';
-import {setupSupportStudy} from './support-side-bath.js?v=5-no-candidate-posts';
+import {setupSupportStudy} from './support-side-bath.js?v=161';
 import {OrbitControls} from './OrbitControls.js';
 import {setupMeasurements} from './measurements-height-only.js?v=160';
 import {setupLook} from './look.js?v=118';
 import {setupDimensions} from './dimensions.js?v=85';
 import {addProjectDimensions} from './dimension-data.js?v=160';
-import {FURNITURE_KIT,defaultFurnitureLayout} from './furniture-kit.js?v=125';
+import {FURNITURE_KIT,defaultFurnitureLayout} from './furniture-kit.js?v=189';
 import {setupRoles} from './roles.js?v=153';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
@@ -104,7 +104,7 @@ ground.position.y=MEZZANINE.lowerFinish;
 zone(ground,16.7,1.2,2.55,7.9,'#d6d5cd','老板侧 · 平地运动','沿窗运动和设备带的原预留范围约20.15㎡；显示候选柱位时，训练垫移至中部开放区。此范围不是净训练面积。');
 zone(ground,10.65,MEZZANINE.platformZ0-.10,MEZZANINE.lowerStartX+.10-10.65,MEZZANINE.platformZ1-MEZZANINE.platformZ0+.10,'#d2d1ca','贴墙U型楼梯','单跑宽1.20m，共34级，第一跑'+MEZZANINE.lowerRisers+'级、第二跑'+MEZZANINE.upperRisers+'级；两跑等踏高、等踏深，出口贴墙。');
 const furnitureObjects=[],furnitureMovables=[],furnitureAnchoredNotes=[];
-const furnitureStorageKey='1801-layout-v3';
+const furnitureStorageKey='1801-layout-v20';
 let furnitureSeq=0,lookRef=null;
 // Pieces come from the kit and are free to move, copy, scale (whole or one side), turn by 90° and delete.
 function spawnFurniture(item){const kit=FURNITURE_KIT[item.type];if(!kit)return null;const g=kit.build(),floor=item.floor==='upper'?'upper':'ground';
@@ -133,17 +133,41 @@ for(const m of groundFloorMeshes)m.material=finishMat(FINISH.floor18);upperSlab.
 const aisleW=1.55, stairAisleZ=MEZZANINE.platformZ0-aisleW;
 corridor.material=finishMat(FINISH.aisle);
 const stairAisle=zone(ground,10.70,stairAisleZ,19.275-10.70,aisleW,FINISH.aisle,'楼梯过道 · 宽'+aisleW.toFixed(2)+'m','进门沿主过道前行后左转，沿此过道走到楼梯起步；与主过道同宽。');stairAisle.material.userData.keepLook=true;
-// The mat keeps 1.00 m clear in front of the aisle, as on the floor-finish sheet.
-const matX=14.75,matZ=.30,matW=4.45,matD=stairAisleZ-1.00-matZ;
-const trainingMat=box(ground,matX,0,matZ,matW,.10,matD,FINISH.mat);trainingMat.name='boxing-mat';trainingMat.material.userData.keepLook=true;
-const bagGroup=new THREE.Group();bagGroup.name='hanging-bag';bagGroup.position.set(matX+matW/2,0,matZ+matD/2);ground.add(bagGroup);
-const bagHang=upperDeckUnderside-MEZZANINE.joistDepth-MEZZANINE.lowerFinish, bagMid=.10+.80+.60;
+// Boxing mat (owner brief 2026-11-23): soft enough to box barefoot, 4.00 wide x 4.50 deep so one person can
+// move all round the bag. 350 mm off the glazing, 500 mm short of the stair aisle, clear of the corner column
+// (x 18.425) with room for the storage bench along the end glass.
+const matX=14.25,matZ=.35,matW=4.00,matD=stairAisleZ-.50-matZ;
+// 40 mm high-density soft mat: soft underfoot for barefoot boxing yet firm enough for footwork (owner, 2026-11-23).
+const matT=.04;
+const trainingMat=box(ground,matX,0,matZ,matW,matT,matD,FINISH.mat);trainingMat.name='boxing-mat';trainingMat.material.userData.keepLook=true;
+const bagGroup=new THREE.Group();bagGroup.name='hanging-bag';// The bag hangs from main beam 6 (x 16.09~16.215), 1.0 m clear of the AC01 cassette and the mat edges.
+bagGroup.position.set(MEZZANINE.beamXs[5]+.0625,0,1.65);ground.add(bagGroup);
+const bagHang=upperDeckUnderside-MEZZANINE.joistDepth-MEZZANINE.lowerFinish, bagMid=matT+.80+.60;
 const bag=new THREE.Mesh(new THREE.CylinderGeometry(.19,.19,1.20,24),mat('#8a5a44'));bag.material.userData.keepLook=true;bag.position.y=bagMid;bag.castShadow=true;bagGroup.add(bag);
 box(bagGroup,-.007,bagMid+.60,-.007,.014,bagHang-bagMid-.60,.014,steel);box(bagGroup,-.10,bagHang-.012,-.10,.20,.012,.20,steel);
 furnitureObjects.push(trainingMat,bagGroup);
 label(ground,'主过道 '+aisleW.toFixed(2)+' m',9.925,.35,3.0,'#4a555d',3.2).userData.aisle=true;
 label(ground,'楼梯过道 '+aisleW.toFixed(2)+' m',15.2,.35,stairAisleZ+aisleW/2,'#4a555d',3.2).userData.aisle=true;
-label(ground,'拳击垫 '+matW.toFixed(2)+' × '+matD.toFixed(2)+' m · 垫高 0.10 · 上吊沙袋',matX+matW/2,.55,matZ+.55,'#3d5a60',3.2).userData.furniture=true;
+label(ground,'拳击软垫 '+matW.toFixed(2)+' × '+matD.toFixed(2)+' m · 软垫厚 0.04 · 上吊沙袋',matX+matW/2,.55,matZ+.55,'#3d5a60',3.2).userData.furniture=true;
+// Security cameras (owner confirmed 2026-11-23): PoE network cameras, one cable each for power and picture, run
+// with the existing trays to a PoE recorder beside AL1. Easy-to-reach mounts on columns and walls, about 3.0 m up
+// (2.4 m above the mezzanine floor at the stair exit). Wide 2.8 mm lenses: an overview of each area, not detail.
+// [id, floor, x, z, height above that floor, aim in plan degrees (0 = +x, 90 = +z)]
+const cctv=new THREE.Group();cctv.name='security-cameras';ground.add(cctv);
+{const body=mat('#f2f2ef',.35),dark=mat('#1d2226',.3),ring=mat('#e2553b',.5);for(const m of [body,dark,ring])m.userData.keepLook=true;
+ // C6 (owner, 2026-11-23): on the mullion between the first end-wall glazing bay and the solid wall, 2.8 m above the
+ // mezzanine floor, looking down the stair only; the mezzanine office is outside its view (privacy).
+ // Five cameras (owner asked to save one; a coverage run showed the back-corner camera C3 adds almost nothing: C2
+ // alone sees all 20 seats). Numbering kept as C1, C2, C4, C5, C6.
+ const cams=[['C1','ground',9.20,.75,3.0,90],['C2','ground',8.60,.75,3.0,145],
+  ['C4','ground',18.40,.75,3.0,180],['C5','ground',10.78,6.72,3.0,0],['C6','upper',19.33,6.85,2.8,135]];
+ for(const [id,fl,x,z,h,aim] of cams){
+  const g=new THREE.Group();g.name='camera-'+id;g.position.set(x,h,z);g.rotation.y=-aim*Math.PI/180;(fl==='upper'?upper:ground).add(g);
+  box(g,-.06,-.06,-.06,.06,.12,.12,body);                         // wall plate
+  const tube=new THREE.Group();tube.position.set(0,0,0);tube.rotation.z=-.42;g.add(tube);   // tilted down
+  box(tube,0,-.045,-.045,.22,.09,.09,body);box(tube,.22,-.035,-.035,.01,.07,.07,dark);box(tube,.20,-.05,-.05,.012,.10,.10,ring);
+  label(fl==='upper'?upper:ground,id+' 监控',x,h+.35,z,'#b23a22',2.4).userData.furniture=true;}
+ renderer.domElement.dataset.cameraCount=String(cams.length);}
 // Upper arrival stays clear of furniture.
 const arrivalZone=zone(upper,MEZZANINE.thresholdX+.10,MEZZANINE.upperFlightZ,1.50,MEZZANINE.stairWidth,'#d5c9a4','二楼 · 贴墙出口','第二跑沿实体墙折返上楼；到达区1.50×1.20m，保持无家具，通过入口侧楼面连接办公区。');arrivalZone.visible=false;
 label(upper,'贴墙出口 · 上跑到达',MEZZANINE.thresholdX+.85,.55,MEZZANINE.upperFlightZ+.41,'#966b30',3.5);
@@ -369,7 +393,7 @@ const circuitBlue='#1683c2',circuitAmber='#c98926',circuitTeal='#187a80',circuit
 let socketSeq=0,selectedSocket=null;
 const permanentlyDeletedSocketIds=new Set(['S04','S05','S06','S07','S11','S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','S22','S23','S24','S25','S26','S27','S28','S29','S30','S34','S35','S36','S38','S39','S40','S41']);
 // Sockets are numbered in one continuous run: S01-S10 on the lower floor, S11-S14 on the mezzanine. The shower room has no socket.
-const socketNumber={'S08':'S04','S09':'S05','S10':'S06','S42':'S07','S43':'S08','S44':'S09','S45':'S10','S31':'S11','S32':'S12','S33':'S13','S37':'S14'};
+const socketNumber={'S08':'S04','S09':'S05','S10':'S06','S42':'S07','S43':'S08','S44':'S09','S45':'S10','S31':'S11','S32':'S12','S33':'S13','S37':'S14','S46':'S15'};
 function roundHole(g,x,y){const h=new THREE.Mesh(new THREE.CircleGeometry(.024,12),socketHole);h.position.set(x,y,.031);g.add(h)}
 function outlet(g,x,z,side='z',color=c1Mat,circuit='C1',floor='一楼',height=.38){const o=new THREE.Group(),rawId=`S${String(++socketSeq).padStart(2,'0')}`,rimMaterial=mat('#1565c0');rimMaterial.userData.keepLook=true;o.position.set(x,height,z);/* side = the direction the plate faces */o.rotation.y=({x:Math.PI/2,'-x':-Math.PI/2,z:0,'-z':Math.PI})[side]??0;g.add(o);if(permanentlyDeletedSocketIds.has(rawId)){g.remove(o);return null}const id=socketNumber[rawId]||rawId;// Standard square five-hole plate, drawn larger than life so it reads in the model: a two-pin outlet on top, a three-pin outlet below.
 const rim=box(o,-.16,-.16,-.035,.32,.32,.025,rimMaterial),plate=box(o,-.14,-.14,-.02,.28,.28,.05,socketFace);const slot=(x,y,w,h,turn=0)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,.004),socketHole);m.position.set(x,y,.032);m.rotation.z=turn;o.add(m)};slot(-.04,.07,.017,.052);slot(.04,.07,.017,.052);slot(0,-.02,.017,.048);slot(-.052,-.082,.017,.052,-.52);slot(.052,-.082,.017,.052,.52);const meta={id,circuit,floor,root:o,rim,plate,baseColor:rimMaterial.color.clone()};o.userData.socket=meta;plate.userData.socket=meta;circuitPickables.push(plate);socketItems.push(meta);return o}
@@ -413,6 +437,18 @@ for(const [x,z,s] of [[11.25,1.3,'z'],[13.7,1.3,'z'],[16.0,1.3,'z']])outlet(circ
 // These four points retain their established positions and IDs after the user removed the other legacy points.
 for(const z of [3.15,5.40])outlet(circuitGround,.12,z,'x',c1Mat,'C1','一楼');for(const [x,z,side] of [[18.395,.75,'-x'],[18.675,1.03,'z']])outlet(circuitGround,x,z,side,c3Mat,'C3','一楼');
 
+// Mobile-TV corner (2026-11-23): power socket S15 and network outlet N5 share one box on the window mullion behind
+// the TV (x 12.95), fed down the mullion from the high trunk, so no cable shows.
+outlet(circuitGround,12.95,.10,'z',c3Mat,'C3','一楼',.60);
+wire(circuitGround,[[10.85,highTrayY,1.20],[12.95,highTrayY,1.20],[12.95,highTrayY,.10],[12.95,.76,.10]],circuitTeal);
+// Network (owner confirmed 2026-11-23): two broadband lines into a weak-current box RD beside AL1; Cat6 to N1~N5.
+{const netMat=mat('#1565c0'),plateM=mat('#f7f4ea');netMat.userData.keepLook=true;
+ const rd=box(circuitGround,6.65,1.15,7.675-.06-.12,.50,.60,.12,mat('#dfe7f1'));rd.name='weak-current-box-RD';
+ label(circuitGround,'RD 弱电箱（双宽带）',6.90,2.05,7.40,'#1565c0',2.6);
+ const plate=(g,id,x,z,h,nx,nz)=>{const p=new THREE.Group();p.position.set(x,h,z);p.rotation.y=Math.atan2(nx,nz);g.add(p);
+  box(p,-.043,-.043,0,.086,.086,.012,plateM);box(p,-.016,-.012,.012,.032,.024,.004,netMat);label(g,id,x+nx*.25,h+.25,z+nz*.25,'#1565c0',2.2);};
+ plate(circuitGround,'N1',1.80,7.615,.30,0,-1);plate(circuitGround,'N2',5.55,7.615,.30,0,-1);plate(circuitGround,'N5',13.05,.10,.60,0,1);
+ plate(circuitUpper,'N3',18.395,.62,.30,-1,0);plate(circuitUpper,'N4',18.395,.88,.30,-1,0);}
 // 上楼竖向干线：随高位主线槽到后墙东端 (18.20, 9.30)，在第 7、8 根梁之间穿夹层楼板上引；二楼继续贴地脚线分回路。
 // 楼梯贴墙后，后墙 x 10.62~17.15 一段被平台和第二跑占住，线路不再沿这段后墙走。
 wire(circuitGround,[[10.85,highTrayY+.06,1.20],[upRiseX,highTrayY+.06,1.20],[upRiseX,highTrayY+.06,upRiseZ],[upRiseX,levelHeight,upRiseZ]],circuitBlue);const upperTrayY=.10;wire(circuitUpper,[[upRiseX,0,upRiseZ],[upRiseX,upperTrayY,upRiseZ]]);
@@ -454,6 +490,21 @@ line(stairs,[[11.8,wetFloorFinish,6.19],[11.8,midHeight,6.19]],'#8a5c36');
 const facade=new THREE.Group();model.add(facade);const windowMat=mat('#5b91ad',.055);
 // Align the existing frame and the proposed fit-out to the same CAD plan coordinates.
 const siteShell = addSiteShell({ THREE, group: fieldFrame, box, shape, top: totalHeight });
+// Motorised roller blinds (owner brief 2026-11-23): one per glazing bay on both tiers, remote controlled.
+// Lower tier hangs under the window beam (head +3.43), upper tier under the roof slab (head +8.15). Shown
+// 35 % lowered. 12 + 12 on the long face, 7 + 5 on the short face: 36 blinds.
+const blinds=new THREE.Group();blinds.name='motorised-roller-blinds';fieldFrame.add(blinds);
+{const cloth=new THREE.MeshStandardMaterial({color:'#e9e6dd',roughness:.95,transparent:true,opacity:.82,side:THREE.DoubleSide});cloth.userData.keepLook=true;
+ const head=mat('#cfcac0');head.userData.keepLook=true;
+ const lo=MEZZANINE.lowerFinish, hiLow=MEZZANINE.beltBase, loUp=MEZZANINE.floorFinish, hiUp=MEZZANINE.roomTop-.25, W=19.425;
+ const tiers=[[lo,hiLow],[loUp,hiUp]], drop=.35, schedule=[];
+ const band=(long,span,count,[b,t],tier)=>{const bay=span/count;for(let i=0;i<count;i++){const w=bay-.07,c=bay*(i+.5),h=(t-b)*drop;
+   if(long){box(blinds,c-w/2,t-.11,.05,w,.11,.11,head);box(blinds,c-w/2,t-.11-h,.10,w,h,.004,cloth);}
+   else{box(blinds,W-.16,t-.11,c-w/2,.11,.11,w,head);box(blinds,W-.105,t-.11-h,c-w/2,.004,h,w,cloth);}
+   schedule.push({face:long?'long':'short',tier,width:+w.toFixed(2),drop:+(t-b).toFixed(2)});}};
+ band(true,W,12,tiers[0],'lower');band(true,W,12,tiers[1],'upper');band(false,9.40,7,tiers[0],'lower');band(false,6.85,5,tiers[1],'upper');
+ renderer.domElement.dataset.blindCount=String(schedule.length);
+ renderer.domElement.dataset.blindArea=schedule.reduce((a,b)=>a+b.width*b.drop,0).toFixed(1);}
 // Shared geometry, shown on its own with the steel when comparing the joint.
 const steelDatumReference=siteShell.belt.clone();
 steelDatumReference.name='steel-reference-existing-window-beam';
@@ -795,7 +846,8 @@ function showFloorStack(){
  $('#floorStackInfo').hidden=false;markBoard('#floorStackBoard',true);stackView();
 }
 $('#floorStackBoard').onclick=showFloorStack;
-$('#levelsOverview').onclick=()=>stackView();
+// Both-levels overview and the bar / gym view show the tea corner and the boxing set (owner, 2026-11-23).
+$('#levelsOverview').onclick=()=>{stackView();$('#furniture').checked=true;updateFurniture()};
 $('#levelsDrain').onclick=()=>stackView(true);
 function startServiceView(kind,button){
  if(boardMode===kind){restoreFullBoard();return false;}
@@ -878,7 +930,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=160';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=190';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('图纸/F-01_地面与墙面做法图.svg','地面与墙面做法图');
 $('#electricalGround').onclick=()=>showFlatPlan('图纸/E-01_一层照明平面图.svg','一层照明平面图');
@@ -936,7 +988,7 @@ function updateUnderside(){
  }
 }
 // Switch plates and the added lights, read from the same data file as the electrical sheets (E-01..E-05).
-const electrical=await fetch('./1801_电气数据.json?v=157').then(r=>r.ok?r.json():null).catch(()=>null);
+const electrical=await fetch('./1801_电气数据.json?v=190').then(r=>r.ok?r.json():null).catch(()=>null);
 if(electrical){
  // One colour per kind so they read apart at a glance: lights amber, switches red, sockets blue.
  const switchPlate=mat('#c62828');switchPlate.userData.keepLook=true;
@@ -1004,7 +1056,7 @@ $('#toolsToggle').onclick=()=>{const on=$('#viewer').classList.toggle('tools-ope
 $('#barGymView').onclick=()=>{
  closeSpacePlan();setMode('ground');upperOriginalColumn.visible=false;
  $('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=true;$('#allDimensions').checked=false;
- $('#furniture').checked=false;$('#supportReserve').checked=true;supportStudy.update('ground');
+ $('#furniture').checked=true;$('#supportReserve').checked=true;supportStudy.update('ground');updateFurniture();
  $('#daylight').checked=false;facade.visible=false;
  camera.position.set(15.0625,18,-13.5);controls.target.set(15.0625,0,-4.7);viewportFit=1;fitViewport();
  measurement.focusArea('bar-gym');

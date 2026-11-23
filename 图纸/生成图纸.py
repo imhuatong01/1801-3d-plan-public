@@ -344,6 +344,32 @@ def mezz_extras(sh, v):
     sh.rect(min(pa[0], pb[0]), min(pa[1], pb[1]), abs(pa[0] - pb[0]), abs(pa[1] - pb[1]), fill='url(#hatch)', c='#000', sw=.35)
     pc = v.P(18.675, .5); sh.text(pc[0], pc[1] - 1.0, '原柱', 1.9, anchor='middle')
 
+# 监控点位（2026-11-23 业主确认）：PoE 网络摄像机，每点一根网线供电兼传输，汇至 AL1 旁 PoE 录像机 NVR
+CAM_C = '#c0392b'
+CAMS = {'一楼': [('C1', 9.20, 0.75, 90, '主过道 + 入户门'), ('C2', 8.60, 0.75, 145, '公共办公区'),
+                 ('C4', 18.40, 0.75, 180, '健身 / 茶桌区'), ('C5', 10.78, 6.72, 0, '楼梯过道')],
+        '二楼': [('C6', 19.33, 6.85, 135, '楼梯通道（俯拍）')]}
+NVR = (7.70, 7.555)
+def s_camera(sh, v, cid, x, z, aim, note):
+    import math
+    px, py = v.P(x, z)
+    a = math.radians(aim); ex, ey = v.P(x + math.cos(a) * 1.1, z + math.sin(a) * 1.1)
+    l0, l1 = v.P(x + math.cos(a - .55) * .8, z + math.sin(a - .55) * .8), v.P(x + math.cos(a + .55) * .8, z + math.sin(a + .55) * .8)
+    sh.line(px, py, l0[0], l0[1], .3, CAM_C); sh.line(px, py, l1[0], l1[1], .3, CAM_C); sh.line(px, py, ex, ey, .25, CAM_C, dash='1 .6')
+    sh.circle(px, py, 1.6, '#fff', CAM_C, .45)
+    sh.text(px, py + .75, cid, 1.7, anchor='middle', bold=True, fill=CAM_C)
+NET_C = '#1565c0'
+NETS = {'一楼': [('N1', 1.80, 7.615), ('N2', 5.55, 7.615), ('N5', 12.95, 0.10)], '二楼': [('N3', 18.395, 0.62), ('N4', 18.395, 0.88)]}
+RD = (6.90, 7.555)
+def s_net(sh, v, nid, x, z):
+    px, py = v.P(x, z)
+    sh.rect(px - 1.4, py - 1.4, 2.8, 2.8, fill='#fff', c=NET_C, sw=.45)
+    sh.text(px, py + .7, 'N', 1.6, anchor='middle', bold=True, fill=NET_C)
+    sh.text(px, py + 4.6, nid, 1.7, anchor='middle', fill=NET_C)
+def net_cable(sh, v, pts):
+    wire(sh, v, pts, NET_C, w=.3, dash='1.6 .6 .4 .6', tick=0)
+def cam_cable(sh, v, pts):
+    wire(sh, v, pts, CAM_C, w=.3, dash='.8 .6', tick=0)
 def mark(sh, v, x, z, txt, dx=0, dy=5.5, anchor='middle'):
     px, py = v.P(x, z)
     sh.rect(px - 1.3, py - 1.3, 2.6, 2.6, fill='#fff', c='#000', sw=.4); sh.line(px - 1.3, py - 1.3, px + 1.3, py + 1.3, .25)
@@ -454,6 +480,8 @@ def sheet_lighting(floor):
             (lg_line(COL['WL1'], n=3), '照明回路线(各回路用不同颜色)，沿墙、梁明敷；短斜线=导线根数，以电工设计为准'),
             (lg_line(TRUNK_C, w=.7), '高位主线槽（夹层下约 3.55，经过道一侧转向，不经楼梯、平台上方）：多回路同槽，各自独立回 AL1'),
             (lambda s, x, y: s_ac(s, x, y, 5), '吸顶式空调(电源预留，位置待暖通确定)'),
+        (lambda s, x, y: (s.circle(x, y, 1.6, '#fff', CAM_C, .45), s.text(x, y + .75, 'C', 1.7, anchor='middle', bold=True, fill=CAM_C)), '监控摄像机（PoE，网线供电，点划线为网线走向，汇至 AL1 旁 NVR）'),
+        (lambda s, x, y: (s.rect(x - 1.4, y - 1.4, 2.8, 2.8, '#fff', NET_C, .45), s.text(x, y + .7, 'N', 1.6, anchor='middle', bold=True, fill=NET_C)), '网络信息口（六类，RJ45），点划线为网线走向，汇至弱电箱 RD'),
             (lambda s, x, y: s_grille(s, x, y, 7), '送风口(V01，无电气负荷)'),
             (lambda s, x, y: (s.rect(x - 5, y - 1.5, 10, 3, fill='#c9c9c9', c='#555', sw=.2)), '实墙(灰色填充)'),
             (lambda s, x, y: (s.line(x - 5, y - .6, x + 5, y - .6, .25, '#3a7ca5'), s.line(x - 5, y + .6, x + 5, y + .6, .25, '#3a7ca5')), '采光玻璃面(细双线)'),
@@ -551,6 +579,19 @@ def sheet_sockets(floor):
         lb = v.P(LEB[0], LEB[1]); sh.text(lb[0], lb[1] + 9.0, '联结线自淋浴间一侧低位敷设', 1.9, anchor='middle', fill='#2e7d32')
         t0 = v.P(9.24, 9.1); sh.text(t0[0] - 1.6, t0[1], '高位主线槽', 1.9, anchor='middle', rot=-90, fill=TRUNK_C)
         x, y = v.P(8.25, 7.555); s_board(sh, x, y); sh.text(x + 4.8, y - 1.2, 'AL1', 2.8, bold=True)
+        # 监控网线：自 NVR 随高位主线槽、开放区后墙线槽到各点位
+        nx, ny = v.P(*NVR); sh.rect(nx - 2.2, ny - 1.4, 4.4, 2.8, fill='#fff', c=CAM_C, sw=.4); sh.text(nx, ny + 5.4, 'NVR', 1.8, anchor='middle', fill=CAM_C, bold=True)
+        cam_cable(sh, v, [NVR, (8.54, 7.62), (9.24, 7.62), (9.24, 10.62), (10.62, 10.62), (10.62, 6.70), (10.85, 6.70), (10.78, 6.72)])
+        cam_cable(sh, v, [(10.85, 6.70), (10.85, 1.22), (9.20, 1.22), (9.20, 0.75)]); cam_cable(sh, v, [(9.20, 1.22), (8.60, 1.22), (8.60, 0.75)])
+        cam_cable(sh, v, [(10.85, 1.22), (18.40, 1.22), (18.40, 0.75)]); cam_cable(sh, v, [(18.20, 1.22), (18.22, 9.30)])
+        for c in CAMS['一楼']: s_camera(sh, v, *c)
+        # 网络：弱电箱 RD（两条宽带进线、路由器、交换机、录像机）在 AL1 左侧；六类网线随线槽到各网络口
+        rx, ry = v.P(*RD); sh.rect(rx - 2.8, ry - 1.6, 5.6, 3.2, fill='#e8f0fb', c=NET_C, sw=.5); sh.text(rx, ry + .7, 'RD', 1.7, anchor='middle', bold=True, fill=NET_C)
+        sh.text(rx, ry - 3.2, '弱电箱 RD（两条宽带进线）', 1.7, anchor='middle', fill=NET_C)
+        net_cable(sh, v, [(6.60, 7.50), (1.80, 7.50), (1.80, 7.615)]); net_cable(sh, v, [(5.55, 7.50), (5.55, 7.615)])
+        net_cable(sh, v, [(7.20, 7.50), (8.54, 7.56), (9.24, 7.56), (9.24, 10.56), (10.62, 10.56), (10.62, 6.66), (10.80, 6.66), (10.80, 1.16), (12.95, 1.16), (12.95, 0.10)])
+        wire(sh, v, [(12.90, 1.20), (12.90, 0.10)], COL['WX2'], dash='2.2 1', tick=0)
+        for n in NETS['一楼']: s_net(sh, v, *n)
     else:
         mezz_outline(sh, v, True); mezz_extras(sh, v); shower(sh, v, dashed=True); stairs(sh, v, '2F')
         s_ac(sh, *v.P(15.88, 4.40), 8.7); p = v.P(15.88, 4.40); sh.text(p[0], p[1] + 6.4, 'AC02 电源预留(WK2)', 2.0, anchor='middle')
@@ -564,6 +605,10 @@ def sheet_sockets(floor):
         w('WX3', [(U[0], ZW), (17.90, ZW)], tick=0)
         w('WX3', [(19.10, 7.20), (19.10, 1.03), (18.95, 1.03)], tickat=0)
         w('WX4', [(19.10, 7.32), (19.22, 7.32)], tick=0)
+        cam_cable(sh, v, [(U[0] + .02, 9.30), (U[0] + .02, 9.25), (19.18, 9.25), (19.18, 6.85), (19.33, 6.85)])
+        for c in CAMS['二楼']: s_camera(sh, v, *c)
+        net_cable(sh, v, [(U[0] - .02, 9.30), (U[0] - .02, 9.20), (19.05, 9.20), (19.05, 1.10), (18.30, 1.10), (18.30, 0.75)])
+        for n in NETS['二楼']: s_net(sh, v, *n)
     for s in socks:
         x, y = v.P(s['x'], s['z']); s_socket(sh, x, y, s['wallNormal'], s['type'].startswith('防溅'))
         if s['heightAboveFloorM'] == 0: sh.rect(x - 3.0, y - 3.0, 6.0, 6.0, c='#000', sw=.3)
@@ -591,7 +636,9 @@ def sheet_sockets(floor):
         yy += 1.2
     if first:
         notes = [
-            '插座连续编号 S01~S14：一楼 S01~S10，夹层 S11~S14。一楼 10 个：WX1 八个（开放区后墙 S01~S03、主过道旁原柱三个柱面 S04~S06、端墙 S07、S08）、WX2 两个（另一根原柱相邻两个柱面 S09、S10）。全部为五孔插座（两孔加三孔），距地 0.38 m。',
+            '网络：两条宽带进线入弱电箱 RD（AL1 左侧，内装光猫、双宽带口路由器、16 口交换机、PoE 录像机），入户位置待物业确认；一楼网络口 N1、N2 在两组工位靠后墙一端墙面，桌下用地面压线槽进桌子中缝走线槽；N5 与电视电源插座 S15 共用组合盒，装在会议桌靠窗一端的窗框竖梃上，线自高位主线槽沿竖梃下引，藏在电视背后。',
+            '监控：共 5 个，一层 C1、C2、C4、C5，夹层 C6，均为 PoE 网络摄像机，柱面或墙面明装，离地约 3.0 m（C6 离夹层楼面 2.8 m，只拍楼梯），广角 2.8 mm；每点一根六类网线，随高位主线槽和墙面线槽敷设，汇至 AL1 旁 8 路 PoE 录像机（NVR），摄像机处不设插座，NVR 用 AL1 旁插座；淋浴间内不设摄像机。',
+            '插座编号 S01~S15：一楼 S01~S10 及 S15，夹层 S11~S14。一楼 11 个：WX1 八个（开放区后墙 S01~S03、主过道旁原柱三个柱面 S04~S06、端墙 S07、S08）、WX2 三个（另一根原柱相邻两个柱面 S09、S10，电视背后窗框竖梃 S15）。全部为五孔插座（两孔加三孔），距地 0.38 m。',
             '全户不设地面插座，线路不埋地（一楼完成面即结构板面，不得开槽）。WX1 沿开放区后墙、端墙的踢脚线明装线槽，再沿窗腰梁到原柱后贴柱下引；WX2 自 AL1 进高位主线槽，过入户门门头后在 (10.85, 6.70) 出槽，沿夹层边梁和窗腰梁到原柱下引。',
             '每个回路各自独立回 AL1，同槽不并接。插座不设开关，由 AL1 内各回路的断路器控制。柱面插座用明装线盒，不得剔凿柱身。',
             '淋浴间不接任何电源：不设灯、插座、热水器和排风扇，淋浴间内和地面内不得有电线管。只在夏季使用，用冷水。',
@@ -600,6 +647,8 @@ def sheet_sockets(floor):
         ]
     else:
         notes = [
+            '网络：二楼 N3、N4 两个网络口装在 U 型主办公桌包住的原柱西面、桌面以下；网线自弱电箱随高位主线槽到 U 上引，沿后墙、端墙线槽到原柱。',
+            '监控 C6：装在短边端墙第一扇玻璃与实墙交接的竖框上，离夹层楼面 2.8 m，斜向俯拍楼梯（第二跑、出口和中转平台），夹层办公区不在画面内；网线自 U 上引后沿后墙、端墙线槽敷设至 C6。',
             '二楼设 4 个插座：WX3 三个，其中两个装在原混凝土柱相邻的两个柱面上（S11、S12），一个装在楼梯出口旁的后墙上（S13）；WX4 一个 S14，装在楼梯出口一侧的端墙上。不设地面插座。',
             '夹层楼面为现浇层，浇筑后不得开槽；线路沿墙明装线槽。夹层不设配电箱。WX3、WX4 由一楼总箱 AL1 经高位主线槽送到后墙东端上引点 U(%.2f, %.2f)，贴墙穿夹层楼板上引（防火封堵）；沿后墙和端墙的踢脚线明装线槽同槽敷设，各自独立回 AL1；S13 自 U 沿后墙往西接，位于 (17.90, 9.34)；WX3 再沿幕墙根部贴地明装线槽到原柱。楼梯留空上方不设线槽。' % U,
             '插座距夹层楼面 0.38 m；柱面插座用明装线盒，不得剔凿柱身。短边 z 6.85~9.40 一段按实墙绘制，安装前现场核实。',
