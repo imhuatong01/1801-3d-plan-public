@@ -962,7 +962,20 @@
     </script>
     <script
       type="module"
-          src="./3d-assets/office-height-only.js?v=195-g01"
+          src="./3d-assets/office-height-only.js?v=196-auto"
     ></script>
+    <script id="autoUpdate">
+      // The host lets browsers keep this page for 10 minutes; if a newer version is published, reload it once.
+      (function () {
+        var re = /office-height-only\.js\?v=([^"\s]+)/, cur = (document.documentElement.innerHTML.match(re) || [])[1];
+        if (!cur || !window.fetch) return;
+        fetch(location.pathname + "?nc=" + Date.now(), {cache: "no-store"}).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
+          var latest = (t.match(re) || [])[1], key = "1801-reload-" + latest;
+          if (!latest || latest === cur) return;
+          try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, "1"); } catch (e) {}
+          location.replace(location.pathname + "?v=" + encodeURIComponent(latest) + location.hash);
+        }).catch(function () {});
+      })();
+    </script>
   </body>
 </html>
