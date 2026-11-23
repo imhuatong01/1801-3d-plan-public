@@ -115,7 +115,7 @@ export function addProjectDimensions(D, {ground, upper, stairs, structure, field
   D.dim(structure, [12.0, top, 1.5], [12.0, top, 2.1], [0, 0, 0], '次梁间距 0.600', est(3));
   D.dim(structure, [b2 + .21, soffMain, 5.0], [b2 + .21, top, 5.0], [0, 0, 0], '梁高 ' + f3(M.mainBeamDepth), est(3));
   D.note(structure, [15.2, top, 1.0], '钢结构为按常规做法初选，须结构工程师验算并核原楼板承载', est(1));
-  D.note(stairs, [15.6, 1.0, 7.0], '梯梁 矩形管 250×100×8', est(3));
+  D.note(stairs, [15.6, 1.0, 7.0], 'Z 形折板梯段 · 锯齿侧板 12 厚 + 折板 8 厚（待验算）', est(3));
   D.note(stairs, [11.85, mid - .06, 6.0], '平台 花纹钢板 + 方管 100×50 @525 · 总厚 120 · 立柱藏在卫浴墙内', est(3));
 
   // ---------- 17F reference bay ----------

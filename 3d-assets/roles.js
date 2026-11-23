@@ -80,6 +80,11 @@ export function setupRoles({host, showPlan, closePlan}) {
   const sep = document.createElement('i'); sep.className = 'sep'; l1.append(sep);
   // Dimensions start switched off; the switch is highlighted so people find it. It drives the existing toggle.
   const dimBtn = document.createElement('button'); dimBtn.type = 'button'; dimBtn.className = 'dims'; dimBtn.textContent = '尺寸：关'; dimBtn.title = '点一下显示或隐藏尺寸标注'; l1.append(dimBtn);
+  // Soft furnishings (all desks and chairs, the lounge pieces, the boxing mat and bag) start hidden; one switch shows them.
+  const softBtn = document.createElement('button'); softBtn.type = 'button'; softBtn.className = 'dims'; softBtn.title = '点一下显示或隐藏全部桌椅、休息区家具和拳击垫'; l1.append(softBtn);
+  const softShow = () => { softBtn.textContent = window.softOn ? '软装：显示' : '软装：隐藏'; softBtn.classList.toggle('on', !!window.softOn); };
+  softBtn.onclick = () => { window.softOn = !window.softOn; const f = document.querySelector('#furniture'); if (f) { f.checked = window.softOn; f.dispatchEvent(new Event('change')); } softShow(); };
+  softShow();
   const unit = document.createElement('em'); unit.textContent = '设计单位：台北市有间设计公司'; l1.append(unit);
   const dimInner = () => document.querySelector('#dimToggle'), dimOn = () => dimInner()?.getAttribute('aria-pressed') !== 'false';
   const dimShow = () => { const on = dimOn(); dimBtn.textContent = on ? '尺寸：开' : '尺寸：关'; dimBtn.classList.toggle('on', on); };

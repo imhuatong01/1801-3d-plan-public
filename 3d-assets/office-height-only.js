@@ -10,9 +10,9 @@ import {OrbitControls} from './OrbitControls.js';
 import {setupMeasurements} from './measurements-height-only.js?v=160';
 import {setupLook} from './look.js?v=118';
 import {setupDimensions} from './dimensions.js?v=85';
-import {addProjectDimensions} from './dimension-data.js?v=160';
-import {FURNITURE_KIT,defaultFurnitureLayout} from './furniture-kit.js?v=191';
-import {setupRoles} from './roles.js?v=191';
+import {addProjectDimensions} from './dimension-data.js?v=194';
+import {FURNITURE_KIT,defaultFurnitureLayout} from './furniture-kit.js?v=194';
+import {setupRoles} from './roles.js?v=194';
 const $=s=>document.querySelector(s), host=$('#viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#edf3f6');
 const camera=new THREE.PerspectiveCamera(43,1,.1,180);camera.position.set(25,20,-24);
@@ -195,8 +195,12 @@ const showerHead=box(wet,headAt.x-.095,headBottom,headAt.z-.095,.19,.04,.19,stee
 showerHead.name='shower-head';
 const showerGlass=mat('#26383f',.78),showerDoorGlass=mat('#365159',.68);
 const glassHeight=wetToPlate-.015, doorFrameHeight=glassHeight;
-box(wetWalls,10.77,wetLocalFloor,WZ,.06,glassHeight,WD,showerGlass);
-for(const z of [WZ,WZ1-.06])box(wetWalls,10.83,wetLocalFloor,z,2.02,glassHeight,.06,showerGlass);
+// Each solid side is two panes of tempered glass (owner, 2026-11-23): no pane wider than 1.2 m, so it goes up in the lift
+// and two people can carry it; the panes butt with a 6 mm clear silicone joint, held top and bottom in U channels.
+const siliconeJoint=mat('#e8eef0',.9),pane=(x,z,w,d)=>box(wetWalls,x,wetLocalFloor,z,w,glassHeight,d,showerGlass);
+{const h=(WD-.006)/2;pane(10.77,WZ,.06,h);pane(10.77,WZ+h+.006,.06,h);box(wetWalls,10.785,wetLocalFloor,WZ+h,.03,glassHeight,.006,siliconeJoint).name='shower-glass-joint';}
+for(const z of [WZ,WZ1-.06]){const h=(2.02-.006)/2;pane(10.83,z,h,.06);pane(10.83+h+.006,z,h,.06);box(wetWalls,10.83+h,wetLocalFloor,z+.015,.006,glassHeight,.03,siliconeJoint).name='shower-glass-joint';}
+for(const [x,z,w,d] of [[10.77,WZ,.06,WD],[10.83,WZ,2.02,.06],[10.83,WZ1-.06,2.02,.06]])for(const y of [wetLocalFloor-.005,wetLocalFloor+glassHeight-.02])box(wetWalls,x-.005,y,z-.005,w+.01,.025,d+.01,steel).name='shower-u-channel';
 // The door is under the second flight, clear of the 100 mm stair well.
 for(const [z,depth] of [[WZ,doorZ-WZ],[doorZ+1.0,WZ1-doorZ-1.0]])box(wetWalls,12.85,wetLocalFloor,z,.06,glassHeight,depth,showerGlass);
 // The closed door fills the opening in the stair-side wall at x=12.88.
@@ -234,40 +238,27 @@ const flights=[
  {id:'lower',start:lowerStartX,end:lowerLandingX,direction:-1,z:lowerZ,base:lowerFinish,count:lowerRisers},
  {id:'upper',start:upperStartX,end:thresholdX,direction:1,z:upperZ,base:midHeight,count:upperRisers}
 ];
+// Z-shaped folded-plate flights (owner, 2026-11-23): tread and riser plates fold continuously, closed by a
+// zigzag side plate on each edge, so seen from the side each flight is one zigzag band all the way up. Plate
+// thicknesses are placeholders for the structural design. The tread tops stay exactly where they were.
+const foldT=.008, sideT=.012, sideD=.20;
 for(const f of flights){
- for(let i=0;i<f.count-1;i++){
-  const nose=f.start+f.direction*i*going, plane=f.base+(i+1)*rise;
-  const tread=box(stairTreads,Math.min(nose,nose+f.direction*going),plane-.10,f.z,going,.10,stairW,steel);
-  tread.name='stair-'+f.id+'-tread-'+String(i+1).padStart(2,'0');
- }
- for(const z of [f.z+.11,f.z+stairW-.11]){
-  const topAtStart=f.base-.10,topAtEnd=f.base+(f.count-1)*rise-.10;
-  const verticalDepth=.25/Math.cos(Math.atan(rise/going));   // 250 x 100 rectangular-tube stringer
-  const lower=f.id==='lower';
-  let profile;
-  if(lower){
-   // A horizontal shoe sits on the existing floor. The first support terminates at this shoe.
-   const clipX=y=>f.start+(y-topAtStart)*f.direction*going/rise;
-   const shoeTop=lowerFinish+.018;
-   profile=[[clipX(shoeTop),shoeTop],[f.end,topAtEnd],[f.end,topAtEnd-verticalDepth],
-    [clipX(shoeTop+verticalDepth),shoeTop]];
-   const startX=clipX(shoeTop+verticalDepth);
-   box(stairs,startX,lowerFinish,z-.095,f.start-startX,.018,.19,steel).name='stair-base-shoe';
-  }else{
-   profile=[[f.start,topAtStart],[f.end,topAtEnd],[f.end,topAtEnd-verticalDepth],[f.start,topAtStart-verticalDepth]];
-  }
-  steelProfile(stairs,'stair-'+f.id+'-stringer',profile,z-.05,.10);
-  for(let i=0;i<f.count-1;i++){
-   const nose=f.start+f.direction*i*going, treadUnder=f.base+(i+1)*rise-.10;
-   const bearingEnd=nose+f.direction*going;
-   // A level seat supports the tread face; its inclined underside bears on the stringer.
-   const base=(lower&&i===0)?lowerFinish+.018:treadUnder-rise;
-   const pts=[[nose,treadUnder],[bearingEnd,treadUnder]];
-   if(lower&&i===0)pts.push([nose+f.direction*(base-topAtStart)*going/rise,base]);
-   pts.push([nose,base]);
-   steelProfile(stairs,'stair-'+f.id+'-tread-seat',pts,z-.055,.11);
+ const top=[];
+ for(let i=0;i<f.count;i++){
+  const nose=f.start+f.direction*i*going, low=f.base+i*rise, high=low+rise;
+  const riser=f.direction>0?box(stairTreads,nose-foldT,low,f.z+sideT,foldT,rise,stairW-2*sideT,steel):box(stairTreads,nose,low,f.z+sideT,foldT,rise,stairW-2*sideT,steel);
+  riser.name='stair-'+f.id+'-riser-'+String(i+1).padStart(2,'0');
+  top.push([nose,low],[nose,high]);
+  if(i<f.count-1){
+   const tread=box(stairTreads,Math.min(nose,nose+f.direction*going),high-foldT,f.z+sideT,going,foldT,stairW-2*sideT,steel);
+   tread.name='stair-'+f.id+'-tread-'+String(i+1).padStart(2,'0');
+   top.push([nose+f.direction*going,high]);
   }
  }
+ // Side plate: the step line on top, the same line dropped by sideD underneath (never below the floor it starts on).
+ const bottom=top.map(([x,y])=>[x,Math.max(f.base-(f.id==='lower'?0:sideD),y-sideD)]).reverse();
+ const band=[...top,...bottom].filter((p,i,arr)=>{const q=arr[(i+arr.length-1)%arr.length];return Math.hypot(p[0]-q[0],p[1]-q[1])>1e-6});
+ for(const z of [f.z,f.z+stairW-sideT])steelProfile(stairs,'stair-'+f.id+'-zigzag-side',band,z,sideT);
 }
 // A surface indicates the platform position only. Plate thickness and support sections await design.
 const platformMaterial=steel.clone();platformMaterial.side=THREE.DoubleSide;
@@ -679,8 +670,8 @@ function isolate(keep){isoSnap=new Map();for(const g of [ground,upper])for(const
 function hasGuard(c){let f=false;c.traverse(o=>{if(o.name&&o.name.startsWith('guard-'))f=true});return f}
 function markBoard(id,on){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}
 function restoreFullBoard(){
- setGuards(true);$('#glassInfo').hidden=true;markBoard('#glassBoard',false);
- if(isoSnap){for(const [c,v] of isoSnap)c.visible=v;isoSnap=null;$('#furniture').checked=true;updateFurniture()}
+ setGuards(true);$('#glassInfo').hidden=true;markBoard('#glassBoard',false);glassDims.visible=false;
+ if(isoSnap){for(const [c,v] of isoSnap)c.visible=v;isoSnap=null;$('#furniture').checked=window.softOn;updateFurniture()}
  if(boardMode==='water'){wastewater.group.visible=false;pad.visible=true;$('#waterInfo').hidden=true;markBoard('#waterBoard',false);closeSpacePlan();}
  if(boardMode==='air'){airLabels.visible=false;upperSlab.material=originalSlabFinish;$('#airInfo').hidden=true;markBoard('#airBoard',false);}
  applyLightFilter('all');$('#lightFilters').hidden=true;
@@ -693,7 +684,7 @@ function restoreFullBoard(){
   levelStudy.visible=false;pad.visible=true;$('#floorStackInfo').hidden=true;markBoard('#floorStackBoard',false);
  }
  if(boardMode==='wet'&&wetChildSnapshot){for(const [child,visible] of wetChildSnapshot)child.visible=visible;wetChildSnapshot=null}
- if(boardMode==='furniture'){$('#furniture').checked=true;updateFurniture()}
+ if(boardMode==='furniture'){$('#furniture').checked=window.softOn;updateFurniture()}
  if(boardMode==='circuit'){$('#circuitLayer').checked=false;updateCircuitLayer();wet.visible=true;wetFloor.visible=true;stairs.visible=true;stairStorage.visible=true;openingRails.visible=true}
  if(boardMode==='siteframe'){
   existingOnly.visible=false;
@@ -712,6 +703,24 @@ function restoreFullBoard(){
 // them with the bathroom glazing and leaves the steel frame out.
 const guardParts=[];model.traverse(o=>{if(o.name&&o.name.startsWith('guard-'))guardParts.push(o)});
 function setGuards(on){for(const o of guardParts)o.visible=on}
+// Glass view dimensions (owner, 2026-11-23): one length tag per guard / handrail run, read from the built
+// handrails themselves so the numbers always match the model, plus the shower enclosure size.
+const glassDims=new THREE.Group();glassDims.name='glass-dimensions';glassDims.visible=false;model.add(glassDims);let glassDimsBuilt=false;
+function buildGlassDims(wetLen,wetDep,wetH){
+ if(glassDimsBuilt)return;glassDimsBuilt=true;model.updateMatrixWorld(true);const seen=[];
+ for(const o of guardParts){
+  if(o.name!=='guard-handrail')continue;let p0,p1,kind='护栏';
+  if(o.isLine){const a=o.geometry.attributes.position,n=a.count,i0=n===4?1:0,i1=n===4?2:n-1;if(n===4)kind='扶手';
+   p0=new THREE.Vector3().fromBufferAttribute(a,i0).applyMatrix4(o.matrixWorld);p1=new THREE.Vector3().fromBufferAttribute(a,i1).applyMatrix4(o.matrixWorld);}
+  else{const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3()),cx=(b.min.x+b.max.x)/2,cz=(b.min.z+b.max.z)/2;
+   [p0,p1]=sz.x>=sz.z?[new THREE.Vector3(b.min.x,b.max.y,cz),new THREE.Vector3(b.max.x,b.max.y,cz)]:[new THREE.Vector3(cx,b.max.y,b.min.z),new THREE.Vector3(cx,b.max.y,b.max.z)];}
+  const len=p0.distanceTo(p1);if(len<.3)continue;
+  const mid=p0.clone().add(p1).multiplyScalar(.5);mid.y+=.22;if(seen.some(q=>q.distanceTo(mid)<.4))continue;seen.push(mid);
+  const loc=model.worldToLocal(mid.clone());label(glassDims,kind+' '+len.toFixed(2)+' m',loc.x,loc.y,loc.z,'#0d5c75',2.6);
+ }
+ const wb=new THREE.Box3().setFromObject(wetWalls),ws=wb.getSize(new THREE.Vector3()),top=model.worldToLocal(new THREE.Vector3((wb.min.x+wb.max.x)/2,wb.max.y+.25,(wb.min.z+wb.max.z)/2));
+ label(glassDims,'淋浴间玻璃隔断 '+wetLen.toFixed(2)+' × '+wetDep.toFixed(2)+' m · 高 '+wetH.toFixed(2)+' m',top.x,top.y,top.z,'#0d5c75',2.8);
+}
 function showGlassBoard(){
  if(boardMode==='glass'){restoreFullBoard();return}
  if(boardMode)restoreFullBoard();
@@ -723,7 +732,8 @@ function showGlassBoard(){
  const slope=n=>Math.hypot((n-1)*going,(n-1)*rise),m=v=>v.toFixed(2);
  const edge=voidZ,around=(voidX-10.70)+(openFront-voidZ)+(thresholdX-voidX),landing=PD+.05+(lowerLandingX-10.75);
  const wetH=midHeight-.12-wetFloorFinish,wetArea=2*(2.16+WD)*wetH;
- $('#glassInfoText').textContent='夹层临空边护栏 '+m(edge)+' m；楼梯留空一圈护栏 '+m(around)+' m；中转平台护栏 '+m(landing)+' m；第一跑 '+m(slope(lowerRisers))+' m：临空一侧玻璃护栏，梯井一侧只做扶手；第二跑 '+m(slope(upperRisers))+' m：下段 '+m(slope((voidX-upperStartX)/going))+' m 玻璃护栏，上段与靠墙一侧只做扶手。两跑之间 100 mm 梯井内不得安装任何护栏构件。护栏高 1.10 m，玻璃分格约 1.2 m，每个转角和端头设立柱。淋浴间四面玻璃隔断，外框 2.16 × '+m(WD)+' m（与楼梯总宽对齐），高约 '+m(wetH)+' m，含门约 '+wetArea.toFixed(1)+' ㎡。尺寸为方案值，下料前现场复尺。';
+ $('#glassInfoText').textContent='夹层临空边护栏 '+m(edge)+' m；楼梯留空一圈护栏 '+m(around)+' m；中转平台护栏 '+m(landing)+' m；第一跑 '+m(slope(lowerRisers))+' m：临空一侧玻璃护栏，梯井一侧只做扶手；第二跑 '+m(slope(upperRisers))+' m：下段 '+m(slope((voidX-upperStartX)/going))+' m 玻璃护栏，上段与靠墙一侧只做扶手。两跑之间 100 mm 梯井内不得安装任何护栏构件。护栏高 1.10 m，玻璃分格约 1.2 m，每个转角和端头设立柱。淋浴间四面玻璃隔断，外框 2.16 × '+m(WD)+' m（与楼梯总宽对齐），高约 '+m(wetH)+' m，含门约 '+wetArea.toFixed(1)+' ㎡；10 厚钢化玻璃（深色或磨砂），每面实墙拆成两块、每块宽不超过 1.2 m，拼缝 6 mm 打透明玻璃胶，上下 U 槽固定；门为 0.95 m 单扇。尺寸为方案值，下料前现场复尺。';
+ buildGlassDims(2.16,WD,wetH);glassDims.visible=true;for(const q of glassDims.children)q.visible=true;
  $('#glassInfo').hidden=false;markBoard('#glassBoard',true);
  camera.position.set(5.5,10.5,-15.5);controls.target.set(13.6,2.6,-6.9);viewportFit=1;fitViewport();
 }
@@ -861,7 +871,7 @@ function showFloorStack(){
 }
 $('#floorStackBoard').onclick=showFloorStack;
 // Both-levels overview and the bar / gym view show the tea corner and the boxing set (owner, 2026-11-23).
-$('#levelsOverview').onclick=()=>{stackView();$('#furniture').checked=true;updateFurniture()};
+$('#levelsOverview').onclick=()=>{stackView();$('#furniture').checked=window.softOn;updateFurniture()};
 $('#levelsDrain').onclick=()=>stackView(true);
 function startServiceView(kind,button){
  if(boardMode===kind){restoreFullBoard();return false;}
@@ -945,7 +955,7 @@ planStage.addEventListener('pointerdown',e=>{if(e.button!==0)return;planDrag={po
 planStage.addEventListener('pointermove',e=>{if(planDrag&&planDrag.pointerId===e.pointerId)turnFlatPlan(planDrag.angle+flatPointerAngle(e)-planDrag.start);});
 function endFlatDrag(){planDrag=null;}planStage.addEventListener('pointerup',endFlatDrag);planStage.addEventListener('pointercancel',endFlatDrag);planStage.addEventListener('lostpointercapture',endFlatDrag);
 function showFlatPlan(file,title){
-  const versioned='./'+file+'?v=193';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
+  const versioned='./'+file+'?v=194';$('#spacePlanTitle').textContent=title;planImage.alt=title;planImage.src=versioned;$('#spacePlanOpen').href=versioned;roomPlan.hidden=false;host.classList.add('plan-open');renderer.domElement.style.visibility='hidden';turnFlatPlan(0);
 }
 $('#softPlanView').onclick=()=>showFlatPlan('图纸/F-01_地面与墙面做法图.svg','地面与墙面做法图');
 $('#electricalGround').onclick=()=>showFlatPlan('图纸/E-01_一层照明平面图.svg','一层照明平面图');
@@ -959,9 +969,11 @@ function spaceView(level){
 }
 $('#spaceGround').onclick=()=>spaceView('ground');$('#spaceUpper').onclick=()=>spaceView('upper');$('#space3D').onclick=closeSpacePlan;
 document.querySelectorAll('[data-mode],#bossFocus,#stairView,#wetFocus,#connectionView,#restFocus,#entryView,#heightView,#top,#reset,#supportView').forEach(b=>b.addEventListener('click',closeSpacePlan));
+// Soft furnishings (desks, chairs, tea and lounge pieces, the boxing mat and bag) start hidden; the bar switch sets this (owner, 2026-11-23).
+window.softOn=window.softOn??false;
 function updateFurniture(){
- windowLighting.fixtures.visible=mode!=='upper'&&!['siteframe','steel','wet','air','water'].includes(boardMode);
- airLayout.group.visible=!['siteframe','steel','wet','circuit','water','furniture'].includes(boardMode);
+ windowLighting.fixtures.visible=mode!=='upper'&&!['siteframe','steel','wet','air','water','glass'].includes(boardMode);
+ airLayout.group.visible=!['siteframe','steel','wet','circuit','water','furniture','glass'].includes(boardMode);
  const show=$('#furniture').checked;
  for(const o of furnitureObjects)o.visible=show;
  stairStorage.visible=show;
@@ -1060,7 +1072,7 @@ setupRoles({host:$('#viewer'),showPlan:showFlatPlan,closePlan:closeSpacePlan});
 
 function overallDimensions(){
  closeSpacePlan();setMode('all');upperOriginalColumn.visible=false;
- $('#furniture').checked=true;$('#labels').checked=false;labels.forEach(q=>q.visible=false);
+ $('#furniture').checked=window.softOn;$('#labels').checked=false;labels.forEach(q=>q.visible=false);
  $('#dimensions').checked=true;$('#frame').checked=true;structure.visible=true;
  camera.position.set(21.94,14.56,-22.56);controls.target.set(9.7,3.2,-4.8);viewportFit=1;fitViewport();controls.update();measurement.update();
 }
@@ -1071,7 +1083,7 @@ $('#toolsToggle').onclick=()=>{const on=$('#viewer').classList.toggle('tools-ope
 $('#barGymView').onclick=()=>{
  closeSpacePlan();setMode('ground');upperOriginalColumn.visible=false;
  $('#labels').checked=false;labels.forEach(q=>q.visible=false);$('#dimensions').checked=true;$('#allDimensions').checked=false;
- $('#furniture').checked=true;$('#supportReserve').checked=true;supportStudy.update('ground');updateFurniture();
+ $('#furniture').checked=window.softOn;$('#supportReserve').checked=true;supportStudy.update('ground');updateFurniture();
  $('#daylight').checked=false;facade.visible=false;
  camera.position.set(15.0625,18,-13.5);controls.target.set(15.0625,0,-4.7);viewportFit=1;fitViewport();
  measurement.focusArea('bar-gym');
